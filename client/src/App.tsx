@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { checkSystem, Category } from "./api.js";
 
-// UI states you must handle for Issue 4: idle, loading, success, error.
+// Shared UI states for the Issue 2 health check and Issue 4 category list.
 type UiState = "idle" | "loading" | "success" | "error";
 
 export default function App() {
   const [state, setState] = useState<UiState>("idle");
   const [categories, setCategories] = useState<Category[]>([]);
-  void categories;
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleCheck() {
-    // TODO(Issue 4): set loading, call checkSystem(), then either
-    //   - success: store categories and show Online + the list, or
-    //   - error: show Offline + a useful message.
     setState("loading");
+    setErrorMessage("");
+
+    try {
+      const result = await checkSystem();
+      setCategories(result.categories);
+      setState(result.online ? "success" : "error");
+    } catch {
+      setCategories([]);
+      setErrorMessage("Unable to connect to TokTickIT API");
+      setState("error");
+    }
   }
 
   return (
@@ -26,7 +34,27 @@ export default function App() {
         {state === "loading" ? "Loading…" : "Check System"}
       </button>
 
-      {/* TODO(Issue 4): render loading / success (Online + categories) / error (Offline) states. */}
+      {state === "success" && (
+        <section className="mt-4" aria-live="polite">
+          <div className="alert alert-success" role="status">
+            <strong>System Status:</strong> Online
+          </div>
+          <h2 className="h5">Supported Request Categories</h2>
+          <ol className="list-group list-group-numbered">
+            {categories.map((category) => (
+              <li className="list-group-item" key={category.id}>{category.name}</li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {state === "error" && (
+        <div className="alert alert-danger mt-4" role="alert">
+          <p className="mb-1"><strong>System Status:</strong> Offline</p>
+          <p className="mb-0">{errorMessage}</p>
+        </div>
+      )}
+
     </div>
   );
 }
