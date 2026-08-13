@@ -15,19 +15,23 @@ interface HealthResponse {
   service: string;
 }
 
-// Issue 2 checks backend health. Issue 4 will extend this function to load
-// categories after the health check succeeds.
 export async function checkSystem(): Promise<SystemStatus> {
-  const response = await fetch(`${API_URL}/api/health`);
+  const healthResponse = await fetch(`${API_URL}/api/health`);
 
-  if (!response.ok) {
-    throw new Error(`Health check failed with status ${response.status}`);
+  if (!healthResponse.ok) {
+    throw new Error(`Health check failed with status ${healthResponse.status}`);
   }
 
-  const health = (await response.json()) as HealthResponse;
+  const health = (await healthResponse.json()) as HealthResponse;
   if (health.status !== "ok" || health.service !== "TokTickIT API") {
     throw new Error("Health check returned an unexpected response");
   }
 
-  return { online: true, categories: [] };
+  const categoryResponse = await fetch(`${API_URL}/api/categories`);
+  if (!categoryResponse.ok) {
+    throw new Error(`Category request failed with status ${categoryResponse.status}`);
+  }
+
+  const categories = (await categoryResponse.json()) as Category[];
+  return { online: true, categories };
 }

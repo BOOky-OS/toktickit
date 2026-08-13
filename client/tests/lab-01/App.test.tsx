@@ -15,10 +15,46 @@ describe("App", () => {
     expect(screen.getByText(/TokTickIT/i)).toBeInTheDocument();
   });
 
-  // Issue 4 — write these yourself. Hint: mock the api module with
-  // vi.spyOn(api, "checkSystem").mockResolvedValue(...) / .mockRejectedValue(...)
-  // then click the button and assert the Online list / Offline message.
-  it.todo("shows Online and the seeded categories on success");
+  it("shows Online and the seeded categories on success", async () => {
+    vi.spyOn(api, "checkSystem").mockResolvedValue({
+      online: true,
+      categories: [
+        { id: 1, name: "Account and Access" },
+        { id: 2, name: "Hardware" },
+        { id: 3, name: "Software" },
+        { id: 4, name: "Network" },
+      ],
+    });
+    const user = userEvent.setup();
+
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Check System" }));
+
+    expect(await screen.findByText("Online")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Supported Request Categories" })).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(4);
+    expect(screen.getByText("Account and Access")).toBeInTheDocument();
+    expect(screen.getByText("Hardware")).toBeInTheDocument();
+    expect(screen.getByText("Software")).toBeInTheDocument();
+    expect(screen.getByText("Network")).toBeInTheDocument();
+  });
+
+  it("shows Loading while the system request is pending", async () => {
+    let resolveRequest!: (value: api.SystemStatus) => void;
+    const pendingRequest = new Promise<api.SystemStatus>((resolve) => {
+      resolveRequest = resolve;
+    });
+    vi.spyOn(api, "checkSystem").mockReturnValue(pendingRequest);
+    const user = userEvent.setup();
+
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Check System" }));
+
+    expect(screen.getByRole("button", { name: /Loading/ })).toBeDisabled();
+    resolveRequest({ online: true, categories: [] });
+    expect(await screen.findByText("Online")).toBeInTheDocument();
+  });
+
   it("shows Online when the health check succeeds", async () => {
     vi.spyOn(api, "checkSystem").mockResolvedValue({ online: true, categories: [] });
     const user = userEvent.setup();
