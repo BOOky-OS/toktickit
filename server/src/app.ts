@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { getPrisma } from "./prisma.js";
+import { createTicket } from "./tickets/create-ticket.js";
+import { validateCreateTicket } from "./tickets/ticket-validation.js";
 
 // The Express app is exported separately from app.listen() (see index.ts) so
 // Supertest can import `app` without opening a port. Do not merge these files.
@@ -55,6 +57,70 @@ app.get("/api/related-systems", async (_req: Request, res: Response) => {
   } catch {
     res.status(500).json({ error: "Unable to load related systems" });
   }
+});
+
+app.post("/api/tickets", async (req: Request, res: Response) => {
+  const validation = validateCreateTicket(req.body, req.get("Idempotency-Key"));
+  if (!validation.ok) {
+    res.status(400).json({
+      error: "Validation failed",
+      code: "VALIDATION_ERROR",
+      fieldErrors: validation.fieldErrors,
+    });
+    return;
+  }
+
+  try {
+    const result = await createTicket(
+      getPrisma(),
+      validation.value,
+      validation.idempotencyKey,
+    );
+
+    if (result.kind === "validation") {
+      res.status(400).json({
+        error: "Validation failed",
+        code: "VALIDATION_ERROR",
+        fieldErrors: result.fieldErrors,
+      });
+      return;
+    }
+    if (result.kind === "conflict") {
+      res.status(409).json({
+        error: "Idempotency-Key was already used for a different ticket.",
+        code: "IDEMPOTENCY_CONFLICT",
+      });
+      return;
+    }
+
+    res.status(result.kind === "created" ? 201 : 200).json(result.ticket);
+  } catch {
+    res.status(500).json({
+      error: "Unable to create ticket",
+      code: "INTERNAL_ERROR",
+    });
+  }
+});
+
+app.use((
+  error: unknown,
+  _req: Request,
+  res: Response,
+  next: (error?: unknown) => void,
+) => {
+  if (
+    error instanceof SyntaxError
+    && "type" in error
+    && error.type === "entity.parse.failed"
+  ) {
+    res.status(400).json({
+      error: "Validation failed",
+      code: "VALIDATION_ERROR",
+      fieldErrors: { body: "Request body must be valid JSON." },
+    });
+    return;
+  }
+  next(error);
 });
 
 export default app;
