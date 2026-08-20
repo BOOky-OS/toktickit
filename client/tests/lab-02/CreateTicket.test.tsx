@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../../src/App.js";
 import * as api from "../../src/api.js";
@@ -10,7 +10,7 @@ async function openCreateTicket(user: ReturnType<typeof userEvent.setup>) {
   render(<App />);
   await user.selectOptions(await screen.findByRole("combobox", { name: /development requester/i }), "1");
   await user.click(screen.getByRole("button", { name: "Continue" }));
-  await user.click(await screen.findByRole("button", { name: "Create Ticket" }));
+  await user.click(within(screen.getByRole("navigation", { name: "Service desk" })).getByRole("button", { name: "Create Ticket" }));
   await screen.findByRole("option", { name: "Hardware" });
 }
 

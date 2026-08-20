@@ -72,6 +72,26 @@ export async function createTicket(input: CreateTicketInput, idempotencyKey: str
   return body as CreatedTicket;
 }
 
+export type TicketSortBy = "updatedAt" | "ticketDate" | "ticketNumber" | "summary";
+export interface TicketListOptions {
+  search?: string; categoryId?: number; relatedSystemId?: number; requestedPriority?: RequestedPriority;
+  currentStatus?: "NEW"; sortBy?: TicketSortBy; sortDir?: "asc" | "desc"; page?: number; pageSize?: 10 | 25 | 50;
+}
+export interface TicketListItem {
+  id: number; ticketNumber: string; ticketDate: string; summary: string; category: Category; relatedSystem: RelatedSystem;
+  requestedPriority: RequestedPriority; itPriority: string; currentStatus: string; updatedAt: string;
+}
+export interface TicketListResponse {
+  items: TicketListItem[]; page: number; pageSize: number; totalItems: number; totalPages: number; hasPreviousPage: boolean; hasNextPage: boolean;
+}
+export async function getTickets(requesterId: number, options: TicketListOptions = {}): Promise<TicketListResponse> {
+  const params = new URLSearchParams({ requesterId: String(requesterId) });
+  Object.entries(options).forEach(([key, value]) => { if (value !== undefined && value !== "") params.set(key, String(value)); });
+  const response = await fetch(`${API_URL}/api/tickets?${params.toString()}`);
+  if (!response.ok) throw new Error("Unable to load tickets");
+  return (await response.json()) as TicketListResponse;
+}
+
 export interface SystemStatus {
   online: boolean;
   categories: Category[];
