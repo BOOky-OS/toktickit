@@ -1,13 +1,18 @@
-// Prisma schema — datasource and generator are pre-wired.
-// Your DATABASE_URL lives in server/.env (copy it from .env.example).
+# Lab 2 Data Model Design
 
-generator client {
-  provider = "prisma-client-js"
-}
+This is the detailed design that will be implemented in the Prisma schema after
+the contract is approved. Every non-`?` field is required.
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+```prisma
+model DevelopmentRequester {
+  id                 Int          @id @default(autoincrement())
+  displayName        String       @db.VarChar(120)
+  email              String       @unique @db.VarChar(254)
+  isActive           Boolean      @default(true)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  tickets            Ticket[]
+  removedAttachments Attachment[] @relation("AttachmentRemovedBy")
 }
 
 model Category {
@@ -17,17 +22,6 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tickets   Ticket[]
-}
-
-model DevelopmentRequester {
-  id          Int      @id @default(autoincrement())
-  displayName String   @db.VarChar(120)
-  email       String   @unique @db.VarChar(254)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  tickets     Ticket[]
-  removedAttachments Attachment[] @relation("AttachmentRemovedBy")
 }
 
 model RelatedSystem {
@@ -66,23 +60,6 @@ model Ticket {
   @@index([requesterId, categoryId])
 }
 
-enum RequestedPriority {
-  LOW
-  MEDIUM
-  HIGH
-}
-
-enum ItPriority {
-  UNASSIGNED
-  LOW
-  MEDIUM
-  HIGH
-}
-
-enum TicketStatus {
-  NEW
-}
-
 model Attachment {
   id                   Int                   @id @default(autoincrement())
   ticketId             Int
@@ -99,3 +76,9 @@ model Attachment {
 
   @@index([ticketId, removedAt])
 }
+```
+
+The migration will add a PostgreSQL sequence used by the backend to issue the
+unique `TKT-YYYY-NNNNNN` Ticket Number. The design keeps requester foreign keys
+and removal audit history stable so Lab 3 can replace temporary requester
+selection with real authentication without changing Ticket ownership.

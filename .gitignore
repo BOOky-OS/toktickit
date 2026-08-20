@@ -1,5 +1,8 @@
 # dependencies
 node_modules/
+test-results/
+playwright-report/
+server/.toktickit-storage/
 # env & secrets
 .env
 *.env

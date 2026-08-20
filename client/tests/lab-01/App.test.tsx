@@ -1,13 +1,27 @@
-import { afterEach, describe, it, expect, vi } from "vitest";
+import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../../src/App.js";
 import * as api from "../../src/api.js";
 
 describe("App", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.spyOn(api, "getDevelopmentRequesters").mockResolvedValue([
+      { id: 1, displayName: "Jennifer Anderson", email: "jennifer.anderson@example.test" },
+    ]);
+  });
+
   afterEach(() => {
     vi.restoreAllMocks();
+    localStorage.clear();
   });
+
+  async function enterServiceDesk(user: ReturnType<typeof userEvent.setup>) {
+    const select = await screen.findByRole("combobox", { name: /development requester/i });
+    await user.selectOptions(select, "1");
+    await user.click(screen.getByRole("button", { name: "Continue" }));
+  }
 
   // WORKED EXAMPLE — provided for you.
   it("renders the TokTickIT heading", () => {
@@ -28,15 +42,17 @@ describe("App", () => {
     const user = userEvent.setup();
 
     render(<App />);
+    await enterServiceDesk(user);
     await user.click(screen.getByRole("button", { name: "Check System" }));
 
     expect(await screen.findByText("Online")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Supported Request Categories" })).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem")).toHaveLength(4);
-    expect(screen.getByText("Account and Access")).toBeInTheDocument();
-    expect(screen.getByText("Hardware")).toBeInTheDocument();
-    expect(screen.getByText("Software")).toBeInTheDocument();
-    expect(screen.getByText("Network")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem").map((item) => item.textContent)).toEqual([
+      "Account and Access",
+      "Hardware",
+      "Software",
+      "Network",
+    ]);
   });
 
   it("shows Loading while the system request is pending", async () => {
@@ -48,6 +64,7 @@ describe("App", () => {
     const user = userEvent.setup();
 
     render(<App />);
+    await enterServiceDesk(user);
     await user.click(screen.getByRole("button", { name: "Check System" }));
 
     expect(screen.getByRole("button", { name: /Loading/ })).toBeDisabled();
@@ -60,6 +77,7 @@ describe("App", () => {
     const user = userEvent.setup();
 
     render(<App />);
+    await enterServiceDesk(user);
     await user.click(screen.getByRole("button", { name: "Check System" }));
 
     expect(await screen.findByText("Online")).toBeInTheDocument();
@@ -70,6 +88,7 @@ describe("App", () => {
     const user = userEvent.setup();
 
     render(<App />);
+    await enterServiceDesk(user);
     await user.click(screen.getByRole("button", { name: "Check System" }));
 
     expect(await screen.findByText("Offline")).toBeInTheDocument();
