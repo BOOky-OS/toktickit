@@ -27,6 +27,7 @@ model DevelopmentRequester {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   tickets     Ticket[]
+  removedAttachments Attachment[] @relation("AttachmentRemovedBy")
 }
 
 model RelatedSystem {
@@ -56,6 +57,7 @@ model Ticket {
   requester           DevelopmentRequester @relation(fields: [requesterId], references: [id])
   category            Category             @relation(fields: [categoryId], references: [id])
   relatedSystem       RelatedSystem        @relation(fields: [relatedSystemId], references: [id])
+  attachments         Attachment[]
 
   @@unique([requesterId, clientSubmissionKey])
   @@index([requesterId, updatedAt])
@@ -79,4 +81,21 @@ enum ItPriority {
 
 enum TicketStatus {
   NEW
+}
+
+model Attachment {
+  id                   Int                   @id @default(autoincrement())
+  ticketId             Int
+  originalFilename     String                @db.VarChar(255)
+  storageKey           String                @unique @db.VarChar(255)
+  mimeType             String                @db.VarChar(100)
+  sizeBytes            Int
+  uploadedAt           DateTime              @default(now())
+  removedAt            DateTime?
+  removalReason        String?               @db.VarChar(250)
+  removedByRequesterId Int?
+  ticket               Ticket                @relation(fields: [ticketId], references: [id])
+  removedByRequester   DevelopmentRequester? @relation("AttachmentRemovedBy", fields: [removedByRequesterId], references: [id])
+
+  @@index([ticketId, removedAt])
 }
