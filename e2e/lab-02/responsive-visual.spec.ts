@@ -1,0 +1,46 @@
+import { expect, test } from "@playwright/test";
+import path from "node:path";
+
+test("requester creates, finds, and opens an owned Ticket responsively", async ({ page }, testInfo) => {
+  const viewport = testInfo.project.name;
+  await page.goto("/");
+  await page.getByLabel("Development Requester", { exact: true }).selectOption({ index: 1 });
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("navigation").getByRole("button", { name: "Create Ticket" }).click();
+  await expect(page.getByRole("heading", { name: "Create Ticket" })).toBeVisible();
+  await page.getByRole("button", { name: "Submit Ticket" }).click();
+  await expect(page.getByText("Summary must contain 5 to 120 characters.")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: path.join("artifacts/lab-02/screenshots/create-ticket", viewport, "validation.png"), fullPage: true });
+
+  await page.getByLabel("Category").selectOption({ index: 1 });
+  await page.getByLabel("Related System").selectOption({ index: 1 });
+  const uniqueSummary = `E2E ${viewport} ticket ${Date.now()}`;
+  await page.getByLabel("Summary").fill(uniqueSummary);
+  await page.getByLabel("Description").fill("This ticket verifies the complete requester-owned responsive workflow.");
+  await page.getByRole("button", { name: "Submit Ticket" }).click();
+  const successHeading = page.getByRole("heading", { name: /Ticket TKT-.* has been created/ });
+  await expect(successHeading).toBeVisible();
+  const ticketNumber = (await successHeading.textContent())!.match(/TKT-\d{4}-\d{6}/)![0];
+  await page.getByRole("button", { name: "Go to My Tickets" }).click();
+  await expect(page.getByText(ticketNumber)).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: path.join("artifacts/lab-02/screenshots/my-tickets", viewport, "list.png"), fullPage: true });
+  await page.getByRole("button", { name: `Open ${ticketNumber}` }).click();
+  await expect(page.getByRole("heading", { name: ticketNumber })).toBeVisible();
+  await expect(page.getByText(uniqueSummary)).toBeVisible();
+  await page.getByLabel("Add attachment").setInputFiles({ name: `evidence-${viewport}.pdf`, mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.4 TokTickIT evidence") });
+  await expect(page.getByText(`evidence-${viewport}.pdf`)).toBeVisible();
+  await page.getByRole("button", { name: "Remove" }).click();
+  await page.getByLabel("Removal reason").fill("Completed responsive lifecycle verification");
+  await page.getByRole("button", { name: "Remove attachment" }).click();
+  await expect(page.getByText("Removed")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Download" })).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: path.join("artifacts/lab-02/screenshots/ticket-detail", viewport, "detail.png"), fullPage: true });
+  await page.getByRole("button", { name: "Back to My Tickets" }).click();
+  await page.getByRole("button", { name: "Change Requester" }).click();
+  await page.getByLabel("Development Requester", { exact: true }).selectOption({ index: 2 });
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByText(uniqueSummary)).toHaveCount(0);
+});

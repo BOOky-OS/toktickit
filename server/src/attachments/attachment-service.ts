@@ -67,7 +67,13 @@ export async function createAttachment(
     });
     if (activeCount >= 5) return { kind: "limit" } as const;
     const attachment = await tx.attachment.create({
-      data: input,
+      data: {
+        ticketId: input.ticketId,
+        originalFilename: input.originalFilename,
+        storageKey: input.storageKey,
+        mimeType: input.mimeType,
+        sizeBytes: input.sizeBytes,
+      },
       select: attachmentSelect,
     });
     return { kind: "created", attachment: toResponse(attachment) } as const;

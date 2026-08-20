@@ -1,37 +1,25 @@
-# Lab 2 - AI Use Record
+# Lab 2 AI Use Record
 
 **LLM/agent used:** OpenAI Codex (GPT-5)
 
-## Current record
-
-AI is being used to interpret the Lab 2 sheet, cross-check the persistent
-GitHub workflow, inspect the repository, and draft a testable engineering
-contract. The student must review source material, repository state, generated
-documents, test results, and GitHub review rather than treating an AI statement
-as proof of completion.
-
-| # | Actual prompt / task | AI assistance | Verification and decision |
+| # | Actual prompt/task | AI assistance | Human-verifiable evidence |
 | --- | --- | --- | --- |
-| 1 | "ลองไฟล์นี้แล้วสรุปเก็บไว้เองว่าต้องทำอะไรบ้าง" | Read and summarized the Lab 2 sheet. | The full 22-page PDF was reread before planning. |
-| 2 | "ลองอ่านอีกรอบได้ไหมเผื่อตกพลาดจุดไหนไป" | Performed a second requirements and UI-reference audit. | Added the missing evidence, responsive, reviewer, and Attachment details to the checklist. |
-| 3 | "อ่านไฟล์อันนี้ไว้ด้วยนะ" | Read the persistent GitHub workflow guide. | Applied its stated priority: current Lab sheet overrides generic workflow rules. |
-| 4 | "โอเคบอกมาสิว่าขั้นแรกต้องทำอะไรบ้าง" | Proposed a no-code-first setup sequence. | Repository/GitHub state was then inspected before creating Lab 2 work. |
-| 5 | "โอเคทำให้หน่อยที่บอกมา" | Created the Issue breakdown and drafted the engineering contract. | `main`, Project statuses, closed Lab 1 work, and the current branch were verified first. |
+| 1 | Read and reread the complete Lab 2 sheet. | Extracted deliverables, constraints, UI states, and workflow requirements. | Contract documents were reviewed before implementation. |
+| 2 | Read the GitHub workflow guide. | Applied branch, Project, PR, reviewer, and merge sequence. | Issues #1;�u���S#17 and PRs #19�w^~)�w#25 show the resulting history. |
+| 3 | Complete Issue #11. | Drafted the specification, API/UI contracts, data decisions, and test plan. | PR #19 was peer-approved and merged. |
+| 4 | Continue Issues #12�w^~)�w#14. | Implemented Requester/reference data, Ticket creation, and Attachment APIs. | PRs #20�w^~)�w#22, migrations, and server tests. |
+| 5 | Continue Issues #16��y��y�#17. | Implemented Create Ticket, My Tickets, Ticket Detail, and Attachment controls. | PRs #22��y��y�#25, client tests, and peer reviews. |
+| 6 | Keep providing review/reply/post-merge comments. | Drafted three factual comment templates at each review point. | GitHub review and Issue history. |
+| 7 | Continue Issue #18. | Added Playwright responsive/E2E evidence and final traceability. | `e2e/lab-02/responsive-visual.spec.ts` and nine screenshots. |
+| 8 | Audit the real integrated application. | Diagnosed an upload 500 that isolated mocks missed. | Fixed invalid Prisma Attachment create data and added regression coverage. |
 
 ## Critical-thinking record
 
-- The contract makes explicit choices the handout leaves open, including
-  validation limits, pagination values, Ticket Number format, idempotency,
-  error statuses, and Attachment compensation.
-- The choices are recorded in the contract documents before implementation and
-  must be reviewed against the Lab sheet before feature work begins.
-- The Development Requester selector remains visibly separate from real
-  authentication. Later tests still prove requester data isolation.
-- Expand this table to 6-10 selected actual prompts as Lab 2 progresses. Do not
-  invent prompts, verification, reviews, or results.
+- Contract decisions such as validation limits, pagination, Ticket Number format, idempotency, error statuses, and Attachment compensation were recorded before implementation.
+- The Development Requester selector is explicitly a test context, not authentication.
+- AI statements were not treated as completion evidence; local database runs, automated tests, browser E2E, screenshots, peer approvals, and merge commits were checked.
+- A real-database upload failure demonstrated the limitation of mock-only tests. The payload fix was accepted only after unit/API/UI/build/E2E reruns.
 
-## Reflection (in progress)
+## Reflection
 
-AI reduced a long specification into a traceable contract and exposed decisions
-that need deliberate review. Its output still requires human verification
-against actual code, tests, GitHub review, and visual evidence.
+AI accelerated requirements analysis, implementation, and workflow bookkeeping, but verification remained essential. The final integration pass found a schema/payload mismatch that TypeScript and mocked API tests did not expose. Combining peer review with real PostgreSQL, browser automation, responsive screenshots, and regression assertions produced stronger evidence than any single tool or AI response.

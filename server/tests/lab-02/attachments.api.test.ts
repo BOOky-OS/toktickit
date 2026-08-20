@@ -61,6 +61,9 @@ describe("Attachment lifecycle APIs", () => {
       .attach("file", Buffer.from("%PDF-1.7"), { filename: "request.pdf", contentType: "application/pdf" });
 
     expect(response.status).toBe(201);
+    expect(tx.attachment.create).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.not.objectContaining({ requesterId: expect.anything() }),
+    }));
     expect(response.body).toEqual({
       id: 9,
       originalFilename: "request.pdf",
