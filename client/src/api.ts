@@ -5,6 +5,43 @@ export interface Category {
   name: string;
 }
 
+export interface RelatedSystem {
+  id: number;
+  name: string;
+}
+
+export type RequestedPriority = "LOW" | "MEDIUM" | "HIGH";
+
+export interface CreateTicketInput {
+  requesterId: number;
+  categoryId: number;
+  relatedSystemId: number;
+  summary: string;
+  requestedPriority: RequestedPriority;
+  description: string;
+}
+
+export interface CreatedTicket {
+  id: number;
+  ticketNumber: string;
+  ticketDate: string;
+  requester: { id: number; displayName: string };
+  category: Category;
+  relatedSystem: RelatedSystem;
+  summary: string;
+  requestedPriority: RequestedPriority;
+  itPriority: string;
+  currentStatus: string;
+  description: string;
+  attachments: [];
+}
+
+export class TicketApiError extends Error {
+  constructor(message: string, public readonly status: number, public readonly fieldErrors: Record<string, string> = {}) {
+    super(message);
+  }
+}
+
 export interface DevelopmentRequester {
   id: number;
   displayName: string;
@@ -17,6 +54,22 @@ export async function getDevelopmentRequesters(): Promise<DevelopmentRequester[]
     throw new Error(`Requester request failed with status ${response.status}`);
   }
   return (await response.json()) as DevelopmentRequester[];
+}
+
+async function getReferenceData<T>(path: string, safeName: string): Promise<T[]> {
+  const response = await fetch(`${API_URL}${path}`);
+  if (!response.ok) throw new Error(`Unable to load ${safeName}`);
+  return (await response.json()) as T[];
+}
+
+export function getCategories(): Promise<Category[]> { return getReferenceData<Category>("/api/categories", "request categories"); }
+export function getRelatedSystems(): Promise<RelatedSystem[]> { return getReferenceData<RelatedSystem>("/api/related-systems", "related systems"); }
+
+export async function createTicket(input: CreateTicketInput, idempotencyKey: string): Promise<CreatedTicket> {
+  const response = await fetch(`${API_URL}/api/tickets`, { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey }, body: JSON.stringify(input) });
+  const body = await response.json().catch(() => ({})) as { error?: string; fieldErrors?: Record<string, string> };
+  if (!response.ok) throw new TicketApiError(body.error ?? "Unable to create ticket", response.status, body.fieldErrors);
+  return body as CreatedTicket;
 }
 
 export interface SystemStatus {
