@@ -22,6 +22,7 @@ import {
 } from "./attachments/attachment-storage.js";
 import { createTicket } from "./tickets/create-ticket.js";
 import { validateCreateTicket } from "./tickets/ticket-validation.js";
+import { listTickets, parseTicketList } from "./tickets/list-tickets.js";
 
 // The Express app is exported separately from app.listen() (see index.ts) so
 // Supertest can import `app` without opening a port. Do not merge these files.
@@ -124,6 +125,51 @@ app.post("/api/tickets", async (req: Request, res: Response) => {
       error: "Unable to create ticket",
       code: "INTERNAL_ERROR",
     });
+  }
+});
+
+app.get("/api/tickets", async (req: Request, res: Response) => {
+  const parsed = parseTicketList(req.query as Record<string, unknown>);
+  if (!parsed.ok) {
+    res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR", fieldErrors: parsed.fieldErrors });
+    return;
+  }
+  try {
+    const result = await listTickets(getPrisma(), parsed.value);
+    if (!result) {
+      res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR", fieldErrors: { requesterId: "Selected Requester is unavailable." } });
+      return;
+    }
+    res.status(200).json(result);
+  } catch {
+    res.status(500).json({ error: "Unable to load tickets", code: "INTERNAL_ERROR" });
+  }
+});
+
+app.get("/api/tickets/:ticketId", async (req: Request, res: Response) => {
+  const ticketId = positiveInteger(req.params.ticketId);
+  const requesterId = positiveInteger(req.query.requesterId);
+  if (!ticketId || !requesterId) {
+    res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR" });
+    return;
+  }
+  try {
+    const ticket = await getPrisma().ticket.findFirst({
+      where: { id: ticketId, requesterId, requester: { isActive: true } },
+      select: {
+        id: true, ticketNumber: true, ticketDate: true, summary: true, description: true,
+        requestedPriority: true, itPriority: true, currentStatus: true,
+        requester: { select: { id: true, displayName: true } },
+        category: { select: { id: true, name: true } }, relatedSystem: { select: { id: true, name: true } },
+      },
+    });
+    if (!ticket) {
+      res.status(404).json({ error: "Ticket is unavailable." });
+      return;
+    }
+    res.status(200).json({ ...ticket, ticketDate: ticket.ticketDate.toISOString(), attachments: [] });
+  } catch {
+    res.status(500).json({ error: "Unable to load ticket", code: "INTERNAL_ERROR" });
   }
 });
 
