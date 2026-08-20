@@ -36,6 +36,12 @@ export interface CreatedTicket {
   attachments: [];
 }
 
+export interface Attachment {
+  id: number; originalFilename: string; mimeType: string; sizeBytes: number; uploadedAt: string;
+  state: "ACTIVE" | "REMOVED"; canDownload: boolean; removedAt?: string; removalReason?: string;
+}
+export interface TicketDetail extends Omit<CreatedTicket, "attachments"> { attachments: Attachment[]; }
+
 export class TicketApiError extends Error {
   constructor(message: string, public readonly status: number, public readonly fieldErrors: Record<string, string> = {}) {
     super(message);
@@ -91,6 +97,31 @@ export async function getTickets(requesterId: number, options: TicketListOptions
   if (!response.ok) throw new Error("Unable to load tickets");
   return (await response.json()) as TicketListResponse;
 }
+
+export async function getTicket(ticketId: number, requesterId: number): Promise<TicketDetail> {
+  const response = await fetch(`${API_URL}/api/tickets/${ticketId}?requesterId=${requesterId}`);
+  if (!response.ok) throw new TicketApiError("Ticket is unavailable", response.status);
+  return (await response.json()) as TicketDetail;
+}
+export async function getAttachments(ticketId: number, requesterId: number): Promise<Attachment[]> {
+  const response = await fetch(`${API_URL}/api/tickets/${ticketId}/attachments?requesterId=${requesterId}`);
+  if (!response.ok) throw new TicketApiError("Attachments are unavailable", response.status);
+  return (await response.json()) as Attachment[];
+}
+export async function uploadAttachment(ticketId: number, requesterId: number, file: File): Promise<Attachment> {
+  const form = new FormData(); form.append("requesterId", String(requesterId)); form.append("file", file);
+  const response = await fetch(`${API_URL}/api/tickets/${ticketId}/attachments`, { method: "POST", body: form });
+  const body = await response.json().catch(() => ({})) as { error?: string };
+  if (!response.ok) throw new TicketApiError(body.error ?? "Unable to upload attachment", response.status);
+  return body as Attachment;
+}
+export async function removeAttachment(attachmentId: number, requesterId: number, reason: string): Promise<Attachment> {
+  const response = await fetch(`${API_URL}/api/attachments/${attachmentId}`, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requesterId, reason }) });
+  const body = await response.json().catch(() => ({})) as { error?: string };
+  if (!response.ok) throw new TicketApiError(body.error ?? "Unable to remove attachment", response.status);
+  return body as Attachment;
+}
+export function attachmentDownloadUrl(attachmentId: number, requesterId: number) { return `${API_URL}/api/attachments/${attachmentId}/download?requesterId=${requesterId}`; }
 
 export interface SystemStatus {
   online: boolean;
