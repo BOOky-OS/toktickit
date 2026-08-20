@@ -4,6 +4,29 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 delivers a
 small full-stack vertical slice that connects a React user interface to an
 Express REST API and a PostgreSQL database through Prisma.
 
+## Lab 2 requester MVP
+
+Lab 2 adds Development Requester context, Ticket creation, requester-owned My Tickets search/filter/sort/pagination, read-only Ticket Detail, and Attachment upload/download/soft removal. The selector is a testing mechanism and is not authentication.
+
+Apply and seed the Lab 2 database after initial setup:
+
+```bash
+npm exec --workspace server prisma migrate deploy
+npm run prisma:seed --workspace server
+```
+
+Run the complete verification suite:
+
+```bash
+npm run prisma:validate
+npm test
+npm run build
+npm run test:e2e
+npm run test:visual
+```
+
+Playwright uses the installed Chrome channel and stores desktop, tablet, and mobile evidence under `artifacts/lab-02/screenshots/`. Final traceability is in `docs/lab-02/tests.md`.
+
 ## Lab 1 scope
 
 The completed Lab 1 application will provide a **Check System** action that:

@@ -1,29 +1,32 @@
-# Lab 2 - Peer Review Record
+# Lab 2 Peer Review Record
 
 ## Review setup
 
-| Item | Current value |
+| Item | Final value |
 | --- | --- |
-| Author | Confirm before the first Lab 2 Pull Request; do not copy an identity from Lab 1 without verification. |
-| Peer reviewer | Not yet confirmed for Lab 2. A reviewer must be identified before requesting the first review. |
+| Author | `BOOky-OS` |
+| Peer reviewer and merger | `Atip-Infa` |
 | Integration branch | `lab2-staging` |
-| Rule | The PR author does not merge their own PR. The reviewer merges after approval. |
+| Rule followed | Author opened each PR; peer approved and merged it. |
 
-## Pull Requests I authored
+## Authored Pull Requests
 
-No Lab 2 Pull Request exists at the contract stage. Add each actual PR link,
-branch, reviewer identity, review outcome, comments received, response link,
-and reviewer merge evidence here. Every review comment must receive an author
-reply before its thread is resolved.
+| Issue | PR | Branch | Review and merge evidence |
+| --- | --- | --- | --- |
+| #11 | [#19](https://github.com/BOOky-OS/toktickit/pull/19) | `feature/11-lab2-contract` | Approved and merged by `Atip-Infa` |
+| #12 | [#20](https://github.com/BOOky-OS/toktickit/pull/20) | `feature/12-requester-context` | Approved and merged by `Atip-Infa` |
+| #13 | [#21](https://github.com/BOOky-OS/toktickit/pull/21) | `feature/13-ticket-creation-api` | Approved and merged by `Atip-Infa` |
+| #14 | [#22](https://github.com/BOOky-OS/toktickit/pull/22) | `feature/14-attachment-lifecycle-api` | Approved and merged by `Atip-Infa` |
+| #15 | [#23](https://github.com/BOOky-OS/toktickit/pull/23) | `feature/15-create-ticket-ui` | Approved and merged by `Atip-Infa` |
+| #16 | [#24](https://github.com/BOOky-OS/toktickit/pull/24) | `feature/16-my-tickets` | Approved and merged by `Atip-Infa` |
+| #17 | [#25](https://github.com/BOOky-OS/toktickit/pull/25) | `feature/17-ticket-detail-ui` | Approved and merged by `Atip-Infa` |
 
-## Pull Requests I reviewed for my partner
-
-No Lab 2 partner Pull Request has been reviewed at the contract stage. Add only
-factual PR links, comments, decisions, and responses when they occur.
+Each feature Issue contains its completion comment and merge commit. Issue #18 and the Lab 2 release PR remain pending until this evidence PR is reviewed.
 
 ## Final review checklist
 
-- [ ] Every Issue PR is linked to its Issue in GitHub's Development section.
-- [ ] Every requested change and comment has an explicit response.
-- [ ] The correct reviewer approved and merged each PR into `lab2-staging`.
-- [ ] The release PR from `lab2-staging` to `main` has review/merge evidence.
+- [x] Feature PRs #19–#25 link their Issues and target `lab2-staging`.
+- [x] `Atip-Infa` approved and merged feature PRs #19–#25.
+- [x] Review responses and post-merge completion evidence were recorded.
+- [ ] Issue #18 evidence PR is approved and merged.
+- [ ] Release PR from `lab2-staging` to `main` is approved and merged.

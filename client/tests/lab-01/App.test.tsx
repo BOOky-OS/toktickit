@@ -47,11 +47,12 @@ describe("App", () => {
 
     expect(await screen.findByText("Online")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Supported Request Categories" })).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem")).toHaveLength(4);
-    expect(screen.getByText("Account and Access")).toBeInTheDocument();
-    expect(screen.getByText("Hardware")).toBeInTheDocument();
-    expect(screen.getByText("Software")).toBeInTheDocument();
-    expect(screen.getByText("Network")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem").map((item) => item.textContent)).toEqual([
+      "Account and Access",
+      "Hardware",
+      "Software",
+      "Network",
+    ]);
   });
 
   it("shows Loading while the system request is pending", async () => {
