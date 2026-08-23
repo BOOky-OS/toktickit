@@ -315,13 +315,3 @@ My review comment:
 > Approved.
 
 [My review](https://github.com/Atip-Infa/toktickit/pull/26#pullrequestreview-5002303631) | [Partner response](https://github.com/Atip-Infa/toktickit/pull/26#issuecomment-5385822745) | [Partner post-merge response](https://github.com/Atip-Infa/toktickit/pull/26#issuecomment-5385824494)
-
-## Final review checklist
-
-- [x] My feature PRs #19-#26 link Issues #11-#18 and target `lab2-staging`.
-- [x] `Atip-Infa` reviewed and approved my feature PRs #19-#26.
-- [x] My responses and post-merge records are linked for every authored feature PR.
-- [x] My Lab 2 release PR #27 was reviewed, approved, and merged into `main`.
-- [x] I reviewed my partner's Lab 2 PRs #19-#26 using `zerotwobook`.
-- [x] My partner's responses and post-merge records are linked for every reviewed PR.
-- [x] All review statements are supported by real GitHub comments and review records.
