@@ -1,6 +1,6 @@
 # Lab 2 - AI Use and Reflection
 
-**LLM/agent used:** OpenAI Codex (GPT-5)
+**LLM/agent used:**  Codex GPT-5
 
 I use AI as a coding assistant and problem solver. Mostly, I ask it to summarize the lab content and what needs to be done, then I have it work on the code parts where I'm not very proficient in the programming language. I also ask it to explain the technical problems, suggest small code examples or commands, and help check my work. I run commands and check the results by testing and mostly working within a GitHub workflow.
 
