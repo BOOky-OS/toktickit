@@ -205,6 +205,28 @@ My response:
 
 [Response evidence](https://github.com/BOOky-OS/toktickit/pull/27#issuecomment-5358522253) | [Post-merge record](https://github.com/BOOky-OS/toktickit/pull/27#issuecomment-5358535573)
 
+### PR #29 - Issue #28 documentation evidence correction
+
+Reviewer comment:
+
+> Reviewed Issue #28 documentation updates.
+>
+> - The Lab 2 peer-review record follows the Lab 1 evidence structure.
+> - Authored PRs #19-#27 include the actual review focus and linked responses.
+> - Reviews submitted through zerotwobook for Atip-Infa PRs #19-#26 are recorded with real GitHub evidence.
+> - The AI-use record clearly distinguishes AI assistance from human implementation, decisions, and verification.
+> - Corrupted characters and stale status text have been removed.
+>
+> Approved. Ready to merge into main.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/29#pullrequestreview-5002637013)
+
+My response:
+
+> Thank you for reviewing Issue #28. I confirmed the peer-review links, AI-use record, UTF-8 cleanup, and completed Lab 2 release status are factual. Ready to merge into main.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/29#issuecomment-5386583859) | [Post-merge record](https://github.com/BOOky-OS/toktickit/pull/29#issuecomment-5386585608)
+
 ## Pull Requests I reviewed for my partner
 
 I reviewed the following Lab 2 PRs in [Atip-Infa/toktickit](https://github.com/Atip-Infa/toktickit/pulls) using the `zerotwobook` account.

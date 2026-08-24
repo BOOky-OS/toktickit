@@ -1,8 +1,8 @@
 # TokTickIT
 
-TokTickIT is an IT service desk application built for CPE334. Lab 1 delivers a
-small full-stack vertical slice that connects a React user interface to an
-Express REST API and a PostgreSQL database through Prisma.
+TokTickIT is an IT service desk application built for CPE334. Lab 1 established
+the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
+responsive requester-owned Ticketing MVP.
 
 ## Lab 2 requester MVP
 
@@ -124,14 +124,16 @@ npm run build
 npm test
 ```
 
-The Lab 1 tests are located in:
+Automated tests are located in:
 
 - `server/tests/lab-01/` for Supertest API tests
 - `client/tests/lab-01/` for Vitest UI tests
+- `server/tests/lab-02/` for Ticket, ownership, and Attachment API/unit tests
+- `client/tests/lab-02/` for requester workflow and UI state tests
+- `e2e/lab-02/` for the desktop, tablet, and mobile Playwright workflow
 
-Feature tests remain red or marked TODO until their corresponding Issues are
-implemented. Issue 1 validates the project setup, build commands, test runners,
-database connectivity, and Prisma configuration.
+The complete Lab 2 suite is implemented. Final counts and Acceptance-Criterion
+traceability are recorded in `docs/lab-02/tests.md`.
 
 ## Repository structure
 
@@ -139,15 +141,28 @@ database connectivity, and Prisma configuration.
 toktickit/
 |-- client/
 |   |-- src/
-|   `-- tests/lab-01/
+|   `-- tests/
+|       |-- lab-01/
+|       `-- lab-02/
 |-- server/
 |   |-- prisma/
 |   |-- src/
-|   `-- tests/lab-01/
-|-- docs/lab-01/
-|   |-- ai_use.md
-|   |-- reviewer.md
-|   `-- tests.md
+|   `-- tests/
+|       |-- lab-01/
+|       `-- lab-02/
+|-- docs/
+|   |-- lab-01/
+|   `-- lab-02/
+|       |-- specification.md
+|       |-- tests.md
+|       |-- ui-spec.md
+|       |-- api-spec.md
+|       |-- data-model.md
+|       |-- reviewer.md
+|       `-- ai-use.md
+|-- e2e/lab-02/
+|-- artifacts/lab-02/screenshots/
+|-- output/pdf/
 |-- compose.yaml
 |-- package.json
 |-- .gitignore
@@ -163,9 +178,13 @@ Kanban workflow in this order:
 2. move it to `Specified` only after its requirements are understood;
 3. create the required feature branch from an up-to-date `main`, then move the
    Issue to `Started`;
-4. open a pull request into `lab1-staging`, then move the Issue to `PR Review`;
+4. open a pull request into the active lab staging branch, then move the Issue
+   to `PR Review`;
 5. move it to `Fixing` when review changes are required, then return it to
    `PR Review`; and
 6. move it to `Done` only after approval, successful tests, and merge.
 
-Do not commit directly to `main` or `lab1-staging`.
+Lab 1 used `lab1-staging`; Lab 2 used `lab2-staging` and one reviewed release
+PR into `main`. Post-release evidence corrections also use an Issue, branch,
+reviewed PR, and passing verification. Do not commit directly to `main` or a
+staging branch.
