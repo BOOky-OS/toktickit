@@ -1,7 +1,7 @@
 # Lab 2 Data Model Design
 
-This is the detailed design that will be implemented in the Prisma schema after
-the contract is approved. Every non-`?` field is required.
+This is the implemented Lab 2 design in `server/prisma/schema.prisma`. Every
+non-`?` field is required.
 
 ```prisma
 model DevelopmentRequester {
@@ -78,7 +78,7 @@ model Attachment {
 }
 ```
 
-The migration will add a PostgreSQL sequence used by the backend to issue the
+The migration adds a PostgreSQL sequence used by the backend to issue the
 unique `TKT-YYYY-NNNNNN` Ticket Number. The design keeps requester foreign keys
 and removal audit history stable so Lab 3 can replace temporary requester
 selection with real authentication without changing Ticket ownership.

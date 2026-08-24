@@ -5,14 +5,20 @@ import App from "../../src/App.js";
 import * as api from "../../src/api.js";
 
 const ACTIVE_REQUESTERS: api.DevelopmentRequester[] = [
-  { id: 1, displayName: "Jennifer Anderson", email: "jennifer.anderson@example.test" },
+  {
+    id: 1,
+    displayName: "Jennifer Anderson",
+    email: "jennifer.anderson@example.test",
+  },
   { id: 2, displayName: "Michael Brown", email: "michael.brown@example.test" },
 ];
 
 describe("Development Requester Selection", () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.spyOn(api, "getDevelopmentRequesters").mockResolvedValue(ACTIVE_REQUESTERS);
+    vi.spyOn(api, "getDevelopmentRequesters").mockResolvedValue(
+      ACTIVE_REQUESTERS,
+    );
   });
 
   afterEach(() => {
@@ -24,8 +30,14 @@ describe("Development Requester Selection", () => {
     const user = userEvent.setup();
     render(<App />);
 
+    expect(
+      screen.getByRole("link", { name: "Skip to main content" }),
+    ).toHaveAttribute("href", "#main-content");
+    expect(document.getElementById("main-content")).toBeInTheDocument();
     expect(screen.getByText(/not a login screen/i)).toBeInTheDocument();
-    const requesterSelect = await screen.findByRole("combobox", { name: /development requester/i });
+    const requesterSelect = await screen.findByRole("combobox", {
+      name: /development requester/i,
+    });
     expect(screen.getByRole("button", { name: "Continue" })).toBeDisabled();
     expect(screen.getAllByRole("option")).toHaveLength(3);
 
@@ -38,11 +50,15 @@ describe("Development Requester Selection", () => {
   });
 
   it("shows an accessible loading state while requesters are loading", () => {
-    vi.mocked(api.getDevelopmentRequesters).mockReturnValue(new Promise(() => undefined));
+    vi.mocked(api.getDevelopmentRequesters).mockReturnValue(
+      new Promise(() => undefined),
+    );
 
     render(<App />);
 
-    expect(screen.getByRole("status")).toHaveTextContent(/loading development requesters/i);
+    expect(screen.getByRole("status")).toHaveTextContent(
+      /loading development requesters/i,
+    );
     expect(screen.getByRole("button", { name: "Continue" })).toBeDisabled();
   });
 
@@ -51,7 +67,11 @@ describe("Development Requester Selection", () => {
 
     render(<App />);
 
-    expect(await screen.findByText(/no active development requesters are available/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(
+        /no active development requesters are available/i,
+      ),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
   });
 
@@ -63,11 +83,15 @@ describe("Development Requester Selection", () => {
 
     render(<App />);
 
-    expect(await screen.findByRole("alert")).toHaveTextContent(/unable to load development requesters/i);
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      /unable to load development requesters/i,
+    );
     expect(screen.queryByText(/internal API detail/i)).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry" }));
 
-    expect(await screen.findByRole("combobox", { name: /development requester/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("combobox", { name: /development requester/i }),
+    ).toBeInTheDocument();
     expect(api.getDevelopmentRequesters).toHaveBeenCalledTimes(2);
   });
 
@@ -88,7 +112,9 @@ describe("Development Requester Selection", () => {
     expect(await screen.findByText("Jennifer Anderson")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Change Requester" }));
 
-    const requesterSelect = await screen.findByRole("combobox", { name: /development requester/i });
+    const requesterSelect = await screen.findByRole("combobox", {
+      name: /development requester/i,
+    });
     await user.selectOptions(requesterSelect, "2");
     await user.click(screen.getByRole("button", { name: "Continue" }));
 
