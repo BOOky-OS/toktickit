@@ -25,7 +25,7 @@ npm run test:e2e
 npm run test:visual
 ```
 
-Playwright uses the installed Chrome channel and stores desktop, tablet, and mobile evidence under `artifacts/lab-02/screenshots/`. Final traceability is in `docs/lab-02/tests.md`.
+Playwright uses the installed Chrome channel and generates desktop, tablet, and mobile evidence locally under `artifacts/lab-02/screenshots/`. Generated artifacts are not committed; final traceability is in `docs/lab-02/tests.md`.
 
 ## Lab 1 scope
 
@@ -161,7 +161,6 @@ toktickit/
 |       |-- reviewer.md
 |       `-- ai-use.md
 |-- e2e/lab-02/
-|-- artifacts/lab-02/screenshots/
 |-- output/pdf/
 |-- compose.yaml
 |-- package.json

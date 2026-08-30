@@ -1,1 +1,2 @@
+# Keep generated report files binary in Git.
 *.pdf -text -diff

@@ -10,6 +10,7 @@ server/.toktickit-storage/
 # build output
 dist/
 build/
+artifacts/
 # prisma
 server/prisma/*.db
 # logs & OS
