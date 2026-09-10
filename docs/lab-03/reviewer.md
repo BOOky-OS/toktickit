@@ -1,7 +1,7 @@
 # Lab 3 Peer Review Record
 
-Status: student confirmed the contract in Issue #32. No independent Lab 3 peer
-approval or merge has been recorded.
+Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
+commit a0a53e6; review of subsequent record updates and reviewer merge remain pending.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -20,7 +20,9 @@ Full proposed contract confirmation: received on 2026-09-10. After asking whethe
 the specification follows the original Lab 3 sheet and receiving clarification,
 the student said "โอเคนั้นเริ่มทำต่อได้เลย". This authorizes continuing
 under the agreed workflow; independent peer review and the later main gate remain required.
-Contract peer review: pending.
+Contract peer review: Atip-Infa approved a0a53e6 on 2026-09-10 at 14:46:24 UTC.
+[Approval record](https://github.com/BOOky-OS/toktickit/pull/42#pullrequestreview-5168577727).
+That approval preceded the later review-request/sidebar documentation updates.
 Contract merge: pending.
 Release-to-main documentation confirmation: pending.
 
@@ -31,8 +33,8 @@ is open from feature/32-lab3-contract into lab3-staging and linked through
 GitHub's Development relationship to [Issue #32](https://github.com/BOOky-OS/toktickit/issues/32).
 Linkage was verified through closingIssuesReferences on 2026-09-10.
 The first contract commit is a66626e. Student full-contract confirmation is
-recorded above. Peer review, author replies to future comments, approval and
-reviewer merge are still pending. At the student's explicit request, the assistant
+recorded above. The contract approval is recorded above; review of later record
+updates, author responses where required and reviewer merge remain pending. At the student's explicit request, the assistant
 requested review from Atip-Infa through GitHub on 2026-09-10. No review outcome
 is implied by that request.
 

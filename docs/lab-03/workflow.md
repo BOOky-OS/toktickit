@@ -13,11 +13,11 @@ requirements for this sprint and must be read before continuing any Lab 3 Issue.
 - Current contract branch: feature/32-lab3-contract.
 - Contract review: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42),
   linked to Issue #32, targets lab3-staging; student confirmed on 2026-09-10,
-  independent peer approval and reviewer merge pending.
+  Atip-Infa approved a0a53e6; review of later record updates and merge pending.
 - Prior peer reviewer: [Atip-Infa](https://github.com/Atip-Infa), verified as a
   collaborator and the approver/merger of prior PR #31. Review of PR #42 was
-  requested on 2026-09-10 with explicit student authorization; the Lab 3 review
-  and merge remain pending.
+  requested on 2026-09-10 with explicit student authorization. Atip-Infa approved
+  a0a53e6; later record updates still require review before the reviewer merges.
 - Current-lab assignment/new instructor clarification takes precedence over
   historical lab assumptions; follow the student's explicit instructions.
 - Sources read: Lab_3_sheet.pdf, referenced Lab 2 branch/agent/completion rules,
