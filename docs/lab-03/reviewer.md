@@ -1,6 +1,7 @@
 # Lab 3 Peer Review Record
 
-Status: contract preparation in Issue #32. No Lab 3 approval or merge has been recorded.
+Status: student confirmed the contract in Issue #32. No independent Lab 3 peer
+approval or merge has been recorded.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -15,7 +16,10 @@ was checked on 2026-09-10. Lab 3 reviews still need to happen.
 - Confirmed Admin manages users and reads Tickets; IT Staff edits Tickets.
 - Required a completed-document review and explicit question before release to main.
 
-Full proposed contract confirmation: pending.
+Full proposed contract confirmation: received on 2026-09-10. After asking whether
+the specification follows the original Lab 3 sheet and receiving clarification,
+the student said "โอเคนั้นเริ่มทำต่อได้เลย". This authorizes continuing
+under the agreed workflow; independent peer review and the later main gate remain required.
 Contract peer review: pending.
 Contract merge: pending.
 Release-to-main documentation confirmation: pending.
@@ -26,9 +30,9 @@ Release-to-main documentation confirmation: pending.
 is open from feature/32-lab3-contract into lab3-staging and linked through
 GitHub's Development relationship to [Issue #32](https://github.com/BOOky-OS/toktickit/issues/32).
 Linkage was verified through closingIssuesReferences on 2026-09-10.
-The first contract commit is a66626e. Student full-contract confirmation,
-peer review, author replies to future comments, approval and reviewer merge
-are still pending. No review request or review comment was sent by the assistant.
+The first contract commit is a66626e. Student full-contract confirmation is
+recorded above. Peer review, author replies to future comments, approval and
+reviewer merge are still pending. No review request or review comment was sent by the assistant.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge

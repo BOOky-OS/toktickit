@@ -137,7 +137,7 @@ rows represent all named cases and should report exact counts during implementat
 
 | Issue | Main planned coverage |
 | --- | --- |
-| #32 Contract | DOC-01; only docs checks now, student/peer confirmation pending |
+| #32 Contract | DOC-01; only docs checks now, student confirmed; peer review pending |
 | #33 Data migration | MIG-01..04; actual legacy-schema upgrade and fixture safety |
 | #34 Auth/API | UNIT-01, UNIT-05, API-01..07, API-25; adapt earlier API auth expectations |
 | #35 Auth UI | UI-01..03, E2E-01..02 auth portions; remove selector UI/state |
@@ -179,7 +179,7 @@ after merge as specified in workflow.md.
   sections, 24 FRs, 37 BRs, all 32 AC mappings, 51 unique planned-test rows,
   Markdown local links/fences/whitespace, all 10 Issue links and the 60-point rubric.
   These are document checks only; they do not prove feature behavior.
-- Student approval of full contract: pending.
+- Student approval of full contract: confirmed on 2026-09-10; see reviewer.md.
 - Peer review/merge of contract: pending.
 
 This is intentionally an honest plan, not a table of assumed passes.

@@ -9,12 +9,13 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
 
 | # | Actual prompt excerpt / response | AI contribution | Observed verification or student decision |
 | --- | --- | --- | --- |
-| 1 | "????????????????????????????????????????????" | Read all 18 Lab 3 pages, sample images, source, migrations, tests and prior docs | Assistant read files; no implementation then. This does not claim the student ran tests. |
-| 2 | "????????????????????" (with GITHUB_WORKFLOW_AI_GUIDE(1).md) | Read workflow guide and compare local Git history | Established reviewer merge, replies, actual PR linkage and live Kanban rules. |
-| 3 | "??????????????????????? Lab 3 ??????????????????? issue" | Explained that the handout fixes no Issue count and proposed ten work packages | Student subsequently authorized starting that plan. |
-| 4 | "?????????????????????????????????main" | Added a distinct student documentation confirmation gate | Recorded in Issue #41 and workflow.md; release approval has not occurred. |
-| 5 | "??????????????????????????????? branch ??????????? lab 3" | Checked repo/account/board/reviewer history; created staging and contract branches and real Issues | GitHub creation output and local Git state are tool evidence, not peer approvals. |
-| 6 | "Admin ????????????????? Ticket; IT Staff ????? Ticket" | Resolved handout ambiguity by drafting read-only Admin Ticket permissions | This was an explicit student answer; matrices and tests use this decision. |
+| 1 | "อ่านให้เข้าใจทุกอย่างก่อนทำนะและอย่าพึ่งทำนะ" | Read all 18 Lab 3 pages, sample images, source, migrations, tests and prior docs | Assistant read files; no implementation then. This does not claim the student ran tests. |
+| 2 | "ลองอ่านอันนี้ไว้ด้วย" (with GITHUB_WORKFLOW_AI_GUIDE(1).md) | Read workflow guide and compare local Git history | Established reviewer merge, replies, actual PR linkage and live Kanban rules. |
+| 3 | "สรุปมาให้หน่อยได้ไหมว่า Lab 3 ต้องทำอะไรบ้างมีกี่ issue" | Explained that the handout fixes no Issue count and proposed ten work packages | Student subsequently authorized starting that plan. |
+| 4 | "ขอทำเอกสารให้เสร็จก่อนที่ขึ้นไปบนmain" | Added a distinct student documentation confirmation gate | Recorded in Issue #41 and workflow.md; release approval has not occurred. |
+| 5 | "อย่าลืมกฎการทำให้ดีว่าต้องสร้าง branch ใหม่ในการทำ lab 3" | Checked repo/account/board/reviewer history; created staging and contract branches and real Issues | GitHub creation output and local Git state are tool evidence, not peer approvals. |
+| 6 | "Admin จัดการผู้ใช้และดู Ticket; IT Staff แก้ไข Ticket" | Resolved handout ambiguity by drafting read-only Admin Ticket permissions | This was an explicit student answer; matrices and tests use this decision. |
+| 7 | "โอเคนั้นเริ่มทำต่อได้เลย" | Recorded full-contract confirmation after the student asked whether it follows the original Lab 3 sheet | Student confirmation received; independent peer approval/merge and the later main gate remain pending. |
 
 ## Critical evaluation during preparation
 
@@ -27,7 +28,7 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
   privileges. Assignment eligibility and authorization are documented separately.
 - Password/session proposals were checked against Node crypto and OWASP primary
   documentation linked in specification.md. Specific lab durations/limits are
-  proposed decisions, still subject to student/peer contract review.
+  student-confirmed decisions, still subject to independent peer contract review.
 - Planned tests are not marked Pass. No Lab 3 runtime, DB upgrade, peer review
   or final-main verification is claimed at the specification stage.
 - The final-main documentation gate remains pending regardless of earlier

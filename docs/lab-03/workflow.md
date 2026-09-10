@@ -12,7 +12,8 @@ requirements for this sprint and must be read before continuing any Lab 3 Issue.
 - Integration branch: lab3-staging, created from current main.
 - Current contract branch: feature/32-lab3-contract.
 - Contract review: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42),
-  linked to Issue #32, targets lab3-staging; approval and merge pending.
+  linked to Issue #32, targets lab3-staging; student confirmed on 2026-09-10,
+  independent peer approval and reviewer merge pending.
 - Prior peer reviewer: [Atip-Infa](https://github.com/Atip-Infa), verified as a
   collaborator and the approver/merger of prior PR #31. This does not mean a
   Lab 3 review has happened or that a review request has been sent.
@@ -75,7 +76,7 @@ This is the student's explicit instruction, not a guessed course rule:
 
 Before preparing the release PR from lab3-staging to main, ask the student:
 
-> ????????????????????????? ???????????????????????? main ????
+> เอกสารเสร็จครบแล้วหรือยัง มีอะไรต้องการแก้ก่อนขึ้น main ไหม?
 
 **Wait for an explicit answer confirming readiness.** Passing tests, elapsed time,
 peer approval, or the earlier instruction to start Lab 3 is not this confirmation.

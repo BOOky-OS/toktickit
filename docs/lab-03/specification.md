@@ -1,6 +1,7 @@
 # Lab 3 Sprint Engineering Specification
 
-Status: contract proposed for student confirmation and peer review in Issue #32.
+Status: student confirmed the proposed contract on 2026-09-10; independent peer
+review and reviewer merge remain pending in Issue #32.
 No Lab 3 feature is implemented by this document. Baseline: Lab 2 main
 `2fc1fe3`. Implementation starts only after this contract is confirmed and its
 PR is approved and merged by the reviewer into `lab3-staging`.
