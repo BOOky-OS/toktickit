@@ -2,6 +2,8 @@
 
 Status: initialized on 2026-09-10. This file records the student's workflow
 requirements for this sprint and must be read before continuing any Lab 3 Issue.
+Read the user's persistent [GitHub rules](../../skill.md) first, including the
+complete PR sidebar checklist and the explicit documentation gate before main.
 
 ## 1. Verified sprint context
 
