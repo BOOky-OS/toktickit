@@ -11,6 +11,8 @@ requirements for this sprint and must be read before continuing any Lab 3 Issue.
 - Verified baseline main: 2fc1fe3; no open Issues/PRs before sprint initialization.
 - Integration branch: lab3-staging, created from current main.
 - Current contract branch: feature/32-lab3-contract.
+- Contract review: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42),
+  linked to Issue #32, targets lab3-staging; approval and merge pending.
 - Prior peer reviewer: [Atip-Infa](https://github.com/Atip-Infa), verified as a
   collaborator and the approver/merger of prior PR #31. This does not mean a
   Lab 3 review has happened or that a review request has been sent.
