@@ -32,7 +32,13 @@ GitHub's Development relationship to [Issue #32](https://github.com/BOOky-OS/tok
 Linkage was verified through closingIssuesReferences on 2026-09-10.
 The first contract commit is a66626e. Student full-contract confirmation is
 recorded above. Peer review, author replies to future comments, approval and
-reviewer merge are still pending. No review request or review comment was sent by the assistant.
+reviewer merge are still pending. At the student's explicit request, the assistant
+requested review from Atip-Infa through GitHub on 2026-09-10. No review outcome
+is implied by that request.
+
+PR sidebar: reviewer Atip-Infa; assignee BOOky-OS; documentation label;
+TokTickIT Individual Sprints project, PR Review status; Lab 3 milestone;
+Development linked to Issue #32.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge

@@ -15,8 +15,9 @@ requirements for this sprint and must be read before continuing any Lab 3 Issue.
   linked to Issue #32, targets lab3-staging; student confirmed on 2026-09-10,
   independent peer approval and reviewer merge pending.
 - Prior peer reviewer: [Atip-Infa](https://github.com/Atip-Infa), verified as a
-  collaborator and the approver/merger of prior PR #31. This does not mean a
-  Lab 3 review has happened or that a review request has been sent.
+  collaborator and the approver/merger of prior PR #31. Review of PR #42 was
+  requested on 2026-09-10 with explicit student authorization; the Lab 3 review
+  and merge remain pending.
 - Current-lab assignment/new instructor clarification takes precedence over
   historical lab assumptions; follow the student's explicit instructions.
 - Sources read: Lab_3_sheet.pdf, referenced Lab 2 branch/agent/completion rules,
@@ -54,7 +55,10 @@ For Lab 3 this clarifies older README wording about always branching from main.
 4. Check every AC, required tests/docs, diff, meaningful commit and push.
 5. Open PR to lab3-staging and establish an actual PR-to-Issue Development link.
    Verify the relationship; Closes/Fixes text alone is not sufficient for staging.
-6. Move to PR Review only after PR/link/checks are ready. Student arranges peer
+6. Complete the PR sidebar: assign the author, select relevant existing labels,
+   add the sprint Project with the correct status and use the Lab 3 milestone.
+   Add the authorized peer reviewer and verify Development links the Issue.
+   Move to PR Review only after PR/link/checks are ready. Student arranges peer
    review or explicitly authorizes sending a request; no fabricated review.
 7. If changes are requested/checks fail: Fixing; fix on same branch/PR, run checks,
    answer every review comment, then return to PR Review.
