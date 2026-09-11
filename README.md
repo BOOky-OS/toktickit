@@ -4,6 +4,20 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 established
 the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
 responsive requester-owned Ticketing MVP.
 
+## Lab 3 planning in progress
+
+Lab 3 begins with the [engineering contract](docs/lab-03/specification.md),
+[API contract](docs/lab-03/api-spec.md), [UI specification](docs/lab-03/ui-spec.md)
+and [planned tests](docs/lab-03/tests.md). These documents describe target
+behavior; real authentication, staff workflows and user administration are
+not implemented by the contract Issue.
+
+Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
+#32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.
+The student must review completed documents and explicitly confirm readiness
+before a release PR to `main` is prepared. Do not treat permission to start the
+lab as release approval.
+
 ## Lab 2 requester MVP
 
 Lab 2 adds Development Requester context, Ticket creation, requester-owned My Tickets search/filter/sort/pagination, read-only Ticket Detail, and Attachment upload/download/soft removal. The selector is a testing mechanism and is not authentication.
@@ -175,8 +189,9 @@ Kanban workflow in this order:
 
 1. add the Issue to `Backlog`;
 2. move it to `Specified` only after its requirements are understood;
-3. create the required feature branch from an up-to-date `main`, then move the
-   Issue to `Started`;
+3. create the required feature branch from the current lab's documented base
+   (`lab3-staging` for Lab 3, so completed prerequisites are included), then
+   move the Issue to `Started`;
 4. open a pull request into the active lab staging branch, then move the Issue
    to `PR Review`;
 5. move it to `Fixing` when review changes are required, then return it to
