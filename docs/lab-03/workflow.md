@@ -16,7 +16,9 @@ complete PR sidebar checklist and the explicit documentation gate before main.
 - Contract: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42) linked to
   Issue #32, merged by Atip-Infa into lab3-staging on 2026-09-11, commit f16f27b.
   Student confirmation and contract approval are recorded in reviewer.md.
-  Issue #32 and its PR Project item are Done. Issue #33 is the active increment.
+  Issue #32 and its PR Project item are Done. Issue #33 is the active increment,
+  with [PR #43](https://github.com/BOOky-OS/toktickit/pull/43) linked through Development
+  and awaiting review into lab3-staging. Do not begin #34 before reviewer merge.
 - Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). The recorded approval
   covered a0a53e6; the peer subsequently merged final documentation head b6933ce.
   Do not misreport the merge as a separate latest-head approval.

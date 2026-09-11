@@ -41,7 +41,12 @@ and [post-merge response](https://github.com/BOOky-OS/toktickit/pull/42#issuecom
 are present. No inline review comments remain. Actual review commit and later
 reviewer merge are distinguished above rather than inventing a second approval.
 
-Issue #33 uses feature/33-lab3-user-migration from that verified integration commit.
+[PR #43 - Issue #33 user migration and guarded local seed](https://github.com/BOOky-OS/toktickit/pull/43)
+uses feature/33-lab3-user-migration from that verified integration commit and
+targets lab3-staging. Implementation commit e6b6f3a passed the checks in tests.md.
+Development links Issue #33. Required reviewer: Atip-Infa; assignee: BOOky-OS;
+labels: enhancement/documentation; Project: TokTickIT Individual Sprints;
+milestone: Lab 3. Approval, author responses to future feedback and merge are pending.
 Its changes require a new peer review focused on data preservation, transactional
 preflight, sequence positions, safe local seed/provisioning and real DB tests.
 
