@@ -1,7 +1,7 @@
 import type { MutationGuard } from "../auth/security.js";
 import { Prisma, PrismaClient } from "@prisma/client";
 
-const attachmentSelect = {
+export const attachmentSelect = {
   id: true,
   originalFilename: true,
   storageKey: true,
@@ -10,6 +10,7 @@ const attachmentSelect = {
   uploadedAt: true,
   removedAt: true,
   removalReason: true,
+  removedByUser: { select: { id: true, displayName: true } },
 } satisfies Prisma.AttachmentSelect;
 
 type StoredAttachment = Prisma.AttachmentGetPayload<{ select: typeof attachmentSelect }>;
@@ -24,9 +25,10 @@ export interface AttachmentResponse {
   canDownload: boolean;
   removedAt?: string;
   removalReason?: string;
+  removedBy?: { id: number; displayName: string } | null;
 }
 
-function toResponse(attachment: StoredAttachment): AttachmentResponse {
+export function toAttachmentResponse(attachment: StoredAttachment): AttachmentResponse {
   const removed = attachment.removedAt !== null;
   return {
     id: attachment.id,
@@ -39,36 +41,60 @@ function toResponse(attachment: StoredAttachment): AttachmentResponse {
     ...(removed ? {
       removedAt: attachment.removedAt!.toISOString(),
       removalReason: attachment.removalReason ?? undefined,
+      removedBy: attachment.removedByUser,
     } : {}),
   };
 }
 
 async function ownedTicket(prisma: PrismaClient, ticketId: number, requesterId?: number) {
   return prisma.ticket.findFirst({
-    where: { id: ticketId, ...(requesterId ? { requesterId } : {}) },
+    where: {
+      id: ticketId,
+      ...(requesterId ? {
+        requesterId,
+        requester: { isActive: true, role: "REQUESTER" },
+      } : {}),
+    },
     select: { id: true },
   });
+}
+
+async function lockTicket(tx: Prisma.TransactionClient, ticketId: number) {
+  await tx.$queryRaw(
+    Prisma.sql`SELECT "id" FROM "Ticket" WHERE "id" = ${ticketId} FOR UPDATE`,
+  );
 }
 
 export async function createAttachment(
   prisma: PrismaClient,
   input: {
-    ticketId: number; requesterId: number; originalFilename: string;
-    storageKey: string; mimeType: string; sizeBytes: number;
+    ticketId: number;
+    requesterId: number;
+    originalFilename: string;
+    storageKey: string;
+    mimeType: string;
+    sizeBytes: number;
   },
   guard?: MutationGuard,
 ): Promise<{ kind: "created"; attachment: AttachmentResponse } | { kind: "unavailable" | "limit" }> {
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async tx => {
     await guard?.(tx);
+    await lockTicket(tx, input.ticketId);
     const ticket = await tx.ticket.findFirst({
-      where: { id: input.ticketId, requesterId: input.requesterId, requester: { isActive: true } },
+      where: {
+        id: input.ticketId,
+        requesterId: input.requesterId,
+        requester: { isActive: true, role: "REQUESTER" },
+      },
       select: { id: true },
     });
     if (!ticket) return { kind: "unavailable" } as const;
+
     const activeCount = await tx.attachment.count({
       where: { ticketId: input.ticketId, removedAt: null },
     });
     if (activeCount >= 5) return { kind: "limit" } as const;
+
     const attachment = await tx.attachment.create({
       data: {
         ticketId: input.ticketId,
@@ -79,7 +105,12 @@ export async function createAttachment(
       },
       select: attachmentSelect,
     });
-    return { kind: "created", attachment: toResponse(attachment) } as const;
+    await tx.ticket.update({
+      where: { id: input.ticketId },
+      data: { version: { increment: 1 } },
+      select: { id: true },
+    });
+    return { kind: "created", attachment: toAttachmentResponse(attachment) } as const;
   });
 }
 
@@ -88,9 +119,9 @@ export async function listAttachments(prisma: PrismaClient, ticketId: number, re
   const items = await prisma.attachment.findMany({
     where: { ticketId },
     select: attachmentSelect,
-    orderBy: { uploadedAt: "asc" },
+    orderBy: [{ uploadedAt: "asc" }, { id: "asc" }],
   });
-  return items.map(toResponse);
+  return items.map(toAttachmentResponse);
 }
 
 export async function findDownloadableAttachment(prisma: PrismaClient, attachmentId: number, requesterId?: number) {
@@ -98,7 +129,7 @@ export async function findDownloadableAttachment(prisma: PrismaClient, attachmen
     where: {
       id: attachmentId,
       removedAt: null,
-      ticket: { requesterId },
+      ...(requesterId ? { ticket: { requesterId } } : {}),
     },
     select: attachmentSelect,
   });
@@ -111,22 +142,42 @@ export async function removeAttachment(
   reason: string,
   guard?: MutationGuard,
 ): Promise<AttachmentResponse | null> {
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async tx => {
     await guard?.(tx);
+    const candidate = await tx.attachment.findUnique({
+      where: { id: attachmentId },
+      select: { ticketId: true },
+    });
+    if (!candidate) return null;
+
+    await lockTicket(tx, candidate.ticketId);
     const attachment = await tx.attachment.findFirst({
       where: {
         id: attachmentId,
         removedAt: null,
-        ticket: { requesterId },
+        ticket: {
+          requesterId,
+          requester: { isActive: true, role: "REQUESTER" },
+        },
       },
-      select: { id: true },
+      select: { id: true, ticketId: true },
     });
     if (!attachment) return null;
+
     const updated = await tx.attachment.update({
       where: { id: attachment.id },
-      data: { removedAt: new Date(), removalReason: reason, removedByUserId: requesterId },
+      data: {
+        removedAt: new Date(),
+        removalReason: reason,
+        removedByUserId: requesterId,
+      },
       select: attachmentSelect,
     });
-    return toResponse(updated);
+    await tx.ticket.update({
+      where: { id: attachment.ticketId },
+      data: { version: { increment: 1 } },
+      select: { id: true },
+    });
+    return toAttachmentResponse(updated);
   });
 }

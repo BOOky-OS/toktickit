@@ -16,6 +16,15 @@ const detail: api.TicketDetail = {
   requestedPriority: "MEDIUM",
   itPriority: "UNASSIGNED",
   currentStatus: "NEW",
+  owner: null,
+  version: 1,
+  updatedAt: "2026-08-20T08:15:00.000Z",
+  requesterResolutionIndicatedAt: null,
+  resolvedAt: null,
+  closedAt: null,
+  cancelledAt: null,
+  resolutionSummary: null,
+  cancellationReason: null,
   attachments: [],
 };
 const active: api.Attachment = {
@@ -92,6 +101,31 @@ describe("Ticket Detail", () => {
     );
   });
 
+  it("retries one failed Create Ticket upload from Detail", async () => {
+    const user = userEvent.setup();
+    const failed = new File(["%PDF-1.7"], "failed.pdf", { type: "application/pdf" });
+    const onRetryFilesChange = vi.fn();
+    vi.spyOn(api, "uploadAttachment").mockResolvedValue({
+      ...active,
+      id: 10,
+      originalFilename: "failed.pdf",
+    });
+    render(
+      <TicketDetail
+        ticketId={42}
+        onBack={vi.fn()}
+        retryFiles={[failed]}
+        onRetryFilesChange={onRetryFilesChange}
+      />,
+    );
+
+    await screen.findByText("Files that still need upload");
+    await user.click(screen.getByRole("button", { name: "Retry upload" }));
+
+    expect(api.uploadAttachment).toHaveBeenCalledWith(42, failed);
+    expect(onRetryFilesChange).toHaveBeenCalledWith([]);
+    expect(await screen.findByText(/failed\.pdf uploaded successfully/i)).toBeInTheDocument();
+  });
   it("disables attachment selection after five active files", async () => {
     vi.mocked(api.getAttachments).mockResolvedValue(
       Array.from({ length: 5 }, (_, index) => ({

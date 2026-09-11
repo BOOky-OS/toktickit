@@ -25,20 +25,23 @@ const UPLOADED = {
   uploadedAt: new Date("2026-08-20T10:00:00.000Z"),
   removedAt: null,
   removalReason: null,
+  removedByUser: null,
 };
 
 function transaction(overrides: Record<string, unknown> = {}) {
   return {
-    session: sessionMock(), $executeRaw: vi.fn().mockResolvedValue(1),
-    ticket: { findFirst: vi.fn().mockResolvedValue({ id: 42 }) },
+    session: sessionMock(), $executeRaw: vi.fn().mockResolvedValue(1), $queryRaw: vi.fn().mockResolvedValue([{ id: 42 }]),
+    ticket: { findFirst: vi.fn().mockResolvedValue({ id: 42 }), update: vi.fn().mockResolvedValue({ id: 42 }) },
     attachment: {
       count: vi.fn().mockResolvedValue(0),
       create: vi.fn().mockResolvedValue(UPLOADED),
-      findFirst: vi.fn().mockResolvedValue({ id: 9 }),
+      findUnique: vi.fn().mockResolvedValue({ ticketId: 42 }),
+      findFirst: vi.fn().mockResolvedValue({ id: 9, ticketId: 42 }),
       update: vi.fn().mockResolvedValue({
         ...UPLOADED,
         removedAt: new Date("2026-08-20T10:01:00.000Z"),
         removalReason: "Contains sensitive information.",
+        removedByUser: { id: 1, displayName: "Jennifer Anderson" },
       }),
     },
     ...overrides,
@@ -145,7 +148,7 @@ describe("Attachment lifecycle APIs", () => {
     expect(response.status).toBe(200);
     expect(response.headers["content-type"]).toMatch(/^application\/pdf/);
     expect(response.headers["content-disposition"]).toBe(
-      'attachment; filename="request.pdf"',
+      "attachment; filename=\"request.pdf\"; filename*=UTF-8''request.pdf",
     );
     expect(Buffer.compare(response.body, content)).toBe(0);
     expect(storageMock.readStoredAttachment).toHaveBeenCalledWith(
@@ -174,6 +177,7 @@ describe("Attachment lifecycle APIs", () => {
     prismaMock.ticket.findFirst.mockResolvedValue(null);
     const tx = transaction({
       attachment: {
+        findUnique: vi.fn().mockResolvedValue({ ticketId: 42 }),
         findFirst: vi.fn().mockResolvedValue(null),
         update: vi.fn(),
       },
@@ -218,6 +222,7 @@ describe("Attachment lifecycle APIs", () => {
         ...UPLOADED,
         removedAt: new Date("2026-08-20T10:01:00.000Z"),
         removalReason: "Contains sensitive information.",
+        removedByUser: { id: 1, displayName: "Jennifer Anderson" },
       },
     ]);
     const tx = transaction();

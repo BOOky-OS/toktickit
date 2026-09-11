@@ -18,6 +18,8 @@ const list: api.TicketListResponse = {
       requestedPriority: "MEDIUM",
       itPriority: "UNASSIGNED",
       currentStatus: "NEW",
+      owner: null,
+      version: 1,
     },
   ],
   page: 1,
@@ -73,6 +75,14 @@ describe("My Tickets", () => {
     ).toBeInTheDocument();
   });
 
+  it("offers all eight Ticket statuses", async () => {
+    const user = userEvent.setup();
+    await enter(user);
+    const status = screen.getByRole("combobox", { name: "Current Status" });
+    for (const name of ["New", "Open", "In Progress", "Waiting For Requester", "Resolved", "Closed", "Reopened", "Cancelled"]) {
+      expect(within(status).getByRole("option", { name })).toBeInTheDocument();
+    }
+  });
   it("opens Ticket Detail from the Summary link", async () => {
     const user = userEvent.setup();
     vi.spyOn(api, "getTicket").mockResolvedValue({
@@ -88,6 +98,15 @@ describe("My Tickets", () => {
       requestedPriority: "MEDIUM",
       itPriority: "UNASSIGNED",
       currentStatus: "NEW",
+      owner: null,
+      version: 1,
+      updatedAt: "2026-08-20T08:15:00.000Z",
+      requesterResolutionIndicatedAt: null,
+      resolvedAt: null,
+      closedAt: null,
+      cancelledAt: null,
+      resolutionSummary: null,
+      cancellationReason: null,
       attachments: [],
     });
     vi.spyOn(api, "getAttachments").mockResolvedValue([]);
@@ -101,6 +120,7 @@ describe("My Tickets", () => {
     expect(
       await screen.findByRole("heading", { name: "TKT-2026-000042" }),
     ).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/tickets/42");
   });
 
   it("shows an empty state and starts Create Ticket from the empty list", async () => {

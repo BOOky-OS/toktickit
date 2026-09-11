@@ -74,6 +74,15 @@ describe("Create Ticket", () => {
       currentStatus: "NEW",
       description:
         "The battery drops from full charge to empty within one hour.",
+      owner: null,
+      version: 1,
+      updatedAt: "2026-08-20T08:15:00.000Z",
+      requesterResolutionIndicatedAt: null,
+      resolvedAt: null,
+      closedAt: null,
+      cancelledAt: null,
+      resolutionSummary: null,
+      cancellationReason: null,
       attachments: [],
     });
     await openCreateTicket(user);
@@ -90,7 +99,7 @@ describe("Create Ticket", () => {
       "Set when saved",
     );
     expect(screen.getByRole("textbox", { name: "IT Priority" })).toHaveValue(
-      "Unassigned",
+      "Medium",
     );
     expect(screen.getByRole("textbox", { name: "Current Status" })).toHaveValue(
       "New",
@@ -130,6 +139,25 @@ describe("Create Ticket", () => {
     expect(screen.queryByText(/internal detail/i)).not.toBeInTheDocument();
   });
 
+  it("reuses one idempotency key for an uncertain retry and changes it after the submission changes", async () => {
+    const user = userEvent.setup();
+    const create = vi.spyOn(api, "createTicket").mockRejectedValue(new Error("network uncertain"));
+    await openCreateTicket(user);
+    await completeForm(user);
+
+    await user.click(screen.getByRole("button", { name: "Submit Ticket" }));
+    await screen.findByRole("alert");
+    await user.click(screen.getByRole("button", { name: "Submit Ticket" }));
+
+    expect(create).toHaveBeenCalledTimes(2);
+    const firstKey = create.mock.calls[0][1];
+    expect(create.mock.calls[1][1]).toBe(firstKey);
+
+    await user.type(screen.getByRole("textbox", { name: "Summary" }), " updated");
+    await user.click(screen.getByRole("button", { name: "Submit Ticket" }));
+    expect(create).toHaveBeenCalledTimes(3);
+    expect(create.mock.calls[2][1]).not.toBe(firstKey);
+  });
   it("uploads selected files after creation and keeps a safe retry path for a failed file", async () => {
     const user = userEvent.setup();
     vi.spyOn(api, "createTicket").mockResolvedValue({
@@ -145,6 +173,15 @@ describe("Create Ticket", () => {
       currentStatus: "NEW",
       description:
         "The battery drops from full charge to empty within one hour.",
+      owner: null,
+      version: 1,
+      updatedAt: "2026-08-20T08:15:00.000Z",
+      requesterResolutionIndicatedAt: null,
+      resolvedAt: null,
+      closedAt: null,
+      cancelledAt: null,
+      resolutionSummary: null,
+      cancellationReason: null,
       attachments: [],
     });
     const upload = vi
