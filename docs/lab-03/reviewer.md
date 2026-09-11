@@ -68,10 +68,16 @@ and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/44#issuecommen
 are present. No inline review comments exist. Issue #34 is closed and its Issue/PR
 Project items are Done.
 
-Issue #35 uses feature/35-lab3-auth-ui from verified integration commit 968c19b
-and targets lab3-staging. It implements Login, password change, the role-aware
-shell and session-owned requester transport, with actual checks in tests.md.
-Its PR/review/merge evidence remains pending.
+[PR #45](https://github.com/BOOky-OS/toktickit/pull/45) for Issue #35 uses
+feature/35-lab3-auth-ui from verified integration commit 968c19b and targets
+lab3-staging. Development links #35. Assignee: BOOky-OS; requested reviewer:
+Atip-Infa; labels: enhancement/documentation; Project: TokTickIT Individual
+Sprints with Issue and PR in PR Review; milestone: Lab 3. It implements Login,
+password change, the role-aware shell and session-owned requester transport;
+actual checks are in tests.md. Review focus: forced-change isolation, safe
+Login/expiry/logout states, cookie/CSRF transport, role navigation, removal of
+requesterId and keyboard/accessibility coverage. Peer approval, author reply and
+reviewer merge remain pending.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge

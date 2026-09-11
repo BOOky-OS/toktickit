@@ -257,12 +257,12 @@ requester UI tests were adapted to authenticated ownership.
 
 | Command / check | Observed result |
 | --- | --- |
-| `npm test --workspace client -- --maxWorkers=1` | 48/48 passed in 7 files, 21.15 s; no skipped tests |
+| `npm test --workspace client -- --maxWorkers=1` | 48/48 passed in 7 files, 20.74 s; no skipped tests |
 | `npm test --workspace server -- --maxWorkers=1` with isolated `TEST_DATABASE_URL` | 100/100 passed in 14 files, 70.13 s; no skipped tests |
 | `npm run build --workspace client` | TypeScript and Vite production build passed |
 | `npm run build --workspace server` | TypeScript build passed |
 | `npm run prisma:validate` | Schema valid |
-| GitHub metadata | Issue #35 assigned to BOOky-OS; enhancement/documentation labels, Lab 3 milestone and Started Project status present |
+| GitHub metadata | Issue #35 assigned to BOOky-OS; enhancement/documentation labels, Lab 3 milestone, verified Development link to PR #45 and PR Review Project status present |
 
 `AuthFlow.test.tsx` covers labelled loading/Login, validation, paste/show,
 keyboard-only submission, duplicate prevention, uniform/rate/network errors,

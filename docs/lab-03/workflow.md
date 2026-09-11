@@ -21,7 +21,9 @@ complete PR sidebar checklist and the explicit documentation gate before main.
   8321ca8 and merged by Atip-Infa as a5e23e1. [PR #44](https://github.com/BOOky-OS/toktickit/pull/44)
   was approved at final head ac03ae4 and merged by Atip-Infa as 968c19b;
   author approval/post-merge replies are present. Issue #35 is the active
-  authentication UI increment; #36 waits for its review, reviewer merge and Done.
+  authentication UI increment with [PR #45](https://github.com/BOOky-OS/toktickit/pull/45);
+  Development/sidebar fields are verified and Issue/PR are in PR Review. #36
+  waits for peer approval, author replies, reviewer merge and Done.
 - Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). Contract approval and
   the later final-head approvals/merges for #33 and #34 are recorded separately
   in reviewer.md. No approval is inferred for the active #35 branch.
