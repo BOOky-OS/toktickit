@@ -3,13 +3,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../../src/App.js";
 import * as api from "../../src/api.js";
+import { mockAuthenticatedUser } from "../lab-03/auth-test-helpers.js";
 
 describe("App", () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.spyOn(api, "getDevelopmentRequesters").mockResolvedValue([
-      { id: 1, displayName: "Jennifer Anderson", email: "jennifer.anderson@example.test" },
-    ]);
+    mockAuthenticatedUser();
   });
 
   afterEach(() => {
@@ -18,9 +17,8 @@ describe("App", () => {
   });
 
   async function enterServiceDesk(user: ReturnType<typeof userEvent.setup>) {
-    const select = await screen.findByRole("combobox", { name: /development requester/i });
-    await user.selectOptions(select, "1");
-    await user.click(screen.getByRole("button", { name: "Continue" }));
+    void user;
+    await screen.findByRole("heading", { name: "My Tickets" });
   }
 
   // WORKED EXAMPLE — provided for you.

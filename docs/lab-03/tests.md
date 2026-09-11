@@ -1,8 +1,9 @@
 # Lab 3 Test Plan and Traceability
 
-Status: planned before implementation in Issue #32; #33 migration, seed and
-provisioning checks now pass on the Issue branch. Authentication and the remaining
-Lab 3 features are still planned. Historical counts are not current evidence.
+Status: planned before implementation in Issue #32; #33 migration/seed, #34
+backend authentication/authorization and #35 browser authentication UI now have
+Issue-branch passing evidence. Remaining Lab 3 features and final-main checks are
+still planned. Historical counts are not current evidence.
 Source requirements: [specification.md](specification.md), [api-spec.md](api-spec.md),
 [ui-spec.md](ui-spec.md). Current documentation checks are recorded separately.
 
@@ -79,9 +80,9 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | API-23 | API/DB | FR-21; AC-24 | Admin initial reset: old credential/session denied, new login restricted until change, reset not undone by seed | server/tests/lab-03/users-admin.api.test.ts | Planned |
 | API-24 | API/DB | FR-22; AC-25 | Self-deactivation, final active Admin deactivation/demotion forbidden; different Admin edit allowed; UI-disabled actions also rejected by direct API | server/tests/lab-03/users-admin.api.test.ts | Planned |
 | API-25 | API | BR-35; AC-31 | Malformed JSON/content-type/upload/unknown endpoints, session/query/database/storage failure; no stack/hash/path/connection/private data, documented error envelopes | server/tests/lab-03/errors.api.test.ts | Planned |
-| UI-01 | UI | FR-03,07; AC-26 | Login labels, busy, safe invalid/inactive/rate-limit/network feedback, email retention/password clearing and redirect | client/tests/lab-03/Login.test.tsx | Planned |
-| UI-02 | UI | FR-04,05; AC-05,26 | Forced and voluntary change, paste/autocomplete, limits/mismatch/same-password, pending/failure/success, no bypass | client/tests/lab-03/ChangePassword.test.tsx | Planned |
-| UI-03 | UI | FR-06,07; AC-08,26 | Boot loading/me, role menus, forbidden routes, expiry/logout failure/retry, no stale data via Back/reload, old storage key removed | client/tests/lab-03/RoleNavigation.test.tsx | Planned |
+| UI-01 | UI | FR-03,07; AC-26 | Login labels, busy, safe invalid/inactive/rate-limit/network feedback, email retention/password clearing and redirect | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
+| UI-02 | UI | FR-04,05; AC-05,26 | Forced and voluntary change, paste/autocomplete, limits/mismatch/same-password, pending/failure/success, no bypass | client/tests/lab-03/AuthFlow.test.tsx | Pass in #35; final-main pending |
+| UI-03 | UI | FR-06,07; AC-08,26 | Boot loading/me, role menus, forbidden routes, expiry/logout failure/retry, no stale data via Back/reload, old storage key removed | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
 | UI-04 | UI | FR-08..10; AC-10,27 | Authenticated requester Create/List/Detail, filters/statuses/empty/retry, key retained across ambiguous failure, partial file recovery, no selector | client/tests/lab-03/RequesterRegression.test.tsx | Planned |
 | UI-05 | UI | FR-11; AC-13,28 | Staff/Admin Queue fields/search/filters/sort/page/card links, loading/empty/no-results/forbidden/failure, read-only Admin context | client/tests/lab-03/StaffTicketQueue.test.tsx | Planned |
 | UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Planned |
@@ -244,6 +245,38 @@ is #35, full requester conformance is #36, and Staff/Admin/communication work
 remains later Issues. Lab 3 E2E, UI screenshots, final-main checks and the
 student's completed-document release confirmation remain pending.
 
+### Issue #35 browser authentication UI results
+
+Verified 2026-09-11 on `feature/35-lab3-auth-ui`, based on the peer-merged
+Issue #34 integration commit `968c19b`. The client now uses cookie-backed
+sessions and an in-memory CSRF token; no requester ID or credential is read from
+browser storage or sent to requester APIs. Login, mandatory/voluntary password
+change, role shell, deep-link denial, expiry and retryable logout states are
+covered. The legacy requester selector/context/test was removed and Lab 2
+requester UI tests were adapted to authenticated ownership.
+
+| Command / check | Observed result |
+| --- | --- |
+| `npm test --workspace client -- --maxWorkers=1` | 48/48 passed in 7 files, 21.15 s; no skipped tests |
+| `npm test --workspace server -- --maxWorkers=1` with isolated `TEST_DATABASE_URL` | 100/100 passed in 14 files, 70.13 s; no skipped tests |
+| `npm run build --workspace client` | TypeScript and Vite production build passed |
+| `npm run build --workspace server` | TypeScript build passed |
+| `npm run prisma:validate` | Schema valid |
+| GitHub metadata | Issue #35 assigned to BOOky-OS; enhancement/documentation labels, Lab 3 milestone and Started Project status present |
+
+`AuthFlow.test.tsx` covers labelled loading/Login, validation, paste/show,
+keyboard-only submission, duplicate prevention, uniform/rate/network errors,
+first-password change and no bypass, mandatory logout, three role menus,
+wrong-role direct access, logout failure/retry, expiry and reload retry.
+`AuthApi.test.tsx` covers credentialed fetch, CSRF rotation, no browser storage,
+no requesterId transport and correct protected-401/password-required events.
+Existing Create/List/Detail UI regression remains passing after session ownership
+replaced the selector plumbing.
+
+Real role-login E2E and screenshots are not claimed by this Issue result. They
+remain Planned under E2E-01/E2E-02/RWD-01 for the isolated E2E environment and
+final evidence audit. No working database migration/reset/provisioning occurred;
+the server regression used only allowlisted `toktickit_lab3_test`.
 ## 7. Visual checklist and deferred scope
 
 Complete the ui-spec.md checklist with screenshot paths, observed results and

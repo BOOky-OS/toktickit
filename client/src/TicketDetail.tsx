@@ -21,11 +21,9 @@ const maxBytes = 5 * 1024 * 1024;
 
 export function TicketDetail({
   ticketId,
-  requesterId,
   onBack,
 }: {
   ticketId: number;
-  requesterId: number;
   onBack: () => void;
 }) {
   const [state, setState] = useState<DetailState>("loading");
@@ -43,8 +41,8 @@ export function TicketDetail({
     setMessage("");
     try {
       const [detail, files] = await Promise.all([
-        getTicket(ticketId, requesterId),
-        getAttachments(ticketId, requesterId),
+        getTicket(ticketId),
+        getAttachments(ticketId),
       ]);
       setTicket(detail);
       setAttachments(files);
@@ -59,7 +57,7 @@ export function TicketDetail({
   }
   useEffect(() => {
     void load();
-  }, [ticketId, requesterId]);
+  }, [ticketId]);
 
   async function selectFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -80,7 +78,7 @@ export function TicketDetail({
     setUploading(true);
     setMessage("");
     try {
-      const saved = await uploadAttachment(ticketId, requesterId, file);
+      const saved = await uploadAttachment(ticketId, file);
       setAttachments((current) => [...current, saved]);
       setMessageTone("success");
       setMessage(`${file.name} uploaded successfully.`);
@@ -101,7 +99,7 @@ export function TicketDetail({
     setRemovalBusy(true);
     setMessage("");
     try {
-      const updated = await removeAttachment(removing.id, requesterId, reason);
+      const updated = await removeAttachment(removing.id, reason);
       setAttachments((current) =>
         current.map((file) => (file.id === updated.id ? updated : file)),
       );
@@ -251,7 +249,7 @@ export function TicketDetail({
                     <div className="attachment-actions">
                       <a
                         className="zen-button zen-button--secondary"
-                        href={attachmentDownloadUrl(file.id, requesterId)}
+                        href={attachmentDownloadUrl(file.id)}
                       >
                         Download
                       </a>

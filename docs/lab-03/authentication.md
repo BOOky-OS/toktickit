@@ -1,14 +1,14 @@
-# Issue #34: authentication and backend authorization
+# Issues #34-35: authentication, authorization and browser session UI
 
-This increment implements `/api/auth/csrf`, `/login`, `/me`, `/password` and
-`/logout` under the auth prefix, and protects existing reference, Ticket and
-Attachment endpoints. Follow [api-spec.md](api-spec.md) for exact bodies.
-The development-requesters endpoint now returns JSON 404. The browser login
-and role shell belong to #35; the existing selector-based client cannot use
-these protected APIs until that increment. Requester response/query completion
-is #36; Staff, communication and Admin routes remain unimplemented, with their
-role boundaries already guarded. A permitted role sees 404 on those future
-routes, not an invented successful response.
+Issue #34 implements `/api/auth/csrf`, `/login`, `/me`, `/password` and
+`/logout` under the auth prefix and protects existing reference, Ticket and
+Attachment endpoints. Issue #35 connects the browser to that contract with
+Login, mandatory/voluntary password change, current-user restoration, safe
+session expiry/logout behavior and role-aware navigation. The retired
+`/api/development-requesters` endpoint remains JSON 404 and the client removes
+its old selector and localStorage key. Requester response/query completion is
+#36; Staff, communication and Admin screens remain later increments, with their
+role boundaries already guarded.
 
 ## Local setup and request flow
 
@@ -42,6 +42,18 @@ Use the same hostname for browser and API; do not mix localhost and 127.0.0.1.
 5. POST logout with `{}` and valid Origin/CSRF; only 204 confirms revocation.
    A 500 keeps the cookie so the user can retry; an expired session returns 401.
 
+## Browser behavior
+
+The React client keeps only the safe current-user view and CSRF token in memory;
+the session credential remains in the HttpOnly cookie. Startup removes
+`toktickit.developmentRequesterId`, renders a labelled loading state, restores
+`/me` and CSRF, and preserves an allowed deep link. Anonymous users see Login.
+A first-login user is routed to `/change-password` and sees only identity,
+password controls and Logout until replacement succeeds. Completed users see
+display name, text role, permitted navigation, voluntary Change Password and
+Logout. Protected 401 responses clear private UI and return to Login; login
+credential failures remain uniform credential feedback rather than a false
+expired-session message.
 Requester IDs are taken from the authenticated session. Never send requesterId
 in JSON, query or multipart. This also applies to downloads. Staff/Admin can
 read shared detail/files, but only Requesters can create Tickets or mutate files.

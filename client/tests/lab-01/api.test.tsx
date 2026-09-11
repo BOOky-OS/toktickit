@@ -28,6 +28,6 @@ describe("checkSystem", () => {
 
     await expect(checkSystem()).resolves.toEqual({ online: true, categories });
     expect(fetchMock).toHaveBeenNthCalledWith(1, "http://localhost:3000/api/health");
-    expect(fetchMock).toHaveBeenNthCalledWith(2, "http://localhost:3000/api/categories");
+    expect(fetchMock).toHaveBeenNthCalledWith(2, "http://localhost:3000/api/categories", expect.objectContaining({ credentials: "include" }));
   });
 });

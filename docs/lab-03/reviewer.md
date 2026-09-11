@@ -2,8 +2,8 @@
 
 Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
 commit a0a53e6, then merged final head b6933ce through PR #42 on 2026-09-11.
-Issue #33 was approved at its final head and merged by Atip-Infa.
-Issue #34 authentication/authorization work is awaiting its own peer review.
+Issues #33 and #34 were approved at their final heads and merged by Atip-Infa.
+Issue #35 authentication UI is awaiting its own peer review.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -61,7 +61,17 @@ enhancement/documentation; Project: TokTickIT Individual Sprints; milestone: Lab
 Review focus: persisted session/CSRF rotation, forced change, uniform login
 failures, throttles, transaction-time revocation, role/ownership boundaries,
 compensated uploads and real PostgreSQL test evidence.
-Peer approval, author replies and reviewer merge for this increment remain pending.
+Atip-Infa [approved final head ac03ae4](https://github.com/BOOky-OS/toktickit/pull/44#pullrequestreview-5175986095)
+and merged it into lab3-staging as 968c19b994710b05143b40bb73d9854003693088.
+[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/44#issuecomment-5630970403)
+and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/44#issuecomment-5630972652)
+are present. No inline review comments exist. Issue #34 is closed and its Issue/PR
+Project items are Done.
+
+Issue #35 uses feature/35-lab3-auth-ui from verified integration commit 968c19b
+and targets lab3-staging. It implements Login, password change, the role-aware
+shell and session-owned requester transport, with actual checks in tests.md.
+Its PR/review/merge evidence remains pending.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
@@ -74,6 +84,6 @@ Lab 2 partner reviews or use another account to approve one's own work.
 
 ## Outstanding human review
 
-Review Issue #34 authentication/authorization changes and their test/evidence records. Give specific changes
+Review Issue #35 authentication UI, role shell, session transport and test/evidence records. Give specific changes
 where needed; use Approve only after checking the actual documents.
 The reviewer, not the PR author, merges into lab3-staging when ready.
