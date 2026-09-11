@@ -131,6 +131,13 @@ Terminal 2 - web app at `http://localhost:5173`:
 npm run dev:client
 ```
 
+## Lab 3 database increment
+
+See [Lab 3 migration and local setup](docs/lab-03/migration.md) for the
+transactional upgrade, guarded demonstration seed and one-time password
+provisioning. Login and operational role screens are later increments.
+The default seed now requires explicit local opt-in and retains existing edits.
+
 ## Build and test
 
 ```bash
@@ -138,11 +145,16 @@ npm run build
 npm test
 ```
 
+Server integration tests require the dedicated local `toktickit_lab3_test`
+database and `TEST_DATABASE_URL`; follow the [isolated test setup](docs/lab-03/migration.md).
+The fixture guard refuses the working database.
+
 Automated tests are located in:
 
 - `server/tests/lab-01/` for Supertest API tests
 - `client/tests/lab-01/` for Vitest UI tests
 - `server/tests/lab-02/` for Ticket, ownership, and Attachment API/unit tests
+- `server/tests/lab-03/` for migration, seed, provisioning and password checks
 - `client/tests/lab-02/` for requester workflow and UI state tests
 - `e2e/lab-02/` for the desktop, tablet, and mobile Playwright workflow
 
@@ -153,29 +165,14 @@ traceability are recorded in `docs/lab-02/tests.md`.
 
 ```text
 toktickit/
-|-- client/
-|   |-- src/
-|   `-- tests/
-|       |-- lab-01/
-|       `-- lab-02/
-|-- server/
-|   |-- prisma/
-|   |-- src/
-|   `-- tests/
-|       |-- lab-01/
-|       `-- lab-02/
-|-- docs/
-|   |-- lab-01/
-|   `-- lab-02/
-|       |-- specification.md
-|       |-- tests.md
-|       |-- ui-spec.md
-|       |-- api-spec.md
-|       |-- data-model.md
-|       |-- reviewer.md
-|       `-- ai-use.md
+|-- client/src/ and client/tests/lab-01/, lab-02/
+|-- server/src/ and server/tests/lab-01/, lab-02/, lab-03/
+|-- server/prisma/schema.prisma and migrations/
+|-- server/prisma/seed.ts, lab3-seed.ts, lab3-provision.ts
+|-- docs/lab-01/, lab-02/, lab-03/
 |-- e2e/lab-02/
 |-- output/pdf/
+|-- skill.md
 |-- compose.yaml
 |-- package.json
 |-- .gitignore

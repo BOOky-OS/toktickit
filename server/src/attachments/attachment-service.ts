@@ -119,7 +119,7 @@ export async function removeAttachment(
     if (!attachment) return null;
     const updated = await tx.attachment.update({
       where: { id: attachment.id },
-      data: { removedAt: new Date(), removalReason: reason, removedByRequesterId: requesterId },
+      data: { removedAt: new Date(), removalReason: reason, removedByUserId: requesterId },
       select: attachmentSelect,
     });
     return toResponse(updated);

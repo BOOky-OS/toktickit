@@ -56,7 +56,7 @@ const ticketSelect = {
 } satisfies Prisma.TicketSelect;
 
 export async function listTickets(prisma: PrismaClient, input: TicketListInput) {
-  const requester = await prisma.developmentRequester.findUnique({ where: { id: input.requesterId, isActive: true }, select: { id: true } });
+  const requester = await prisma.user.findUnique({ where: { id: input.requesterId, isActive: true, role: "REQUESTER" }, select: { id: true } });
   if (!requester) return null;
   const where: Prisma.TicketWhereInput = {
     requesterId: input.requesterId,
