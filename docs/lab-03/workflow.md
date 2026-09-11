@@ -12,13 +12,17 @@ complete PR sidebar checklist and the explicit documentation gate before main.
 - Lab: Lab 3, Users, Roles, IT Staff Ticketing and Admin Screens.
 - Verified baseline main: 2fc1fe3; no open Issues/PRs before sprint initialization.
 - Integration branch: lab3-staging, created from current main.
-- Current Issue branch: feature/33-lab3-user-migration, based on f16f27b.
+- Current Issue branch: feature/34-lab3-auth-api, based on a5e23e1.
 - Contract: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42) linked to
   Issue #32, merged by Atip-Infa into lab3-staging on 2026-09-11, commit f16f27b.
   Student confirmation and contract approval are recorded in reviewer.md.
-  Issue #32 and its PR Project item are Done. Issue #33 is the active increment,
-  with [PR #43](https://github.com/BOOky-OS/toktickit/pull/43) linked through Development
-  and awaiting review into lab3-staging. Do not begin #34 before reviewer merge.
+  Issues #32/#33 and their PR Project items are Done.
+  [PR #43](https://github.com/BOOky-OS/toktickit/pull/43) was approved at
+  8321ca8 and merged by Atip-Infa as a5e23e1. Author approval/post-merge replies
+  are present. Issue #34 is the active increment with
+  [PR #44](https://github.com/BOOky-OS/toktickit/pull/44), linked through Development;
+  #35 waits for its peer review,
+  replies, reviewer merge and Done.
 - Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). The recorded approval
   covered a0a53e6; the peer subsequently merged final documentation head b6933ce.
   Do not misreport the merge as a separate latest-head approval.

@@ -1,3 +1,4 @@
+import type { MutationGuard } from "../auth/security.js";
 import { Prisma, PrismaClient } from "@prisma/client";
 
 const attachmentSelect = {
@@ -42,9 +43,9 @@ function toResponse(attachment: StoredAttachment): AttachmentResponse {
   };
 }
 
-async function ownedTicket(prisma: PrismaClient, ticketId: number, requesterId: number) {
+async function ownedTicket(prisma: PrismaClient, ticketId: number, requesterId?: number) {
   return prisma.ticket.findFirst({
-    where: { id: ticketId, requesterId, requester: { isActive: true } },
+    where: { id: ticketId, ...(requesterId ? { requesterId } : {}) },
     select: { id: true },
   });
 }
@@ -55,8 +56,10 @@ export async function createAttachment(
     ticketId: number; requesterId: number; originalFilename: string;
     storageKey: string; mimeType: string; sizeBytes: number;
   },
+  guard?: MutationGuard,
 ): Promise<{ kind: "created"; attachment: AttachmentResponse } | { kind: "unavailable" | "limit" }> {
   return prisma.$transaction(async (tx) => {
+    await guard?.(tx);
     const ticket = await tx.ticket.findFirst({
       where: { id: input.ticketId, requesterId: input.requesterId, requester: { isActive: true } },
       select: { id: true },
@@ -80,7 +83,7 @@ export async function createAttachment(
   });
 }
 
-export async function listAttachments(prisma: PrismaClient, ticketId: number, requesterId: number) {
+export async function listAttachments(prisma: PrismaClient, ticketId: number, requesterId?: number) {
   if (!await ownedTicket(prisma, ticketId, requesterId)) return null;
   const items = await prisma.attachment.findMany({
     where: { ticketId },
@@ -90,12 +93,12 @@ export async function listAttachments(prisma: PrismaClient, ticketId: number, re
   return items.map(toResponse);
 }
 
-export async function findDownloadableAttachment(prisma: PrismaClient, attachmentId: number, requesterId: number) {
+export async function findDownloadableAttachment(prisma: PrismaClient, attachmentId: number, requesterId?: number) {
   return prisma.attachment.findFirst({
     where: {
       id: attachmentId,
       removedAt: null,
-      ticket: { requesterId, requester: { isActive: true } },
+      ticket: { requesterId },
     },
     select: attachmentSelect,
   });
@@ -106,13 +109,15 @@ export async function removeAttachment(
   attachmentId: number,
   requesterId: number,
   reason: string,
+  guard?: MutationGuard,
 ): Promise<AttachmentResponse | null> {
   return prisma.$transaction(async (tx) => {
+    await guard?.(tx);
     const attachment = await tx.attachment.findFirst({
       where: {
         id: attachmentId,
         removedAt: null,
-        ticket: { requesterId, requester: { isActive: true } },
+        ticket: { requesterId },
       },
       select: { id: true },
     });

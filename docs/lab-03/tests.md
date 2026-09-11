@@ -45,7 +45,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 
 | ID | Type | Requirement / AC | Scenario and expected result | Intended automated file | Final |
 | --- | --- | --- | --- | --- | --- |
-| UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Partial in #33: initial validation/hash/verify pass; password-change confirmation/difference checks pending #34 |
+| UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Pass in #34: helper boundaries plus real-DB password replacement, confirmation and difference checks in auth.api.test.ts; final-main pending |
 | UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Planned |
 | UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Planned |
 | UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Planned |
@@ -54,13 +54,13 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | MIG-02 | DB migration | BR-02,13; AC-01 | Case-fold email collisions/invalid existing email abort before partial mutation; sequence remains above preserved IDs/numbers; UNASSIGNED backfills but set priorities remain | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
 | MIG-03 | DB integration | FR-02; AC-02,24 | Provision only null hashes; inactive users stay inactive; required role/30-ticket/status fixtures; seed twice yields no duplicates and preserves edited name/role/activation/password/entries | server/tests/lab-03/seed.integration.test.ts | Pass in #33; final-main pending |
 | MIG-04 | DB integration | BR-04,31; AC-02,03 | Invalid/missing provisioning secret or production seed refuses; only hashes stored; newly provisioned users require password change | server/tests/lab-03/seed.integration.test.ts | Pass in #33; final-main pending |
-| API-01 | API/DB | FR-03; AC-03 | Valid active login across all roles returns safe UserSummary, rotates session, never exposes auth token/hash | server/tests/lab-03/auth.api.test.ts | Planned |
-| API-02 | API | BR-05; AC-04 | Wrong/unknown/inactive/unprovisioned uniform 401; malformed input 400; IP/email limit boundaries and Retry-After; expiry clears throttle | server/tests/lab-03/auth.api.test.ts | Planned |
-| API-03 | API/DB | FR-04; AC-05 | Initial-password session can use auth-only routes; every protected route rejects until valid confirmed different password, then old sessions fail | server/tests/lab-03/auth.api.test.ts | Planned |
-| API-04 | API/DB | FR-05; AC-06 | me/reload, absolute expiry boundary, logout, revoked token, voluntary change and account change invalidate old sessions; DB failure is safe 500 | server/tests/lab-03/auth.api.test.ts | Planned |
-| API-05 | API | BR-06..09; AC-07 | HttpOnly/SameSite/Secure/path/expiry and no-store; anonymous CSRF cannot authorize; missing/wrong/cross-session token and hostile/missing Origin deny JSON/multipart writes; rotation enforced | server/tests/lab-03/csrf.api.test.ts | Planned |
+| API-01 | API/DB | FR-03; AC-03 | Valid active login across all roles returns safe UserSummary, rotates session, never exposes auth token/hash | server/tests/lab-03/auth.api.test.ts | Pass in #34; final-main pending |
+| API-02 | API | BR-05; AC-04 | Wrong/unknown/inactive/unprovisioned uniform 401; malformed input 400; IP/email limit boundaries and Retry-After; expiry clears throttle | server/tests/lab-03/auth.api.test.ts | Pass in #34; final-main pending |
+| API-03 | API/DB | FR-04; AC-05 | Initial-password session can use auth-only routes; every protected route rejects until valid confirmed different password, then old sessions fail | server/tests/lab-03/auth.api.test.ts | Pass in #34; final-main pending |
+| API-04 | API/DB | FR-05; AC-06 | me/reload, absolute expiry boundary, logout, revoked token, voluntary change and account change invalidate old sessions; DB failure is safe 500 | server/tests/lab-03/auth.api.test.ts | Auth expiry/logout/change and transaction revocation pass in #34; actual Admin endpoint reset/edit coverage pending #40 |
+| API-05 | API | BR-06..09; AC-07 | HttpOnly/SameSite/Secure/path/expiry and no-store; anonymous CSRF cannot authorize; missing/wrong/cross-session token and hostile/missing Origin deny JSON/multipart writes; rotation enforced | server/tests/lab-03/auth.api.test.ts (CSRF, cookies and limits group) | Pass in #34; final-main pending |
 | API-06 | API/DB | FR-06; AC-08 | Parameterize every protected endpoint/method for anonymous, forced-change, Requester, Staff, Admin; matrix grants/denials including all Admin Ticket mutations | server/tests/lab-03/authorization.api.test.ts | Planned |
-| API-07 | API/DB | BR-11,12; AC-09 | A's session plus B's ticket/file IDs, requesterId in query/JSON/multipart and forged author/role; reject without disclosing/changing B; legacy selector safe 404 | server/tests/lab-03/requester-regression.api.test.ts | Planned |
+| API-07 | API/DB | BR-11,12; AC-09 | A's session plus B's ticket/file IDs, requesterId in query/JSON/multipart and forged author/role; reject without disclosing/changing B; legacy selector safe 404 | server/tests/lab-03/authorization.api.test.ts; full requester-regression.api.test.ts planned #36 | Session ownership/forgery and legacy-route retirement pass in #34; full requester regression pending #36 |
 | API-08 | API/DB | FR-08; AC-10 | Valid create stores authenticated ID, numbered NEW/matching priority; input/reference/boundary rejection; matching replay and changed-body conflict preserve original snapshot | server/tests/lab-03/requester-regression.api.test.ts | Planned |
 | API-09 | API/DB | FR-09; AC-11 | Requester search/filters/all eight statuses/sort/page, literal wildcard terms, stable tie-breaker, out-of-range/empty metadata, no cross-user results | server/tests/lab-03/requester-regression.api.test.ts | Planned |
 | API-10 | API/DB | FR-10; AC-12 | Valid MIME/signature/extension; 5 MiB exact/+1; fifth/sixth active; owned upload/list/download/remove, all statuses; removed bytes unavailable to every role and audit retained | server/tests/lab-03/attachments-regression.api.test.ts | Planned |
@@ -174,7 +174,7 @@ after merge as specified in workflow.md.
 
 ## 6. Current results
 
-Verified 2026-09-11 on feature/33-lab3-user-migration, based on reviewer merge
+Historical Issue #33 checks, verified 2026-09-11 on feature/33-lab3-user-migration, based on reviewer merge
 f16f27b. Results cover the implementation submitted in the Issue #33 PR.
 
 | Command / check | Observed result |
@@ -199,14 +199,50 @@ require the specific preflight diagnostic, not any arbitrary exception.
 The existing Lab 1 category API test now also uses the isolated DB.
 
 No migration, seed, reset or provisioning was applied to the student's working
-database. Application authentication, staff/Admin UI and Lab 3 E2E/screenshots
-remain unimplemented; they are not reported as passing. Full final-main
+database. At that increment, authentication, staff/Admin UI and Lab 3 E2E/screenshots
+were not implemented; authentication is now covered below. Full final-main
 verification and the student documentation gate remain pending.
 
 - Student contract confirmation: 2026-09-10.
 - Contract approval: Atip-Infa approved a0a53e6; the peer merged final head
   b6933ce as PR #42 on 2026-09-11. See reviewer.md for actual review/reply links.
-- Issue #33 independent review/merge: pending.
+- Issue #33: Atip-Infa approved 8321ca8 and merged PR #43 as a5e23e1; author replies complete, Issue closed and Project items Done.
+
+### Issue #34 authentication and authorization results
+
+Verified 2026-09-11 on feature/34-lab3-auth-api, based on a5e23e1.
+Implementation commit: 29b0a8c, submitted through PR #44. Later PR-link
+documentation updates do not change the tested runtime or test files.
+
+| Command / check | Observed result |
+| --- | --- |
+| Initial server run with Docker off | DB fixture connection failures; not an application pass. Started Docker and reran. |
+| npm test --workspace server -- --maxWorkers=1, with isolated TEST_DATABASE_URL | 100/100 passed in 14 files, 82.80 s; no skipped tests |
+| npm test --workspace client | 32/32 passed in 6 files |
+| npm run build | Client and server passed |
+| npm run prisma:validate | Schema valid |
+| New auth.api.test.ts | 23 cases: persisted session/token rotation, safe credentials/errors, forced/voluntary replacement, expiry, revocation, concurrent replacement, CSRF/cookies/CORS and rate limits |
+| New authorization.api.test.ts | 10 cases: unauthenticated/role denial, owned/nonowned DB reads, forbidden Admin writes, forged query/JSON/multipart, concurrent idempotent create, revocation/upload compensation |
+
+The prior 68 server cases become 67 after replacing the retired public selector
+success test with a safe-404 test and removing its obsolete database-failure
+case. The 33 new cases bring the total to 100; earlier domain tests now pass
+through real auth middleware with mocked session persistence where appropriate.
+Real PostgreSQL fixtures separately prove persisted security decisions. No
+mock test is represented as proof of actual browser/file storage behavior.
+
+Auth API coverage combines the originally planned auth and csrf suites in one
+file to reuse an isolated database fixture. The pure helper boundary tests remain
+in password.unit.test.ts. Session revocation helpers are tested with locked
+account edits; Admin reset/email/role/deactivation endpoints themselves are #40.
+The new auth handlers are build-checked. No dependencies or schema changes were
+needed. Run with one worker to keep the approved scrypt cost and DB fixtures
+within the local machine's memory budget.
+
+No working database migration/reset/provisioning was performed. Browser auth
+is #35, full requester conformance is #36, and Staff/Admin/communication work
+remains later Issues. Lab 3 E2E, UI screenshots, final-main checks and the
+student's completed-document release confirmation remain pending.
 
 ## 7. Visual checklist and deferred scope
 

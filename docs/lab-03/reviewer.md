@@ -2,7 +2,8 @@
 
 Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
 commit a0a53e6, then merged final head b6933ce through PR #42 on 2026-09-11.
-Issue #33 migration/seed work is awaiting its own peer review.
+Issue #33 was approved at its final head and merged by Atip-Infa.
+Issue #34 authentication/authorization work is awaiting its own peer review.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -46,9 +47,21 @@ uses feature/33-lab3-user-migration from that verified integration commit and
 targets lab3-staging. Implementation commit e6b6f3a passed the checks in tests.md.
 Development links Issue #33. Required reviewer: Atip-Infa; assignee: BOOky-OS;
 labels: enhancement/documentation; Project: TokTickIT Individual Sprints;
-milestone: Lab 3. Approval, author responses to future feedback and merge are pending.
-Its changes require a new peer review focused on data preservation, transactional
-preflight, sequence positions, safe local seed/provisioning and real DB tests.
+milestone: Lab 3. Atip-Infa [approved final head 8321ca8](https://github.com/BOOky-OS/toktickit/pull/43#pullrequestreview-5175753084)
+and merged it into lab3-staging at a5e23e127642398a4a7c4b08fbcf712e2b3be822.
+[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/43#issuecomment-5630650685)
+and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/43#issuecomment-5630653388)
+are present. No inline review comments exist. Issue #33 is closed and both
+Project items are Done.
+
+[PR #44](https://github.com/BOOky-OS/toktickit/pull/44) for Issue #34 uses
+feature/34-lab3-auth-api from a5e23e1, targeting lab3-staging.
+Development links #34. Assignee: BOOky-OS; reviewer: Atip-Infa; labels:
+enhancement/documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
+Review focus: persisted session/CSRF rotation, forced change, uniform login
+failures, throttles, transaction-time revocation, role/ownership boundaries,
+compensated uploads and real PostgreSQL test evidence.
+Peer approval, author replies and reviewer merge for this increment remain pending.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
@@ -61,6 +74,6 @@ Lab 2 partner reviews or use another account to approve one's own work.
 
 ## Outstanding human review
 
-Review Issue #33 migration/seed changes and their test/evidence records. Give specific changes
+Review Issue #34 authentication/authorization changes and their test/evidence records. Give specific changes
 where needed; use Approve only after checking the actual documents.
 The reviewer, not the PR author, merges into lab3-staging when ready.

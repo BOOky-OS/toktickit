@@ -1,7 +1,8 @@
 # Lab 3 REST API Contract
 
-Status: proposed for Issue #32. These endpoints are targets, not implemented
-features. The BRs and role/status matrices in [specification.md](specification.md)
+Status: contract approved in Issue #32. Issue #34 implements authentication
+and guards existing domain endpoints; see [authentication.md](authentication.md)
+for current implementation boundaries. Remaining endpoints are targets. The BRs and role/status matrices in [specification.md](specification.md)
 are authoritative. Every route below is relative to `/api`.
 
 ## 1. Shared conventions
