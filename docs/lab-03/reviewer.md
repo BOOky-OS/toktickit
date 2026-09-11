@@ -2,8 +2,8 @@
 
 Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
 commit a0a53e6, then merged final head b6933ce through PR #42 on 2026-09-11.
-Issues #33 and #34 were approved at their final heads and merged by Atip-Infa.
-Issue #35 authentication UI is awaiting its own peer review.
+Issues #33-#35 were approved at their final heads and merged by Atip-Infa.
+Issue #36 authenticated Requester workflow is awaiting its own peer review.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -72,12 +72,13 @@ Project items are Done.
 feature/35-lab3-auth-ui from verified integration commit 968c19b and targets
 lab3-staging. Development links #35. Assignee: BOOky-OS; requested reviewer:
 Atip-Infa; labels: enhancement/documentation; Project: TokTickIT Individual
-Sprints with Issue and PR in PR Review; milestone: Lab 3. It implements Login,
-password change, the role-aware shell and session-owned requester transport;
-actual checks are in tests.md. Review focus: forced-change isolation, safe
-Login/expiry/logout states, cookie/CSRF transport, role navigation, removal of
-requesterId and keyboard/accessibility coverage. Peer approval, author reply and
-reviewer merge remain pending.
+Sprints; milestone: Lab 3. It implements Login, password change, the role-aware
+shell and session-owned requester transport; actual checks are in tests.md.
+Atip-Infa approved final head `cf3d0c1` and merged it into `lab3-staging` as
+`a97f02087eb64b16b2b5be3966d4dfb54124b11e`. The
+[author approval reply](https://github.com/BOOky-OS/toktickit/pull/45#issuecomment-5636466482)
+and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/45#issuecomment-5636472474)
+are present. Issue #35 is closed and both Project items are Done.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
@@ -90,6 +91,7 @@ Lab 2 partner reviews or use another account to approve one's own work.
 
 ## Outstanding human review
 
-Review Issue #35 authentication UI, role shell, session transport and test/evidence records. Give specific changes
-where needed; use Approve only after checking the actual documents.
+Review Issue #36 authenticated Requester create/list/detail and Attachment
+workflows, concurrency boundaries and test/evidence records. Give specific
+changes where needed; use Approve only after checking the actual branch head.
 The reviewer, not the PR author, merges into lab3-staging when ready.

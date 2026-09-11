@@ -1,9 +1,10 @@
 # Lab 3 Test Plan and Traceability
 
 Status: planned before implementation in Issue #32; #33 migration/seed, #34
-backend authentication/authorization and #35 browser authentication UI now have
-Issue-branch passing evidence. Remaining Lab 3 features and final-main checks are
-still planned. Historical counts are not current evidence.
+backend authentication/authorization, #35 browser authentication UI and #36
+authenticated Requester workflows now have Issue-branch passing evidence.
+Remaining Lab 3 features and final-main checks are still planned. Historical
+counts are not current evidence.
 Source requirements: [specification.md](specification.md), [api-spec.md](api-spec.md),
 [ui-spec.md](ui-spec.md). Current documentation checks are recorded separately.
 
@@ -62,15 +63,15 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | API-05 | API | BR-06..09; AC-07 | HttpOnly/SameSite/Secure/path/expiry and no-store; anonymous CSRF cannot authorize; missing/wrong/cross-session token and hostile/missing Origin deny JSON/multipart writes; rotation enforced | server/tests/lab-03/auth.api.test.ts (CSRF, cookies and limits group) | Pass in #34; final-main pending |
 | API-06 | API/DB | FR-06; AC-08 | Parameterize every protected endpoint/method for anonymous, forced-change, Requester, Staff, Admin; matrix grants/denials including all Admin Ticket mutations | server/tests/lab-03/authorization.api.test.ts | Planned |
 | API-07 | API/DB | BR-11,12; AC-09 | A's session plus B's ticket/file IDs, requesterId in query/JSON/multipart and forged author/role; reject without disclosing/changing B; legacy selector safe 404 | server/tests/lab-03/authorization.api.test.ts; full requester-regression.api.test.ts planned #36 | Session ownership/forgery and legacy-route retirement pass in #34; full requester regression pending #36 |
-| API-08 | API/DB | FR-08; AC-10 | Valid create stores authenticated ID, numbered NEW/matching priority; input/reference/boundary rejection; matching replay and changed-body conflict preserve original snapshot | server/tests/lab-03/requester-regression.api.test.ts | Planned |
-| API-09 | API/DB | FR-09; AC-11 | Requester search/filters/all eight statuses/sort/page, literal wildcard terms, stable tie-breaker, out-of-range/empty metadata, no cross-user results | server/tests/lab-03/requester-regression.api.test.ts | Planned |
-| API-10 | API/DB | FR-10; AC-12 | Valid MIME/signature/extension; 5 MiB exact/+1; fifth/sixth active; owned upload/list/download/remove, all statuses; removed bytes unavailable to every role and audit retained | server/tests/lab-03/attachments-regression.api.test.ts | Planned |
-| API-11 | API | BR-19,35; AC-12,31 | Storage/metadata failures compensate safely; ticket survives partial uploads; missing file/reason limits/download header sanitation and safe error envelopes | server/tests/lab-03/attachments-regression.api.test.ts | Planned |
+| API-08 | API/DB | FR-08; AC-10 | Valid create stores authenticated ID, numbered NEW/matching priority; input/reference/boundary rejection; matching replay and changed-body conflict preserve original snapshot | server/tests/lab-03/requester-regression.api.test.ts | Pass in #36: session-owned create, replay/conflict and concurrent identical create |
+| API-09 | API/DB | FR-09; AC-11 | Requester search/filters/all eight statuses/sort/page, literal wildcard terms, stable tie-breaker, out-of-range/empty metadata, no cross-user results | server/tests/lab-03/requester-regression.api.test.ts | Pass in #36: all statuses, literal wildcards, stable/beyond-last pages, active references and isolation |
+| API-10 | API/DB | FR-10; AC-12 | Valid MIME/signature/extension; 5 MiB exact/+1; fifth/sixth active; owned upload/list/download/remove, all statuses; removed bytes unavailable to every role and audit retained | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: exact size boundary, all statuses, row-locked cap, version and removal audit |
+| API-11 | API | BR-19,35; AC-12,31 | Storage/metadata failures compensate safely; ticket survives partial uploads; missing file/reason limits/download header sanitation and safe error envelopes | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: safe compensation/errors, required reason and RFC 5987 download header |
 | API-12 | API/DB | FR-11; AC-13 | Staff/Admin Queue all query combinations/defaults/priority order/ties/count snapshot; requester denial; inactive historical owner remains visible; assignees active Staff/Admin only | server/tests/lab-03/staff-queue.api.test.ts | Planned |
 | API-13 | API/DB | FR-12,13; AC-14 | Staff Detail, claim, already-self no-op, other-owner conflict, confirmed reassign, null restrictions, inactive/wrong-role rejection, Admin candidate with read-only permissions | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
 | API-14 | API/DB | FR-14; AC-15 | Priority LOW/MEDIUM/HIGH, no UNASSIGNED, immutable Requested Priority, no-op and terminal/role denial | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
 | API-15 | API/DB | FR-15; AC-16 | Every permitted/forbidden status pair; owner, confirmation and public reason prerequisites; timestamps/history/reopen clearing and transaction rollback on history failure | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
-| API-16 | DB concurrency | BR-15,17,25,32; AC-10,12,17,25 | Racing identical creates -> one Ticket; simultaneous fifth/sixth uploads -> cap; claims/stale versions/admin demotions -> valid winner/conflict; owner deactivation race cannot produce invalid active assignment | server/tests/lab-03/concurrency.integration.test.ts | Planned |
+| API-16 | DB concurrency | BR-15,17,25,32; AC-10,12,17,25 | Racing identical creates -> one Ticket; simultaneous fifth/sixth uploads -> cap; claims/stale versions/admin demotions -> valid winner/conflict; owner deactivation race cannot produce invalid active assignment | server/tests/lab-03/requester-regression.api.test.ts; attachments-regression.api.test.ts; later staff/admin suites | Partial pass in #36: create and attachment races; staff/admin races remain #38/#40 |
 | API-17 | API/DB | FR-16; AC-18 | Public read/post roles, owned isolation, whitespace/1/2000/2001 limits, author/time injection denial, terminal and PATCH/DELETE denial, stable ordering | server/tests/lab-03/comments-notes.api.test.ts | Planned |
 | API-18 | API/DB | FR-17; AC-19 | Notes Staff append/Admin read-only, Requester forbidden including guessed IDs; no note/count leaks in detail/list/errors; 1/4000/4001 limits and append-only/terminal rules | server/tests/lab-03/comments-notes.api.test.ts | Planned |
 | API-19 | API/DB | FR-18; AC-20 | Own eligible confirmed indication sets time/version without status change; repeat no-op, stale/cross-user/ineligible status denial; staff reopen clears it | server/tests/lab-03/resolution-indication.api.test.ts | Planned |
@@ -83,7 +84,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | UI-01 | UI | FR-03,07; AC-26 | Login labels, busy, safe invalid/inactive/rate-limit/network feedback, email retention/password clearing and redirect | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
 | UI-02 | UI | FR-04,05; AC-05,26 | Forced and voluntary change, paste/autocomplete, limits/mismatch/same-password, pending/failure/success, no bypass | client/tests/lab-03/AuthFlow.test.tsx | Pass in #35; final-main pending |
 | UI-03 | UI | FR-06,07; AC-08,26 | Boot loading/me, role menus, forbidden routes, expiry/logout failure/retry, no stale data via Back/reload, old storage key removed | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
-| UI-04 | UI | FR-08..10; AC-10,27 | Authenticated requester Create/List/Detail, filters/statuses/empty/retry, key retained across ambiguous failure, partial file recovery, no selector | client/tests/lab-03/RequesterRegression.test.tsx | Planned |
+| UI-04 | UI | FR-08..10; AC-10,27 | Authenticated requester Create/List/Detail, filters/statuses/empty/retry, key retained across ambiguous failure, partial file recovery, no selector | client/tests/lab-03/RequesterRegression.test.tsx | Pass in #36; Lab 2 requester tests also retained and adapted |
 | UI-05 | UI | FR-11; AC-13,28 | Staff/Admin Queue fields/search/filters/sort/page/card links, loading/empty/no-results/forbidden/failure, read-only Admin context | client/tests/lab-03/StaffTicketQueue.test.tsx | Planned |
 | UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Planned |
 | UI-07 | UI | FR-16..18; AC-18,19,20,28 | Separate public/internal drafts, safe literal HTML text, permissions, empty/failed/terminal posting, requester resolution action/indicator and no note metadata | client/tests/lab-03/CommentsNotes.test.tsx | Planned |
@@ -277,6 +278,39 @@ Real role-login E2E and screenshots are not claimed by this Issue result. They
 remain Planned under E2E-01/E2E-02/RWD-01 for the isolated E2E environment and
 final evidence audit. No working database migration/reset/provisioning occurred;
 the server regression used only allowlisted `toktickit_lab3_test`.
+### Issue #36 authenticated Requester workflow results
+
+Verified 2026-09-11 on `feature/36-lab3-requester-regression`, based on the
+peer-merged Issue #35 integration commit `a97f020`. Runtime and regression
+implementation commit: `ff4b2e9`.
+
+| Command / check | Observed result |
+| --- | --- |
+| Initial focused Lab 3 API run before implementation | 3/14 passed and 11 expected failures exposed all-status list, metadata, wildcard/reference validation, exact-size upload, version/audit and safe-header gaps |
+| `npm test --workspace server -- --maxWorkers=1` with isolated `TEST_DATABASE_URL` | 114/114 passed in 16 files, 92.13 s; no skipped tests |
+| Focused real-DB Requester and Attachment regression | 14/14 passed in 2 files |
+| `npm test --workspace client -- --run` | 54/54 passed in 8 files, 10.58 s; no skipped tests |
+| `npm run build` | Client TypeScript/Vite and server TypeScript builds passed |
+| `npm run prisma:validate` | Prisma 5.22.0 schema valid |
+| Diff hygiene | `git diff --check` passed; no obsolete Requester selector/transport was reintroduced |
+
+The Requester UI retains one UUID for an unchanged uncertain submission and
+creates a new UUID after submitted fields change. My Tickets supports all eight
+statuses and opens URL-backed Detail pages. A Ticket remains saved when one or
+more uploads fail, and each retained browser `File` can be retried from Detail.
+
+The API derives Requester identity from the authenticated session. Real PostgreSQL
+tests prove one Ticket for concurrent matching creates, a row-locked five-active-
+Attachment cap, Ticket version increments, retained removal actor/reason/time,
+literal wildcard searches, active reference filters, cross-user denial and safe
+download headers. No storage key or internal note is serialized.
+
+Authenticated browser E2E and screenshot evidence is not claimed by this
+increment. `E2E-03` and responsive visual evidence remain Planned for the
+isolated final browser harness; API/DB and component coverage above are actual
+Issue #36 evidence. No working database migration, reset, seed or provisioning
+was performed.
+
 ## 7. Visual checklist and deferred scope
 
 Complete the ui-spec.md checklist with screenshot paths, observed results and
