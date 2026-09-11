@@ -1,5 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
+import { authRouter } from "./auth/routes.js";
+import { ApiError, Identity, invalid, mutationGuard, origin, permittedRoles, protect, exactBody } from "./auth/security.js";
+import { RateLimitError } from "./auth/rate-limit.js";
 import multer from "multer";
 import { randomUUID } from "node:crypto";
 import { getPrisma } from "./prisma.js";
@@ -28,13 +31,32 @@ import { listTickets, parseTicketList } from "./tickets/list-tickets.js";
 // Supertest can import `app` without opening a port. Do not merge these files.
 export const app = express();
 
-app.use(cors());          // already wired: lets the Vite dev server call this API
-app.use(express.json());
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_ATTACHMENT_BYTES } });
+app.set("case sensitive routing", true);
+app.use("/api", (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
+app.use(cors({ origin: (value, done) => done(null, value === origin()), credentials: true,
+  methods: ["GET", "HEAD", "POST", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "X-CSRF-Token", "Idempotency-Key"] }));
+app.use(express.json({ limit: "32kb" }));
+app.use("/api/auth", authRouter);
+app.use("/api", (req, res, next) => {
+  if (permittedRoles(req.method, req.path) === null) return next();
+  protect(req, res, error => {
+    if (error) return next(error);
+    if (Object.keys(req.query).some(k => k === "requesterId" || typeof req.query[k] !== "string")) return next(invalid());
+    if (!["GET", "HEAD", "OPTIONS"].includes(req.method) && !req.is("multipart/form-data") && !req.is("application/json")) {
+      return next(new ApiError(415, "UNSUPPORTED_TYPE", "Use application/json."));
+    }
+    if (!/^\/tickets\/?$/.test(req.path) || req.method !== "GET") {
+      if (Object.keys(req.query).length) return next(invalid());
+    }
+    next();
+  });
+});
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_ATTACHMENT_BYTES, files: 1, fields: 8, fieldSize: 1024, parts: 10 } });
 
 function positiveInteger(value: unknown): number | null {
-  const number = typeof value === "number" ? value : Number(value);
-  return Number.isInteger(number) && number > 0 ? number : null;
+  const number = typeof value === "number" ? value : typeof value === "string" && /^[1-9][0-9]*$/.test(value) ? Number(value) : NaN;
+  return Number.isSafeInteger(number) && number > 0 ? number : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -54,21 +76,9 @@ app.get("/api/categories", async (_req: Request, res: Response) => {
       orderBy: { id: "asc" },
     });
     res.status(200).json(categories);
-  } catch {
-    res.status(500).json({ error: "Unable to load request categories" });
-  }
-});
-
-app.get("/api/development-requesters", async (_req: Request, res: Response) => {
-  try {
-    const requesters = await getPrisma().user.findMany({
-      where: { isActive: true, role: "REQUESTER" },
-      select: { id: true, displayName: true, email: true },
-      orderBy: [{ displayName: "asc" }, { id: "asc" }],
-    });
-    res.status(200).json(requesters);
-  } catch {
-    res.status(500).json({ error: "Unable to load development requesters" });
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
+    res.status(500).json({ error: "Unable to load request categories", code: "INTERNAL_ERROR" });
   }
 });
 
@@ -80,13 +90,15 @@ app.get("/api/related-systems", async (_req: Request, res: Response) => {
       orderBy: [{ name: "asc" }, { id: "asc" }],
     });
     res.status(200).json(systems);
-  } catch {
-    res.status(500).json({ error: "Unable to load related systems" });
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
+    res.status(500).json({ error: "Unable to load related systems", code: "INTERNAL_ERROR" });
   }
 });
 
 app.post("/api/tickets", async (req: Request, res: Response) => {
-  const validation = validateCreateTicket(req.body, req.get("Idempotency-Key"));
+  try { exactBody(req.body, ["categoryId", "relatedSystemId", "summary", "description", "requestedPriority"]); } catch (error) { sendError(res, error); return; }
+  const validation = validateCreateTicket({ ...req.body, requesterId: res.locals.actor.user.id }, req.get("Idempotency-Key"));
   if (!validation.ok) {
     res.status(400).json({
       error: "Validation failed",
@@ -101,6 +113,7 @@ app.post("/api/tickets", async (req: Request, res: Response) => {
       getPrisma(),
       validation.value,
       validation.idempotencyKey,
+      mutationGuard(res.locals.actor, ["REQUESTER"]),
     );
 
     if (result.kind === "validation") {
@@ -120,7 +133,8 @@ app.post("/api/tickets", async (req: Request, res: Response) => {
     }
 
     res.status(result.kind === "created" ? 201 : 200).json(result.ticket);
-  } catch {
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({
       error: "Unable to create ticket",
       code: "INTERNAL_ERROR",
@@ -129,7 +143,8 @@ app.post("/api/tickets", async (req: Request, res: Response) => {
 });
 
 app.get("/api/tickets", async (req: Request, res: Response) => {
-  const parsed = parseTicketList(req.query as Record<string, unknown>);
+  if (Object.keys(req.query).some(k => !["search", "categoryId", "relatedSystemId", "requestedPriority", "currentStatus", "sortBy", "sortDir", "page", "pageSize"].includes(k))) { sendError(res, invalid()); return; }
+  const parsed = parseTicketList({ ...req.query, requesterId: String(res.locals.actor.user.id) });
   if (!parsed.ok) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR", fieldErrors: parsed.fieldErrors });
     return;
@@ -141,21 +156,22 @@ app.get("/api/tickets", async (req: Request, res: Response) => {
       return;
     }
     res.status(200).json(result);
-  } catch {
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to load tickets", code: "INTERNAL_ERROR" });
   }
 });
 
 app.get("/api/tickets/:ticketId", async (req: Request, res: Response) => {
   const ticketId = positiveInteger(req.params.ticketId);
-  const requesterId = positiveInteger(req.query.requesterId);
-  if (!ticketId || !requesterId) {
+  const requesterId = (res.locals.actor as Identity).user.role === "REQUESTER" ? res.locals.actor.user.id as number : undefined;
+  if (!ticketId || Object.keys(req.query).length) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR" });
     return;
   }
   try {
     const ticket = await getPrisma().ticket.findFirst({
-      where: { id: ticketId, requesterId, requester: { isActive: true } },
+      where: { id: ticketId, ...(requesterId ? { requesterId } : {}) },
       select: {
         id: true, ticketNumber: true, ticketDate: true, summary: true, description: true,
         requestedPriority: true, itPriority: true, currentStatus: true,
@@ -164,37 +180,40 @@ app.get("/api/tickets/:ticketId", async (req: Request, res: Response) => {
       },
     });
     if (!ticket) {
-      res.status(404).json({ error: "Ticket is unavailable." });
+      res.status(404).json({ error: "Ticket is unavailable.", code: "NOT_FOUND" });
       return;
     }
     res.status(200).json({ ...ticket, ticketDate: ticket.ticketDate.toISOString(), attachments: [] });
-  } catch {
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to load ticket", code: "INTERNAL_ERROR" });
   }
 });
 
 app.get("/api/tickets/:ticketId/attachments", async (req: Request, res: Response) => {
   const ticketId = positiveInteger(req.params.ticketId);
-  const requesterId = positiveInteger(req.query.requesterId);
-  if (!ticketId || !requesterId) {
+  const requesterId = (res.locals.actor as Identity).user.role === "REQUESTER" ? res.locals.actor.user.id as number : undefined;
+  if (!ticketId || Object.keys(req.query).length) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR" });
     return;
   }
   try {
     const attachments = await listAttachments(getPrisma(), ticketId, requesterId);
     if (!attachments) {
-      res.status(404).json({ error: "Ticket is unavailable." });
+      res.status(404).json({ error: "Ticket is unavailable.", code: "NOT_FOUND" });
       return;
     }
     res.status(200).json(attachments);
-  } catch {
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to load attachments", code: "INTERNAL_ERROR" });
   }
 });
 
 app.post("/api/tickets/:ticketId/attachments", upload.single("file"), async (req: Request, res: Response) => {
   const ticketId = positiveInteger(req.params.ticketId);
-  const requesterId = positiveInteger(req.body.requesterId);
+  const requesterId = res.locals.actor.user.id as number;
+  if (Object.keys(req.body ?? {}).length) { sendError(res, invalid()); return; }
   if (!ticketId || !requesterId || !req.file) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR" });
     return;
@@ -220,7 +239,7 @@ app.post("/api/tickets/:ticketId/attachments", upload.single("file"), async (req
       storageKey,
       mimeType: policy.mimeType,
       sizeBytes: req.file.size,
-    });
+    }, mutationGuard(res.locals.actor, ["REQUESTER"]));
     if (result.kind !== "created") {
       await deleteStoredAttachment(storageKey);
       if (result.kind === "limit") {
@@ -229,61 +248,74 @@ app.post("/api/tickets/:ticketId/attachments", upload.single("file"), async (req
           code: "ATTACHMENT_LIMIT",
         });
       } else {
-        res.status(404).json({ error: "Ticket is unavailable." });
+        res.status(404).json({ error: "Ticket is unavailable.", code: "NOT_FOUND" });
       }
       return;
     }
     res.status(201).json(result.attachment);
-  } catch {
+  } catch (error) {
     await deleteStoredAttachment(storageKey).catch(() => undefined);
+    if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to upload attachment", code: "INTERNAL_ERROR" });
   }
 });
 
 app.get("/api/attachments/:attachmentId/download", async (req: Request, res: Response) => {
   const attachmentId = positiveInteger(req.params.attachmentId);
-  const requesterId = positiveInteger(req.query.requesterId);
-  if (!attachmentId || !requesterId) {
+  const requesterId = (res.locals.actor as Identity).user.role === "REQUESTER" ? res.locals.actor.user.id as number : undefined;
+  if (!attachmentId || Object.keys(req.query).length) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR" });
     return;
   }
   try {
     const attachment = await findDownloadableAttachment(getPrisma(), attachmentId, requesterId);
     if (!attachment) {
-      res.status(404).json({ error: "Attachment is unavailable." });
+      res.status(404).json({ error: "Attachment is unavailable.", code: "NOT_FOUND" });
       return;
     }
     const content = await readStoredAttachment(attachment.storageKey);
     res
       .status(200)
       .type(attachment.mimeType)
+      .setHeader("X-Content-Type-Options", "nosniff")
       .setHeader("Content-Disposition", `attachment; filename="${attachment.originalFilename.replace(/"/g, "")}"`)
       .send(content);
-  } catch {
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to download attachment", code: "INTERNAL_ERROR" });
   }
 });
 
 app.delete("/api/attachments/:attachmentId", async (req: Request, res: Response) => {
   const attachmentId = positiveInteger(req.params.attachmentId);
-  const requesterId = positiveInteger(req.body?.requesterId);
+  const requesterId = res.locals.actor.user.id as number;
+  try { exactBody(req.body, ["reason"]); } catch (error) { sendError(res, error); return; }
   const reason = validateRemovalReason(req.body?.reason);
   if (!attachmentId || !requesterId || !reason.ok) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR" });
     return;
   }
   try {
-    const attachment = await removeAttachment(getPrisma(), attachmentId, requesterId, reason.value);
+    const attachment = await removeAttachment(getPrisma(), attachmentId, requesterId, reason.value, mutationGuard(res.locals.actor, ["REQUESTER"]));
     if (!attachment) {
-      res.status(404).json({ error: "Attachment is unavailable." });
+      res.status(404).json({ error: "Attachment is unavailable.", code: "NOT_FOUND" });
       return;
     }
     res.status(200).json(attachment);
-  } catch {
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to remove attachment", code: "INTERNAL_ERROR" });
   }
 });
 
+app.use((_req, res) => { res.status(404).json({ error: "Resource is unavailable.", code: "NOT_FOUND" }); });
+
+function sendError(res: Response, error: unknown) {
+  if (error instanceof RateLimitError) res.set("Retry-After", String(error.retryAfter));
+  if (error instanceof ApiError) {
+    res.status(error.status).json({ error: error.message, code: error.code, ...(error.fieldErrors ? { fieldErrors: error.fieldErrors } : {}) });
+  } else res.status(500).json({ error: "Unable to complete the operation.", code: "INTERNAL_ERROR" });
+}
 app.use((
   error: unknown,
   _req: Request,
@@ -306,7 +338,11 @@ app.use((
     res.status(413).json({ error: "Attachment exceeds the 5 MiB limit.", code: "FILE_TOO_LARGE" });
     return;
   }
-  next(error);
+  if (error instanceof multer.MulterError) { sendError(res, invalid()); return; }
+  if (error && typeof error === "object" && "type" in error && error.type === "entity.too.large") {
+    res.status(413).json({ error: "Request body is too large.", code: "BODY_TOO_LARGE" }); return;
+  }
+  sendError(res, error);
 });
 
 export default app;

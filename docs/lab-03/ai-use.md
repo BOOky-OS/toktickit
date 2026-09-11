@@ -51,6 +51,24 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
 - The review record distinguishes an existing peer approval of a0a53e6 from the peer's later
   merge of b6933ce. No latest-head re-approval or reciprocal review is invented.
 
+## Issue #34 observed verification and decisions
+
+- Actual continuation prompt: "โอเคไปต่อได้เลย". The AI checked GitHub before
+  starting: Atip-Infa approved PR #43 at 8321ca8 and merged a5e23e1; the
+  author had posted both approval and post-merge replies. No duplicate reply
+  was requested. Issue #33 and both Project items were completed before #34.
+- The AI implemented auth and current endpoint guards on the new Issue #34
+  branch. No browser login, Staff UI, Admin endpoint or final-main result is
+  claimed in this increment.
+- Initial DB tests could not connect because Docker was off. After starting
+  Docker, the isolated database tests passed. No working database was reset.
+- A revocation-between-upload-and-transaction case exposed the need to run
+  file compensation before returning typed authorization errors. The fix is
+  covered by a real-DB test with observable mocked storage.
+- Final checks: server 100/100, client 32/32, both builds and Prisma validation
+  passed. Concurrent password changes leave exactly one fresh valid session.
+  These are assistant-run checks, not claims that the student or peer ran them.
+
 ## My Reflection
 
 Pending the student's own reflection after using and reviewing the work.

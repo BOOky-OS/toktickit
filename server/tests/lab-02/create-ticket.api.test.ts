@@ -1,14 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import request from "supertest";
+import { authenticatedRequest as request, sessionMock } from "../lab-03/legacy-auth-fixture.js";
 
-const prismaMock = vi.hoisted(() => ({ $transaction: vi.fn() }));
+const prismaMock = vi.hoisted(() => ({ session: { findUnique: vi.fn() }, $transaction: vi.fn() }));
 vi.mock("../../src/prisma.js", () => ({ getPrisma: () => prismaMock }));
 
 import { app } from "../../src/app.js";
 
 const KEY = "550e8400-e29b-41d4-a716-446655440000";
 const BODY = {
-  requesterId: 1,
   categoryId: 2,
   relatedSystemId: 7,
   summary: "  Laptop battery drains quickly  ",
@@ -35,6 +34,7 @@ const SAVED = {
 
 function makeTransaction(overrides: Record<string, unknown> = {}) {
   return {
+    session: sessionMock(), $executeRaw: vi.fn().mockResolvedValue(1),
     user: {
       findUnique: vi.fn().mockResolvedValue({ id: 1, displayName: "Jennifer Anderson", isActive: true }),
     },
@@ -56,6 +56,7 @@ function makeTransaction(overrides: Record<string, unknown> = {}) {
 describe("POST /api/tickets", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    prismaMock.session.findUnique.mockImplementation(sessionMock().findUnique);
   });
 
   it("creates one requester-owned Ticket with official defaults and trimmed fields", async () => {
@@ -170,7 +171,7 @@ describe("POST /api/tickets", () => {
     const response = await request(app)
       .post("/api/tickets")
       .set("Idempotency-Key", "invalid")
-      .send({ ...BODY, requesterId: 0, summary: "   ", requestedPriority: "URGENT" });
+      .send({ ...BODY, summary: "   ", requestedPriority: "URGENT" });
 
     expect(response.status).toBe(400);
     expect(response.body).toMatchObject({
@@ -178,7 +179,6 @@ describe("POST /api/tickets", () => {
       code: "VALIDATION_ERROR",
       fieldErrors: {
         idempotencyKey: "Idempotency-Key must be a UUID.",
-        requesterId: "Requester is required.",
         summary: "Summary must contain 5 to 120 characters.",
         requestedPriority: "Requested Priority must be LOW, MEDIUM, or HIGH.",
       },

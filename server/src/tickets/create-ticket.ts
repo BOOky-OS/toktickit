@@ -1,3 +1,4 @@
+import type { MutationGuard } from "../auth/security.js";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { formatTicketNumber } from "./ticket-number.js";
 import { ValidCreateTicket } from "./ticket-validation.js";
@@ -61,8 +62,10 @@ export async function createTicket(
   prisma: PrismaClient,
   input: ValidCreateTicket,
   idempotencyKey: string,
+  guard?: MutationGuard,
 ): Promise<CreateTicketResult> {
   return prisma.$transaction(async (tx) => {
+    await guard?.(tx);
     const [requester, category, relatedSystem] = await Promise.all([
       tx.user.findUnique({
         where: { id: input.requesterId, isActive: true, role: "REQUESTER" },

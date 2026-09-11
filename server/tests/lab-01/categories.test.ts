@@ -6,18 +6,22 @@ import { CATEGORIES } from "../../prisma/seed.js";
 import { databaseFixture } from "../lab-03/database-fixture.js";
 
 vi.mock("../../src/prisma.js", () => ({ getPrisma: vi.fn() }));
+let cookie: string;
 let fixture: Awaited<ReturnType<typeof databaseFixture>>;
 
 beforeAll(async () => {
   fixture = await databaseFixture();
   await fixture.prisma.category.createMany({ data: CATEGORIES.map((category) => ({ ...category })) });
   vi.mocked(getPrisma).mockReturnValue(fixture.prisma);
+  const user = await fixture.prisma.user.create({ data: { displayName: "Reference Reader", email: "reader@example.test", passwordHash: "test-only", mustChangePassword: false } });
+  const { issueSession } = await import("../../src/auth/security.js");
+  cookie = `toktickit.sid=${(await issueSession(fixture.prisma, user.id)).token}`;
 }, 60_000);
 afterAll(async () => { if (fixture) await fixture.dispose(); });
 
 describe("GET /api/categories", () => {
   it("returns the four seeded categories in id order from the isolated database", async () => {
-    const res = await request(app).get("/api/categories");
+    const res = await request(app).get("/api/categories").set("Cookie", cookie);
     expect(res.status).toBe(200);
     expect(res.body).toEqual(CATEGORIES.map((category, index) => ({ id: index + 1, name: category.name })));
   });

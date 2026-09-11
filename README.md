@@ -4,13 +4,15 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 established
 the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
 responsive requester-owned Ticketing MVP.
 
-## Lab 3 planning in progress
+## Lab 3 implementation in progress
 
 Lab 3 begins with the [engineering contract](docs/lab-03/specification.md),
 [API contract](docs/lab-03/api-spec.md), [UI specification](docs/lab-03/ui-spec.md)
 and [planned tests](docs/lab-03/tests.md). These documents describe target
-behavior; real authentication, staff workflows and user administration are
-not implemented by the contract Issue.
+behavior. Issue #33 implemented migration/seed; Issue #34 implements authentication
+and backend authorization. See [authentication setup and current scope](docs/lab-03/authentication.md).
+The browser login/role shell, Staff workflows and user administration remain
+later increments; the old selector-based browser cannot access protected APIs.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
 #32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.
@@ -18,11 +20,12 @@ The student must review completed documents and explicitly confirm readiness
 before a release PR to `main` is prepared. Do not treat permission to start the
 lab as release approval.
 
-## Lab 2 requester MVP
+## Lab 2 requester MVP (historical baseline)
 
 Lab 2 adds Development Requester context, Ticket creation, requester-owned My Tickets search/filter/sort/pagination, read-only Ticket Detail, and Attachment upload/download/soft removal. The selector is a testing mechanism and is not authentication.
 
-Apply and seed the Lab 2 database after initial setup:
+The commands below describe the historical Lab 2 baseline. On lab3-staging,
+follow [the guarded Lab 3 migration/seed setup](docs/lab-03/migration.md) instead:
 
 ```bash
 npm exec --workspace server prisma migrate deploy
