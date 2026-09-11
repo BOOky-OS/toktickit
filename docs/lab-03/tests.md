@@ -1,7 +1,8 @@
 # Lab 3 Test Plan and Traceability
 
-Status: planned before implementation in Issue #32. No Lab 3 feature test has
-been run or passed. Historical Lab 2 counts are not current Lab 3 evidence.
+Status: planned before implementation in Issue #32; #33 migration, seed and
+provisioning checks now pass on the Issue branch. Authentication and the remaining
+Lab 3 features are still planned. Historical counts are not current evidence.
 Source requirements: [specification.md](specification.md), [api-spec.md](api-spec.md),
 [ui-spec.md](ui-spec.md). Current documentation checks are recorded separately.
 
@@ -38,21 +39,21 @@ claim authorization coverage. Avoid flaky arbitrary sleeps in browser tests.
 
 ## 2. Planned tests
 
-Every row is Planned until the referenced test exists and its result is recorded.
-Paths below are intended repository paths; they do not yet exist. Parameterized
-rows represent all named cases and should report exact counts during implementation.
+Rows remain Planned until their tests exist and results are recorded. Paths for
+unimplemented rows are intended paths. Issue-branch Pass is not final-main Pass.
+Parameterized rows represent all named cases; partial coverage is labeled Partial.
 
 | ID | Type | Requirement / AC | Scenario and expected result | Intended automated file | Final |
 | --- | --- | --- | --- | --- | --- |
-| UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Planned |
+| UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Partial in #33: initial validation/hash/verify pass; password-change confirmation/difference checks pending #34 |
 | UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Planned |
 | UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Planned |
 | UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Planned |
 | UNIT-05 | Unit | BR-10..12,28; AC-08,09,19 | Table-driven role/resource decisions including Admin read-only, historical requester IDs and no internal fields in requester serializer | server/tests/lab-03/authorization.unit.test.ts | Planned |
-| MIG-01 | DB migration | FR-01; AC-01 | Upgrade actual Lab 2 schema with active/inactive users, Tickets, active/removed Attachments; preserve IDs/text/number/date/ownership/removal authors/file bytes and references | server/tests/lab-03/migration.integration.test.ts | Planned |
-| MIG-02 | DB migration | BR-02,13; AC-01 | Case-fold email collisions/invalid existing email abort before partial mutation; sequence remains above preserved IDs/numbers; UNASSIGNED backfills but set priorities remain | server/tests/lab-03/migration.integration.test.ts | Planned |
-| MIG-03 | DB integration | FR-02; AC-02,24 | Provision only null hashes; inactive users stay inactive; required role/30-ticket/status fixtures; seed twice yields no duplicates and preserves edited name/role/activation/password/entries | server/tests/lab-03/seed.integration.test.ts | Planned |
-| MIG-04 | DB integration | BR-04,31; AC-02,03 | Invalid/missing provisioning secret or production seed refuses; only hashes stored; newly provisioned users require password change | server/tests/lab-03/seed.integration.test.ts | Planned |
+| MIG-01 | DB migration | FR-01; AC-01 | Upgrade actual Lab 2 schema with active/inactive users, Tickets, active/removed Attachments; preserve IDs/text/number/date/ownership/removal authors/file bytes and references | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
+| MIG-02 | DB migration | BR-02,13; AC-01 | Case-fold email collisions/invalid existing email abort before partial mutation; sequence remains above preserved IDs/numbers; UNASSIGNED backfills but set priorities remain | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
+| MIG-03 | DB integration | FR-02; AC-02,24 | Provision only null hashes; inactive users stay inactive; required role/30-ticket/status fixtures; seed twice yields no duplicates and preserves edited name/role/activation/password/entries | server/tests/lab-03/seed.integration.test.ts | Pass in #33; final-main pending |
+| MIG-04 | DB integration | BR-04,31; AC-02,03 | Invalid/missing provisioning secret or production seed refuses; only hashes stored; newly provisioned users require password change | server/tests/lab-03/seed.integration.test.ts | Pass in #33; final-main pending |
 | API-01 | API/DB | FR-03; AC-03 | Valid active login across all roles returns safe UserSummary, rotates session, never exposes auth token/hash | server/tests/lab-03/auth.api.test.ts | Planned |
 | API-02 | API | BR-05; AC-04 | Wrong/unknown/inactive/unprovisioned uniform 401; malformed input 400; IP/email limit boundaries and Retry-After; expiry clears throttle | server/tests/lab-03/auth.api.test.ts | Planned |
 | API-03 | API/DB | FR-04; AC-05 | Initial-password session can use auth-only routes; every protected route rejects until valid confirmed different password, then old sessions fail | server/tests/lab-03/auth.api.test.ts | Planned |
@@ -137,7 +138,7 @@ rows represent all named cases and should report exact counts during implementat
 
 | Issue | Main planned coverage |
 | --- | --- |
-| #32 Contract | DOC-01; only docs checks now, student confirmed; peer review pending |
+| #32 Contract | DOC-01 document checks passed; student confirmed, peer approved contract and merged PR #42; Done |
 | #33 Data migration | MIG-01..04; actual legacy-schema upgrade and fixture safety |
 | #34 Auth/API | UNIT-01, UNIT-05, API-01..07, API-25; adapt earlier API auth expectations |
 | #35 Auth UI | UI-01..03, E2E-01..02 auth portions; remove selector UI/state |
@@ -173,16 +174,39 @@ after merge as specified in workflow.md.
 
 ## 6. Current results
 
-- Application feature tests: Not run; no Lab 3 implementation in #32.
-- Migration, runtime, screenshots: Not run for Lab 3.
-- Documentation consistency/link checks (2026-09-10): Pass for 11 specification
-  sections, 24 FRs, 37 BRs, all 32 AC mappings, 51 unique planned-test rows,
-  Markdown local links/fences/whitespace, all 10 Issue links and the 60-point rubric.
-  These are document checks only; they do not prove feature behavior.
-- Student approval of full contract: confirmed on 2026-09-10; see reviewer.md.
-- Peer review/merge of contract: pending.
+Verified 2026-09-11 on feature/33-lab3-user-migration, based on reviewer merge
+f16f27b. Results cover the implementation submitted in the Issue #33 PR.
 
-This is intentionally an honest plan, not a table of assumed passes.
+| Command / check | Observed result |
+| --- | --- |
+| Initial migration test run before implementation | Required positive upgrade checks failed because the migration SQL did not yet exist |
+| npm test, with isolated TEST_DATABASE_URL | Client 32/32 passed; first server run 67/67 passed |
+| npm test --workspace server, after adding legacy-seed preservation and drift checks | Server 68/68 passed in 12 files, 25.00 s; no skipped tests |
+| npm run build | Client and server passed |
+| npm run prisma:validate | Prisma 5.22.0 schema valid |
+| TypeScript --noEmit --strict on lab3-seed.ts and lab3-provision.ts | Passed, including imported credential helpers |
+| Prisma migrate diff against the upgraded fixture and schema.prisma | Exit 0: no schema drift |
+| Migration/seed real-DB tests | 4 migration + 5 seed/provisioning tests passed in the full server run |
+| Password helper tests | 10 validation/hash/verify cases passed; full auth password-change behavior is not yet implemented |
+
+The actual Lab 2 migration files are applied to random owned schemas in the
+allowlisted local toktickit_lab3_test database before upgrading. Cases verify
+retained IDs, Ticket/reference fields, Attachment audit/bytes, sequence repair,
+email-preflight rollback, fresh data across all roles/statuses/priorities,
+repeat seed after edits, null-only provisioning, disabled/production refusal,
+and migrated demo identity/reference preservation. Negative migration assertions
+require the specific preflight diagnostic, not any arbitrary exception.
+The existing Lab 1 category API test now also uses the isolated DB.
+
+No migration, seed, reset or provisioning was applied to the student's working
+database. Application authentication, staff/Admin UI and Lab 3 E2E/screenshots
+remain unimplemented; they are not reported as passing. Full final-main
+verification and the student documentation gate remain pending.
+
+- Student contract confirmation: 2026-09-10.
+- Contract approval: Atip-Infa approved a0a53e6; the peer merged final head
+  b6933ce as PR #42 on 2026-09-11. See reviewer.md for actual review/reply links.
+- Issue #33 independent review/merge: pending.
 
 ## 7. Visual checklist and deferred scope
 

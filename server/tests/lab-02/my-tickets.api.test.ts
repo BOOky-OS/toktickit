@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 
-const prismaMock = vi.hoisted(() => ({ developmentRequester: { findUnique: vi.fn() }, ticket: { findMany: vi.fn(), count: vi.fn(), findFirst: vi.fn() } }));
+const prismaMock = vi.hoisted(() => ({ user: { findUnique: vi.fn() }, ticket: { findMany: vi.fn(), count: vi.fn(), findFirst: vi.fn() } }));
 vi.mock("../../src/prisma.js", () => ({ getPrisma: () => prismaMock }));
 import { app } from "../../src/app.js";
 
@@ -14,7 +14,7 @@ const ticket = {
 describe("GET /api/tickets", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    prismaMock.developmentRequester.findUnique.mockResolvedValue({ id: 1 });
+    prismaMock.user.findUnique.mockResolvedValue({ id: 1 });
     prismaMock.ticket.findMany.mockResolvedValue([ticket]);
     prismaMock.ticket.count.mockResolvedValue(1);
   });

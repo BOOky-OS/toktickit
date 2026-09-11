@@ -1,7 +1,7 @@
 # Lab 3 AI Use Record
 
 Assistant used in this session: Codex (GPT-6).
-Status: factual preparation record; feature implementation has not started.
+Status: factual preparation and Issue #33 implementation record.
 Prompts below are actual short excerpts or exact answers from this conversation,
 not invented historical prompts. Dates of earlier excerpts are not inferred.
 
@@ -15,7 +15,8 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
 | 4 | "ขอทำเอกสารให้เสร็จก่อนที่ขึ้นไปบนmain" | Added a distinct student documentation confirmation gate | Recorded in Issue #41 and workflow.md; release approval has not occurred. |
 | 5 | "อย่าลืมกฎการทำให้ดีว่าต้องสร้าง branch ใหม่ในการทำ lab 3" | Checked repo/account/board/reviewer history; created staging and contract branches and real Issues | GitHub creation output and local Git state are tool evidence, not peer approvals. |
 | 6 | "Admin จัดการผู้ใช้และดู Ticket; IT Staff แก้ไข Ticket" | Resolved handout ambiguity by drafting read-only Admin Ticket permissions | This was an explicit student answer; matrices and tests use this decision. |
-| 7 | "โอเคนั้นเริ่มทำต่อได้เลย" | Recorded full-contract confirmation after the student asked whether it follows the original Lab 3 sheet | Student confirmation received; independent peer approval/merge and the later main gate remain pending. |
+| 7 | "โอเคนั้นเริ่มทำต่อได้เลย" | Recorded full-contract confirmation after the student asked whether it follows the original Lab 3 sheet | Student confirmation received at that point; later contract approval/merge is recorded in reviewer.md. The main gate remains pending. |
+| 8 | "โอเคเพื่อน merge แล้ว" | Verified the peer merge and author response, closed #32, then implemented #33 on a new branch | Real PostgreSQL migration/seed tests and client/server regression passed; no working database reset or user-performed testing is claimed. |
 
 ## Critical evaluation during preparation
 
@@ -28,11 +29,27 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
   privileges. Assignment eligibility and authorization are documented separately.
 - Password/session proposals were checked against Node crypto and OWASP primary
   documentation linked in specification.md. Specific lab durations/limits are
-  student-confirmed decisions, still subject to independent peer contract review.
+  student-confirmed decisions; the peer subsequently approved the contract and merged it.
 - Planned tests are not marked Pass. No Lab 3 runtime, DB upgrade, peer review
   or final-main verification is claimed at the specification stage.
 - The final-main documentation gate remains pending regardless of earlier
   permission to start coding.
+
+## Issue #33 observed verification and decisions
+
+- The AI used the actual Lab 2 migration files and separate random schemas in
+  an allowlisted test database. The original working database was not migrated.
+- Initial positive upgrade tests failed on the missing migration. Negative
+  cases were tightened to require the actual preflight diagnostic so a missing
+  file cannot produce a false passing test.
+- User.seedKey was added as an internal fixture identity to retain email edits.
+  Real-DB tests confirm migrated demo users keep their profile, activation and
+  null hash; repeat seed retains later password changes and communication.
+- The schema change necessarily adapts existing Prisma delegates/removal authors
+  and Ticket priority creation. The selector remains temporary until the auth
+  increment; this PR does not claim to implement role-based Login or screens.
+- The review record distinguishes an existing peer approval of a0a53e6 from the peer's later
+  merge of b6933ce. No latest-head re-approval or reciprocal review is invented.
 
 ## My Reflection
 

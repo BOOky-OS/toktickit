@@ -1,10 +1,10 @@
 # Lab 3 Sprint Engineering Specification
 
-Status: student confirmed the proposed contract on 2026-09-10; independent peer
-review and reviewer merge remain pending in Issue #32.
-No Lab 3 feature is implemented by this document. Baseline: Lab 2 main
-`2fc1fe3`. Implementation starts only after this contract is confirmed and its
-PR is approved and merged by the reviewer into `lab3-staging`.
+Status: student confirmed the contract on 2026-09-10. Atip-Infa approved its
+contract commit and merged PR #42 into lab3-staging on 2026-09-11 (f16f27b).
+Issue #33 implements identity migration, local seed/provisioning and the minimal
+existing-service adaptations required by the schema. Authentication and the
+remaining features are still planned. Baseline: Lab 2 main `2fc1fe3`.
 
 Sources: `Lab_3_sheet.pdf` (18 pages), the Lab 2 rules explicitly referenced by
 that sheet, `GITHUB_WORKFLOW_AI_GUIDE(1).md`, and the student's instructions.
@@ -322,7 +322,7 @@ The following is the target model, not an already applied schema:
 
 | Model | Fields / relationships |
 | --- | --- |
-| User | Rename/evolve DevelopmentRequester, preserve id/displayName/email/isActive/timestamps. Add role enum, nullable passwordHash during provisioning, mustChangePassword (true), passwordChangedAt nullable, version (1). Unique normalized email. Existing requester and removal-author FKs point here. |
+| User | Rename/evolve DevelopmentRequester, preserve id/displayName/email/isActive/timestamps. Add role enum, nullable passwordHash during provisioning, mustChangePassword (true), passwordChangedAt nullable, version (1). Unique normalized email; nullable unique seedKey VARCHAR(80) keeps demo identity stable after email edits. Existing requester and removal-author FKs point here. |
 | Session | id UUID, userId nullable FK (null for 10-minute pre-login CSRF sessions only), tokenHash unique CHAR(64), csrfToken random 32-byte value, createdAt, expiresAt, revokedAt nullable. Return CSRF only through auth/csrf and rotated login/password responses; never return the authentication digest. Index userId/revokedAt and expiresAt. |
 | Ticket | Preserve existing fields/FKs and submission key. Add ownerId nullable User FK, version (1), requesterResolutionIndicatedAt, resolvedAt, closedAt, cancelledAt nullable, resolutionSummary/cancellationReason nullable VARCHAR(1000). Add nullable unique seedKey VARCHAR(80) for idempotent demo fixtures. Expand status enum to the eight values; IT Priority has only LOW/MEDIUM/HIGH after backfill. |
 | PublicComment | id, ticketId FK, authorId User FK, body VARCHAR(2000), createdAt, nullable unique seedKey VARCHAR(80); index ticketId/createdAt/id. |
@@ -340,6 +340,10 @@ Timestamps remain UTC. Credential hashes/secrets must not use general serializer
 
 ### Migration and local provisioning
 
+Implemented commands, target databases and seed behavior: [migration.md](migration.md).
+User.seedKey is an internal implementation detail added in #33 to preserve
+demo identity after an email edit; it is not exposed as an API profile field.
+
 1. Capture isolated Lab 2 fixture counts, row IDs, numbers, sequences, ownership,
    removal authors, reference values and attachment file digests before upgrade.
    Never reset a user's working database for a migration test.
@@ -352,7 +356,7 @@ Timestamps remain UTC. Credential hashes/secrets must not use general serializer
 4. Add workflow/session/communication schema. Backfill only UNASSIGNED IT
    Priority from Requested Priority, preserving any existing LOW/MEDIUM/HIGH.
    Retain existing NEW status, number, date, text and attachment lifecycle.
-5. Provide `npm run lab3:provision --workspace server` (planned) to hash an
+5. Provide `npm run lab3:provision --workspace server` to hash an
    explicitly supplied `LAB3_MIGRATION_INITIAL_PASSWORD` for users whose hash
    is null only. Require a valid password, refuse production mode, provision
    in a transaction, and never print the password or reset provisioned users.

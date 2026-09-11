@@ -64,8 +64,8 @@ export async function createTicket(
 ): Promise<CreateTicketResult> {
   return prisma.$transaction(async (tx) => {
     const [requester, category, relatedSystem] = await Promise.all([
-      tx.developmentRequester.findUnique({
-        where: { id: input.requesterId, isActive: true },
+      tx.user.findUnique({
+        where: { id: input.requesterId, isActive: true, role: "REQUESTER" },
         select: { id: true },
       }),
       tx.category.findUnique({
@@ -120,7 +120,7 @@ export async function createTicket(
         description: input.description,
         clientSubmissionKey: idempotencyKey,
         currentStatus: "NEW",
-        itPriority: "UNASSIGNED",
+        itPriority: input.requestedPriority,
       },
       include: ticketInclude,
     });

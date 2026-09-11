@@ -23,12 +23,10 @@ describe("Lab 2 reference-data seed", () => {
   it("uses stable unique keys for the required active and inactive records", async () => {
     const categoryUpsert = vi.fn().mockResolvedValue({});
     const relatedSystemUpsert = vi.fn().mockResolvedValue({});
-    const requesterUpsert = vi.fn().mockResolvedValue({});
 
     await seedReferenceData({
       category: { upsert: categoryUpsert },
       relatedSystem: { upsert: relatedSystemUpsert },
-      developmentRequester: { upsert: requesterUpsert },
     } as never);
 
     expect(CATEGORIES).toHaveLength(4);
@@ -37,10 +35,6 @@ describe("Lab 2 reference-data seed", () => {
     expect(DEVELOPMENT_REQUESTERS.filter((requester) => !requester.isActive)).toHaveLength(1);
     expect(categoryUpsert).toHaveBeenCalledTimes(CATEGORIES.length);
     expect(relatedSystemUpsert).toHaveBeenCalledTimes(RELATED_SYSTEMS.length);
-    expect(requesterUpsert).toHaveBeenCalledTimes(DEVELOPMENT_REQUESTERS.length);
-    expect(requesterUpsert).toHaveBeenCalledWith(expect.objectContaining({
-      where: { email: DEVELOPMENT_REQUESTERS[0].email },
-    }));
   });
 });
 
@@ -55,14 +49,14 @@ describe("Lab 2 reference-data APIs", () => {
       { id: 2, displayName: "Michael Brown", email: "michael.brown@example.test" },
     ];
     const findMany = vi.fn().mockResolvedValue(requesters);
-    usePrismaMock({ developmentRequester: { findMany } });
+    usePrismaMock({ user: { findMany } });
 
     const response = await request(app).get("/api/development-requesters");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(requesters);
     expect(findMany).toHaveBeenCalledWith({
-      where: { isActive: true },
+      where: { isActive: true, role: "REQUESTER" },
       select: { id: true, displayName: true, email: true },
       orderBy: [{ displayName: "asc" }, { id: "asc" }],
     });
@@ -101,7 +95,7 @@ describe("Lab 2 reference-data APIs", () => {
   });
 
   it.each([
-    ["/api/development-requesters", "developmentRequester", "Unable to load development requesters"],
+    ["/api/development-requesters", "user", "Unable to load development requesters"],
     ["/api/categories", "category", "Unable to load request categories"],
     ["/api/related-systems", "relatedSystem", "Unable to load related systems"],
   ])("%s returns a safe error when Prisma fails", async (path, model, message) => {

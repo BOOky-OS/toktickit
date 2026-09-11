@@ -12,14 +12,16 @@ complete PR sidebar checklist and the explicit documentation gate before main.
 - Lab: Lab 3, Users, Roles, IT Staff Ticketing and Admin Screens.
 - Verified baseline main: 2fc1fe3; no open Issues/PRs before sprint initialization.
 - Integration branch: lab3-staging, created from current main.
-- Current contract branch: feature/32-lab3-contract.
-- Contract review: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42),
-  linked to Issue #32, targets lab3-staging; student confirmed on 2026-09-10,
-  Atip-Infa approved a0a53e6; review of later record updates and merge pending.
-- Prior peer reviewer: [Atip-Infa](https://github.com/Atip-Infa), verified as a
-  collaborator and the approver/merger of prior PR #31. Review of PR #42 was
-  requested on 2026-09-10 with explicit student authorization. Atip-Infa approved
-  a0a53e6; later record updates still require review before the reviewer merges.
+- Current Issue branch: feature/33-lab3-user-migration, based on f16f27b.
+- Contract: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42) linked to
+  Issue #32, merged by Atip-Infa into lab3-staging on 2026-09-11, commit f16f27b.
+  Student confirmation and contract approval are recorded in reviewer.md.
+  Issue #32 and its PR Project item are Done. Issue #33 is the active increment,
+  with [PR #43](https://github.com/BOOky-OS/toktickit/pull/43) linked through Development
+  and awaiting review into lab3-staging. Do not begin #34 before reviewer merge.
+- Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). The recorded approval
+  covered a0a53e6; the peer subsequently merged final documentation head b6933ce.
+  Do not misreport the merge as a separate latest-head approval.
 - Current-lab assignment/new instructor clarification takes precedence over
   historical lab assumptions; follow the student's explicit instructions.
 - Sources read: Lab_3_sheet.pdf, referenced Lab 2 branch/agent/completion rules,

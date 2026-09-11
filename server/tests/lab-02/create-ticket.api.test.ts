@@ -24,7 +24,7 @@ const SAVED = {
   relatedSystemId: 7,
   summary: "Laptop battery drains quickly",
   requestedPriority: "MEDIUM",
-  itPriority: "UNASSIGNED",
+  itPriority: "MEDIUM",
   currentStatus: "NEW",
   description: "The battery drops from full charge to empty within one hour.",
   clientSubmissionKey: KEY,
@@ -35,7 +35,7 @@ const SAVED = {
 
 function makeTransaction(overrides: Record<string, unknown> = {}) {
   return {
-    developmentRequester: {
+    user: {
       findUnique: vi.fn().mockResolvedValue({ id: 1, displayName: "Jennifer Anderson", isActive: true }),
     },
     category: {
@@ -77,7 +77,7 @@ describe("POST /api/tickets", () => {
       relatedSystem: { id: 7, name: "Corporate Laptop" },
       summary: "Laptop battery drains quickly",
       requestedPriority: "MEDIUM",
-      itPriority: "UNASSIGNED",
+      itPriority: "MEDIUM",
       currentStatus: "NEW",
       description: "The battery drops from full charge to empty within one hour.",
       attachments: [],
@@ -89,7 +89,7 @@ describe("POST /api/tickets", () => {
         relatedSystemId: 7,
         clientSubmissionKey: KEY,
         currentStatus: "NEW",
-        itPriority: "UNASSIGNED",
+        itPriority: "MEDIUM",
         summary: "Laptop battery drains quickly",
       }),
     }));
@@ -203,7 +203,7 @@ describe("POST /api/tickets", () => {
   });
 
   it.each([
-    ["developmentRequester", "requesterId", "Selected Requester is unavailable."],
+    ["user", "requesterId", "Selected Requester is unavailable."],
     ["category", "categoryId", "Selected Category is unavailable."],
     ["relatedSystem", "relatedSystemId", "Selected Related System is unavailable."],
   ])("rejects missing or inactive %s reference data", async (model, field, message) => {
