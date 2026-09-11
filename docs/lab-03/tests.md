@@ -293,6 +293,7 @@ implementation commit: `ff4b2e9`.
 | `npm run build` | Client TypeScript/Vite and server TypeScript builds passed |
 | `npm run prisma:validate` | Prisma 5.22.0 schema valid |
 | Diff hygiene | `git diff --check` passed; no obsolete Requester selector/transport was reintroduced |
+| GitHub metadata | PR #46 targets `lab3-staging`; Issue/PR are linked in Development, assigned/labeled/milestoned and both Project items are in PR Review; Atip-Infa requested after the final evidence push |
 
 The Requester UI retains one UUID for an unchanged uncertain submission and
 creates a new UUID after submitted fields change. My Tickets supports all eight

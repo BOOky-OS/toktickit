@@ -80,6 +80,17 @@ Atip-Infa approved final head `cf3d0c1` and merged it into `lab3-staging` as
 and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/45#issuecomment-5636472474)
 are present. Issue #35 is closed and both Project items are Done.
 
+[PR #46](https://github.com/BOOky-OS/toktickit/pull/46) for Issue #36 uses
+`feature/36-lab3-requester-regression` from the peer-merged Issue #35 commit
+`a97f020` and targets `lab3-staging`. Runtime/test implementation commit
+`ff4b2e9` and evidence commit `6ecf9cd` passed the checks recorded in tests.md.
+Development links #36. Assignee: BOOky-OS; requested reviewer: Atip-Infa;
+labels: enhancement/documentation; Project: TokTickIT Individual Sprints with
+Issue and PR in PR Review; milestone: Lab 3. Review focus: session-owned
+Requester boundaries, stable submission keys, list/Detail contract, Attachment
+row locking/version/removal audit and partial-upload retry. Peer approval,
+author reply and reviewer merge remain pending.
+
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
 commit. Answer every review comment; a bare approval does not erase open feedback.
