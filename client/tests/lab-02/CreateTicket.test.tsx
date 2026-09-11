@@ -3,8 +3,9 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../../src/App.js";
 import * as api from "../../src/api.js";
+import { mockAuthenticatedUser } from "../lab-03/auth-test-helpers.js";
 
-const requester: api.DevelopmentRequester = {
+const requester = {
   id: 1,
   displayName: "Jennifer Anderson",
   email: "jennifer@example.test",
@@ -12,11 +13,7 @@ const requester: api.DevelopmentRequester = {
 
 async function openCreateTicket(user: ReturnType<typeof userEvent.setup>) {
   render(<App />);
-  await user.selectOptions(
-    await screen.findByRole("combobox", { name: /development requester/i }),
-    "1",
-  );
-  await user.click(screen.getByRole("button", { name: "Continue" }));
+  await screen.findByRole("heading", { name: "My Tickets" });
   await user.click(
     within(screen.getByRole("navigation", { name: "Service desk" })).getByRole(
       "button",
@@ -48,7 +45,7 @@ async function completeForm(user: ReturnType<typeof userEvent.setup>) {
 describe("Create Ticket", () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.spyOn(api, "getDevelopmentRequesters").mockResolvedValue([requester]);
+    mockAuthenticatedUser();
     vi.spyOn(api, "getCategories").mockResolvedValue([
       { id: 2, name: "Hardware" },
     ]);
@@ -62,7 +59,7 @@ describe("Create Ticket", () => {
     localStorage.clear();
   });
 
-  it("uses the selected requester and displays the official ticket number after submission", async () => {
+  it("uses the signed-in requester and displays the official ticket number after submission", async () => {
     const user = userEvent.setup();
     const create = vi.spyOn(api, "createTicket").mockResolvedValue({
       id: 42,
@@ -105,7 +102,6 @@ describe("Create Ticket", () => {
     ).toBeInTheDocument();
     expect(create).toHaveBeenCalledWith(
       expect.objectContaining({
-        requesterId: 1,
         categoryId: 2,
         relatedSystemId: 7,
       }),
@@ -188,8 +184,8 @@ describe("Create Ticket", () => {
     expect(
       screen.getByRole("button", { name: "View Ticket Detail" }),
     ).toBeInTheDocument();
-    expect(upload).toHaveBeenNthCalledWith(1, 42, 1, evidence);
-    expect(upload).toHaveBeenNthCalledWith(2, 42, 1, failed);
+    expect(upload).toHaveBeenNthCalledWith(1, 42, evidence);
+    expect(upload).toHaveBeenNthCalledWith(2, 42, failed);
   });
 
   it("rejects an attachment that exceeds the client-side size limit", async () => {

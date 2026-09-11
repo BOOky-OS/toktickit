@@ -12,20 +12,21 @@ complete PR sidebar checklist and the explicit documentation gate before main.
 - Lab: Lab 3, Users, Roles, IT Staff Ticketing and Admin Screens.
 - Verified baseline main: 2fc1fe3; no open Issues/PRs before sprint initialization.
 - Integration branch: lab3-staging, created from current main.
-- Current Issue branch: feature/34-lab3-auth-api, based on a5e23e1.
+- Current Issue branch: feature/35-lab3-auth-ui, based on peer-merged #34 commit 968c19b.
 - Contract: [PR #42](https://github.com/BOOky-OS/toktickit/pull/42) linked to
   Issue #32, merged by Atip-Infa into lab3-staging on 2026-09-11, commit f16f27b.
   Student confirmation and contract approval are recorded in reviewer.md.
-  Issues #32/#33 and their PR Project items are Done.
+  Issues #32/#33/#34 and their PR Project items are Done.
   [PR #43](https://github.com/BOOky-OS/toktickit/pull/43) was approved at
-  8321ca8 and merged by Atip-Infa as a5e23e1. Author approval/post-merge replies
-  are present. Issue #34 is the active increment with
-  [PR #44](https://github.com/BOOky-OS/toktickit/pull/44), linked through Development;
-  #35 waits for its peer review,
-  replies, reviewer merge and Done.
-- Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). The recorded approval
-  covered a0a53e6; the peer subsequently merged final documentation head b6933ce.
-  Do not misreport the merge as a separate latest-head approval.
+  8321ca8 and merged by Atip-Infa as a5e23e1. [PR #44](https://github.com/BOOky-OS/toktickit/pull/44)
+  was approved at final head ac03ae4 and merged by Atip-Infa as 968c19b;
+  author approval/post-merge replies are present. Issue #35 is the active
+  authentication UI increment with [PR #45](https://github.com/BOOky-OS/toktickit/pull/45);
+  Development/sidebar fields are verified and Issue/PR are in PR Review. #36
+  waits for peer approval, author replies, reviewer merge and Done.
+- Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). Contract approval and
+  the later final-head approvals/merges for #33 and #34 are recorded separately
+  in reviewer.md. No approval is inferred for the active #35 branch.
 - Current-lab assignment/new instructor clarification takes precedence over
   historical lab assumptions; follow the student's explicit instructions.
 - Sources read: Lab_3_sheet.pdf, referenced Lab 2 branch/agent/completion rules,

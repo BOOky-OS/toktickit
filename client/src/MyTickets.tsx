@@ -35,13 +35,7 @@ function priorityLabel(priority: string) {
   return priority.charAt(0) + priority.slice(1).toLowerCase();
 }
 
-export function MyTickets({
-  requesterId,
-  onCreate,
-}: {
-  requesterId: number;
-  onCreate: () => void;
-}) {
+export function MyTickets({ onCreate }: { onCreate: () => void }) {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [applied, setApplied] = useState<Filters>(DEFAULT_FILTERS);
   const [page, setPage] = useState(1);
@@ -71,13 +65,13 @@ export function MyTickets({
       currentStatus: applied.currentStatus || undefined,
       page,
     };
-    void getTickets(requesterId, options)
+    void getTickets(options)
       .then((value) => {
         setResponse(value);
         setState("ready");
       })
       .catch(() => setState("error"));
-  }, [requesterId, applied, page]);
+  }, [applied, page]);
 
   function set(name: keyof Filters, value: string) {
     setFilters((current) => ({ ...current, [name]: value }));
@@ -111,7 +105,6 @@ export function MyTickets({
     return (
       <TicketDetail
         ticketId={openedTicketId}
-        requesterId={requesterId}
         onBack={() => setOpenedTicketId(null)}
       />
     );
@@ -124,7 +117,7 @@ export function MyTickets({
             <p className="eyebrow">Service requests</p>
             <h1 id="my-tickets-title">My Tickets</h1>
             <p className="text-secondary mb-0">
-              Only Tickets for the currently selected requester appear here.
+              Only Tickets for your signed-in account appear here.
             </p>
           </div>
           <button className="zen-button zen-button--primary" onClick={onCreate}>
@@ -265,7 +258,7 @@ export function MyTickets({
             <p>
               {filtered
                 ? "Your active search or filters did not find matching Tickets."
-                : "The selected requester has no Tickets yet."}
+                : "Your account has no Tickets yet."}
             </p>
             {filtered ? (
               <button
@@ -294,7 +287,7 @@ export function MyTickets({
             >
               <table className="ticket-table">
                 <caption className="visually-hidden">
-                  Tickets belonging to the current development requester
+                  Tickets belonging to the signed-in requester
                 </caption>
                 <thead>
                   <tr>

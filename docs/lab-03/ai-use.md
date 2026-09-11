@@ -1,7 +1,7 @@
 # Lab 3 AI Use Record
 
 Assistant used in this session: Codex (GPT-6).
-Status: factual preparation and Issue #33 implementation record.
+Status: factual preparation and Issues #33-#35 implementation record.
 Prompts below are actual short excerpts or exact answers from this conversation,
 not invented historical prompts. Dates of earlier excerpts are not inferred.
 
@@ -69,6 +69,22 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
   passed. Concurrent password changes leave exactly one fresh valid session.
   These are assistant-run checks, not claims that the student or peer ran them.
 
+## Issue #35 observed verification and decisions
+
+- Actual continuation prompts included "โอเคเพื่อนmerge แล้วไปต่อเลย" and
+  "ทำต่อจากที่โทเคนหมดให้หน่อย". The AI verified PR #44 approval/merge,
+  completed #34 board/Issue evidence, and continued only on the existing #35 branch.
+- The client now restores the server identity, keeps CSRF only in module memory,
+  uses cookie credentials and removes the old requester selector/context/storage
+  path. Requester API functions no longer accept or transport requesterId.
+- Reviewing the approved UI spec exposed two edge cases before submission: the
+  mandatory password screen needed Logout, and a Login 401 must remain credential
+  feedback rather than emit a false expired-session event. Both received tests.
+- Client tests passed 48/48 in seven files. Server regression passed 100/100 in
+  14 files against only the isolated test database; client/server builds and
+  Prisma validation passed. These are assistant-run checks, not student/peer claims.
+- Real browser E2E and screenshots remain planned and are not represented as
+  passing. No working database migration, reset, seed or provisioning was run.
 ## My Reflection
 
 Pending the student's own reflection after using and reviewing the work.

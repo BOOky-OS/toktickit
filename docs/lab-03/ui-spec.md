@@ -220,6 +220,10 @@ Viewports: 1440x900, 834x1112 and 390x844. Include initial, meaningful validatio
 busy, success, safe failure, forbidden/conflict and empty/no-results examples.
 Screenshots must use local demo data; exclude visible secrets.
 
+Issue #35 component tests now verify auth labels, keyboard flow, role navigation,
+safe busy/error states and selector removal. The cross-screen browser screenshots
+and human visual inspection below remain Planned for their owning/final Issues.
+
 The checklist remains Planned until inspected:
 
 | Inspection | Required evidence / current status |

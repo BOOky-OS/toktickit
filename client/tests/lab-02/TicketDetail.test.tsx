@@ -44,7 +44,7 @@ describe("Ticket Detail", () => {
       removedAt: "2026-08-20T09:00:00.000Z",
       removalReason: "Contains private information",
     });
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     expect(
       await screen.findByRole("heading", { name: "TKT-2026-000042" }),
     ).toBeInTheDocument();
@@ -66,7 +66,6 @@ describe("Ticket Detail", () => {
     ).not.toBeInTheDocument();
     expect(api.removeAttachment).toHaveBeenCalledWith(
       9,
-      1,
       "Contains private information",
     );
   });
@@ -80,14 +79,14 @@ describe("Ticket Detail", () => {
       mimeType: "image/png",
     };
     vi.spyOn(api, "uploadAttachment").mockResolvedValue(uploaded);
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
     await user.upload(
       screen.getByLabelText("Add attachment"),
       new File(["image"], "photo.png", { type: "image/png" }),
     );
     expect(await screen.findByText("photo.png")).toBeInTheDocument();
-    expect(api.uploadAttachment).toHaveBeenCalledWith(42, 1, expect.any(File));
+    expect(api.uploadAttachment).toHaveBeenCalledWith(42, expect.any(File));
     expect(screen.getByRole("status")).toHaveTextContent(
       /photo\.png uploaded successfully/i,
     );
@@ -101,7 +100,7 @@ describe("Ticket Detail", () => {
         originalFilename: `file-${index + 1}.pdf`,
       })),
     );
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     expect(
       await screen.findByLabelText("Attachment limit reached"),
     ).toBeDisabled();
@@ -111,7 +110,7 @@ describe("Ticket Detail", () => {
   it("rejects an invalid selected file before calling the upload API", async () => {
     const user = userEvent.setup({ applyAccept: false });
     const upload = vi.spyOn(api, "uploadAttachment");
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
 
     await user.upload(
@@ -130,7 +129,7 @@ describe("Ticket Detail", () => {
     vi.spyOn(api, "uploadAttachment").mockRejectedValue(
       new api.TicketApiError("Unable to upload attachment.", 500),
     );
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
 
     await user.upload(
@@ -150,7 +149,7 @@ describe("Ticket Detail", () => {
     vi.spyOn(api, "removeAttachment").mockRejectedValue(
       new Error("private failure detail"),
     );
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
     await user.click(screen.getByRole("button", { name: "Remove" }));
     await user.type(
@@ -176,7 +175,7 @@ describe("Ticket Detail", () => {
     vi.mocked(api.getTicket)
       .mockRejectedValueOnce(new Error("private API detail"))
       .mockResolvedValueOnce(detail);
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       /unable to load Ticket Detail/i,
@@ -193,7 +192,7 @@ describe("Ticket Detail", () => {
     vi.mocked(api.getTicket).mockRejectedValue(
       new api.TicketApiError("not owned", 404),
     );
-    render(<TicketDetail ticketId={42} requesterId={2} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     expect(
       await screen.findByRole("heading", { name: "Ticket unavailable" }),
     ).toBeInTheDocument();
