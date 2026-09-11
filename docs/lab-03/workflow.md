@@ -19,7 +19,9 @@ complete PR sidebar checklist and the explicit documentation gate before main.
   Issues #32/#33 and their PR Project items are Done.
   [PR #43](https://github.com/BOOky-OS/toktickit/pull/43) was approved at
   8321ca8 and merged by Atip-Infa as a5e23e1. Author approval/post-merge replies
-  are present. Issue #34 is the active increment; #35 waits for its peer review,
+  are present. Issue #34 is the active increment with
+  [PR #44](https://github.com/BOOky-OS/toktickit/pull/44), linked through Development;
+  #35 waits for its peer review,
   replies, reviewer merge and Done.
 - Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). The recorded approval
   covered a0a53e6; the peer subsequently merged final documentation head b6933ce.

@@ -54,7 +54,10 @@ and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/43#issuecommen
 are present. No inline review comments exist. Issue #33 is closed and both
 Project items are Done.
 
-Issue #34 uses feature/34-lab3-auth-api from a5e23e1, targeting lab3-staging.
+[PR #44](https://github.com/BOOky-OS/toktickit/pull/44) for Issue #34 uses
+feature/34-lab3-auth-api from a5e23e1, targeting lab3-staging.
+Development links #34. Assignee: BOOky-OS; reviewer: Atip-Infa; labels:
+enhancement/documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
 Review focus: persisted session/CSRF rotation, forced change, uniform login
 failures, throttles, transaction-time revocation, role/ownership boundaries,
 compensated uploads and real PostgreSQL test evidence.

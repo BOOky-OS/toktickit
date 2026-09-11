@@ -211,7 +211,8 @@ verification and the student documentation gate remain pending.
 ### Issue #34 authentication and authorization results
 
 Verified 2026-09-11 on feature/34-lab3-auth-api, based on a5e23e1.
-The implementation commit containing this record is identifiable in Git history.
+Implementation commit: 29b0a8c, submitted through PR #44. Later PR-link
+documentation updates do not change the tested runtime or test files.
 
 | Command / check | Observed result |
 | --- | --- |
