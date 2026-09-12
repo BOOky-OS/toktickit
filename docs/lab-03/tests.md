@@ -404,6 +404,7 @@ Independent peer review and the completed-document/main gate remain pending.
 ## Issue #40 Administrator results — 2026-09-12
 
 Branch: `feature/40-lab3-user-management`, based on peer-merged `711f20f` (#39).
+Implementation commit: `8e50218`; submitted through PR #50.
 
 | Command / evidence | Observed result |
 | --- | --- |

@@ -139,6 +139,14 @@ and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/49#issuecommen
 are present; no inline comments remain. Issue #39 is closed and its Issue/PR
 Project items are Done. Existing replies do not need duplicate comments.
 
+[PR #50](https://github.com/BOOky-OS/toktickit/pull/50) for Issue #40 uses
+`feature/40-lab3-user-management` from integration commit `711f20f`, targeting
+`lab3-staging`. Implementation commit: `8e50218`. Development links #40.
+Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
+documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
+Review focus: user validation, passwords/sessions, last-Admin/active-owner guards,
+concurrency and responsive edit/reset UI. Peer review and merge remain pending.
+
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
 commit. Answer every review comment; a bare approval does not erase open feedback.
