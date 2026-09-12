@@ -340,6 +340,7 @@ Independent peer review, full authenticated E2E and final-main checks remain pen
 ## Issue #38 Staff operations results — 2026-09-12
 
 Branch: `feature/38-lab3-staff-operations`, based on peer-merged `ed33913` (#37).
+Implementation commit: `68538b8`; submitted through PR #48.
 
 | Command / evidence | Observed result |
 | --- | --- |

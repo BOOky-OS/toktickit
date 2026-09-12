@@ -111,6 +111,15 @@ and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/47#issuecommen
 are present; there are no inline review comments. Issue #37 is closed and both
 Project items are Done. No duplicate author comments are needed.
 
+[PR #48](https://github.com/BOOky-OS/toktickit/pull/48) for Issue #38 uses
+`feature/38-lab3-staff-operations` from verified integration commit `ed33913`
+and targets `lab3-staging`. Implementation commit: `68538b8`. Development links
+#38. Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
+documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
+Review focus: locked role/version checks, ownership, priority, status/history
+atomicity and confirmation/conflict UI. Actual test scope is in tests.md.
+Peer approval, author reply and reviewer merge remain pending.
+
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
 commit. Answer every review comment; a bare approval does not erase open feedback.
