@@ -622,7 +622,7 @@ function PlannedRoleHome() {
         onClick={() => navigate("/staff/tickets")}>Ticket Queue{admin ? " (read-only)" : ""}</button>
     </nav>
     {path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => navigate("/tickets/" + id)} onHome={() => navigate(homeFor(user!.role))} />
-      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly onBack={() => navigate("/staff/tickets")} />
+      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable={!admin} onBack={() => navigate("/staff/tickets")} />
       : <main className="page-content" id="main-content">
       <section className="zen-empty-state">
         <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator read-only access" : "Role workspace"}</p>

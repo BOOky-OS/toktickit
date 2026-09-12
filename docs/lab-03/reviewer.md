@@ -3,7 +3,7 @@
 Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
 commit a0a53e6, then merged final head b6933ce through PR #42 on 2026-09-11.
 Issues #33-#35 were approved at their final heads and merged by Atip-Infa.
-Issue #36 is approved and peer-merged; Issue #37 Queue awaits peer review.
+Issues #36 and #37 are approved and peer-merged; Issue #38 awaits peer review.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -101,10 +101,25 @@ Project items are Done.
 and targets `lab3-staging`. Implementation commit: `453746e`. Development links
 #37. Assignee: BOOky-OS; requested reviewer: Atip-Infa; labels:
 documentation/enhancement; Project: TokTickIT Individual Sprints with Issue and
-PR in PR Review; milestone: Lab 3. Review focus: Staff/Admin role denial,
+PR now Done; milestone: Lab 3. Review focus: Staff/Admin role denial,
 query validation and ordering, responsive Queue states, read-only Detail and
-the explicit limits of mocked browser evidence. Peer review, author response
-and reviewer merge remain pending.
+the explicit limits of mocked browser evidence.
+Atip-Infa approved final head `a5b100b` and merged PR #47 as
+`ed33913925692417925d1f71b3f6111a19510bfa` on 2026-09-12.
+[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/47#issuecomment-5644074049)
+and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/47#issuecomment-5644075985)
+are present; there are no inline review comments. Issue #37 is closed and both
+Project items are Done. No duplicate author comments are needed.
+
+[PR #48](https://github.com/BOOky-OS/toktickit/pull/48) for Issue #38 uses
+`feature/38-lab3-staff-operations` from verified integration commit `ed33913`
+and targets `lab3-staging`. Implementation commit: `68538b8`. Development links
+#38. Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
+documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
+Review focus: locked role/version checks, ownership, priority, status/history
+atomicity and confirmation/conflict UI. Actual test scope is in tests.md.
+Peer approval, author reply and reviewer merge remain pending.
+
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
 commit. Answer every review comment; a bare approval does not erase open feedback.
@@ -116,7 +131,7 @@ Lab 2 partner reviews or use another account to approve one's own work.
 
 ## Outstanding human review
 
-Review Issue #37 Queue role boundaries, search/filter/order/pagination, responsive
-cards, read-only Detail navigation and test evidence. Give specific
+Review Issue #38 claim/assignment/priority, all status transitions, transaction
+boundaries and conflict/confirmation UI. Give specific
 changes where needed; use Approve only after checking the actual branch head.
 The reviewer, not the PR author, merges into lab3-staging when ready.

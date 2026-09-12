@@ -30,6 +30,7 @@ import { createTicket } from "./tickets/create-ticket.js";
 import { validateCreateTicket } from "./tickets/ticket-validation.js";
 import { listTickets, parseTicketList } from "./tickets/list-tickets.js";
 import { listAssignees, parseQueue, staffQueue } from "./tickets/staff-queue.js";
+import { staffOperations } from "./tickets/staff-operations.js";
 
 // The Express app is exported separately from app.listen() (see index.ts) so
 // Supertest can import `app` without opening a port. Do not merge these files.
@@ -361,6 +362,7 @@ app.delete("/api/attachments/:attachmentId", async (req: Request, res: Response)
   }
 });
 
+app.use("/api", staffOperations);
 app.use((_req, res) => { res.status(404).json({ error: "Resource is unavailable.", code: "NOT_FOUND" }); });
 
 function sendError(res: Response, error: unknown) {

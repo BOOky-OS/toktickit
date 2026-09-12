@@ -50,7 +50,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Pass in #34: helper boundaries plus real-DB password replacement, confirmation and difference checks in auth.api.test.ts; final-main pending |
 | UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Planned |
 | UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Queue Pass; Users query coverage remains #40 |
-| UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Planned |
+| UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Pass in #38: all 64 status pairs and body/reason validation; resolution-indication-specific cases remain #39 |
 | UNIT-05 | Unit | BR-10..12,28; AC-08,09,19 | Table-driven role/resource decisions including Admin read-only, historical requester IDs and no internal fields in requester serializer | server/tests/lab-03/authorization.unit.test.ts | Planned |
 | MIG-01 | DB migration | FR-01; AC-01 | Upgrade actual Lab 2 schema with active/inactive users, Tickets, active/removed Attachments; preserve IDs/text/number/date/ownership/removal authors/file bytes and references | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
 | MIG-02 | DB migration | BR-02,13; AC-01 | Case-fold email collisions/invalid existing email abort before partial mutation; sequence remains above preserved IDs/numbers; UNASSIGNED backfills but set priorities remain | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
@@ -68,10 +68,10 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | API-10 | API/DB | FR-10; AC-12 | Valid MIME/signature/extension; 5 MiB exact/+1; fifth/sixth active; owned upload/list/download/remove, all statuses; removed bytes unavailable to every role and audit retained | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: exact size boundary, all statuses, row-locked cap, version and removal audit |
 | API-11 | API | BR-19,35; AC-12,31 | Storage/metadata failures compensate safely; ticket survives partial uploads; missing file/reason limits/download header sanitation and safe error envelopes | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: safe compensation/errors, required reason and RFC 5987 download header |
 | API-12 | API/DB | FR-11; AC-13 | Staff/Admin Queue all query combinations/defaults/priority order/ties/count snapshot; requester denial; inactive historical owner remains visible; assignees active Staff/Admin only | server/tests/lab-03/staff-queue.api.test.ts | Pass (#37); repeatable-read implementation, no forced concurrent count probe |
-| API-13 | API/DB | FR-12,13; AC-14 | Staff Detail, claim, already-self no-op, other-owner conflict, confirmed reassign, null restrictions, inactive/wrong-role rejection, Admin candidate with read-only permissions | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
-| API-14 | API/DB | FR-14; AC-15 | Priority LOW/MEDIUM/HIGH, no UNASSIGNED, immutable Requested Priority, no-op and terminal/role denial | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
-| API-15 | API/DB | FR-15; AC-16 | Every permitted/forbidden status pair; owner, confirmation and public reason prerequisites; timestamps/history/reopen clearing and transaction rollback on history failure | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
-| API-16 | DB concurrency | BR-15,17,25,32; AC-10,12,17,25 | Racing identical creates -> one Ticket; simultaneous fifth/sixth uploads -> cap; claims/stale versions/admin demotions -> valid winner/conflict; owner deactivation race cannot produce invalid active assignment | server/tests/lab-03/requester-regression.api.test.ts; attachments-regression.api.test.ts; later staff/admin suites | Partial pass in #36: create and attachment races; staff/admin races remain #38/#40 |
+| API-13 | API/DB | FR-12,13; AC-14 | Staff Detail, claim, already-self no-op, other-owner conflict, confirmed reassign, null restrictions, inactive/wrong-role rejection, Admin candidate with read-only permissions | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
+| API-14 | API/DB | FR-14; AC-15 | Priority LOW/MEDIUM/HIGH, no UNASSIGNED, immutable Requested Priority, no-op and terminal/role denial | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
+| API-15 | API/DB | FR-15; AC-16 | Every permitted/forbidden status pair; owner, confirmation and public reason prerequisites; timestamps/history/reopen clearing and transaction rollback on history failure | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
+| API-16 | DB concurrency | BR-15,17,25,32; AC-10,12,17,25 | Racing identical creates -> one Ticket; simultaneous fifth/sixth uploads -> cap; claims/stale versions/admin demotions -> valid winner/conflict; owner deactivation race cannot produce invalid active assignment | server/tests/lab-03/requester-regression.api.test.ts; attachments-regression.api.test.ts; later staff/admin suites | Partial pass in #36/#38: create/attachment races, concurrent claims and stale writes; Admin races remain #40 |
 | API-17 | API/DB | FR-16; AC-18 | Public read/post roles, owned isolation, whitespace/1/2000/2001 limits, author/time injection denial, terminal and PATCH/DELETE denial, stable ordering | server/tests/lab-03/comments-notes.api.test.ts | Planned |
 | API-18 | API/DB | FR-17; AC-19 | Notes Staff append/Admin read-only, Requester forbidden including guessed IDs; no note/count leaks in detail/list/errors; 1/4000/4001 limits and append-only/terminal rules | server/tests/lab-03/comments-notes.api.test.ts | Planned |
 | API-19 | API/DB | FR-18; AC-20 | Own eligible confirmed indication sets time/version without status change; repeat no-op, stale/cross-user/ineligible status denial; staff reopen clears it | server/tests/lab-03/resolution-indication.api.test.ts | Planned |
@@ -86,7 +86,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | UI-03 | UI | FR-06,07; AC-08,26 | Boot loading/me, role menus, forbidden routes, expiry/logout failure/retry, no stale data via Back/reload, old storage key removed | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
 | UI-04 | UI | FR-08..10; AC-10,27 | Authenticated requester Create/List/Detail, filters/statuses/empty/retry, key retained across ambiguous failure, partial file recovery, no selector | client/tests/lab-03/RequesterRegression.test.tsx | Pass in #36; Lab 2 requester tests also retained and adapted |
 | UI-05 | UI | FR-11; AC-13,28 | Staff/Admin Queue fields/search/filters/sort/page/card links, loading/empty/no-results/forbidden/failure, read-only Admin context | client/tests/lab-03/StaffTicketQueue.test.tsx | Pass (#37) |
-| UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Planned |
+| UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Pass in #38 |
 | UI-07 | UI | FR-16..18; AC-18,19,20,28 | Separate public/internal drafts, safe literal HTML text, permissions, empty/failed/terminal posting, requester resolution action/indicator and no note metadata | client/tests/lab-03/CommentsNotes.test.tsx | Planned |
 | UI-08 | UI | FR-19..22; AC-21..25,29 | User list/search/create/edit/reset, field validation/conflict/safe failure, draft retention/password clearing, safety reasons, self-session invalidation | client/tests/lab-03/UserManagement.test.tsx | Planned |
 | STYLE-01 | UI style | BR-36; AC-30 | Shared Zen tokens/classes, required markers, read-only/invalid states, aria labels, non-colour badges and button states | client/tests/lab-03/StyleAccessibility.test.tsx | Planned |
@@ -337,6 +337,40 @@ ignored artifacts, not completed manual visual inspection or real login E2E.
 See [Queue implementation and reproduction](staff-queue.md) for paths and scope.
 No working database reset, migration, seed or provisioning occurred.
 Independent peer review, full authenticated E2E and final-main checks remain pending.
+## Issue #38 Staff operations results — 2026-09-12
+
+Branch: `feature/38-lab3-staff-operations`, based on peer-merged `ed33913` (#37).
+Implementation commit: `68538b8`; submitted through PR #48.
+
+| Command / evidence | Observed result |
+| --- | --- |
+| Full server regression, isolated TEST_DATABASE_URL, `--maxWorkers=1` | 198/198 passed in 20 files; 131.74 s; no skips |
+| Full client regression, `--maxWorkers=1` | 67/67 passed in 10 files; 38.68 s; no skips |
+| Final focused backend workflow/API regression | 73/73 passed in 2 files after strict IT Priority type validation; 22.31 s |
+| Final focused client StaffTicketDetail regression | 7/7 passed after the dialog-error handling adjustment |
+| `npm run build` | Client TypeScript/Vite and server TypeScript passed after final code adjustments |
+| `npm run prisma:validate` | Schema valid |
+| `npx playwright test --config playwright.operations.config.ts` | 3/3 passed after final adjustment; 18.9 s; Chrome desktop/tablet/mobile with mocked APIs |
+| `git diff --check` | Passed |
+
+The full regressions preceded two final boundary adjustments: explicitly reject
+array-valued IT Priority and dismiss confirmation on API error so the retained
+draft and safe error are accessible. Focused backend/UI checks and browser checks
+were rerun on those final files. The recorded full-run counts are not represented
+as a second full run after those adjustments.
+
+New suites contain 65 unit cases (64 status pairs plus exact-body/reason checks),
+eight PostgreSQL API cases and seven component cases. API cases exercise all 64
+pairs, concurrent claims, stale/no-op handling, invalid owners, terminal rules,
+public-history visibility, timestamps/reopening and rollback on forced history
+insertion failure. Admin account-edit races remain #40; resolution indication
+and comments/notes remain #39.
+
+See [Staff operations](staff-operations.md) for reproduction and screenshot paths.
+Browser APIs are mocked; real authenticated E2E and manual visual inspection
+remain pending. No working database reset/migration/seed/provisioning occurred.
+Peer review, reviewer merge and final-main documentation confirmation are pending.
+
 ## 7. Visual checklist and deferred scope
 
 Complete the ui-spec.md checklist with screenshot paths, observed results and

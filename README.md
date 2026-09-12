@@ -12,7 +12,8 @@ and [planned tests](docs/lab-03/tests.md). These documents describe target
 behavior. Issues #33-#36 implement migration/seed, authentication, the browser
 role shell and authenticated Requester regression. Issue #37 adds the responsive
 [Staff/Admin Ticket Queue](docs/lab-03/staff-queue.md) and read-only Detail navigation.
-See [authentication setup](docs/lab-03/authentication.md). Staff mutations,
+Issue #38 adds [Staff Ticket operations](docs/lab-03/staff-operations.md).
+See [authentication setup](docs/lab-03/authentication.md). Public/internal
 communication and user administration remain later increments.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues

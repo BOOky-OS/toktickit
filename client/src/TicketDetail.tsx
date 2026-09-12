@@ -10,6 +10,7 @@ import {
   uploadAttachment,
 } from "./api.js";
 
+import { StaffOperations } from "./StaffOperations.js";
 type DetailState = "loading" | "ready" | "error" | "unavailable";
 const allowedTypes = [
   "image/jpeg",
@@ -33,11 +34,13 @@ export function TicketDetail({
   retryFiles = NO_RETRY_FILES,
   onRetryFilesChange,
   readOnly = false,
+  staffEditable = false,
 }: {
   ticketId: number;
   onBack: () => void;
   retryFiles?: File[];
   readOnly?: boolean;
+  staffEditable?: boolean;
   onRetryFilesChange?: (files: File[]) => void;
 }) {
   const [state, setState] = useState<DetailState>("loading");
@@ -198,7 +201,7 @@ export function TicketDetail({
       <section className="ticket-card">
         <div className="ticket-heading">
           <div>
-            <p className="eyebrow">{readOnly ? "Ticket Detail (read-only)" : "Requester Ticket Detail"}</p>
+            <p className="eyebrow">{readOnly ? staffEditable ? "Staff Ticket Detail" : "Ticket Detail (read-only)" : "Requester Ticket Detail"}</p>
             <h1>{ticket.ticketNumber}</h1>
           </div>
           <span className="zen-badge">{enumLabel(ticket.currentStatus)}</span>
@@ -212,7 +215,7 @@ export function TicketDetail({
           <Detail label="Related System" value={ticket.relatedSystem.name} />
           <Detail label="Requested Priority" value={enumLabel(ticket.requestedPriority)} />
           <Detail label="IT Priority" value={enumLabel(ticket.itPriority)} />
-          <Detail label="Version" value={String(ticket.version)} />
+
           <Detail label="Summary" value={ticket.summary} wide />
           <Detail label="Description" value={ticket.description} wide />
           {ticket.requesterResolutionIndicatedAt && (
@@ -227,6 +230,8 @@ export function TicketDetail({
           {ticket.resolutionSummary && <Detail label="Resolution Summary" value={ticket.resolutionSummary} wide />}
           {ticket.cancellationReason && <Detail label="Cancellation Reason" value={ticket.cancellationReason} wide />}
         </dl>
+
+        {readOnly && <StaffOperations ticket={ticket} editable={staffEditable} onUpdate={setTicket} />}
 
         {pendingRetries.length > 0 && (
           <section className="attachment-section" aria-labelledby="retry-attachments">
