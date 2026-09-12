@@ -125,6 +125,15 @@ and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/48#issuecommen
 are present; no inline comments remain. Issue #38 is closed and both Project
 items are Done. The existing author replies do not need to be posted again.
 
+[PR #49](https://github.com/BOOky-OS/toktickit/pull/49) for Issue #39 uses
+`feature/39-lab3-comments-notes` from integration commit `790a99c`, targeting
+`lab3-staging`. Implementation commit: `4a7266e`. Development links #39.
+Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
+ documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
+Review focus: public/internal privacy, atomic append/version updates, requester
+indication, literal rendering and uncertain-response retry. Evidence is in tests.md.
+Peer approval, author response and reviewer merge remain pending.
+
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
 commit. Answer every review comment; a bare approval does not erase open feedback.

@@ -374,6 +374,7 @@ Peer review, reviewer merge and final-main documentation confirmation are pendin
 ## Issue #39 communication results — 2026-09-12
 
 Branch: `feature/39-lab3-comments-notes`, based on peer-merged `790a99c` (#38).
+Implementation commit: `4a7266e`; submitted through PR #49.
 
 | Command / evidence | Observed result |
 | --- | --- |
