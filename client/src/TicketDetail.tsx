@@ -11,6 +11,7 @@ import {
 } from "./api.js";
 
 import { StaffOperations } from "./StaffOperations.js";
+import { TicketCommunication } from "./TicketCommunication.js";
 type DetailState = "loading" | "ready" | "error" | "unavailable";
 const allowedTypes = [
   "image/jpeg",
@@ -232,6 +233,8 @@ export function TicketDetail({
         </dl>
 
         {readOnly && <StaffOperations ticket={ticket} editable={staffEditable} onUpdate={setTicket} />}
+
+        <TicketCommunication ticket={ticket} role={readOnly ? staffEditable ? "IT_STAFF" : "ADMIN" : "REQUESTER"} onUpdate={setTicket} />
 
         {pendingRetries.length > 0 && (
           <section className="attachment-section" aria-labelledby="retry-attachments">

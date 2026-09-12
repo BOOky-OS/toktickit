@@ -274,3 +274,20 @@ export async function mutateStaffTicket(id: number, operation: "claim" | "owner"
   if (!response.ok) throw await responseError(response, "Unable to update Ticket.");
   return response.json();
 }
+
+export interface CommunicationEntry { id: number; body: string; createdAt: string; author: NonNullable<TicketOwner>; }
+export async function getEntries(id: number, stream: "comments" | "notes"): Promise<CommunicationEntry[]> {
+  const response = await apiFetch(`/api/tickets/${id}/${stream}`);
+  if (!response.ok) throw await responseError(response, "Unable to load messages.");
+  return response.json();
+}
+export async function postEntry(id: number, stream: "comments" | "notes", body: string): Promise<CommunicationEntry> {
+  const response = await apiFetch(`/api/tickets/${id}/${stream}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ body }) });
+  if (!response.ok) throw await responseError(response, "Unable to post message.");
+  return response.json();
+}
+export async function indicateResolution(id: number, version: number): Promise<TicketDetail> {
+  const response = await apiFetch(`/api/tickets/${id}/resolution-indication`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ version, confirmed: true }) });
+  if (!response.ok) throw await responseError(response, "Unable to record indication.");
+  return response.json();
+}
