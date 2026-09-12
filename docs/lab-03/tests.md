@@ -48,8 +48,8 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | ID | Type | Requirement / AC | Scenario and expected result | Intended automated file | Final |
 | --- | --- | --- | --- | --- | --- |
 | UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Pass in #34: helper boundaries plus real-DB password replacement, confirmation and difference checks in auth.api.test.ts; final-main pending |
-| UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Planned |
-| UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Queue Pass; Users query coverage remains #40 |
+| UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Pass in #40 |
+| UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Queue Pass; Users query coverage added in #40 user-validation.unit.test.ts |
 | UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Pass in #38: all 64 status pairs and body/reason validation; resolution-indication cases now covered in #39 API suite |
 | UNIT-05 | Unit | BR-10..12,28; AC-08,09,19 | Table-driven role/resource decisions including Admin read-only, historical requester IDs and no internal fields in requester serializer | server/tests/lab-03/authorization.unit.test.ts | Planned |
 | MIG-01 | DB migration | FR-01; AC-01 | Upgrade actual Lab 2 schema with active/inactive users, Tickets, active/removed Attachments; preserve IDs/text/number/date/ownership/removal authors/file bytes and references | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
@@ -71,15 +71,15 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | API-13 | API/DB | FR-12,13; AC-14 | Staff Detail, claim, already-self no-op, other-owner conflict, confirmed reassign, null restrictions, inactive/wrong-role rejection, Admin candidate with read-only permissions | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
 | API-14 | API/DB | FR-14; AC-15 | Priority LOW/MEDIUM/HIGH, no UNASSIGNED, immutable Requested Priority, no-op and terminal/role denial | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
 | API-15 | API/DB | FR-15; AC-16 | Every permitted/forbidden status pair; owner, confirmation and public reason prerequisites; timestamps/history/reopen clearing and transaction rollback on history failure | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
-| API-16 | DB concurrency | BR-15,17,25,32; AC-10,12,17,25 | Racing identical creates -> one Ticket; simultaneous fifth/sixth uploads -> cap; claims/stale versions/admin demotions -> valid winner/conflict; owner deactivation race cannot produce invalid active assignment | server/tests/lab-03/requester-regression.api.test.ts; attachments-regression.api.test.ts; later staff/admin suites | Partial pass in #36/#38: create/attachment races, concurrent claims and stale writes; Admin races remain #40 |
+| API-16 | DB concurrency | BR-15,17,25,32; AC-10,12,17,25 | Racing identical creates -> one Ticket; simultaneous fifth/sixth uploads -> cap; claims/stale versions/admin demotions -> valid winner/conflict; owner deactivation race cannot produce invalid active assignment | server/tests/lab-03/requester-regression.api.test.ts; attachments-regression.api.test.ts; later staff/admin suites | Pass across #36/#38/#40: create/attachment races, claims/stale writes, concurrent Admin demotions and owner-deactivation race |
 | API-17 | API/DB | FR-16; AC-18 | Public read/post roles, owned isolation, whitespace/1/2000/2001 limits, author/time injection denial, terminal and PATCH/DELETE denial, stable ordering | server/tests/lab-03/comments-notes.api.test.ts | Pass in #39 |
 | API-18 | API/DB | FR-17; AC-19 | Notes Staff append/Admin read-only, Requester forbidden including guessed IDs; no note/count leaks in detail/list/errors; 1/4000/4001 limits and append-only/terminal rules | server/tests/lab-03/comments-notes.api.test.ts | Pass in #39 |
 | API-19 | API/DB | FR-18; AC-20 | Own eligible confirmed indication sets time/version without status change; repeat no-op, stale/cross-user/ineligible status denial; staff reopen clears it | server/tests/lab-03/resolution-indication.api.test.ts | Pass in #39; reopening clear covered by #38 API regression |
-| API-20 | API/DB | FR-19; AC-21 | Users fields/list/default order/search/optional role/empty/invalid query; non-Admin denial | server/tests/lab-03/users-admin.api.test.ts | Planned |
-| API-21 | API/DB | FR-20; AC-22 | Create active/inactive single-role user, hash/forced-change defaults; normalized duplicate/racing duplicate and malformed input rejection | server/tests/lab-03/users-admin.api.test.ts | Planned |
-| API-22 | API/DB | FR-20,22; AC-23 | Name/email/role/active edits, no-op/stale behavior, revocation, active-assignment guard and retained historical authors; old-session mutation after revocation denied | server/tests/lab-03/users-admin.api.test.ts | Planned |
-| API-23 | API/DB | FR-21; AC-24 | Admin initial reset: old credential/session denied, new login restricted until change, reset not undone by seed | server/tests/lab-03/users-admin.api.test.ts | Planned |
-| API-24 | API/DB | FR-22; AC-25 | Self-deactivation, final active Admin deactivation/demotion forbidden; different Admin edit allowed; UI-disabled actions also rejected by direct API | server/tests/lab-03/users-admin.api.test.ts | Planned |
+| API-20 | API/DB | FR-19; AC-21 | Users fields/list/default order/search/optional role/empty/invalid query; non-Admin denial | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-21 | API/DB | FR-20; AC-22 | Create active/inactive single-role user, hash/forced-change defaults; normalized duplicate/racing duplicate and malformed input rejection | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-22 | API/DB | FR-20,22; AC-23 | Name/email/role/active edits, no-op/stale behavior, revocation, active-assignment guard and retained historical authors; old-session mutation after revocation denied | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-23 | API/DB | FR-21; AC-24 | Admin initial reset: old credential/session denied, new login restricted until change, reset not undone by seed | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-24 | API/DB | FR-22; AC-25 | Self-deactivation, final active Admin deactivation/demotion forbidden; different Admin edit allowed; UI-disabled actions also rejected by direct API | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
 | API-25 | API | BR-35; AC-31 | Malformed JSON/content-type/upload/unknown endpoints, session/query/database/storage failure; no stack/hash/path/connection/private data, documented error envelopes | server/tests/lab-03/errors.api.test.ts | Planned |
 | UI-01 | UI | FR-03,07; AC-26 | Login labels, busy, safe invalid/inactive/rate-limit/network feedback, email retention/password clearing and redirect | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
 | UI-02 | UI | FR-04,05; AC-05,26 | Forced and voluntary change, paste/autocomplete, limits/mismatch/same-password, pending/failure/success, no bypass | client/tests/lab-03/AuthFlow.test.tsx | Pass in #35; final-main pending |
@@ -88,7 +88,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | UI-05 | UI | FR-11; AC-13,28 | Staff/Admin Queue fields/search/filters/sort/page/card links, loading/empty/no-results/forbidden/failure, read-only Admin context | client/tests/lab-03/StaffTicketQueue.test.tsx | Pass (#37) |
 | UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Pass in #38 |
 | UI-07 | UI | FR-16..18; AC-18,19,20,28 | Separate public/internal drafts, safe literal HTML text, permissions, empty/failed/terminal posting, requester resolution action/indicator and no note metadata | client/tests/lab-03/CommentsNotes.test.tsx | Pass in #39 |
-| UI-08 | UI | FR-19..22; AC-21..25,29 | User list/search/create/edit/reset, field validation/conflict/safe failure, draft retention/password clearing, safety reasons, self-session invalidation | client/tests/lab-03/UserManagement.test.tsx | Planned |
+| UI-08 | UI | FR-19..22; AC-21..25,29 | User list/search/create/edit/reset, field validation/conflict/safe failure, draft retention/password clearing, safety reasons, self-session invalidation | client/tests/lab-03/UserManagement.test.tsx | Pass in #40 |
 | STYLE-01 | UI style | BR-36; AC-30 | Shared Zen tokens/classes, required markers, read-only/invalid states, aria labels, non-colour badges and button states | client/tests/lab-03/StyleAccessibility.test.tsx | Planned |
 | E2E-01 | E2E | FR-03..07; AC-03..08,26 | Real role logins/invalid/inactive/expiry/logout and direct API access after logout; navigation matrix | e2e/lab-03/authentication.spec.ts | Planned |
 | E2E-02 | E2E | FR-04; AC-05,24,26 | Initial-password login -> forced screen/API denial -> valid change -> permitted home; Admin reset repeats forced flow | e2e/lab-03/first-login.spec.ts | Planned |
@@ -400,6 +400,35 @@ See [communication.md](communication.md) for reproduction and artifact paths.
 Real authenticated E2E, final visual audit and final-main verification remain
 pending. No working database migration/reset/seed/provisioning occurred.
 Independent peer review and the completed-document/main gate remain pending.
+
+## Issue #40 Administrator results — 2026-09-12
+
+Branch: `feature/40-lab3-user-management`, based on peer-merged `711f20f` (#39).
+
+| Command / evidence | Observed result |
+| --- | --- |
+| Initial focused user validation/API suites | 12/12 passed before adding the claim/deactivation race |
+| Full server regression with isolated TEST_DATABASE_URL and `--maxWorkers=1` | 220/220 passed in 24 files; 117.98 s; no skips |
+| Full client regression with `--maxWorkers=1` | 81/81 passed in 12 files; 43.84 s; no skips |
+| `npm run build` | Client TypeScript/Vite and server TypeScript passed |
+| `npm run prisma:validate` | Schema valid |
+| `npx playwright test --config playwright.users.config.ts` | 3/3 passed; 9.9 s; Chrome desktop/tablet/mobile, mocked APIs |
+| `git diff --check` | Passed |
+
+New suites: three validation/query unit cases, ten real PostgreSQL API cases and
+seven component cases. API cases cover real password hashing/reset, normalized
+concurrent duplicates, typed queries, role denial, self/last-Admin guards,
+concurrent demotions, active/terminal ownership, sessions and claim/deactivation
+races. The revocation case verifies a revoked actor cannot mutate; it does not
+claim instrumentation proving exactly when middleware completed relative to the
+advisory lock. Existing authentication/migration suites retain forced-change and
+seed-preservation coverage; real role-login/reset browser E2E remains final audit.
+
+Chrome verifies create/edit/reset, conflict reload, retained non-password drafts,
+password clearing, Escape/focus and page overflow. Fixtures are mocked; screenshot
+capture is not manual visual inspection. See [User Management](user-management.md)
+for reproduction and artifacts. No working DB migration/reset/seed/provisioning
+occurred. Peer approval/reviewer merge and completed-document/main gate are pending.
 
 ## 7. Visual checklist and deferred scope
 

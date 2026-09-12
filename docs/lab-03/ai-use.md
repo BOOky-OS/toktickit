@@ -162,3 +162,18 @@ independent peer-review evidence.
   tests exercise all three roles and viewport sizes; screenshot capture is not
   manual visual inspection. No working DB migration/reset/seed/provisioning ran.
 - Peer review and the completed-document/main confirmation gate remain pending.
+## Issue #40 observed implementation and decisions
+
+- Actual prompt: "ไปต่อเลย". Verified PR #49 approval at 658535f, peer merge
+  711f20f and both author replies. Closed #39 and moved its Issue/PR Done
+  before creating feature/40-lab3-user-management from updated staging.
+- Added minimal Admin users API/UI, normalization, initial password hashing and
+  reset, version checks, session revocation and self/last-Admin/active-owner guards.
+- Password hashing runs before locking; reset rechecks target version/hash in the
+  transaction. Shared advisory locking serializes account and Ticket decisions.
+- Added real PostgreSQL concurrent duplicate, Admin-demotion and owner-deactivation
+  checks; component/browser checks cover drafts, confirmation and password clearing.
+- Browser API fixtures and screenshot captures are not real authenticated DB E2E
+  or manual visual inspection. Those remain in the final audit.
+- No working DB migration/reset/seed/provisioning or user-authored comments ran.
+  Independent peer review and completed-document confirmation before main remain.

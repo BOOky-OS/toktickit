@@ -3,7 +3,7 @@
 Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
 commit a0a53e6, then merged final head b6933ce through PR #42 on 2026-09-11.
 Issues #33-#35 were approved at their final heads and merged by Atip-Infa.
-Issues #36-#38 are approved and peer-merged; Issue #39 awaits peer review.
+Issues #36-#39 are approved and peer-merged; Issue #40 awaits peer review.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -132,7 +132,12 @@ Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
  documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
 Review focus: public/internal privacy, atomic append/version updates, requester
 indication, literal rendering and uncertain-response retry. Evidence is in tests.md.
-Peer approval, author response and reviewer merge remain pending.
+Atip-Infa approved final head `658535f` and merged PR #49 into `lab3-staging`
+as `711f20f6ceb28e42dc553788dae4df0714e0c861` on 2026-09-12.
+[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/49#issuecomment-5645478768)
+and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/49#issuecomment-5645481200)
+are present; no inline comments remain. Issue #39 is closed and its Issue/PR
+Project items are Done. Existing replies do not need duplicate comments.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
@@ -145,7 +150,7 @@ Lab 2 partner reviews or use another account to approve one's own work.
 
 ## Outstanding human review
 
-Review Issue #39 public/internal visibility, append-only message boundaries,
-transactional versions, requester indication and uncertain retry UI. Give specific
+Review Issue #40 Admin validation, password/session handling, last-Admin and
+active-owner safety, concurrent edits and responsive editor behavior. Give specific
 changes where needed; use Approve only after checking the actual branch head.
 The reviewer, not the PR author, merges into lab3-staging when ready.

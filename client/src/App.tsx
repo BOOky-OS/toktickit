@@ -16,6 +16,7 @@ import { ApplicationShell, ChangePasswordScreen, LoginScreen, SessionFailure, Se
 import type { UserRole } from "./api.js";
 import { MyTickets } from "./MyTickets.js";
 import { StaffTicketQueue } from "./StaffTicketQueue.js";
+import { UserManagement } from "./UserManagement.js";
 import { TicketDetail } from "./TicketDetail.js";
 import "./theme.css";
 import "./auth.css";
@@ -623,7 +624,7 @@ function PlannedRoleHome() {
     </nav>
     {path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => navigate("/tickets/" + id)} onHome={() => navigate(homeFor(user!.role))} />
       : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable={!admin} onBack={() => navigate("/staff/tickets")} />
-      : <main className="page-content" id="main-content">
+      : path === "/admin/users" ? <UserManagement actorId={user!.id} /> : <main className="page-content" id="main-content">
       <section className="zen-empty-state">
         <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator read-only access" : "Role workspace"}</p>
         <h1>{ticketDetail ? "Ticket Detail" : path === "/staff/tickets" ? "Ticket Queue" : "User Management"}</h1>
