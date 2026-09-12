@@ -1,7 +1,7 @@
 # Lab 3 AI Use Record
 
 Assistant used in this session: Codex (GPT-6).
-Status: factual preparation and Issues #33-#36 implementation record.
+Status: factual preparation, Issues #33-#40 implementation and #41 final audit record.
 Prompts below are actual short excerpts or exact answers from this conversation,
 not invented historical prompts. Dates of earlier excerpts are not inferred.
 
@@ -177,3 +177,20 @@ independent peer-review evidence.
   or manual visual inspection. Those remain in the final audit.
 - No working DB migration/reset/seed/provisioning or user-authored comments ran.
   Independent peer review and completed-document confirmation before main remain.
+## Issue #41 observed audit and decisions
+
+- Actual continuation prompt: "ทำต่อให้หน่อยก่อนหน้านี้โทเคนหมด". The assistant
+  retained the existing feature/41-lab3-quality-release work and verified PR #50
+  approval/peer merge and author replies. No duplicate author comments were sent.
+- Real Chrome tests now use migrated isolated PostgreSQL schemas, actual Express
+  sessions and temporary disk storage. Deliberate first-upload network failure
+  is distinguished from the successful real retry and persisted byte checks.
+- Long unbroken Description text failed the first responsive checks in all roles.
+  The assistant corrected detail-grid shrinking/wrapping and reran the regression.
+- Required priority/status badges were made consistent in queue/detail displays.
+  Initial password now precedes Save inside the create-user form; keyboard checks
+  verify that order. These are assistant changes, not invented student actions.
+- Eight original prompts remain listed above. The student has been asked for
+  their actual reflection and reciprocal Lab 3 review evidence; neither is invented.
+- The ordered PDF is explicitly a pre-release draft. No final-main test result,
+  all-Done board, student gate approval or future peer review is claimed.

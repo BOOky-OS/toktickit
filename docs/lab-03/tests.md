@@ -1,10 +1,9 @@
 # Lab 3 Test Plan and Traceability
 
-Status: planned before implementation in Issue #32; #33 migration/seed, #34
-backend authentication/authorization, #35 browser authentication UI and #36
-authenticated Requester workflows now have Issue-branch passing evidence.
-Remaining Lab 3 features and final-main checks are still planned. Historical
-counts are not current evidence.
+Status: contract planned before implementation in #32; Issues #33-#40 are
+peer-merged into staging. #41 now adds real browser E2E and final quality fixes.
+See [quality-audit.md](quality-audit.md) for current checks and remaining evidence.
+Historical counts are not final-main results.
 Source requirements: [specification.md](specification.md), [api-spec.md](api-spec.md),
 [ui-spec.md](ui-spec.md). Current documentation checks are recorded separately.
 
@@ -24,7 +23,8 @@ UI tests test visible interactions and accessibility; style assertions and
 real-browser screenshots complement them. E2E includes real server/DB flows and
 explicit fault injection only for failure scenarios.
 
-Use dedicated TEST_DATABASE_URL and E2E_DATABASE_URL, never the user's working
+Use dedicated TEST_DATABASE_URL; the real E2E setup exports its owned schema as
+LAB3_E2E_DATABASE_URL. Never use the user's working
 DATABASE_URL. Before destructive fixture setup verify each test DB name is
 explicitly allowed and differs from the working database; refuse otherwise.
 Apply migrations to test databases only, use fixture-local attachment storage
@@ -51,7 +51,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Pass in #40 |
 | UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Queue Pass; Users query coverage added in #40 user-validation.unit.test.ts |
 | UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Pass in #38: all 64 status pairs and body/reason validation; resolution-indication cases now covered in #39 API suite |
-| UNIT-05 | Unit | BR-10..12,28; AC-08,09,19 | Table-driven role/resource decisions including Admin read-only, historical requester IDs and no internal fields in requester serializer | server/tests/lab-03/authorization.unit.test.ts | Planned |
+| UNIT-05 | Unit | BR-10..12,28; AC-08,09,19 | Table-driven role/resource decisions including Admin read-only, historical requester IDs and no internal fields in requester serializer | server/tests/lab-03/authorization.unit.test.ts; requester-regression.api.test.ts; comments-notes.api.test.ts | Pass in #41: 14 role-matrix cases; historical IDs and requester serialization covered by the existing real API regressions |
 | MIG-01 | DB migration | FR-01; AC-01 | Upgrade actual Lab 2 schema with active/inactive users, Tickets, active/removed Attachments; preserve IDs/text/number/date/ownership/removal authors/file bytes and references | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
 | MIG-02 | DB migration | BR-02,13; AC-01 | Case-fold email collisions/invalid existing email abort before partial mutation; sequence remains above preserved IDs/numbers; UNASSIGNED backfills but set priorities remain | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
 | MIG-03 | DB integration | FR-02; AC-02,24 | Provision only null hashes; inactive users stay inactive; required role/30-ticket/status fixtures; seed twice yields no duplicates and preserves edited name/role/activation/password/entries | server/tests/lab-03/seed.integration.test.ts | Pass in #33; final-main pending |
@@ -89,14 +89,14 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Pass in #38 |
 | UI-07 | UI | FR-16..18; AC-18,19,20,28 | Separate public/internal drafts, safe literal HTML text, permissions, empty/failed/terminal posting, requester resolution action/indicator and no note metadata | client/tests/lab-03/CommentsNotes.test.tsx | Pass in #39 |
 | UI-08 | UI | FR-19..22; AC-21..25,29 | User list/search/create/edit/reset, field validation/conflict/safe failure, draft retention/password clearing, safety reasons, self-session invalidation | client/tests/lab-03/UserManagement.test.tsx | Pass in #40 |
-| STYLE-01 | UI style | BR-36; AC-30 | Shared Zen tokens/classes, required markers, read-only/invalid states, aria labels, non-colour badges and button states | client/tests/lab-03/StyleAccessibility.test.tsx | Planned |
-| E2E-01 | E2E | FR-03..07; AC-03..08,26 | Real role logins/invalid/inactive/expiry/logout and direct API access after logout; navigation matrix | e2e/lab-03/authentication.spec.ts | Planned |
-| E2E-02 | E2E | FR-04; AC-05,24,26 | Initial-password login -> forced screen/API denial -> valid change -> permitted home; Admin reset repeats forced flow | e2e/lab-03/first-login.spec.ts | Planned |
-| E2E-03 | E2E | FR-08..10; AC-09..12,27 | A creates/uploads/searches/views/removes, B cannot read/download; failure recovery with real persisted Ticket/Attachment | e2e/lab-03/requester-regression.spec.ts | Planned |
-| E2E-04 | E2E | FR-11..18; AC-13..20,28 | Staff Queue -> claim/reassign/priority -> comments/notes -> Requester indication -> Staff resolve/close/reopen; Admin read-only and direct role denials | e2e/lab-03/staff-ticket-flow.spec.ts | Planned |
-| E2E-05 | E2E | FR-19..22; AC-21..25,29 | Admin search/create/edit/activate/deactivate/reset; duplicate/safety rules and old-session invalidation with multiple browser contexts | e2e/lab-03/user-administration.spec.ts | Planned |
-| RWD-01 | Browser/style | FR-23; AC-30 | All screen groups at 1440x900, 834x1112, 390x844; long text, overflow/visibility, keyboard/dialog focus, zoom and screenshots | e2e/lab-03/responsive-visual.spec.ts | Planned |
-| DOC-01 | Manual/document | FR-24; AC-32 | Cross-check FR/BR/AC/API/UI/tests, all intended paths and 10 Issue dependencies; no fabricated results | docs/lab-03/tests.md (this checklist) | Planned |
+| STYLE-01 | UI style | BR-36; AC-30 | Shared Zen tokens/classes, required markers, read-only/invalid states, aria labels, non-colour badges and button states | client/tests/lab-03/StyleAccessibility.test.tsx; AuthFlow.test.tsx; StaffTicketQueue.test.tsx; UserManagement.test.tsx; e2e/lab-03/real/responsive-visual.spec.ts | Pass: real CSS contrast check for all eight statuses plus component/keyboard checks; visual checklist in ui-spec.md |
+| E2E-01 | E2E | FR-03..07; AC-03..08,26 | Real role logins/invalid/inactive/expiry/logout and direct API access after logout; navigation matrix | e2e/lab-03/real/authentication.spec.ts; session-expiry.spec.ts | Pass in #41: actual role login, invalid/inactive credentials, persisted expiry and revoked logout access |
+| E2E-02 | E2E | FR-04; AC-05,24,26 | Initial-password login -> forced screen/API denial -> valid change -> permitted home; Admin reset repeats forced flow | e2e/lab-03/real/authentication.spec.ts; user-administration.spec.ts | Pass in #41: initial login and Admin reset both require a real password change before protected access |
+| E2E-03 | E2E | FR-08..10; AC-09..12,27 | A creates/uploads/searches/views/removes, B cannot read/download; failure recovery with real persisted Ticket/Attachment | e2e/lab-03/real/requester-regression.spec.ts | Pass in #41: create, failed-upload retry, search, byte persistence, cross-user denial and removal |
+| E2E-04 | E2E | FR-11..18; AC-13..20,28 | Staff Queue -> claim/reassign/priority -> comments/notes -> Requester indication -> Staff resolve/close/reopen; Admin read-only and direct role denials | e2e/lab-03/real/staff-ticket-flow.spec.ts; queue-query.spec.ts | Pass in #41: real queue/filter/sort/pages, claim/reassign/priority, comments/notes, indication, resolve/close/reopen and Admin read-only |
+| E2E-05 | E2E | FR-19..22; AC-21..25,29 | Admin search/create/edit/activate/deactivate/reset; duplicate/safety rules and old-session invalidation with multiple browser contexts | e2e/lab-03/real/user-administration.spec.ts | Pass in #41: duplicate rejection, self/last-Admin controls, search, create/edit/reset, session invalidation, deactivate/reactivate |
+| RWD-01 | Browser/style | FR-23; AC-30 | All screen groups at 1440x900, 834x1112, 390x844; long text, overflow/visibility, keyboard/dialog focus, zoom and screenshots | e2e/lab-03/real/responsive-visual.spec.ts | Automated Pass in #41: three viewports, long-text regression, keyboard/focus, 200%-equivalent CSS reflow; actual browser chrome zoom not claimed. Visual inspection tracked separately |
+| DOC-01 | Manual/document | FR-24; AC-32 | Cross-check FR/BR/AC/API/UI/tests, all intended paths and 10 Issue dependencies; no fabricated results | docs/lab-03/quality-audit.md | In progress: report draft and factual traceability; student reflection/reciprocal review and full visual inspection pending |
 | REL-01 | Full suite/manual | FR-24; AC-32 | Final-main unit/API/integration/UI/E2E/build results, reviewed documents, explicit student main gate, reviewer merge and one ordered evidence PDF | docs/lab-03/workflow.md and actual test files above | Planned |
 
 ## 3. AC-to-test index
@@ -438,3 +438,29 @@ reviewer notes during implementation/#41. No required Lab 3 test is deliberately
 deferred; Planned means its owning Issue has not yet implemented it. Excluded
 Actions Taken, email delivery and production infrastructure are not counted as
 missing Lab 3 coverage. Concurrency/session/migration tests are required.
+
+## Issue #41 current audit execution
+
+The original 220 server tests passed in 24 files after resuming the interrupted
+session (125.29 s). The additional authorization contract suite passed separately:
+14/14 in 944 ms. These are separate observed executions, not an invented combined
+234-test run. The expanded real Chrome suite passed 14/14 in 1.3 minutes.
+
+The real upload recovery case aborts the first upload request as intentional
+network fault injection, then retries against the actual saved Ticket. No API
+success response is mocked. Actual file bytes, permissions and removal are checked.
+The E2E setup uses migrations, real sessions and a fresh schema/file directory.
+
+Reproduce with an explicitly isolated local TEST_DATABASE_URL:
+
+```powershell
+npm run test:e2e:lab3
+npm run test --workspace server -- --maxWorkers=1
+npm run test --workspace client -- --maxWorkers=1
+npm run build
+npm run prisma:validate
+```
+
+Final audit revision, remaining visual checks and report limits are maintained in
+[quality-audit.md](quality-audit.md). Final-main checks remain pending the student
+documentation gate and the reviewer's actual release merge.

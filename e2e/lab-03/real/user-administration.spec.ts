@@ -1,0 +1,66 @@
+import { test, expect } from "@playwright/test";
+import { signIn, changeInitialPassword, initialPassword } from "./helpers";
+
+test("Admin creates, edits, resets and deactivates an account across real sessions", async ({ page, browser }) => {
+  await signIn(page, "admin");
+  await expect(page).toHaveURL(/\/admin\/users$/);
+  await page.getByRole("button", { name: "Edit E2E admin", exact: true }).click();
+  await expect(page.getByLabel("Active account", { exact: true })).toBeDisabled();
+  await expect(page.getByLabel("Role *", { exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Create user", exact: true }).click();
+  await page.getByLabel("Display name *", { exact: true }).fill("Duplicate Requester");
+  await page.getByLabel("Email *", { exact: true }).fill("requester@lab3.example");
+  await page.getByLabel("Initial password *", { exact: true }).fill(initialPassword);
+  await page.getByRole("button", { name: "Save new user" }).click();
+  await expect(page.getByText("That email is already in use, including inactive accounts.")).toBeVisible();
+  await page.getByRole("button", { name: "Create user", exact: true }).click();
+  await page.getByLabel("Display name *", { exact: true }).fill("Created Requester");
+  await page.getByLabel("Email *", { exact: true }).fill("created@lab3.example");
+  await page.getByLabel("Role *", { exact: true }).selectOption("REQUESTER");
+  await page.getByLabel("Initial password *", { exact: true }).fill(initialPassword);
+  await page.getByRole("button", { name: "Save new user" }).click();
+  await expect(page.getByText("User saved.", { exact: true })).toBeVisible();
+
+  const context = await browser.newContext({ baseURL: "http://localhost:5176" });
+  const requester = await context.newPage();
+  try {
+    await signIn(requester, "created");
+    await changeInitialPassword(requester, initialPassword, "First-changed-password!");
+    await expect(requester).toHaveURL(/\/my-tickets$/);
+    await page.reload();
+    await page.getByRole("button", { name: "Edit Created Requester", exact: true }).click();
+    await page.getByLabel("Display name *", { exact: true }).fill("Renamed Requester");
+    await page.getByRole("button", { name: "Save user changes" }).click();
+    await expect(page.getByText("User saved.", { exact: true })).toBeVisible();
+    await page.getByLabel("New initial password", { exact: true }).fill("Reset-initial-password!");
+    await page.getByRole("button", { name: "Set new initial password" }).click();
+    await page.getByRole("button", { name: "Confirm reset" }).click();
+    await expect(page.getByText(/Initial password replaced/)).toBeVisible();
+    expect((await requester.request.get("http://localhost:3006/api/tickets")).status()).toBe(401);
+    await requester.reload();
+    await signIn(requester, "created", "First-changed-password!");
+    await expect(requester.getByRole("alert")).toContainText("Unable to sign in");
+    await signIn(requester, "created", "Reset-initial-password!");
+    await changeInitialPassword(requester, "Reset-initial-password!", "Second-changed-password!");
+    await expect(requester).toHaveURL(/\/my-tickets$/);
+    await page.reload();
+    await page.getByRole("button", { name: "Edit Renamed Requester", exact: true }).click();
+    await page.getByLabel("Active account", { exact: true }).uncheck();
+    await page.getByRole("button", { name: "Save user changes" }).click();
+    await expect(page.getByText("User saved.", { exact: true })).toBeVisible();
+    expect((await requester.request.get("http://localhost:3006/api/tickets")).status()).toBe(401);
+    await requester.reload();
+    await signIn(requester, "created", "Second-changed-password!");
+    await expect(requester.getByRole("alert")).toContainText("Unable to sign in");
+    await page.getByLabel("Active account", { exact: true }).check();
+    await page.getByRole("button", { name: "Save user changes" }).click();
+    await expect(page.getByText("User saved.", { exact: true })).toBeVisible();
+    await signIn(requester, "created", "Second-changed-password!");
+    await expect(requester).toHaveURL(/\/my-tickets$/);
+    await page.getByLabel("Search name or email").fill("Renamed Requester");
+    await page.getByLabel("Filter by role").selectOption("REQUESTER");
+    await page.getByRole("button", { name: "Apply filters", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Edit Renamed Requester", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Edit E2E admin", exact: true })).toHaveCount(0);
+  } finally { await context.close(); }
+});

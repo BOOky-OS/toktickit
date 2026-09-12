@@ -4,7 +4,7 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 established
 the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
 responsive requester-owned Ticketing MVP.
 
-## Lab 3 implementation in progress
+## Lab 3 final audit in progress
 
 Lab 3 begins with the [engineering contract](docs/lab-03/specification.md),
 [API contract](docs/lab-03/api-spec.md), [UI specification](docs/lab-03/ui-spec.md)
@@ -15,7 +15,11 @@ role shell and authenticated Requester regression. Issue #37 adds the responsive
 Issue #38 adds [Staff Ticket operations](docs/lab-03/staff-operations.md).
 Issue #39 adds [Ticket communication and resolution indication](docs/lab-03/communication.md).
 Issue #40 adds [Administrator User Management](docs/lab-03/user-management.md).
-See [authentication setup](docs/lab-03/authentication.md). Final audit and release remain #41.
+See [authentication setup](docs/lab-03/authentication.md). Issue #41 adds the
+[real-browser quality audit](docs/lab-03/quality-audit.md), responsive corrections
+and the submission draft. With the isolated local TEST_DATABASE_URL configured,
+run `npm run test:e2e:lab3`; it starts dedicated services on ports 3006/5176 and
+uses an owned temporary schema and file directory. Final release remains pending.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
 #32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.
@@ -173,7 +177,7 @@ traceability are recorded in `docs/lab-02/tests.md`.
 
 ```text
 toktickit/
-|-- client/src/ and client/tests/lab-01/, lab-02/
+|-- client/src/ and client/tests/lab-01/, lab-02/, lab-03/
 |-- server/src/ and server/tests/lab-01/, lab-02/, lab-03/
 |-- server/prisma/schema.prisma and migrations/
 |-- server/prisma/seed.ts, lab3-seed.ts, lab3-provision.ts

@@ -395,11 +395,16 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
+.detail-grid > div {
+  min-width: 0;
+}
 .detail-grid dt {
   font-weight: 700;
   margin-bottom: 0.3rem;
 }
 .detail-grid dd {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
   margin: 0;
   min-height: 2.8rem;
 }
@@ -474,3 +479,10 @@ body {
     grid-column: span 2;
   }
 }
+
+/* The status text carries meaning independently of the palette. */
+.zen-badge[data-status="NEW"], .zen-badge[data-status="OPEN"] { color: #334155; background: #f1f5f9; }
+.zen-badge[data-status="IN_PROGRESS"], .zen-badge[data-status="REOPENED"] { color: #1e40af; background: #dbeafe; }
+.zen-badge[data-status="WAITING_FOR_REQUESTER"] { color: #854d0e; background: #fef9c3; }
+.zen-badge[data-status="RESOLVED"], .zen-badge[data-status="CLOSED"] { color: #166534; background: #dcfce7; }
+.zen-badge[data-status="CANCELLED"] { color: #991b1b; background: #fee2e2; }

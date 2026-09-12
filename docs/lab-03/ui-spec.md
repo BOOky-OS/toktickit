@@ -220,21 +220,26 @@ Viewports: 1440x900, 834x1112 and 390x844. Include initial, meaningful validatio
 busy, success, safe failure, forbidden/conflict and empty/no-results examples.
 Screenshots must use local demo data; exclude visible secrets.
 
-Issue #35 component tests now verify auth labels, keyboard flow, role navigation,
-safe busy/error states and selector removal. The cross-screen browser screenshots
-and human visual inspection below remain Planned for their owning/final Issues.
+Issue #41 adds actual Express/PostgreSQL browser evidence in
+`e2e/lab-03/real/`. Captures are in `artifacts/lab-03/screenshots/real/`, with
+`{screen}-{desktop|tablet|mobile}.png` names. All 12 screen groups across the
+three sizes were inspected as labelled overview sheets; mobile Login and
+Requester/Staff Detail plus Admin editor and the full desktop Admin list were
+also inspected directly. This is assistant visual inspection, not peer approval.
 
-The checklist remains Planned until inspected:
-
-| Inspection | Required evidence / current status |
+| Inspection | Evidence and observed result |
 | --- | --- |
-| Tokens, typography, spacing, component consistency | Each screen group; Planned |
-| Role navigation and no unauthorized controls | Three roles/direct denial; Planned |
-| Editable/read-only, required labels and nearby errors | Create/change/Detail/Users; Planned |
-| Focus, keyboard, dialog behavior, non-colour badges | Keyboard checks plus screenshots; Planned |
-| Busy, failure, conflict and retained drafts | Relevant operations; Planned |
-| Mobile cards, long filenames/emails/comments, 200% zoom | All three viewports; Planned |
-| No clipping, overlap or page horizontal overflow | DOM assertions and human visual inspection; Planned |
+| Tokens, typography, spacing, component consistency | Inspected all screen groups; shared Zen cards, fields and buttons; no overlapping controls observed |
+| Role navigation and no unauthorized controls | Three real role logins/direct API denials; Requester no Internal Notes, Admin no Staff mutations; Pass |
+| Editable/read-only, required labels and nearby errors | Real create/change/detail/editor captures plus AuthFlow/UserManagement component cases; initial password moved inside the create form before Save |
+| Focus, keyboard, dialog behavior, non-colour badges | Login Tab order, initial password -> Save, Staff dialog Escape/trigger focus; status/priority text retained. Eight-status palette contrast >=4.5:1 verified by StyleAccessibility.test.tsx |
+| Busy, failure, conflict and retained drafts | Component suites and prior feature browser scenarios cover these states. Real first-upload failure/retry, duplicate-user failure and revoked sessions added in #41; not every transient state has a new screenshot |
+| Mobile cards, long text and reflow | Staff Queue uses labelled cards. Requester My Tickets retains the Lab 2 horizontal table inside its scroll container. Long persisted Description wraps. 720x450 CSS viewport checks 200%-equivalent reflow from 1440x900, not actual browser-chrome zoom |
+| No page horizontal overflow | Real DOM checks across 1440x900, 834x1112, 390x844 and 720x450; Pass after the long-description fix. Requester table intentionally scrolls inside its own region |
 
-Do not treat screenshot capture alone as visual review. Actual images and
-test results are produced during their feature Issues and audited in #41.
+Full-page dialog screenshots show the backdrop over the visible viewport only;
+the content beyond that viewport in a stitched capture is not an interactive
+escape from a native modal. Screenshots with very tall user lists are retained
+at full resolution; report excerpts are labelled so their crops are not mistaken
+for the complete screen. No claim of exhaustive screen-reader or OS zoom testing
+is made. Human peer visual review remains part of the #41 PR.

@@ -3,7 +3,7 @@
 Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
 commit a0a53e6, then merged final head b6933ce through PR #42 on 2026-09-11.
 Issues #33-#35 were approved at their final heads and merged by Atip-Infa.
-Issues #36-#39 are approved and peer-merged; Issue #40 awaits peer review.
+Issues #36-#40 are approved and peer-merged; Issue #41 quality audit is in progress.
 
 Author: Supapanya Yathip, 67070503443, repository account
 [BOOky-OS](https://github.com/BOOky-OS).
@@ -145,7 +145,12 @@ Project items are Done. Existing replies do not need duplicate comments.
 Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
 documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
 Review focus: user validation, passwords/sessions, last-Admin/active-owner guards,
-concurrency and responsive edit/reset UI. Peer review and merge remain pending.
+concurrency and responsive edit/reset UI. Atip-Infa approved final head
+`cf788ca4721e07d4667c770ec3f630218bd0f8d4` ([approval](https://github.com/BOOky-OS/toktickit/pull/50#pullrequestreview-5186273018)) and merged PR #50 into
+`lab3-staging` as `7831409181d8728c765216f64d747148ad1d8d01`.
+[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/50#issuecomment-5645571107)
+and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/50#issuecomment-5645572981)
+are present. Existing replies do not need duplicate comments.
 
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
@@ -158,7 +163,7 @@ Lab 2 partner reviews or use another account to approve one's own work.
 
 ## Outstanding human review
 
-Review Issue #40 Admin validation, password/session handling, last-Admin and
-active-owner safety, concurrent edits and responsive editor behavior. Give specific
+Review Issue #41 final audit coverage, documentation, responsive fixes and
+the real-browser test setup when its staging PR is ready. Give specific
 changes where needed; use Approve only after checking the actual branch head.
 The reviewer, not the PR author, merges into lab3-staging when ready.
