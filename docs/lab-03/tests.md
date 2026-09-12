@@ -315,6 +315,7 @@ was performed.
 ## Issue #37 Queue results — 2026-09-12
 
 Branch: `feature/37-lab3-staff-queue`, based on peer-merged `24b4dd5` (#36).
+Runtime/test implementation commit: `453746e`, submitted through PR #47.
 
 | Command / evidence | Observed result |
 | --- | --- |

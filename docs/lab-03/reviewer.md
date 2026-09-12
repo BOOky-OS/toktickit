@@ -96,6 +96,15 @@ and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/46#issuecommen
 are present. No inline review comments exist. Issue #36 is closed and both
 Project items are Done.
 
+[PR #47](https://github.com/BOOky-OS/toktickit/pull/47) for Issue #37 uses
+`feature/37-lab3-staff-queue` from the peer-merged Issue #36 commit `24b4dd5`
+and targets `lab3-staging`. Implementation commit: `453746e`. Development links
+#37. Assignee: BOOky-OS; requested reviewer: Atip-Infa; labels:
+documentation/enhancement; Project: TokTickIT Individual Sprints with Issue and
+PR in PR Review; milestone: Lab 3. Review focus: Staff/Admin role denial,
+query validation and ordering, responsive Queue states, read-only Detail and
+the explicit limits of mocked browser evidence. Peer review, author response
+and reviewer merge remain pending.
 For each completed review, record the actual PR/Issue, head/base branch, reviewer,
 comment/review URL, author's response URL, resolution, approval and reviewer merge
 commit. Answer every review comment; a bare approval does not erase open feedback.
