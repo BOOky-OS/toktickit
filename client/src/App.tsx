@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import {
   Category,
   checkSystem,
@@ -42,6 +42,15 @@ const ALLOWED_FILE_TYPES = [
 ];
 const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
 
+function newSubmissionKey(): string {
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, value => value.toString(16).padStart(2, "0"));
+  return `${hex.slice(0, 4).join("")}-${hex.slice(4, 6).join("")}-${hex.slice(6, 8).join("")}-${hex.slice(8, 10).join("")}-${hex.slice(10).join("")}`;
+}
+
 function Field({
   label,
   id,
@@ -78,7 +87,7 @@ function CreateTicket({
   goDetail,
 }: {
   goHome: () => void;
-  goDetail: (ticketId: number) => void;
+  goDetail: (ticketId: number, retryFiles?: File[]) => void;
 }) {
   const { user: currentRequester } = useAuth();
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
@@ -95,7 +104,8 @@ function CreateTicket({
   );
   const [created, setCreated] = useState<CreatedTicket | null>(null);
   const [uploadedCount, setUploadedCount] = useState(0);
-  const [uploadFailures, setUploadFailures] = useState<string[]>([]);
+  const [uploadFailures, setUploadFailures] = useState<File[]>([]);
+  const submission = useRef<{ fingerprint: string; key: string } | null>(null);
   async function loadReferenceData() {
     setReferenceState("loading");
     try {
@@ -160,22 +170,21 @@ function CreateTicket({
     setSubmissionLabel("Creating ticket...");
     setApiError("");
     try {
-      const submissionKey =
-        typeof crypto.randomUUID === "function"
-          ? crypto.randomUUID()
-          : `ticket-${Date.now()}`;
-      const ticket = await createTicket(
-        {
-          categoryId: Number(form.categoryId),
-          relatedSystemId: Number(form.relatedSystemId),
-          summary: form.summary,
-          requestedPriority: form.requestedPriority,
-          description: form.description,
-        },
-        submissionKey,
-      );
+      const input = {
+        categoryId: Number(form.categoryId),
+        relatedSystemId: Number(form.relatedSystemId),
+        summary: form.summary.trim(),
+        requestedPriority: form.requestedPriority,
+        description: form.description.trim(),
+      };
+      const fingerprint = JSON.stringify(input);
+      if (!submission.current || submission.current.fingerprint !== fingerprint) {
+        submission.current = { fingerprint, key: newSubmissionKey() };
+      }
+      const ticket = await createTicket(input, submission.current.key);
+      submission.current = null;
       let completedUploads = 0;
-      const failedUploads: string[] = [];
+      const failedUploads: File[] = [];
       for (const [index, file] of files.entries()) {
         setSubmissionLabel(
           `Uploading attachment ${index + 1} of ${files.length}...`,
@@ -184,7 +193,7 @@ function CreateTicket({
           await uploadAttachment(ticket.id, file);
           completedUploads += 1;
         } catch {
-          failedUploads.push(file.name);
+          failedUploads.push(file);
         }
       }
       setUploadedCount(completedUploads);
@@ -226,13 +235,13 @@ function CreateTicket({
               <strong>
                 The Ticket was created, but some files were not uploaded.
               </strong>
-              <p>Open Ticket Detail to retry: {uploadFailures.join(", ")}</p>
+              <p>Open Ticket Detail to retry: {uploadFailures.map(file => file.name).join(", ")}</p>
             </div>
           )}
           <div className="success-actions">
             <button
               className="zen-button zen-button--primary"
-              onClick={() => goDetail(created.id)}
+              onClick={() => goDetail(created.id, uploadFailures)}
             >
               View Ticket Detail
             </button>
@@ -250,6 +259,7 @@ function CreateTicket({
                 setFiles([]);
                 setUploadedCount(0);
                 setUploadFailures([]);
+                submission.current = null;
               }}
             >
               Create another ticket
@@ -343,7 +353,7 @@ function CreateTicket({
               <input
                 id="ticket-it-priority"
                 className="zen-field zen-field--readonly"
-                value="Unassigned"
+                value={form.requestedPriority.charAt(0) + form.requestedPriority.slice(1).toLowerCase()}
                 readOnly
               />
             </div>
@@ -502,6 +512,7 @@ function CreateTicket({
                 setFiles([]);
                 setFieldErrors({});
                 setFileError("");
+                submission.current = null;
               }}
             >
               Clear form
@@ -525,6 +536,7 @@ function ServiceDesk() {
   const [systemState, setSystemState] = useState<UiState>("idle");
   const [healthCategories, setHealthCategories] = useState<Category[]>([]);
   const [systemError, setSystemError] = useState("");
+  const [pendingRetry, setPendingRetry] = useState<{ ticketId: number; files: File[] } | null>(null);
   useEffect(() => {
     const update = () => setPath(window.location.pathname);
     window.addEventListener("popstate", update);
@@ -552,12 +564,23 @@ function ServiceDesk() {
           onClick={() => navigate("/tickets/new")}>Create Ticket</button>
       </nav>
       {path === "/tickets/new" ? (
-        <CreateTicket goHome={() => navigate("/my-tickets")} goDetail={(ticketId) => navigate(`/tickets/${ticketId}`)} />
+        <CreateTicket
+          goHome={() => navigate("/my-tickets")}
+          goDetail={(ticketId, files = []) => {
+            setPendingRetry(files.length ? { ticketId, files } : null);
+            navigate(`/tickets/${ticketId}`);
+          }}
+        />
       ) : detail ? (
-        <TicketDetail ticketId={Number(detail[1])} onBack={() => navigate("/my-tickets")} />
+        <TicketDetail
+          ticketId={Number(detail[1])}
+          onBack={() => navigate("/my-tickets")}
+          retryFiles={pendingRetry?.ticketId === Number(detail[1]) ? pendingRetry.files : []}
+          onRetryFilesChange={files => setPendingRetry(files.length ? { ticketId: Number(detail[1]), files } : null)}
+        />
       ) : (
         <>
-          <MyTickets onCreate={() => navigate("/tickets/new")} />
+          <MyTickets onCreate={() => navigate("/tickets/new")} onOpen={ticketId => navigate(`/tickets/${ticketId}`)} />
           <section className="container pb-4" style={{ maxWidth: 1100 }}>
             <button className="btn btn-success" onClick={handleCheck} disabled={systemState === "loading"}>
               {systemState === "loading" ? "Loading..." : "Check System"}

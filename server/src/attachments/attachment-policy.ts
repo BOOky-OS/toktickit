@@ -70,3 +70,15 @@ export function validateRemovalReason(reason: unknown):
     ? { ok: true, value }
     : { ok: false };
 }
+
+export function attachmentContentDisposition(filename: string): string {
+  const sanitized = sanitizeOriginalFilename(filename);
+  const fallback = sanitized
+    .normalize("NFKD")
+    .replace(/[^\x20-\x7e]/g, "_")
+    .replace(/["\\;]/g, "_");
+  const safeFallback = fallback || "attachment";
+  const encoded = encodeURIComponent(sanitized)
+    .replace(/[!'()*]/g, character => `%${character.charCodeAt(0).toString(16).toUpperCase()}`);
+  return `attachment; filename="${safeFallback}"; filename*=UTF-8''${encoded}`;
+}

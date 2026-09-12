@@ -139,7 +139,7 @@ npm run dev:client
 See [Lab 3 migration and local setup](docs/lab-03/migration.md) for the
 transactional upgrade, guarded demonstration seed and one-time password
 provisioning. Issue #35 adds Login, mandatory/voluntary password change and the
-role-aware application shell; operational Staff/Admin screens remain later increments.
+role-aware application shell. Issue #36 preserves authenticated Requester create/list/detail and Attachment workflows; operational Staff/Admin screens remain later increments.
 The default seed requires explicit local opt-in and retains existing edits.
 
 ## Build and test
@@ -160,7 +160,7 @@ Automated tests are located in:
 - `server/tests/lab-02/` for Ticket, ownership, and Attachment API/unit tests
 - `server/tests/lab-03/` for migration, seed, provisioning, authentication and authorization checks
 - `client/tests/lab-02/` for requester workflow regression tests
-- `client/tests/lab-03/` for authentication transport, Login, password change and role-shell tests
+- `client/tests/lab-03/` for authentication transport, Login, password change, role-shell and authenticated Requester regression tests
 - `e2e/lab-02/` for the desktop, tablet, and mobile Playwright workflow
 
 The complete Lab 2 suite is implemented. Final counts and Acceptance-Criterion

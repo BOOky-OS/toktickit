@@ -83,6 +83,17 @@ export interface RelatedSystem {
 }
 
 export type RequestedPriority = "LOW" | "MEDIUM" | "HIGH";
+export type ItPriority = "LOW" | "MEDIUM" | "HIGH" | "UNASSIGNED";
+export type TicketStatus =
+  | "NEW"
+  | "OPEN"
+  | "IN_PROGRESS"
+  | "WAITING_FOR_REQUESTER"
+  | "RESOLVED"
+  | "CLOSED"
+  | "REOPENED"
+  | "CANCELLED";
+export type TicketOwner = { id: number; displayName: string; role: UserRole } | null;
 
 export interface CreateTicketInput {
   categoryId: number;
@@ -101,15 +112,24 @@ export interface CreatedTicket {
   relatedSystem: RelatedSystem;
   summary: string;
   requestedPriority: RequestedPriority;
-  itPriority: string;
-  currentStatus: string;
+  itPriority: ItPriority;
+  currentStatus: TicketStatus;
   description: string;
+  owner: TicketOwner;
+  version: number;
+  updatedAt: string;
+  requesterResolutionIndicatedAt: string | null;
+  resolvedAt: string | null;
+  closedAt: string | null;
+  cancelledAt: string | null;
+  resolutionSummary: string | null;
+  cancellationReason: string | null;
   attachments: [];
 }
 
 export interface Attachment {
   id: number; originalFilename: string; mimeType: string; sizeBytes: number; uploadedAt: string;
-  state: "ACTIVE" | "REMOVED"; canDownload: boolean; removedAt?: string; removalReason?: string;
+  state: "ACTIVE" | "REMOVED"; canDownload: boolean; removedAt?: string; removalReason?: string; removedBy?: { id: number; displayName: string } | null;
 }
 export interface TicketDetail extends Omit<CreatedTicket, "attachments"> { attachments: Attachment[]; }
 
@@ -138,11 +158,11 @@ export async function createTicket(input: CreateTicketInput, idempotencyKey: str
 export type TicketSortBy = "updatedAt" | "ticketDate" | "ticketNumber" | "summary";
 export interface TicketListOptions {
   search?: string; categoryId?: number; relatedSystemId?: number; requestedPriority?: RequestedPriority;
-  currentStatus?: "NEW"; sortBy?: TicketSortBy; sortDir?: "asc" | "desc"; page?: number; pageSize?: 10 | 25 | 50;
+  currentStatus?: TicketStatus; sortBy?: TicketSortBy; sortDir?: "asc" | "desc"; page?: number; pageSize?: 10 | 25 | 50;
 }
 export interface TicketListItem {
   id: number; ticketNumber: string; ticketDate: string; summary: string; category: Category; relatedSystem: RelatedSystem;
-  requestedPriority: RequestedPriority; itPriority: string; currentStatus: string; updatedAt: string;
+  requestedPriority: RequestedPriority; itPriority: ItPriority; currentStatus: TicketStatus; updatedAt: string; owner: TicketOwner; version: number;
 }
 export interface TicketListResponse {
   items: TicketListItem[]; page: number; pageSize: number; totalItems: number; totalPages: number; hasPreviousPage: boolean; hasNextPage: boolean;

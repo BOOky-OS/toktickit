@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { authenticatedRequest as request, sessionMock } from "../lab-03/legacy-auth-fixture.js";
 
-const prismaMock = vi.hoisted(() => ({ session: { findUnique: vi.fn() }, user: { findUnique: vi.fn() }, ticket: { findMany: vi.fn(), count: vi.fn(), findFirst: vi.fn() } }));
+const prismaMock = vi.hoisted(() => ({ session: { findUnique: vi.fn() }, user: { findUnique: vi.fn() }, category: { findUnique: vi.fn() }, relatedSystem: { findUnique: vi.fn() }, ticket: { findMany: vi.fn(), count: vi.fn(), findFirst: vi.fn() }, $transaction: vi.fn() }));
 vi.mock("../../src/prisma.js", () => ({ getPrisma: () => prismaMock }));
 import { app } from "../../src/app.js";
 
 const ticket = {
   id: 42, ticketNumber: "TKT-2026-000042", ticketDate: new Date("2026-08-20T08:15:00.000Z"), updatedAt: new Date("2026-08-20T09:15:00.000Z"),
   summary: "Laptop battery drains quickly", description: "The battery drops from full charge to empty within one hour.", requestedPriority: "MEDIUM", itPriority: "UNASSIGNED", currentStatus: "NEW",
-  requester: { id: 1, displayName: "Jennifer Anderson" }, category: { id: 2, name: "Hardware" }, relatedSystem: { id: 7, name: "Corporate Laptop" },
+  owner: null, version: 1, requester: { id: 1, displayName: "Jennifer Anderson" }, category: { id: 2, name: "Hardware" }, relatedSystem: { id: 7, name: "Corporate Laptop" },
 };
 
 describe("GET /api/tickets", () => {
@@ -16,6 +16,9 @@ describe("GET /api/tickets", () => {
     vi.clearAllMocks();
     prismaMock.session.findUnique.mockImplementation(sessionMock().findUnique);
     prismaMock.user.findUnique.mockResolvedValue({ id: 1 });
+    prismaMock.category.findUnique.mockResolvedValue({ id: 2 });
+    prismaMock.relatedSystem.findUnique.mockResolvedValue({ id: 7 });
+    prismaMock.$transaction.mockImplementation(callback => callback(prismaMock));
     prismaMock.ticket.findMany.mockResolvedValue([ticket]);
     prismaMock.ticket.count.mockResolvedValue(1);
   });

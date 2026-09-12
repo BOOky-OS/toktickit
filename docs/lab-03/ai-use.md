@@ -1,7 +1,7 @@
 # Lab 3 AI Use Record
 
 Assistant used in this session: Codex (GPT-6).
-Status: factual preparation and Issues #33-#35 implementation record.
+Status: factual preparation and Issues #33-#36 implementation record.
 Prompts below are actual short excerpts or exact answers from this conversation,
 not invented historical prompts. Dates of earlier excerpts are not inferred.
 
@@ -85,6 +85,22 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
   Prisma validation passed. These are assistant-run checks, not student/peer claims.
 - Real browser E2E and screenshots remain planned and are not represented as
   passing. No working database migration, reset, seed or provisioning was run.
+## Issue #36 observed verification and decisions
+
+- Actual continuation prompt: "เน€เธเธทเนเธญเธ merge เน€เธชเธฃเนเธเนเธฅเนเธงเนเธเธ•เนเธญเนเธ”เนเน€เธฅเธข". The AI first
+  verified PR #45 approval/merge and continued on the dedicated Issue #36 branch
+  from the peer-merged `lab3-staging` head.
+- Test-first real PostgreSQL evidence initially produced 11 expected failures
+  among 14 focused cases. The implementation then added all-status/literal-search
+  queries, complete safe Detail metadata, stable idempotency, row-locked Attachment
+  limits, version/audit updates and safe download names.
+- Requester browser state now hands failed `File` objects to URL-backed Detail
+  for individual retry. It does not claim files survive a full browser refresh.
+  The Ticket itself remains persisted and visible after partial upload failure.
+- Final assistant-run checks passed: server 114/114, client 54/54, both builds
+  and Prisma validation. Server DB tests used only the allowlisted isolated test
+  database. Browser E2E/screenshots and final-main verification remain pending.
+
 ## My Reflection
 
 Pending the student's own reflection after using and reviewing the work.

@@ -5,6 +5,7 @@ import { ValidCreateTicket } from "./ticket-validation.js";
 
 const ticketInclude = {
   requester: { select: { id: true, displayName: true } },
+  owner: { select: { id: true, displayName: true, role: true } },
   category: { select: { id: true, name: true } },
   relatedSystem: { select: { id: true, name: true } },
 } satisfies Prisma.TicketInclude;
@@ -16,6 +17,7 @@ export interface TicketResponse {
   ticketNumber: string;
   ticketDate: string;
   requester: { id: number; displayName: string };
+  owner: { id: number; displayName: string; role: string } | null;
   category: { id: number; name: string };
   relatedSystem: { id: number; name: string };
   summary: string;
@@ -23,6 +25,14 @@ export interface TicketResponse {
   itPriority: string;
   currentStatus: string;
   description: string;
+  version: number;
+  updatedAt: string;
+  requesterResolutionIndicatedAt: string | null;
+  resolvedAt: string | null;
+  closedAt: string | null;
+  cancelledAt: string | null;
+  resolutionSummary: string | null;
+  cancellationReason: string | null;
   attachments: [];
 }
 
@@ -32,12 +42,17 @@ export type CreateTicketResult =
   | { kind: "validation"; fieldErrors: Record<string, string> }
   | { kind: "conflict" };
 
+function iso(value: Date | null): string | null {
+  return value?.toISOString() ?? null;
+}
+
 function toResponse(ticket: SavedTicket): TicketResponse {
   return {
     id: ticket.id,
     ticketNumber: ticket.ticketNumber,
     ticketDate: ticket.ticketDate.toISOString(),
     requester: ticket.requester,
+    owner: ticket.owner,
     category: ticket.category,
     relatedSystem: ticket.relatedSystem,
     summary: ticket.summary,
@@ -45,6 +60,14 @@ function toResponse(ticket: SavedTicket): TicketResponse {
     itPriority: ticket.itPriority,
     currentStatus: ticket.currentStatus,
     description: ticket.description,
+    version: ticket.version,
+    updatedAt: ticket.updatedAt.toISOString(),
+    requesterResolutionIndicatedAt: iso(ticket.requesterResolutionIndicatedAt),
+    resolvedAt: iso(ticket.resolvedAt),
+    closedAt: iso(ticket.closedAt),
+    cancelledAt: iso(ticket.cancelledAt),
+    resolutionSummary: ticket.resolutionSummary,
+    cancellationReason: ticket.cancellationReason,
     attachments: [],
   };
 }

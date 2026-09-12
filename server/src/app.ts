@@ -7,12 +7,15 @@ import multer from "multer";
 import { randomUUID } from "node:crypto";
 import { getPrisma } from "./prisma.js";
 import {
+  attachmentSelect,
   createAttachment,
   findDownloadableAttachment,
   listAttachments,
   removeAttachment,
+  toAttachmentResponse,
 } from "./attachments/attachment-service.js";
 import {
+  attachmentContentDisposition,
   MAX_ATTACHMENT_BYTES,
   sanitizeOriginalFilename,
   validateAttachmentFile,
@@ -52,7 +55,7 @@ app.use("/api", (req, res, next) => {
     next();
   });
 });
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_ATTACHMENT_BYTES, files: 1, fields: 8, fieldSize: 1024, parts: 10 } });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_ATTACHMENT_BYTES + 1, files: 1, fields: 8, fieldSize: 1024, parts: 10 } });
 
 function positiveInteger(value: unknown): number | null {
   const number = typeof value === "number" ? value : typeof value === "string" && /^[1-9][0-9]*$/.test(value) ? Number(value) : NaN;
@@ -151,11 +154,15 @@ app.get("/api/tickets", async (req: Request, res: Response) => {
   }
   try {
     const result = await listTickets(getPrisma(), parsed.value);
-    if (!result) {
-      res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR", fieldErrors: { requesterId: "Selected Requester is unavailable." } });
+    if (result.kind === "validation") {
+      res.status(400).json({
+        error: "Validation failed",
+        code: "VALIDATION_ERROR",
+        fieldErrors: result.fieldErrors,
+      });
       return;
     }
-    res.status(200).json(result);
+    res.status(200).json(result.value);
   } catch (error) {
     if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to load tickets", code: "INTERNAL_ERROR" });
@@ -173,17 +180,47 @@ app.get("/api/tickets/:ticketId", async (req: Request, res: Response) => {
     const ticket = await getPrisma().ticket.findFirst({
       where: { id: ticketId, ...(requesterId ? { requesterId } : {}) },
       select: {
-        id: true, ticketNumber: true, ticketDate: true, summary: true, description: true,
-        requestedPriority: true, itPriority: true, currentStatus: true,
+        id: true,
+        ticketNumber: true,
+        ticketDate: true,
+        summary: true,
+        description: true,
+        requestedPriority: true,
+        itPriority: true,
+        currentStatus: true,
+        updatedAt: true,
+        version: true,
+        requesterResolutionIndicatedAt: true,
+        resolvedAt: true,
+        closedAt: true,
+        cancelledAt: true,
+        resolutionSummary: true,
+        cancellationReason: true,
         requester: { select: { id: true, displayName: true } },
-        category: { select: { id: true, name: true } }, relatedSystem: { select: { id: true, name: true } },
+        owner: { select: { id: true, displayName: true, role: true } },
+        category: { select: { id: true, name: true } },
+        relatedSystem: { select: { id: true, name: true } },
+        attachments: {
+          select: attachmentSelect,
+          orderBy: [{ uploadedAt: "asc" }, { id: "asc" }],
+        },
       },
     });
     if (!ticket) {
       res.status(404).json({ error: "Ticket is unavailable.", code: "NOT_FOUND" });
       return;
     }
-    res.status(200).json({ ...ticket, ticketDate: ticket.ticketDate.toISOString(), attachments: [] });
+    const { attachments, ...detail } = ticket;
+    res.status(200).json({
+      ...detail,
+      ticketDate: ticket.ticketDate.toISOString(),
+      updatedAt: ticket.updatedAt.toISOString(),
+      requesterResolutionIndicatedAt: ticket.requesterResolutionIndicatedAt?.toISOString() ?? null,
+      resolvedAt: ticket.resolvedAt?.toISOString() ?? null,
+      closedAt: ticket.closedAt?.toISOString() ?? null,
+      cancelledAt: ticket.cancelledAt?.toISOString() ?? null,
+      attachments: attachments.map(toAttachmentResponse),
+    });
   } catch (error) {
     if (error instanceof ApiError) { sendError(res, error); return; }
     res.status(500).json({ error: "Unable to load ticket", code: "INTERNAL_ERROR" });
@@ -278,7 +315,7 @@ app.get("/api/attachments/:attachmentId/download", async (req: Request, res: Res
       .status(200)
       .type(attachment.mimeType)
       .setHeader("X-Content-Type-Options", "nosniff")
-      .setHeader("Content-Disposition", `attachment; filename="${attachment.originalFilename.replace(/"/g, "")}"`)
+      .setHeader("Content-Disposition", attachmentContentDisposition(attachment.originalFilename))
       .send(content);
   } catch (error) {
     if (error instanceof ApiError) { sendError(res, error); return; }
