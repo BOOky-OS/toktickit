@@ -32,7 +32,7 @@ export function parseOperation(operation: Operation, body: Record<string, unknow
   }
   return body;
 }
-const detailSelect = {
+export const detailSelect = {
   id: true, ticketNumber: true, ticketDate: true, summary: true, description: true,
   requestedPriority: true, itPriority: true, currentStatus: true, updatedAt: true, version: true,
   requesterResolutionIndicatedAt: true, resolvedAt: true, closedAt: true, cancelledAt: true,

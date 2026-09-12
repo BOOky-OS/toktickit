@@ -39,6 +39,7 @@ const active: api.Attachment = {
 
 describe("Ticket Detail", () => {
   beforeEach(() => {
+    vi.spyOn(api, "getEntries").mockResolvedValue([]);
     vi.spyOn(api, "getTicket").mockResolvedValue(detail);
     vi.spyOn(api, "getAttachments").mockResolvedValue([active]);
   });

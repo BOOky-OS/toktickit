@@ -147,3 +147,18 @@ independent peer-review evidence.
   Screenshot captures are not represented as manual visual inspection.
 - No working database migration/reset/seed/provisioning or user-authored comments
   were performed. Peer review and the completed-document/main gate remain pending.
+## Issue #39 observed implementation and decisions
+
+- Actual prompt: "ไปต่อเลย". Verified PR #48 approval at dc48634, peer merge
+  790a99c and both author replies. Closed #38 and moved its Issue/PR to Done
+  before creating feature/39-lab3-comments-notes from updated staging.
+- Implemented public/internal streams, backend actor/time, append-only limits,
+  atomic entry/version writes, and requester-owned resolution indication.
+- UI drafts are independent and content is literal text. Uncertain post failures
+  require stream reload before manual retry; no comment idempotency is claimed.
+- The first full client run exposed three old Attachment tests without the new
+  Comments API fixture. Added an empty stream mock, preserving their assertions.
+- Real-DB API checks and mocked browser checks are recorded separately. Browser
+  tests exercise all three roles and viewport sizes; screenshot capture is not
+  manual visual inspection. No working DB migration/reset/seed/provisioning ran.
+- Peer review and the completed-document/main confirmation gate remain pending.
