@@ -15,6 +15,7 @@ import { AuthProvider, homeFor, navigate, useAuth } from "./AuthContext.js";
 import { ApplicationShell, ChangePasswordScreen, LoginScreen, SessionFailure, SessionLoading } from "./AuthScreens.js";
 import type { UserRole } from "./api.js";
 import { MyTickets } from "./MyTickets.js";
+import { StaffTicketQueue } from "./StaffTicketQueue.js";
 import { TicketDetail } from "./TicketDetail.js";
 import "./theme.css";
 import "./auth.css";
@@ -620,13 +621,15 @@ function PlannedRoleHome() {
       <button className={path === "/staff/tickets" ? "active" : ""} aria-current={path === "/staff/tickets" ? "page" : undefined}
         onClick={() => navigate("/staff/tickets")}>Ticket Queue{admin ? " (read-only)" : ""}</button>
     </nav>
-    <main className="page-content" id="main-content">
+    {path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => navigate("/tickets/" + id)} onHome={() => navigate(homeFor(user!.role))} />
+      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly onBack={() => navigate("/staff/tickets")} />
+      : <main className="page-content" id="main-content">
       <section className="zen-empty-state">
         <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator read-only access" : "Role workspace"}</p>
         <h1>{ticketDetail ? "Ticket Detail" : path === "/staff/tickets" ? "Ticket Queue" : "User Management"}</h1>
         <p>This destination is available to {user?.displayName} under the signed-in role.</p>
       </section>
-    </main>
+    </main>}
   </>;
 }
 function AccessUnavailable() {

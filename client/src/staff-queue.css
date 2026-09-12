@@ -1,0 +1,18 @@
+.staff-queue { min-width: 0; }
+.queue-secondary { display: block; margin-top: .35rem; }
+.queue-desktop table { table-layout: fixed; width: 100%; }
+.queue-desktop th, .queue-desktop td { overflow-wrap: anywhere; white-space: normal; }
+.queue-cards { display: none; }
+.queue-card { border: 1px solid var(--zen-border, #d5e4dd); border-radius: 12px; padding: 1rem; min-width: 0; overflow-wrap: anywhere; }
+.queue-card h2 { font-size: 1.1rem; }
+.queue-card dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.queue-card dt { font-size: .8rem; font-weight: 600; }
+.queue-card dd { margin: 0; }
+@media (max-width: 991px) {
+  .queue-desktop { display: none; }
+  .queue-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+}
+@media (max-width: 767px) {
+  .queue-cards { grid-template-columns: minmax(0, 1fr); }
+  .staff-queue .pagination-row { flex-wrap: wrap; gap: .75rem; }
+}

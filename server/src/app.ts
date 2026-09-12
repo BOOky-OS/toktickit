@@ -29,6 +29,7 @@ import {
 import { createTicket } from "./tickets/create-ticket.js";
 import { validateCreateTicket } from "./tickets/ticket-validation.js";
 import { listTickets, parseTicketList } from "./tickets/list-tickets.js";
+import { listAssignees, parseQueue, staffQueue } from "./tickets/staff-queue.js";
 
 // The Express app is exported separately from app.listen() (see index.ts) so
 // Supertest can import `app` without opening a port. Do not merge these files.
@@ -49,7 +50,7 @@ app.use("/api", (req, res, next) => {
     if (!["GET", "HEAD", "OPTIONS"].includes(req.method) && !req.is("multipart/form-data") && !req.is("application/json")) {
       return next(new ApiError(415, "UNSUPPORTED_TYPE", "Use application/json."));
     }
-    if (!/^\/tickets\/?$/.test(req.path) || req.method !== "GET") {
+    if (!/^\/(?:staff\/)?tickets\/?$/.test(req.path) || !["GET", "HEAD"].includes(req.method)) {
       if (Object.keys(req.query).length) return next(invalid());
     }
     next();
@@ -145,6 +146,21 @@ app.post("/api/tickets", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/api/staff/tickets", async (req: Request, res: Response) => {
+  try {
+    res.json(await staffQueue(getPrisma(), parseQueue(req.query, res.locals.actor.user.id)));
+  } catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
+    res.status(500).json({ error: "Unable to load ticket queue", code: "INTERNAL_ERROR" });
+  }
+});
+app.get("/api/staff/assignees", async (_req: Request, res: Response) => {
+  try { res.json(await listAssignees(getPrisma())); }
+  catch (error) {
+    if (error instanceof ApiError) { sendError(res, error); return; }
+    res.status(500).json({ error: "Unable to load assignees", code: "INTERNAL_ERROR" });
+  }
+});
 app.get("/api/tickets", async (req: Request, res: Response) => {
   if (Object.keys(req.query).some(k => !["search", "categoryId", "relatedSystemId", "requestedPriority", "currentStatus", "sortBy", "sortDir", "page", "pageSize"].includes(k))) { sendError(res, invalid()); return; }
   const parsed = parseTicketList({ ...req.query, requesterId: String(res.locals.actor.user.id) });

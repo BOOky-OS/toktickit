@@ -230,3 +230,29 @@ export async function checkSystem(): Promise<SystemStatus> {
   const categories = (await categoryResponse.json()) as Category[];
   return { online: true, categories };
 }
+
+export interface StaffQueueOptions extends Omit<TicketListOptions, "sortBy"> {
+  sortBy?: TicketSortBy | "itPriority";
+  itPriority?: RequestedPriority;
+  owner?: string;
+}
+export interface StaffQueueItem extends TicketListItem {
+  requester: { id: number; displayName: string };
+}
+export interface StaffQueueResponse extends Omit<TicketListResponse, "items"> {
+  items: StaffQueueItem[];
+}
+export async function getStaffQueue(options: StaffQueueOptions = {}): Promise<StaffQueueResponse> {
+  const params = new URLSearchParams();
+  Object.entries(options).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") params.set(key, String(value));
+  });
+  const response = await apiFetch("/api/staff/tickets?" + params.toString());
+  if (!response.ok) throw await responseError(response, "Unable to load ticket queue.");
+  return response.json() as Promise<StaffQueueResponse>;
+}
+export async function getAssignees(): Promise<Array<NonNullable<TicketOwner>>> {
+  const response = await apiFetch("/api/staff/assignees");
+  if (!response.ok) throw await responseError(response, "Unable to load owners.");
+  return response.json() as Promise<Array<NonNullable<TicketOwner>>>;
+}
