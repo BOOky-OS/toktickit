@@ -291,3 +291,22 @@ export async function indicateResolution(id: number, version: number): Promise<T
   if (!response.ok) throw await responseError(response, "Unable to record indication.");
   return response.json();
 }
+
+export interface AdminUser { id: number; displayName: string; email: string; role: UserRole; isActive: boolean; mustChangePassword: boolean; version: number; createdAt: string; updatedAt: string; }
+export interface UserFields { displayName: string; email: string; role: UserRole; isActive: boolean; }
+export async function getUsers(search?: string, role?: UserRole): Promise<{items: AdminUser[]; totalItems: number}> {
+  const query = new URLSearchParams(); if (search) query.set("search", search); if (role) query.set("role", role);
+  const response = await apiFetch(`/api/admin/users${query.size ? "?" + query : ""}`);
+  if (!response.ok) throw await responseError(response, "Unable to load users."); return response.json();
+}
+export async function getAdminUser(id: number): Promise<AdminUser> {
+  const response = await apiFetch(`/api/admin/users/${id}`);
+  if (!response.ok) throw await responseError(response, "Unable to load user."); return response.json();
+}
+async function writeUser(path: string, method: string, body: unknown): Promise<AdminUser> {
+  const response = await apiFetch(path, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!response.ok) throw await responseError(response, "Unable to save user."); return response.json();
+}
+export const createUser = (body: UserFields & {initialPassword: string}) => writeUser("/api/admin/users", "POST", body);
+export const editUser = (id: number, body: UserFields & {version: number}) => writeUser(`/api/admin/users/${id}`, "PATCH", body);
+export const resetInitialPassword = (id: number, version: number, initialPassword: string) => writeUser(`/api/admin/users/${id}/initial-password`, "POST", { version, initialPassword, confirmed: true });

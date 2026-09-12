@@ -32,6 +32,7 @@ import { listTickets, parseTicketList } from "./tickets/list-tickets.js";
 import { listAssignees, parseQueue, staffQueue } from "./tickets/staff-queue.js";
 import { staffOperations } from "./tickets/staff-operations.js";
 import { communication } from "./tickets/communication.js";
+import { userManagement } from "./auth/user-management.js";
 
 // The Express app is exported separately from app.listen() (see index.ts) so
 // Supertest can import `app` without opening a port. Do not merge these files.
@@ -52,7 +53,7 @@ app.use("/api", (req, res, next) => {
     if (!["GET", "HEAD", "OPTIONS"].includes(req.method) && !req.is("multipart/form-data") && !req.is("application/json")) {
       return next(new ApiError(415, "UNSUPPORTED_TYPE", "Use application/json."));
     }
-    if (!/^\/(?:staff\/)?tickets\/?$/.test(req.path) || !["GET", "HEAD"].includes(req.method)) {
+    if (!/^\/(?:(?:staff\/)?tickets|admin\/users)\/?$/.test(req.path) || !["GET", "HEAD"].includes(req.method)) {
       if (Object.keys(req.query).length) return next(invalid());
     }
     next();
@@ -365,6 +366,7 @@ app.delete("/api/attachments/:attachmentId", async (req: Request, res: Response)
 
 app.use("/api", staffOperations);
 app.use("/api", communication);
+app.use("/api", userManagement);
 app.use((_req, res) => { res.status(404).json({ error: "Resource is unavailable.", code: "NOT_FOUND" }); });
 
 function sendError(res: Response, error: unknown) {

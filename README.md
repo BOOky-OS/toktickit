@@ -14,7 +14,8 @@ role shell and authenticated Requester regression. Issue #37 adds the responsive
 [Staff/Admin Ticket Queue](docs/lab-03/staff-queue.md) and read-only Detail navigation.
 Issue #38 adds [Staff Ticket operations](docs/lab-03/staff-operations.md).
 Issue #39 adds [Ticket communication and resolution indication](docs/lab-03/communication.md).
-See [authentication setup](docs/lab-03/authentication.md). User administration remains #40.
+Issue #40 adds [Administrator User Management](docs/lab-03/user-management.md).
+See [authentication setup](docs/lab-03/authentication.md). Final audit and release remain #41.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
 #32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.
