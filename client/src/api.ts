@@ -256,3 +256,21 @@ export async function getAssignees(): Promise<Array<NonNullable<TicketOwner>>> {
   if (!response.ok) throw await responseError(response, "Unable to load owners.");
   return response.json() as Promise<Array<NonNullable<TicketOwner>>>;
 }
+
+export interface StatusHistoryEntry {
+  id: number; fromStatus: string; toStatus: string; reason: string | null;
+  createdAt: string; author: NonNullable<TicketOwner>;
+}
+export async function getStatusHistory(id: number): Promise<StatusHistoryEntry[]> {
+  const response = await apiFetch(`/api/tickets/${id}/status-history`);
+  if (!response.ok) throw await responseError(response, "Unable to load status history.");
+  return response.json();
+}
+export async function mutateStaffTicket(id: number, operation: "claim" | "owner" | "priority" | "status", body: Record<string, unknown>): Promise<TicketDetail> {
+  const response = await apiFetch(`/api/staff/tickets/${id}/${operation}`, {
+    method: operation === "owner" || operation === "priority" ? "PATCH" : "POST",
+    headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  if (!response.ok) throw await responseError(response, "Unable to update Ticket.");
+  return response.json();
+}

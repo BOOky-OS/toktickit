@@ -131,3 +131,19 @@ independent peer-review evidence.
   reset, seed or provisioning occurred. Screenshot capture is not manual review.
 - Independent peer review and the user's final completed-document/main gate
   remain pending. No comments have been posted on the user's behalf.
+
+## Issue #38 observed implementation and decisions
+
+- Actual prompt: "ไปต่อได้เลย". Verified PR #47 final-head approval, peer merge
+  ed33913 and existing author replies; closed #37 and moved both Project items
+  Done before branching feature/38-lab3-staff-operations from updated staging.
+- The assistant implemented Staff-only mutations, transactional optimistic
+  version checks, the eight-state matrix, public history and operational UI.
+  Admin remains read-only under the student's confirmed permission choice.
+- Actual validation includes all 64 pairs in both unit and real PostgreSQL API
+  checks, concurrent claims, rollback on history failure, component conflict
+  drafts and Chrome confirmation/reload flows at three viewport sizes.
+- Browser fixtures mock API responses; they are not real authenticated DB E2E.
+  Screenshot captures are not represented as manual visual inspection.
+- No working database migration/reset/seed/provisioning or user-authored comments
+  were performed. Peer review and the completed-document/main gate remain pending.
