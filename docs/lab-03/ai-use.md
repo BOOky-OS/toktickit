@@ -115,3 +115,19 @@ Update on the same Issue branch as the related work. Keep 6-10 representative
 real prompts for final submission; replace repetitive examples if needed while
 preserving accuracy. Separate assistant tool checks, student decisions and
 independent peer-review evidence.
+
+## Issue #37 observed verification and decisions
+
+- Actual continuation prompt: "ไปต่อได้เลย". Verified PR #46 approval at final
+  head fdff03a, peer merge 24b4dd5 and both author replies before beginning #37.
+- The assistant implemented Queue queries, active assignees, responsive controls,
+  read-only Detail navigation and tests on feature/37-lab3-staff-queue.
+- The first focused database attempt failed because Docker was stopped; this is
+  an environment failure, not evidence of test-first application failures.
+- Review caught a TypeScript-incompatible test query option; it was removed.
+  Numeric Queue controls now reject non-decimal forms and have unit coverage.
+- Real PostgreSQL API checks and component checks are separate from the three
+  Chrome viewport tests, which mock API fixtures. No working DB migration,
+  reset, seed or provisioning occurred. Screenshot capture is not manual review.
+- Independent peer review and the user's final completed-document/main gate
+  remain pending. No comments have been posted on the user's behalf.

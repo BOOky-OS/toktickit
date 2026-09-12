@@ -9,10 +9,11 @@ responsive requester-owned Ticketing MVP.
 Lab 3 begins with the [engineering contract](docs/lab-03/specification.md),
 [API contract](docs/lab-03/api-spec.md), [UI specification](docs/lab-03/ui-spec.md)
 and [planned tests](docs/lab-03/tests.md). These documents describe target
-behavior. Issue #33 implemented migration/seed; Issue #34 implements authentication
-and backend authorization. See [authentication setup and current scope](docs/lab-03/authentication.md).
-The browser login/role shell, Staff workflows and user administration remain
-later increments; the old selector-based browser cannot access protected APIs.
+behavior. Issues #33-#36 implement migration/seed, authentication, the browser
+role shell and authenticated Requester regression. Issue #37 adds the responsive
+[Staff/Admin Ticket Queue](docs/lab-03/staff-queue.md) and read-only Detail navigation.
+See [authentication setup](docs/lab-03/authentication.md). Staff mutations,
+communication and user administration remain later increments.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
 #32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.
@@ -175,7 +176,7 @@ toktickit/
 |-- server/prisma/schema.prisma and migrations/
 |-- server/prisma/seed.ts, lab3-seed.ts, lab3-provision.ts
 |-- docs/lab-01/, lab-02/, lab-03/
-|-- e2e/lab-02/
+|-- e2e/lab-02/, lab-03/
 |-- output/pdf/
 |-- skill.md
 |-- compose.yaml

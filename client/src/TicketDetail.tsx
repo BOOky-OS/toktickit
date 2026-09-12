@@ -32,10 +32,12 @@ export function TicketDetail({
   onBack,
   retryFiles = NO_RETRY_FILES,
   onRetryFilesChange,
+  readOnly = false,
 }: {
   ticketId: number;
   onBack: () => void;
   retryFiles?: File[];
+  readOnly?: boolean;
   onRetryFilesChange?: (files: File[]) => void;
 }) {
   const [state, setState] = useState<DetailState>("loading");
@@ -172,7 +174,7 @@ export function TicketDetail({
           <h1>Ticket unavailable</h1>
           <p>This Ticket does not exist or is not available to your signed-in account.</p>
           <button className="zen-button zen-button--secondary" onClick={onBack}>
-            Back to My Tickets
+            {readOnly ? "Back to Ticket Queue" : "Back to My Tickets"}
           </button>
         </section>
       </main>
@@ -192,11 +194,11 @@ export function TicketDetail({
 
   return (
     <main className="page-content" id="main-content">
-      <button className="ticket-link mb-3" onClick={onBack}>Back to My Tickets</button>
+      <button className="ticket-link mb-3" onClick={onBack}>{readOnly ? "Back to Ticket Queue" : "Back to My Tickets"}</button>
       <section className="ticket-card">
         <div className="ticket-heading">
           <div>
-            <p className="eyebrow">Requester Ticket Detail</p>
+            <p className="eyebrow">{readOnly ? "Ticket Detail (read-only)" : "Requester Ticket Detail"}</p>
             <h1>{ticket.ticketNumber}</h1>
           </div>
           <span className="zen-badge">{enumLabel(ticket.currentStatus)}</span>
@@ -255,7 +257,7 @@ export function TicketDetail({
                 {activeCount} active file{activeCount === 1 ? "" : "s"}. Removed metadata is retained.
               </p>
             </div>
-            <label
+            {!readOnly && <><label
               className={`zen-button zen-button--secondary ${uploading ? "zen-button--busy" : ""} ${activeCount >= 5 ? "zen-button--disabled" : ""}`}
               htmlFor="detail-file"
               aria-disabled={uploading || activeCount >= 5}
@@ -273,7 +275,7 @@ export function TicketDetail({
               accept="image/jpeg,image/png,image/webp,application/pdf"
               disabled={uploading || activeCount >= 5}
               onChange={selectFile}
-            />
+            /></>}
           </div>
           {message && (
             <p
@@ -316,7 +318,7 @@ export function TicketDetail({
                       >
                         Download
                       </a>
-                      <button
+                      {!readOnly && <button
                         className="zen-button zen-button--danger"
                         onClick={() => {
                           setRemoving(file);
@@ -324,7 +326,7 @@ export function TicketDetail({
                         }}
                       >
                         Remove
-                      </button>
+                      </button>}
                     </div>
                   )}
                 </li>

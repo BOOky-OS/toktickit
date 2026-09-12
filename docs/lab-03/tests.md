@@ -49,7 +49,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | --- | --- | --- | --- | --- | --- |
 | UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Pass in #34: helper boundaries plus real-DB password replacement, confirmation and difference checks in auth.api.test.ts; final-main pending |
 | UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Planned |
-| UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Planned |
+| UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Queue Pass; Users query coverage remains #40 |
 | UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Planned |
 | UNIT-05 | Unit | BR-10..12,28; AC-08,09,19 | Table-driven role/resource decisions including Admin read-only, historical requester IDs and no internal fields in requester serializer | server/tests/lab-03/authorization.unit.test.ts | Planned |
 | MIG-01 | DB migration | FR-01; AC-01 | Upgrade actual Lab 2 schema with active/inactive users, Tickets, active/removed Attachments; preserve IDs/text/number/date/ownership/removal authors/file bytes and references | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
@@ -67,7 +67,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | API-09 | API/DB | FR-09; AC-11 | Requester search/filters/all eight statuses/sort/page, literal wildcard terms, stable tie-breaker, out-of-range/empty metadata, no cross-user results | server/tests/lab-03/requester-regression.api.test.ts | Pass in #36: all statuses, literal wildcards, stable/beyond-last pages, active references and isolation |
 | API-10 | API/DB | FR-10; AC-12 | Valid MIME/signature/extension; 5 MiB exact/+1; fifth/sixth active; owned upload/list/download/remove, all statuses; removed bytes unavailable to every role and audit retained | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: exact size boundary, all statuses, row-locked cap, version and removal audit |
 | API-11 | API | BR-19,35; AC-12,31 | Storage/metadata failures compensate safely; ticket survives partial uploads; missing file/reason limits/download header sanitation and safe error envelopes | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: safe compensation/errors, required reason and RFC 5987 download header |
-| API-12 | API/DB | FR-11; AC-13 | Staff/Admin Queue all query combinations/defaults/priority order/ties/count snapshot; requester denial; inactive historical owner remains visible; assignees active Staff/Admin only | server/tests/lab-03/staff-queue.api.test.ts | Planned |
+| API-12 | API/DB | FR-11; AC-13 | Staff/Admin Queue all query combinations/defaults/priority order/ties/count snapshot; requester denial; inactive historical owner remains visible; assignees active Staff/Admin only | server/tests/lab-03/staff-queue.api.test.ts | Pass (#37); repeatable-read implementation, no forced concurrent count probe |
 | API-13 | API/DB | FR-12,13; AC-14 | Staff Detail, claim, already-self no-op, other-owner conflict, confirmed reassign, null restrictions, inactive/wrong-role rejection, Admin candidate with read-only permissions | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
 | API-14 | API/DB | FR-14; AC-15 | Priority LOW/MEDIUM/HIGH, no UNASSIGNED, immutable Requested Priority, no-op and terminal/role denial | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
 | API-15 | API/DB | FR-15; AC-16 | Every permitted/forbidden status pair; owner, confirmation and public reason prerequisites; timestamps/history/reopen clearing and transaction rollback on history failure | server/tests/lab-03/staff-ticket-detail.api.test.ts | Planned |
@@ -85,7 +85,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | UI-02 | UI | FR-04,05; AC-05,26 | Forced and voluntary change, paste/autocomplete, limits/mismatch/same-password, pending/failure/success, no bypass | client/tests/lab-03/AuthFlow.test.tsx | Pass in #35; final-main pending |
 | UI-03 | UI | FR-06,07; AC-08,26 | Boot loading/me, role menus, forbidden routes, expiry/logout failure/retry, no stale data via Back/reload, old storage key removed | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
 | UI-04 | UI | FR-08..10; AC-10,27 | Authenticated requester Create/List/Detail, filters/statuses/empty/retry, key retained across ambiguous failure, partial file recovery, no selector | client/tests/lab-03/RequesterRegression.test.tsx | Pass in #36; Lab 2 requester tests also retained and adapted |
-| UI-05 | UI | FR-11; AC-13,28 | Staff/Admin Queue fields/search/filters/sort/page/card links, loading/empty/no-results/forbidden/failure, read-only Admin context | client/tests/lab-03/StaffTicketQueue.test.tsx | Planned |
+| UI-05 | UI | FR-11; AC-13,28 | Staff/Admin Queue fields/search/filters/sort/page/card links, loading/empty/no-results/forbidden/failure, read-only Admin context | client/tests/lab-03/StaffTicketQueue.test.tsx | Pass (#37) |
 | UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Planned |
 | UI-07 | UI | FR-16..18; AC-18,19,20,28 | Separate public/internal drafts, safe literal HTML text, permissions, empty/failed/terminal posting, requester resolution action/indicator and no note metadata | client/tests/lab-03/CommentsNotes.test.tsx | Planned |
 | UI-08 | UI | FR-19..22; AC-21..25,29 | User list/search/create/edit/reset, field validation/conflict/safe failure, draft retention/password clearing, safety reasons, self-session invalidation | client/tests/lab-03/UserManagement.test.tsx | Planned |
@@ -312,6 +312,30 @@ isolated final browser harness; API/DB and component coverage above are actual
 Issue #36 evidence. No working database migration, reset, seed or provisioning
 was performed.
 
+## Issue #37 Queue results — 2026-09-12
+
+Branch: `feature/37-lab3-staff-queue`, based on peer-merged `24b4dd5` (#36).
+
+| Command / evidence | Observed result |
+| --- | --- |
+| Initial focused DB attempt with Docker off | Fixture connection failed; not an application pass or test-first behavioral failure |
+| `npm test --workspace server -- --maxWorkers=1` with isolated `TEST_DATABASE_URL` | 125/125 passed in 18 files; 131.90 s; no skips |
+| `npm test --workspace client -- --maxWorkers=1` | 60/60 passed in 9 files; 48.94 s; no skips |
+| `npm run build` | Client TypeScript/Vite and server TypeScript passed after fixing an unsupported test-query option |
+| `npm run prisma:validate` | Schema valid |
+| `npx playwright test --config playwright.queue.config.ts` | 3/3 passed; 9.2 s; Chrome desktop/tablet/mobile with mocked API fixtures |
+| `git diff --check` | Passed |
+
+New coverage: four Queue query unit cases, seven real-DB Queue API cases and
+six Queue/read-only Detail component cases. Priority ordering and ties use real
+PostgreSQL enum ordering. Row/count consistency is implemented via RepeatableRead;
+this increment does not claim a forced concurrent-change snapshot test.
+Browser tests assert table/cards, no page overflow, filter failure/no-results,
+Detail URL/reload/back and hidden upload controls. Screenshot captures are local
+ignored artifacts, not completed manual visual inspection or real login E2E.
+See [Queue implementation and reproduction](staff-queue.md) for paths and scope.
+No working database reset, migration, seed or provisioning occurred.
+Independent peer review, full authenticated E2E and final-main checks remain pending.
 ## 7. Visual checklist and deferred scope
 
 Complete the ui-spec.md checklist with screenshot paths, observed results and
