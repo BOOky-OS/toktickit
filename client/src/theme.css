@@ -1,20 +1,32 @@
 :root {
   --zen-green-900: #006b3c;
   --zen-green-700: #0b7a46;
+  --zen-green-500: #28a66a;
   --zen-green-100: #eaf6ef;
+  --zen-green-050: #f4fbf7;
   --zen-page: #f5f7f6;
   --zen-surface: #fff;
   --zen-text: #20342b;
+  --zen-muted: #5b6d63;
   --zen-readonly: #f1f4ef;
   --zen-border: #c9d4cd;
   --zen-error: #8b1e2d;
+  --zen-shadow: 0 1rem 2.75rem rgba(20, 69, 49, 0.09);
   color: var(--zen-text);
   background: var(--zen-page);
 }
+*,
+*::before,
+*::after { box-sizing: border-box; }
+html { font-size: 16px; }
 body {
+  margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  color: var(--zen-text);
   background: var(--zen-page);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+  line-height: 1.5;
 }
 .skip-link {
   position: fixed;
@@ -41,13 +53,17 @@ body {
 }
 .requester-card,
 .ticket-card {
-  width: min(100%, 980px);
-  padding: clamp(1.5rem, 5vw, 3rem);
+  width: 100%;
+  padding: clamp(1.35rem, 3vw, 2.35rem);
   border: 1px solid var(--zen-border);
-  border-radius: 1rem;
+  border-radius: 1.15rem;
   background: var(--zen-surface);
-  box-shadow: 0 1rem 2.5rem rgba(24, 75, 56, 0.08);
+  box-shadow: var(--zen-shadow);
 }
+h1, h2, h3 { color: #17392a; font-weight: 750; letter-spacing: -0.025em; }
+h1 { font-size: clamp(1.75rem, 2.4vw, 2.35rem); line-height: 1.15; }
+h2 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
+p { max-width: 72ch; }
 .requester-card {
   max-width: 520px;
 }
@@ -71,10 +87,16 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem clamp(1rem, 4vw, 3rem);
-  border-bottom: 1px solid var(--zen-border);
-  background: var(--zen-surface);
+  min-height: 76px;
+  padding: 0.9rem max(1.25rem, calc((100vw - 1240px) / 2));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(115deg, #005c34, var(--zen-green-900) 55%, #087748);
+  color: #fff;
+  box-shadow: 0 0.25rem 1.25rem rgba(12, 63, 43, 0.16);
 }
+.app-header > div:first-child { display: flex; align-items: baseline; gap: 0.7rem; white-space: nowrap; }
+.app-header > div:first-child strong { color: #fff; font-size: 1.45rem; letter-spacing: -0.03em; }
+.app-header > div:first-child span { color: #d8f2e4; font-size: 0.9rem; }
 .requester-chip {
   display: flex;
   align-items: center;
@@ -82,27 +104,32 @@ body {
 }
 .app-nav {
   display: flex;
-  gap: 0.25rem;
-  padding: 0.5rem clamp(1rem, 4vw, 3rem);
+  gap: 0.4rem;
+  padding: 0.55rem max(1.25rem, calc((100vw - 1240px) / 2));
   background: var(--zen-surface);
   border-bottom: 1px solid var(--zen-border);
+  box-shadow: 0 0.3rem 0.8rem rgba(35, 68, 53, 0.04);
 }
 .app-nav button {
-  border: 0;
-  border-bottom: 3px solid transparent;
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: 0.55rem;
   background: transparent;
-  padding: 0.55rem 0.8rem;
+  padding: 0.5rem 0.85rem;
   color: var(--zen-text);
 }
+.app-nav button:hover { background: var(--zen-green-050); color: var(--zen-green-900); }
 .app-nav button.active {
+  background: var(--zen-green-100);
   color: var(--zen-green-900);
-  border-color: var(--zen-green-900);
+  border-color: #b8d9c7;
   font-weight: 700;
 }
 .page-content {
-  max-width: 1100px;
+  width: 100%;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: clamp(1rem, 4vw, 3rem);
+  padding: clamp(1.25rem, 3vw, 2.5rem);
 }
 .ticket-heading {
   display: flex;
@@ -111,6 +138,8 @@ body {
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+.ticket-heading h1 { margin-bottom: 0.35rem; }
+.ticket-heading .zen-badge { flex: 0 0 auto; margin-top: 0.2rem; }
 .ticket-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -146,7 +175,7 @@ body {
   min-height: 2.65rem;
   padding: 0.55rem 0.7rem;
   border: 1px solid var(--zen-border);
-  border-radius: 0.4rem;
+  border-radius: 0.55rem;
   background: var(--zen-surface);
   color: var(--zen-text);
 }
@@ -164,6 +193,8 @@ body {
 }
 .zen-field--readonly {
   background: var(--zen-readonly);
+  border-color: #d8dfda;
+  color: #415449;
 }
 .zen-field--invalid {
   border-color: var(--zen-error);
@@ -174,13 +205,20 @@ body {
   font-size: 0.9rem;
 }
 .attachment-section {
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--zen-border);
+  margin-top: 1.15rem;
+  padding: 1.25rem;
+  border: 1px solid var(--zen-border);
+  border-radius: 0.85rem;
+  background: #fbfdfc;
 }
 .attachment-section h2 {
-  font-size: 1.1rem;
+  margin-bottom: 0.35rem;
+  font-size: 1.15rem;
 }
+.attachment-section > :last-child { margin-bottom: 0; }
+.attachment-section ol { display: grid; gap: 0.75rem; margin: 1rem 0; padding: 0; list-style: none; }
+.attachment-section ol li { padding: 0.9rem 1rem; border: 1px solid #dbe5df; border-radius: 0.7rem; background: #fff; }
+.attachment-section ol li p { margin-bottom: 0.35rem; }
 .attachment-list {
   padding: 0;
   margin: 1rem 0 0;
@@ -209,10 +247,12 @@ body {
   display: inline-block;
   min-height: 44px;
   border: 1px solid transparent;
-  border-radius: 0.4rem;
-  padding: 0.58rem 0.9rem;
+  border-radius: 0.55rem;
+  padding: 0.58rem 1rem;
   font-weight: 600;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
 }
+.zen-button:not(:disabled):active { transform: translateY(1px); }
 .zen-button--primary {
   background: var(--zen-green-900);
   color: #fff;
@@ -241,10 +281,10 @@ body {
 .zen-badge {
   display: inline-block;
   border-radius: 99px;
-  padding: 0.25rem 0.55rem;
+  padding: 0.3rem 0.65rem;
   background: var(--zen-green-100);
   color: var(--zen-green-900);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
 }
 .success-message {
@@ -307,10 +347,10 @@ body {
 }
 .filter-card {
   margin-bottom: 1.5rem;
-  padding: 1rem;
+  padding: 1.15rem;
   border: 1px solid var(--zen-border);
-  border-radius: 0.65rem;
-  background: var(--zen-green-100);
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, var(--zen-green-050), var(--zen-green-100));
 }
 .filter-grid {
   display: grid;
@@ -334,6 +374,9 @@ body {
 }
 .ticket-table-wrap {
   overflow-x: auto;
+  border: 1px solid var(--zen-border);
+  border-radius: 0.8rem;
+  background: #fff;
 }
 .ticket-table-wrap:focus {
   outline: 3px solid #b8dfc8;
@@ -343,7 +386,7 @@ body {
   width: 100%;
   min-width: 900px;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 .ticket-table th,
 .ticket-table td {
@@ -353,8 +396,14 @@ body {
   vertical-align: top;
 }
 .ticket-table th {
-  background: var(--zen-readonly);
+  background: #edf5f0;
+  color: #274c3a;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
+.ticket-table tbody tr:hover { background: var(--zen-green-050); }
+.ticket-table tbody tr:last-child td { border-bottom: 0; }
 .ticket-link {
   border: 0;
   background: transparent;
@@ -393,18 +442,48 @@ body {
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.85rem;
+  padding: 1.15rem;
+  border: 1px solid var(--zen-border);
+  border-radius: 0.85rem;
+  background: var(--zen-green-050);
+}
+.detail-grid > div {
+  min-width: 0;
 }
 .detail-grid dt {
   font-weight: 700;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.35rem;
+  color: #476052;
+  font-size: 0.82rem;
 }
 .detail-grid dd {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
   margin: 0;
-  min-height: 2.8rem;
+  min-height: 2.75rem;
 }
 .detail-wide {
   grid-column: 1 / -1;
+}
+.attachment-section[aria-labelledby=staff-operations-heading] { border-color: #b8d9c7; background: #f2faf5; }
+.attachment-section[aria-labelledby=comments-heading] { border-color: #bdd7e7; background: #f5faff; }
+.attachment-section[aria-labelledby=notes-heading] { border-color: #e3cf9f; background: #fffaf0; }
+.attachment-section[aria-labelledby=detail-attachments],
+.attachment-section[aria-labelledby=retry-attachments] { background: #f8faf9; }
+.attachment-section[aria-labelledby=resolution-indication-heading] { border-color: #b8d9c7; background: var(--zen-green-050); }
+@media (min-width: 992px) {
+  .attachment-section[aria-labelledby=comments-heading]:has(+ .attachment-section[aria-labelledby=notes-heading]) {
+    display: inline-block;
+    width: calc(50% - 0.45rem);
+    vertical-align: top;
+  }
+  .attachment-section[aria-labelledby=comments-heading] + .attachment-section[aria-labelledby=notes-heading] {
+    display: inline-block;
+    width: calc(50% - 0.45rem);
+    margin-left: 0.85rem;
+    vertical-align: top;
+  }
 }
 .attachment-actions {
   display: flex;
@@ -460,6 +539,29 @@ body {
   .success-actions .zen-button {
     width: 100%;
   }
+  .ticket-card:not(.staff-queue) .ticket-table {
+    min-width: 0;
+    table-layout: fixed;
+  }
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(2),
+  .ticket-card:not(.staff-queue) .ticket-table td:nth-child(2),
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(4),
+  .ticket-card:not(.staff-queue) .ticket-table td:nth-child(4),
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(5),
+  .ticket-card:not(.staff-queue) .ticket-table td:nth-child(5),
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(6),
+  .ticket-card:not(.staff-queue) .ticket-table td:nth-child(6),
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(7),
+  .ticket-card:not(.staff-queue) .ticket-table td:nth-child(7),
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(9),
+  .ticket-card:not(.staff-queue) .ticket-table td:nth-child(9),
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(10),
+  .ticket-card:not(.staff-queue) .ticket-table td:nth-child(10) {
+    display: none;
+  }
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(1) { width: 32%; }
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(3) { width: 43%; }
+  .ticket-card:not(.staff-queue) .ticket-table th:nth-child(8) { width: 25%; }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -474,3 +576,10 @@ body {
     grid-column: span 2;
   }
 }
+
+/* The status text carries meaning independently of the palette. */
+.zen-badge[data-status="NEW"], .zen-badge[data-status="OPEN"] { color: #334155; background: #f1f5f9; }
+.zen-badge[data-status="IN_PROGRESS"], .zen-badge[data-status="REOPENED"] { color: #1e40af; background: #dbeafe; }
+.zen-badge[data-status="WAITING_FOR_REQUESTER"] { color: #854d0e; background: #fef9c3; }
+.zen-badge[data-status="RESOLVED"], .zen-badge[data-status="CLOSED"] { color: #166534; background: #dcfce7; }
+.zen-badge[data-status="CANCELLED"] { color: #991b1b; background: #fee2e2; }

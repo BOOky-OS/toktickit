@@ -1,18 +1,35 @@
 .staff-queue { min-width: 0; }
+.staff-queue > h1 { margin-bottom: .35rem; }
+.staff-queue .filter-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.staff-queue .filter-wide { grid-column: 1 / -1; }
 .queue-secondary { display: block; margin-top: .35rem; }
 .queue-desktop table { table-layout: fixed; width: 100%; }
 .queue-desktop th, .queue-desktop td { overflow-wrap: anywhere; white-space: normal; }
+.queue-desktop th:nth-child(1) { width: 11%; }
+.queue-desktop th:nth-child(2) { width: 9%; }
+.queue-desktop th:nth-child(3) { width: 20%; }
+.queue-desktop th:nth-child(4) { width: 10%; }
+.queue-desktop th:nth-child(5) { width: 11%; }
+.queue-desktop th:nth-child(6) { width: 9%; }
+.queue-desktop th:nth-child(7) { width: 9%; }
+.queue-desktop th:nth-child(8) { width: 11%; }
+.queue-desktop th:nth-child(9) { width: 10%; }
+.queue-desktop td:first-child { white-space: nowrap; }
 .queue-cards { display: none; }
-.queue-card { border: 1px solid var(--zen-border, #d5e4dd); border-radius: 12px; padding: 1rem; min-width: 0; overflow-wrap: anywhere; }
+.queue-card { border: 1px solid var(--zen-border, #d5e4dd); border-radius: 14px; padding: 1.15rem; min-width: 0; overflow-wrap: anywhere; background: #fff; box-shadow: 0 .5rem 1.25rem rgba(20,69,49,.06); }
 .queue-card h2 { font-size: 1.1rem; }
 .queue-card dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
 .queue-card dt { font-size: .8rem; font-weight: 600; }
 .queue-card dd { margin: 0; }
 @media (max-width: 991px) {
+  .staff-queue .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .staff-queue .filter-wide { grid-column: 1 / -1; }
   .queue-desktop { display: none; }
   .queue-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 }
 @media (max-width: 767px) {
+  .staff-queue .filter-grid { grid-template-columns: minmax(0, 1fr); }
+  .staff-queue .filter-wide { grid-column: auto; }
   .queue-cards { grid-template-columns: minmax(0, 1fr); }
   .staff-queue .pagination-row { flex-wrap: wrap; gap: .75rem; }
 }

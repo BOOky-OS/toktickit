@@ -100,10 +100,12 @@ export function UserManagement({ actorId }: { actorId: number }) {
         <label><input type="checkbox" checked={draft.isActive} onChange={e => setDraft(v => ({ ...v, isActive: e.target.checked }))} disabled={selected?.id === actorId || !!lastAdmin} /> Active account</label>
         {selected?.id === actorId && <p>You cannot deactivate your own account. Changing your email, role or initial password will require signing in again.</p>}
         {lastAdmin && <p>At least one active Administrator must remain.</p>}
+        {mode === "create" && <><label htmlFor="user-password">Initial password *</label><input id="user-password" required type="password" className="zen-field" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} disabled={busy || blocked} aria-invalid={!!errors.initialPassword} />
+      <p>12–128 Unicode characters. The user must change this password at next login. Share it through the agreed local handoff.</p>{errors.initialPassword && <p role="alert">{errors.initialPassword}</p>}</>}
         <button className="zen-button zen-button--primary">{busy ? "Saving..." : mode === "create" ? "Save new user" : "Save user changes"}</button>
       </fieldset></form>
-      <label htmlFor="user-password">{mode === "create" ? "Initial password *" : "New initial password"}</label><input id="user-password" type="password" className="zen-field" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} disabled={busy || blocked} aria-invalid={!!errors.initialPassword} />
-      <p>12–128 Unicode characters. The user must change this password at next login. Share it through the agreed local handoff.</p>{errors.initialPassword && <p role="alert">{errors.initialPassword}</p>}
+      {mode === "edit" && <><label htmlFor="user-password">New initial password</label><input id="user-password" type="password" className="zen-field" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} disabled={busy || blocked} aria-invalid={!!errors.initialPassword} />
+      <p>12–128 Unicode characters. The user must change this password at next login. Share it through the agreed local handoff.</p>{errors.initialPassword && <p role="alert">{errors.initialPassword}</p>}</>}
       {selected && <button ref={resetButton} className="zen-button zen-button--secondary" disabled={busy || blocked} onClick={() => dialog.current?.showModal()}>Set new initial password</button>}
       <button className="zen-button zen-button--secondary" disabled={busy} onClick={() => { setMode("none"); setPassword(""); }}>Cancel editing</button>
       <dialog ref={dialog} aria-labelledby="password-confirm-title" onCancel={e => { if (busy) e.preventDefault(); }} style={{ maxWidth: "min(32rem,90vw)", borderRadius: "1rem" }}>

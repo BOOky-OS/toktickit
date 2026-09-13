@@ -205,7 +205,7 @@ export function TicketDetail({
             <p className="eyebrow">{readOnly ? staffEditable ? "Staff Ticket Detail" : "Ticket Detail (read-only)" : "Requester Ticket Detail"}</p>
             <h1>{ticket.ticketNumber}</h1>
           </div>
-          <span className="zen-badge">{enumLabel(ticket.currentStatus)}</span>
+          <span className="zen-badge" data-status={ticket.currentStatus}>{enumLabel(ticket.currentStatus)}</span>
         </div>
         <dl className="detail-grid">
           <Detail label="Ticket Date" value={new Date(ticket.ticketDate).toLocaleString()} />
@@ -214,8 +214,8 @@ export function TicketDetail({
           <Detail label="Owner" value={ticket.owner?.displayName ?? "Unassigned"} />
           <Detail label="Category" value={ticket.category.name} />
           <Detail label="Related System" value={ticket.relatedSystem.name} />
-          <Detail label="Requested Priority" value={enumLabel(ticket.requestedPriority)} />
-          <Detail label="IT Priority" value={enumLabel(ticket.itPriority)} />
+          <Detail badge label="Requested Priority" value={enumLabel(ticket.requestedPriority)} />
+          <Detail badge label="IT Priority" value={enumLabel(ticket.itPriority)} />
 
           <Detail label="Summary" value={ticket.summary} wide />
           <Detail label="Description" value={ticket.description} wide />
@@ -386,15 +386,17 @@ function Detail({
   label,
   value,
   wide = false,
+  badge = false,
 }: {
   label: string;
   value: string;
   wide?: boolean;
+  badge?: boolean;
 }) {
   return (
     <div className={wide ? "detail-wide" : ""}>
       <dt>{label}</dt>
-      <dd className="zen-field zen-field--readonly">{value}</dd>
+      <dd className="zen-field zen-field--readonly">{badge ? <span className="zen-badge">{value}</span> : value}</dd>
     </div>
   );
 }

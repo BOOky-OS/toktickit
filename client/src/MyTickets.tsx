@@ -312,7 +312,7 @@ export function MyTickets({
                       <td>{ticket.relatedSystem.name}</td>
                       <td><span className="zen-badge">{enumLabel(ticket.requestedPriority)}</span></td>
                       <td><span className="zen-badge">{enumLabel(ticket.itPriority)}</span></td>
-                      <td><span className="zen-badge">{enumLabel(ticket.currentStatus)}</span></td>
+                      <td><span className="zen-badge" data-status={ticket.currentStatus}>{enumLabel(ticket.currentStatus)}</span></td>
                       <td>{ticket.owner?.displayName ?? "Unassigned"}</td>
                       <td>{new Date(ticket.updatedAt).toLocaleDateString()}</td>
                     </tr>

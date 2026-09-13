@@ -1,41 +1,43 @@
-# Lab 3 AI Use Record
+# Lab 3 - AI Use and Reflection
 
-Assistant used in this session: Codex (GPT-6).
-Status: factual preparation and Issues #33-#36 implementation record.
-Prompts below are actual short excerpts or exact answers from this conversation,
-not invented historical prompts. Dates of earlier excerpts are not inferred.
+**LLM/agent used:** OpenAI Codex (GPT-6)
 
-## Selected prompts and decisions
+I use AI as an assistant to summarize lab documents, help write code, and solve technical problems. I ask it to explain what the lab requires, organize the work into smaller steps, and help with code that involves unfamiliar programming concepts. I also use it to explain errors, suggest fixes, check the implementation, and organize documentation within the GitHub workflow.
 
-| # | Actual prompt excerpt / response | AI contribution | Observed verification or student decision |
+For Lab 3, AI assisted with both the specification and the implementation. It read the lab sheet and existing project, helped draft the requirements, and implemented changes and automated checks in the workspace. I provided the project decisions and workflow requirements, including the Admin and IT Staff permissions and the requirement to finish documentation before moving to main. The technical checks recorded below were run by the assistant; independent peer reviews are recorded separately in [reviewer.md](reviewer.md).
+
+## Representative prompts
+
+The prompts below are English paraphrases of actual requests and answers from this Lab 3 conversation, rather than verbatim English quotations.
+
+| # | Prompt I used | How AI helped | My decision or use of the answer |
 | --- | --- | --- | --- |
-| 1 | "อ่านให้เข้าใจทุกอย่างก่อนทำนะและอย่าพึ่งทำนะ" | Read all 18 Lab 3 pages, sample images, source, migrations, tests and prior docs | Assistant read files; no implementation then. This does not claim the student ran tests. |
-| 2 | "ลองอ่านอันนี้ไว้ด้วย" (with GITHUB_WORKFLOW_AI_GUIDE(1).md) | Read workflow guide and compare local Git history | Established reviewer merge, replies, actual PR linkage and live Kanban rules. |
-| 3 | "สรุปมาให้หน่อยได้ไหมว่า Lab 3 ต้องทำอะไรบ้างมีกี่ issue" | Explained that the handout fixes no Issue count and proposed ten work packages | Student subsequently authorized starting that plan. |
-| 4 | "ขอทำเอกสารให้เสร็จก่อนที่ขึ้นไปบนmain" | Added a distinct student documentation confirmation gate | Recorded in Issue #41 and workflow.md; release approval has not occurred. |
-| 5 | "อย่าลืมกฎการทำให้ดีว่าต้องสร้าง branch ใหม่ในการทำ lab 3" | Checked repo/account/board/reviewer history; created staging and contract branches and real Issues | GitHub creation output and local Git state are tool evidence, not peer approvals. |
-| 6 | "Admin จัดการผู้ใช้และดู Ticket; IT Staff แก้ไข Ticket" | Resolved handout ambiguity by drafting read-only Admin Ticket permissions | This was an explicit student answer; matrices and tests use this decision. |
-| 7 | "โอเคนั้นเริ่มทำต่อได้เลย" | Recorded full-contract confirmation after the student asked whether it follows the original Lab 3 sheet | Student confirmation received at that point; later contract approval/merge is recorded in reviewer.md. The main gate remains pending. |
-| 8 | "โอเคเพื่อน merge แล้ว" | Verified the peer merge and author response, closed #32, then implemented #33 on a new branch | Real PostgreSQL migration/seed tests and client/server regression passed; no working database reset or user-performed testing is claimed. |
+| 1 | Please read the Lab 3 sheet and the workspace code carefully before doing anything. | AI summarized the requirements and inspected the existing project before implementation. | I asked it to understand the original sheet and project first, then authorized implementation later. |
+| 2 | Please summarize what Lab 3 requires and how many Issues we need. | AI organized the requirements into ten work packages and explained the proposed sequence. | I used this breakdown to guide the work and asked the assistant to continue step by step. |
+| 3 | Please read the GitHub workflow guide and follow the workflow used in previous labs. | AI checked the guide and repository history and helped organize branches, Issues, PRs, and review steps. | I required a separate Lab 3 branch, peer review, and complete PR sidebar information, including the linked Issue. |
+| 4 | Admin should manage users and view Tickets; IT Staff should edit Tickets. | AI translated this answer into the permission specification, implementation, and authorization checks. | I chose this separation of responsibilities when the assistant asked about the role ambiguity. |
+| 5 | Does the specification follow the first lab sheet I provided? | AI checked the specification against the original requirements. | I asked for this confirmation before telling it to continue implementation. |
+| 6 | Please continue the work from where the previous session stopped. | AI checked the existing branch and progress, continued code changes, and investigated technical failures encountered during implementation and testing. | I directed it to continue the existing work and preserve the agreed GitHub workflow. |
+| 7 | Please check whether anything is still missing before we continue. | AI reviewed code, tests, documentation, and release evidence, and identified remaining work. | I used the progress explanation to understand what still needed attention before the final stage. |
+| 8 | Please finish the documentation before moving to main and ask whether I want any changes first. | AI recorded a documentation confirmation step before release. | I required this checkpoint and requested changes to the AI-use document before proceeding. |
 
-## Critical evaluation during preparation
+## Critical-thinking
 
-- Explicit handout exclusions override sample screenshots containing Service
-  Actions or email reset controls. Those controls are excluded from the contract.
-- The source code, not only README claims, establishes the baseline. Existing
-  client submission retries regenerate keys; existing mocked tests alone do
-  not prove concurrent DB behavior. Planned regression adds explicit evidence.
-- Admin's read-only role was asked about rather than silently granting staff
-  privileges. Assignment eligibility and authorization are documented separately.
-- Password/session proposals were checked against Node crypto and OWASP primary
-  documentation linked in specification.md. Specific lab durations/limits are
-  student-confirmed decisions; the peer subsequently approved the contract and merged it.
-- Planned tests are not marked Pass. No Lab 3 runtime, DB upgrade, peer review
-  or final-main verification is claimed at the specification stage.
-- The final-main documentation gate remains pending regardless of earlier
-  permission to start coding.
+I use AI to make long instructions easier to understand and to help with coding and technical troubleshooting. Its suggestions still need to match the lab sheet, the existing code, and the agreed requirements. For example, I clarified that Admin should manage users and view Tickets while IT Staff handles Ticket changes, instead of leaving the permission decision to the assistant.
 
-## Issue #33 observed verification and decisions
+Technical results also need evidence. During the final audit, real browser tests exposed a long-description layout problem that earlier checks had not resolved. AI helped fix the layout and rerun the affected checks. This showed why checking the working application matters in addition to reading code or relying on mocked tests. Detailed commands and results are recorded in [tests.md](tests.md) and [quality-audit.md](quality-audit.md).
+
+## My Reflection
+
+AI is useful for turning the lab sheet into a clearer summary and a sequence of tasks. As a specification assistant, it helps connect the requirements to the existing project and brings up unclear points for me to decide. This makes it easier to follow what needs to be built.
+
+As a coding assistant, AI helps write and adjust code, explain errors, and troubleshoot technical problems involving Docker, PostgreSQL, Prisma, authentication, tests, and responsive layouts. It also helps organize the documentation and GitHub workflow. I still need to decide whether the proposed behavior matches the assignment and whether the documents describe the work the way I intend. For this lab, I asked to finish and check the documentation before moving to main.
+
+## Supporting implementation record
+
+The entries below preserve assistant-run checks and decisions from each increment. Statements about pending work describe the stage when that entry was written; see [quality-audit.md](quality-audit.md) and [reviewer.md](reviewer.md) for the consolidated evidence. They do not imply that I or my peer personally ran the assistant's checks.
+
+### Issue #33 observed verification and decisions
 
 - The AI used the actual Lab 2 migration files and separate random schemas in
   an allowlisted test database. The original working database was not migrated.
@@ -51,7 +53,7 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
 - The review record distinguishes an existing peer approval of a0a53e6 from the peer's later
   merge of b6933ce. No latest-head re-approval or reciprocal review is invented.
 
-## Issue #34 observed verification and decisions
+### Issue #34 observed verification and decisions
 
 - Actual continuation prompt: "โอเคไปต่อได้เลย". The AI checked GitHub before
   starting: Atip-Infa approved PR #43 at 8321ca8 and merged a5e23e1; the
@@ -69,7 +71,7 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
   passed. Concurrent password changes leave exactly one fresh valid session.
   These are assistant-run checks, not claims that the student or peer ran them.
 
-## Issue #35 observed verification and decisions
+### Issue #35 observed verification and decisions
 
 - Actual continuation prompts included "โอเคเพื่อนmerge แล้วไปต่อเลย" and
   "ทำต่อจากที่โทเคนหมดให้หน่อย". The AI verified PR #44 approval/merge,
@@ -85,11 +87,12 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
   Prisma validation passed. These are assistant-run checks, not student/peer claims.
 - Real browser E2E and screenshots remain planned and are not represented as
   passing. No working database migration, reset, seed or provisioning was run.
-## Issue #36 observed verification and decisions
+### Issue #36 observed verification and decisions
 
-- Actual continuation prompt: "เน€เธเธทเนเธญเธ merge เน€เธชเธฃเนเธเนเธฅเนเธงเนเธเธ•เนเธญเนเธ”เนเน€เธฅเธข". The AI first
-  verified PR #45 approval/merge and continued on the dedicated Issue #36 branch
-  from the peer-merged `lab3-staging` head.
+- Actual continuation request (English translation): "My friend has finished
+  merging; please continue." The AI first verified PR #45 approval/merge and
+  continued on the dedicated Issue #36 branch from the peer-merged
+  `lab3-staging` head.
 - Test-first real PostgreSQL evidence initially produced 11 expected failures
   among 14 focused cases. The implementation then added all-status/literal-search
   queries, complete safe Detail metadata, stable idempotency, row-locked Attachment
@@ -101,22 +104,7 @@ not invented historical prompts. Dates of earlier excerpts are not inferred.
   and Prisma validation. Server DB tests used only the allowlisted isolated test
   database. Browser E2E/screenshots and final-main verification remain pending.
 
-## My Reflection
-
-Pending the student's own reflection after using and reviewing the work.
-Do not turn this placeholder into first-person claims about tests, decisions
-or reviews the student has not actually performed. Final submission requires
-a brief student-authored or student-confirmed reflection on specification-agent
-and coding-agent use.
-
-## Record maintenance
-
-Update on the same Issue branch as the related work. Keep 6-10 representative
-real prompts for final submission; replace repetitive examples if needed while
-preserving accuracy. Separate assistant tool checks, student decisions and
-independent peer-review evidence.
-
-## Issue #37 observed verification and decisions
+### Issue #37 observed verification and decisions
 
 - Actual continuation prompt: "ไปต่อได้เลย". Verified PR #46 approval at final
   head fdff03a, peer merge 24b4dd5 and both author replies before beginning #37.
@@ -132,7 +120,7 @@ independent peer-review evidence.
 - Independent peer review and the user's final completed-document/main gate
   remain pending. No comments have been posted on the user's behalf.
 
-## Issue #38 observed implementation and decisions
+### Issue #38 observed implementation and decisions
 
 - Actual prompt: "ไปต่อได้เลย". Verified PR #47 final-head approval, peer merge
   ed33913 and existing author replies; closed #37 and moved both Project items
@@ -147,7 +135,7 @@ independent peer-review evidence.
   Screenshot captures are not represented as manual visual inspection.
 - No working database migration/reset/seed/provisioning or user-authored comments
   were performed. Peer review and the completed-document/main gate remain pending.
-## Issue #39 observed implementation and decisions
+### Issue #39 observed implementation and decisions
 
 - Actual prompt: "ไปต่อเลย". Verified PR #48 approval at dc48634, peer merge
   790a99c and both author replies. Closed #38 and moved its Issue/PR to Done
@@ -162,7 +150,7 @@ independent peer-review evidence.
   tests exercise all three roles and viewport sizes; screenshot capture is not
   manual visual inspection. No working DB migration/reset/seed/provisioning ran.
 - Peer review and the completed-document/main confirmation gate remain pending.
-## Issue #40 observed implementation and decisions
+### Issue #40 observed implementation and decisions
 
 - Actual prompt: "ไปต่อเลย". Verified PR #49 approval at 658535f, peer merge
   711f20f and both author replies. Closed #39 and moved its Issue/PR Done
@@ -177,3 +165,20 @@ independent peer-review evidence.
   or manual visual inspection. Those remain in the final audit.
 - No working DB migration/reset/seed/provisioning or user-authored comments ran.
   Independent peer review and completed-document confirmation before main remain.
+### Issue #41 observed audit and decisions
+
+- Actual continuation prompt: "ทำต่อให้หน่อยก่อนหน้านี้โทเคนหมด". The assistant
+  retained the existing feature/41-lab3-quality-release work and verified PR #50
+  approval/peer merge and author replies. No duplicate author comments were sent.
+- Real Chrome tests now use migrated isolated PostgreSQL schemas, actual Express
+  sessions and temporary disk storage. Deliberate first-upload network failure
+  is distinguished from the successful real retry and persisted byte checks.
+- Long unbroken Description text failed the first responsive checks in all roles.
+  The assistant corrected detail-grid shrinking/wrapping and reran the regression.
+- Required priority/status badges were made consistent in queue/detail displays.
+  Initial password now precedes Save inside the create-user form; keyboard checks
+  verify that order. These are assistant changes, not invented student actions.
+- Representative prompts and a reflection drafted from the student's stated AI use
+  appear above. Reciprocal Lab 3 review evidence remains outstanding.
+- The ordered PDF is explicitly a pre-release draft. No final-main test result,
+  all-Done board, student gate approval or future peer review is claimed.

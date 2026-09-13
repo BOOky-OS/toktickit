@@ -2,6 +2,7 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./e2e",
+  testIgnore: "**/lab-03/real/**", // Requires its own isolated API/database setup.
   timeout: 60_000,
   fullyParallel: false,
   workers: 1,
