@@ -222,10 +222,13 @@ Screenshots must use local demo data; exclude visible secrets.
 
 Issue #41 adds actual Express/PostgreSQL browser evidence in
 `e2e/lab-03/real/`. Captures are in `artifacts/lab-03/screenshots/real/`, with
-`{screen}-{desktop|tablet|mobile}.png` names. All 12 screen groups across the
-three sizes were inspected as labelled overview sheets; mobile Login and
-Requester/Staff Detail plus Admin editor and the full desktop Admin list were
-also inspected directly. This is assistant visual inspection, not peer approval.
+`{screen}-{desktop|tablet|mobile}.png` names. After the proportional-layout
+revision, all 12 screen groups at all three sizes were reopened and inspected
+individually. The revision widened the desktop workspace, compacted Queue
+columns, placed public comments and Internal Notes side by side on desktop,
+changed Requester mobile results to the three essential columns, and places the
+Admin editor before the user list on tablet/mobile. This is assistant visual
+inspection, not peer approval.
 
 | Inspection | Evidence and observed result |
 | --- | --- |
@@ -234,12 +237,12 @@ also inspected directly. This is assistant visual inspection, not peer approval.
 | Editable/read-only, required labels and nearby errors | Real create/change/detail/editor captures plus AuthFlow/UserManagement component cases; initial password moved inside the create form before Save |
 | Focus, keyboard, dialog behavior, non-colour badges | Login Tab order, initial password -> Save, Staff dialog Escape/trigger focus; status/priority text retained. Eight-status palette contrast >=4.5:1 verified by StyleAccessibility.test.tsx |
 | Busy, failure, conflict and retained drafts | Component suites and prior feature browser scenarios cover these states. Real first-upload failure/retry, duplicate-user failure and revoked sessions added in #41; not every transient state has a new screenshot |
-| Mobile cards, long text and reflow | Staff Queue uses labelled cards. Requester My Tickets retains the Lab 2 horizontal table inside its scroll container. Long persisted Description wraps. 720x450 CSS viewport checks 200%-equivalent reflow from 1440x900, not actual browser-chrome zoom |
-| No page horizontal overflow | Real DOM checks across 1440x900, 834x1112, 390x844 and 720x450; Pass after the long-description fix. Requester table intentionally scrolls inside its own region |
+| Mobile cards, long text and reflow | Staff Queue uses labelled cards. Requester My Tickets reduces to Ticket Number, Summary and Current Status at mobile width. Long persisted Description wraps. 720x450 CSS viewport checks 200%-equivalent reflow from 1440x900, not actual browser-chrome zoom |
+| No page horizontal overflow | Real DOM checks across 1440x900, 834x1112, 390x844 and 720x450; Pass after the long-description and mobile-table fixes |
 
 Full-page dialog screenshots show the backdrop over the visible viewport only;
 the content beyond that viewport in a stitched capture is not an interactive
-escape from a native modal. Screenshots with very tall user lists are retained
-at full resolution; report excerpts are labelled so their crops are not mistaken
-for the complete screen. No claim of exhaustive screen-reader or OS zoom testing
+escape from a native modal. Full-page screenshots are retained at original
+resolution; report excerpts are labelled so their crops are not mistaken for
+the complete screen. No claim of exhaustive screen-reader or OS zoom testing
 is made. Human peer visual review remains part of the #41 PR.

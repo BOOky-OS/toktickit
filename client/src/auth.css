@@ -4,16 +4,18 @@
   place-items: center;
   padding: clamp(1rem, 5vw, 3rem);
   background:
-    radial-gradient(circle at 15% 15%, rgba(11, 122, 70, 0.12), transparent 32rem),
+    radial-gradient(circle at 15% 15%, rgba(11, 122, 70, 0.15), transparent 30rem),
+    radial-gradient(circle at 85% 85%, rgba(40, 166, 106, 0.08), transparent 26rem),
     var(--zen-page);
 }
 .auth-card {
-  width: min(100%, 520px);
-  padding: clamp(1.5rem, 6vw, 3rem);
+  width: min(100%, 500px);
+  padding: clamp(1.5rem, 5vw, 2.5rem);
   border: 1px solid var(--zen-border);
+  border-top: 5px solid var(--zen-green-900);
   border-radius: 1rem;
   background: var(--zen-surface);
-  box-shadow: 0 1rem 2.5rem rgba(24, 75, 56, 0.1);
+  box-shadow: 0 1.25rem 3.5rem rgba(24, 75, 56, 0.13);
 }
 .auth-card h1 { margin-bottom: 0.35rem; }
 .auth-card h2 { margin: 1.25rem 0 0.5rem; font-size: 1.35rem; }
@@ -46,6 +48,10 @@
   font-weight: 650;
 }
 .identity-panel { display: flex; align-items: center; justify-content: flex-end; gap: 0.65rem; flex-wrap: wrap; }
+.app-header .identity-panel > span:first-child { color: #fff; }
+.app-header .identity-panel .zen-badge { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.16); color: #fff; }
+.app-header .identity-panel .btn { min-height: 38px; border-color: rgba(255,255,255,.65); color: #fff; font-weight: 650; }
+.app-header .identity-panel .btn:hover { border-color: #fff; background: #fff; color: var(--zen-green-900); }
 .shell-alert { margin: 1rem clamp(1rem, 4vw, 3rem) 0; }
 @media (max-width: 767px) {
   .auth-card { padding: 1.25rem; }
