@@ -1,169 +1,253 @@
-# Lab 3 Peer Review Record
+# Lab 3 - Peer Review Record
 
-Status: student confirmed the contract in Issue #32. Atip-Infa approved contract
-commit a0a53e6, then merged final head b6933ce through PR #42 on 2026-09-11.
-Issues #33-#35 were approved at their final heads and merged by Atip-Infa.
-Issues #36-#40 are approved and peer-merged; Issue #41 quality audit is in progress.
+**Author:** Supapanya Yathip - 67070503443 - GitHub: [@BOOky-OS](https://github.com/BOOky-OS)
 
-Author: Supapanya Yathip, 67070503443, repository account
-[BOOky-OS](https://github.com/BOOky-OS).
-Prior partner: Atip Infa-Udom, 67070503446,
-[Atip-Infa](https://github.com/Atip-Infa).
-Identity comes from existing course records; current collaborator/PR #31 history
-was checked on 2026-09-10. Current review and merge evidence is recorded below.
+**Peer reviewer:** Atip Infa-Udom - 67070503446 - GitHub: [@Atip-Infa](https://github.com/Atip-Infa)
 
-## Student decisions actually received
+Review comments and author responses below are taken directly from GitHub, checked on 2026-09-13. Quoted test results describe the corresponding PR at review time; current audit results are in [tests.md](tests.md).
 
-- Approved starting the proposed ten-Issue Lab 3 workflow.
-- Confirmed Admin manages users and reads Tickets; IT Staff edits Tickets.
-- Required a completed-document review and explicit question before release to main.
+## Pull Requests I authored and my partner reviewed
 
-Full proposed contract confirmation: received on 2026-09-10. After asking whether
-the specification follows the original Lab 3 sheet and receiving clarification,
-the student said "โอเคนั้นเริ่มทำต่อได้เลย". This authorizes continuing
-under the agreed workflow; independent peer review and the later main gate remain required.
-Contract peer review: Atip-Infa approved a0a53e6 on 2026-09-10 at 14:46:24 UTC.
-[Approval record](https://github.com/BOOky-OS/toktickit/pull/42#pullrequestreview-5168577727).
-That approval preceded the later review-request/sidebar documentation updates.
-Contract merge: Atip-Infa merged PR #42 on 2026-09-11 at 03:06:37 UTC;
-merge commit f16f27b1ad4d1fbb17a4abc7253944371777a87c.
-No separate approval of final head b6933ce is claimed; the peer performed its merge.
-Release-to-main documentation confirmation: pending.
+All PRs below target `lab3-staging` and were merged by `Atip-Infa`.
 
-## Authored PRs
+| Issue | Pull Request | Branch | Reviewer | Verdict |
+| --- | --- | --- | --- | --- |
+| [#32](https://github.com/BOOky-OS/toktickit/issues/32) | [#42 - Engineering contract and test plan](https://github.com/BOOky-OS/toktickit/pull/42) | `feature/32-lab3-contract` | `@Atip-Infa` | Approved earlier head; merged final head |
+| [#33](https://github.com/BOOky-OS/toktickit/issues/33) | [#43 - User migration and guarded seed](https://github.com/BOOky-OS/toktickit/pull/43) | `feature/33-lab3-user-migration` | `@Atip-Infa` | Approved and merged |
+| [#34](https://github.com/BOOky-OS/toktickit/issues/34) | [#44 - Authentication API](https://github.com/BOOky-OS/toktickit/pull/44) | `feature/34-lab3-auth-api` | `@Atip-Infa` | Approved and merged |
+| [#35](https://github.com/BOOky-OS/toktickit/issues/35) | [#45 - Login and password-change UI](https://github.com/BOOky-OS/toktickit/pull/45) | `feature/35-lab3-auth-ui` | `@Atip-Infa` | Approved and merged |
+| [#36](https://github.com/BOOky-OS/toktickit/issues/36) | [#46 - Requester regression](https://github.com/BOOky-OS/toktickit/pull/46) | `feature/36-lab3-requester-regression` | `@Atip-Infa` | Approved and merged |
+| [#37](https://github.com/BOOky-OS/toktickit/issues/37) | [#47 - Staff Ticket Queue](https://github.com/BOOky-OS/toktickit/pull/47) | `feature/37-lab3-staff-queue` | `@Atip-Infa` | Approved and merged |
+| [#38](https://github.com/BOOky-OS/toktickit/issues/38) | [#48 - Staff Ticket operations](https://github.com/BOOky-OS/toktickit/pull/48) | `feature/38-lab3-staff-operations` | `@Atip-Infa` | Approved and merged |
+| [#39](https://github.com/BOOky-OS/toktickit/issues/39) | [#49 - Public Comments and Internal Notes](https://github.com/BOOky-OS/toktickit/pull/49) | `feature/39-lab3-comments-notes` | `@Atip-Infa` | Approved and merged |
+| [#40](https://github.com/BOOky-OS/toktickit/issues/40) | [#50 - Administrator User Management](https://github.com/BOOky-OS/toktickit/pull/50) | `feature/40-lab3-user-management` | `@Atip-Infa` | Approved and merged |
 
-[PR #42 - Lab 3 engineering contract and test plan](https://github.com/BOOky-OS/toktickit/pull/42)
-was merged from feature/32-lab3-contract into lab3-staging and linked through
-Development to [Issue #32](https://github.com/BOOky-OS/toktickit/issues/32).
-Both the Issue and PR Project items are Done; Issue #32 is closed.
-The peer reviewed the permission, API/UI, migration and test contracts.
-[Author reply](https://github.com/BOOky-OS/toktickit/pull/42#issuecomment-5620601224)
-and [post-merge response](https://github.com/BOOky-OS/toktickit/pull/42#issuecomment-5628843379)
-are present. No inline review comments remain. Actual review commit and later
-reviewer merge are distinguished above rather than inventing a second approval.
+## Review comments I received and how I responded
 
-[PR #43 - Issue #33 user migration and guarded local seed](https://github.com/BOOky-OS/toktickit/pull/43)
-uses feature/33-lab3-user-migration from that verified integration commit and
-targets lab3-staging. Implementation commit e6b6f3a passed the checks in tests.md.
-Development links Issue #33. Required reviewer: Atip-Infa; assignee: BOOky-OS;
-labels: enhancement/documentation; Project: TokTickIT Individual Sprints;
-milestone: Lab 3. Atip-Infa [approved final head 8321ca8](https://github.com/BOOky-OS/toktickit/pull/43#pullrequestreview-5175753084)
-and merged it into lab3-staging at a5e23e127642398a4a7c4b08fbcf712e2b3be822.
-[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/43#issuecomment-5630650685)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/43#issuecomment-5630653388)
-are present. No inline review comments exist. Issue #33 is closed and both
-Project items are Done.
+### PR #42 - Issue #32
 
-[PR #44](https://github.com/BOOky-OS/toktickit/pull/44) for Issue #34 uses
-feature/34-lab3-auth-api from a5e23e1, targeting lab3-staging.
-Development links #34. Assignee: BOOky-OS; reviewer: Atip-Infa; labels:
-enhancement/documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
-Review focus: persisted session/CSRF rotation, forced change, uniform login
-failures, throttles, transaction-time revocation, role/ownership boundaries,
-compensated uploads and real PostgreSQL test evidence.
-Atip-Infa [approved final head ac03ae4](https://github.com/BOOky-OS/toktickit/pull/44#pullrequestreview-5175986095)
-and merged it into lab3-staging as 968c19b994710b05143b40bb73d9854003693088.
-[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/44#issuecomment-5630970403)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/44#issuecomment-5630972652)
-are present. No inline review comments exist. Issue #34 is closed and its Issue/PR
-Project items are Done.
+Reviewer comment:
 
-[PR #45](https://github.com/BOOky-OS/toktickit/pull/45) for Issue #35 uses
-feature/35-lab3-auth-ui from verified integration commit 968c19b and targets
-lab3-staging. Development links #35. Assignee: BOOky-OS; requested reviewer:
-Atip-Infa; labels: enhancement/documentation; Project: TokTickIT Individual
-Sprints; milestone: Lab 3. It implements Login, password change, the role-aware
-shell and session-owned requester transport; actual checks are in tests.md.
-Atip-Infa approved final head `cf3d0c1` and merged it into `lab3-staging` as
-`a97f02087eb64b16b2b5be3966d4dfb54124b11e`. The
-[author approval reply](https://github.com/BOOky-OS/toktickit/pull/45#issuecomment-5636466482)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/45#issuecomment-5636472474)
-are present. Issue #35 is closed and both Project items are Done.
+> Reviewed Issue #32: Lab 3 engineering contract and test plan.The specification covers authentication, role permissions, staff ticket operations, comments/internal notes, and minimal user management. Admin manages users and has read-only Ticket access; IT Staff performs Ticket updates.The API/UI specifications and planned tests align with the contract, including migration safety and preservation of Lab 2 behavior. The test plan distinguishes planned coverage from actual passing results.The workflow requires completed documentation and explicit student confirmation before release to main.
+> Approved. Ready to merge into lab3-staging.
 
-[PR #46](https://github.com/BOOky-OS/toktickit/pull/46) for Issue #36 uses
-`feature/36-lab3-requester-regression` from the peer-merged Issue #35 commit
-`a97f020` and targets `lab3-staging`. Runtime/test implementation commit
-`ff4b2e9` and evidence commit `6ecf9cd` passed the checks recorded in tests.md.
-Development links #36. Assignee: BOOky-OS; requested reviewer: Atip-Infa;
-labels: enhancement/documentation; Project: TokTickIT Individual Sprints with
-Issue and PR now Done; milestone: Lab 3. Review focus: session-owned
-Requester boundaries, stable submission keys, list/Detail contract, Attachment
-row locking/version/removal audit and partial-upload retry.
-Atip-Infa approved final head `fdff03a` and merged into `lab3-staging` as
-`24b4dd5117f5a804c28c2a2094ff01543712395f` on 2026-09-12.
-[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/46#issuecomment-5643679603)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/46#issuecomment-5643682420)
-are present. No inline review comments exist. Issue #36 is closed and both
-Project items are Done.
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/42#pullrequestreview-5168577727)
 
-[PR #47](https://github.com/BOOky-OS/toktickit/pull/47) for Issue #37 uses
-`feature/37-lab3-staff-queue` from the peer-merged Issue #36 commit `24b4dd5`
-and targets `lab3-staging`. Implementation commit: `453746e`. Development links
-#37. Assignee: BOOky-OS; requested reviewer: Atip-Infa; labels:
-documentation/enhancement; Project: TokTickIT Individual Sprints with Issue and
-PR now Done; milestone: Lab 3. Review focus: Staff/Admin role denial,
-query validation and ordering, responsive Queue states, read-only Detail and
-the explicit limits of mocked browser evidence.
-Atip-Infa approved final head `a5b100b` and merged PR #47 as
-`ed33913925692417925d1f71b3f6111a19510bfa` on 2026-09-12.
-[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/47#issuecomment-5644074049)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/47#issuecomment-5644075985)
-are present; there are no inline review comments. Issue #37 is closed and both
-Project items are Done. No duplicate author comments are needed.
+My response:
 
-[PR #48](https://github.com/BOOky-OS/toktickit/pull/48) for Issue #38 uses
-`feature/38-lab3-staff-operations` from verified integration commit `ed33913`
-and targets `lab3-staging`. Implementation commit: `68538b8`. Development links
-#38. Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
-documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
-Review focus: locked role/version checks, ownership, priority, status/history
-atomicity and confirmation/conflict UI. Actual test scope is in tests.md.
-Atip-Infa approved final head `dc48634` and merged PR #48 into `lab3-staging`
-as `790a99c670827545d5bbd94e35fff015997b22d3` on 2026-09-12.
-[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/48#issuecomment-5644194798)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/48#issuecomment-5644198030)
-are present; no inline comments remain. Issue #38 is closed and both Project
-items are Done. The existing author replies do not need to be posted again.
+> Thank you for reviewing and approving Issue #32.
+>
+> The student has confirmed the specification. Documentation consistency, test traceability, local links, and UTF-8 checks passed. Application tests have not been run because this PR contains documentation only.
+>
+> Ready for you to merge into lab3-staging. Issue #33 will begin after the merge is verified and Issue #32 is marked Done.
+>
+> The documentation confirmation gate before release to main remains required.
 
-[PR #49](https://github.com/BOOky-OS/toktickit/pull/49) for Issue #39 uses
-`feature/39-lab3-comments-notes` from integration commit `790a99c`, targeting
-`lab3-staging`. Implementation commit: `4a7266e`. Development links #39.
-Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
- documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
-Review focus: public/internal privacy, atomic append/version updates, requester
-indication, literal rendering and uncertain-response retry. Evidence is in tests.md.
-Atip-Infa approved final head `658535f` and merged PR #49 into `lab3-staging`
-as `711f20f6ceb28e42dc553788dae4df0714e0c861` on 2026-09-12.
-[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/49#issuecomment-5645478768)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/49#issuecomment-5645481200)
-are present; no inline comments remain. Issue #39 is closed and its Issue/PR
-Project items are Done. Existing replies do not need duplicate comments.
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/42#issuecomment-5620601224) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/42#issuecomment-5628843379)
 
-[PR #50](https://github.com/BOOky-OS/toktickit/pull/50) for Issue #40 uses
-`feature/40-lab3-user-management` from integration commit `711f20f`, targeting
-`lab3-staging`. Implementation commit: `8e50218`. Development links #40.
-Assignee: BOOky-OS; required reviewer: Atip-Infa; labels: enhancement and
-documentation; Project: TokTickIT Individual Sprints; milestone: Lab 3.
-Review focus: user validation, passwords/sessions, last-Admin/active-owner guards,
-concurrency and responsive edit/reset UI. Atip-Infa approved final head
-`cf788ca4721e07d4667c770ec3f630218bd0f8d4` ([approval](https://github.com/BOOky-OS/toktickit/pull/50#pullrequestreview-5186273018)) and merged PR #50 into
-`lab3-staging` as `7831409181d8728c765216f64d747148ad1d8d01`.
-[Author approval reply](https://github.com/BOOky-OS/toktickit/pull/50#issuecomment-5645571107)
-and [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/50#issuecomment-5645572981)
-are present. Existing replies do not need duplicate comments.
+Approved commit: `a0a53e6`. Merged by `@Atip-Infa` into `lab3-staging` at [`f16f27b`](https://github.com/BOOky-OS/toktickit/commit/f16f27b1ad4d1fbb17a4abc7253944371777a87c).
 
-For each completed review, record the actual PR/Issue, head/base branch, reviewer,
-comment/review URL, author's response URL, resolution, approval and reviewer merge
-commit. Answer every review comment; a bare approval does not erase open feedback.
+The approval was for `a0a53e6`, before the later documentation/sidebar updates. The peer subsequently merged final head `b6933ce`; a separate final-head approval is not recorded.
 
-## Reviews of partner work
+### PR #43 - Issue #33
 
-No Lab 3 partner PR review has been performed in this session. Do not copy
-Lab 2 partner reviews or use another account to approve one's own work.
+Reviewer comment:
 
-## Outstanding human review
+> Reviewed Issue #33, including the User migration, guarded seed/provisioning, recorded test results, and workflow documentation.
+>
+> The migration preserves existing data, and the seed/provisioning safeguards protect existing user changes and passwords.
+>
+> Approved for merging into lab3-staging.
 
-Review Issue #41 final audit coverage, documentation, responsive fixes and
-the real-browser test setup when its staging PR is ready. Give specific
-changes where needed; use Approve only after checking the actual branch head.
-The reviewer, not the PR author, merges into lab3-staging when ready.
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/43#pullrequestreview-5175753084)
+
+My response:
+
+> Thank you for reviewing and approving PR #43.
+>
+> The migration, guarded seed/provisioning, tests, and documentation are ready. Please merge this PR into lab3-staging when ready.
+>
+> The required documentation must be completed and confirmed before release to main.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/43#issuecomment-5630650685) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/43#issuecomment-5630653388)
+
+Approved commit: `8321ca8`. Merged by `@Atip-Infa` into `lab3-staging` at [`a5e23e1`](https://github.com/BOOky-OS/toktickit/commit/a5e23e127642398a4a7c4b08fbcf712e2b3be822).
+
+### PR #44 - Issue #34
+
+Reviewer comment:
+
+> Reviewed Issue #34, including session authentication, password changes, CSRF protection, backend role and ownership checks, and the recorded test results.
+>
+> The implementation and documentation meet the scope of this increment. Browser authentication and the remaining workflows are tracked in later issues.
+>
+> Approved for merging into lab3-staging.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/44#pullrequestreview-5175986095)
+
+My response:
+
+> Thank you for reviewing and approving PR #44.
+>
+> The server tests passed 100/100 and client tests passed 32/32. Both builds and Prisma validation passed.
+>
+> Please merge this PR into lab3-staging when ready.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/44#issuecomment-5630970403) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/44#issuecomment-5630972652)
+
+Approved commit: `ac03ae4`. Merged by `@Atip-Infa` into `lab3-staging` at [`968c19b`](https://github.com/BOOky-OS/toktickit/commit/968c19b994710b05143b40bb73d9854003693088).
+
+### PR #45 - Issue #35
+
+Reviewer comment:
+
+> Reviewed Issue #35, including the Login and Change Password flows, mandatory first-password change, session restoration, role-specific navigation, logout and expiry behavior, and the removal of the development requester selector.
+>
+> The client now uses the authenticated server session for requester ownership, keeps CSRF only in memory, and does not send requesterId from the browser. I also reviewed the recorded client 48/48 and server 100/100 test results, builds, Prisma validation, and updated documentation.
+>
+> The implementation and documentation meet the scope of this increment. Real browser E2E and final screenshots remain correctly tracked for the later isolated E2E and final-evidence work.
+>
+> Approved for merging into lab3-staging.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/45#pullrequestreview-5180204380)
+
+My response:
+
+> Thank you for reviewing and approving PR #45.
+>
+> The client tests passed 48/48 and the server tests passed 100/100. Client and server builds and Prisma validation also passed.
+>
+> Please merge this PR into lab3-staging when ready.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/45#issuecomment-5636466482) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/45#issuecomment-5636472474)
+
+Approved commit: `cf3d0c1`. Merged by `@Atip-Infa` into `lab3-staging` at [`a97f020`](https://github.com/BOOky-OS/toktickit/commit/a97f02087eb64b16b2b5be3966d4dfb54124b11e).
+
+### PR #46 - Issue #36
+
+Reviewer comment:
+
+> Reviewed PR #46 at commit fdff03a against Issue #36.
+>
+> I checked the authenticated Requester ownership boundaries, stable submission-key behavior, all eight Ticket statuses, Ticket Detail metadata, Attachment row locking/version increments, removal audit data, safe download headers, and partial-upload retry flow. I also reviewed the recorded server, client, build, and Prisma validation results.
+>
+> No blocking issues found. Approved for merge into lab3-staging.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/46#pullrequestreview-5185338624)
+
+My response:
+
+> Thank you for reviewing and approving PR #46.
+>
+> I have checked the review and confirmed that there are no unresolved comments. The final reviewed head is fdff03a, and all recorded checks are passing.
+>
+> Please merge PR #46 into lab3-staging when ready.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/46#issuecomment-5643679603) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/46#issuecomment-5643682420)
+
+Approved commit: `fdff03a`. Merged by `@Atip-Infa` into `lab3-staging` at [`24b4dd5`](https://github.com/BOOky-OS/toktickit/commit/24b4dd5117f5a804c28c2a2094ff01543712395f).
+
+### PR #47 - Issue #37
+
+Reviewer comment:
+
+> Reviewed PR #47 at commit a5b100b against the acceptance criteria for Issue #37.
+>
+> The Queue implementation covers Staff/Admin access, query validation, filtering, sorting, stable pagination, responsive layouts, and read-only Ticket Detail navigation. I also reviewed the documented test results and their limitations.
+>
+> No blocking issues found within this PR's scope. Approved for merging into lab3-staging.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/47#pullrequestreview-5185541205)
+
+My response:
+
+> Thank you for reviewing and approving PR #47.
+>
+> Please proceed with merging into lab3-staging when all review feedback is resolved and the approved head is still current. I will verify the merge and update the Issue #37 records before continuing with Issue #38.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/47#issuecomment-5644074049) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/47#issuecomment-5644075985)
+
+Approved commit: `a5b100b`. Merged by `@Atip-Infa` into `lab3-staging` at [`ed33913`](https://github.com/BOOky-OS/toktickit/commit/ed33913925692417925d1f71b3f6111a19510bfa).
+
+### PR #48 - Issue #38
+
+Reviewer comment:
+
+> Reviewed PR #48 at commit dc48634 against Issue #38.
+>
+> Checked Staff permissions, ownership and priority rules, the status transition matrix, version handling, public history, and confirmation/conflict behavior. Reviewed the recorded test results and their stated limitations.
+>
+> No blocking issues found within this PR's scope. Approved for merging into lab3-staging.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/48#pullrequestreview-5185613150)
+
+My response:
+
+> Thank you for reviewing and approving PR #48.
+>
+> Please proceed with merging into lab3-staging once all review feedback is resolved and the approved head is current. I will verify the merge and complete the Issue #38 records before starting Issue #39.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/48#issuecomment-5644194798) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/48#issuecomment-5644198030)
+
+Approved commit: `dc48634`. Merged by `@Atip-Infa` into `lab3-staging` at [`790a99c`](https://github.com/BOOky-OS/toktickit/commit/790a99c670827545d5bbd94e35fff015997b22d3).
+
+### PR #49 - Issue #39
+
+Reviewer comment:
+
+> Reviewed PR #49 at commit 658535f against Issue #39.
+>
+> Checked Public Comments and Internal Notes permissions, requester privacy, append-only behavior, content validation, resolution indication, and separate draft/retry handling. Reviewed the documented test results and their limitations.
+>
+> No blocking issues found within this PR's scope. Approved for merging into lab3-staging.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/49#pullrequestreview-5186228933)
+
+My response:
+
+> Thank you for reviewing and approving PR #49.
+>
+> Please proceed with merging into lab3-staging once all review feedback is resolved and the approved head is current. I will verify the merge and complete the Issue #39 records before starting Issue #40.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/49#issuecomment-5645478768) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/49#issuecomment-5645481200)
+
+Approved commit: `658535f`. Merged by `@Atip-Infa` into `lab3-staging` at [`711f20f`](https://github.com/BOOky-OS/toktickit/commit/711f20f6ceb28e42dc553788dae4df0714e0c861).
+
+### PR #50 - Issue #40
+
+Reviewer comment:
+
+> Reviewed PR #50 at commit cf788ca against Issue #40.
+>
+> Checked Admin access, user validation, initial-password handling, session revocation, last-Admin and active-owner protection, and create/edit/reset behavior. Reviewed the documented test results and their limitations.
+>
+> No blocking issues found within this PR's scope. Approved for merging into lab3-staging.
+
+[Review evidence](https://github.com/BOOky-OS/toktickit/pull/50#pullrequestreview-5186273018)
+
+My response:
+
+> Thank you for reviewing and approving PR #50.
+>
+> Please proceed with merging into lab3-staging once all review feedback is resolved and the approved head is current. I will verify the merge and complete the Issue #40 records before starting the final audit in Issue #41.
+
+[Response evidence](https://github.com/BOOky-OS/toktickit/pull/50#issuecomment-5645571107) | [Post-merge response](https://github.com/BOOky-OS/toktickit/pull/50#issuecomment-5645572981)
+
+Approved commit: `cf788ca`. Merged by `@Atip-Infa` into `lab3-staging` at [`7831409`](https://github.com/BOOky-OS/toktickit/commit/7831409181d8728c765216f64d747148ad1d8d01).
+
+## Pull Requests I reviewed for my partner
+
+Lab 3 reciprocal-review evidence is still pending. A GitHub search on 2026-09-13 for reviews in `Atip-Infa/toktickit` under `zerotwobook` and `BOOky-OS` returned earlier-lab reviews only. No Lab 3 partner review was identified in those results.
+
+When the Lab 3 review is available, record the partner PR, branch, actual reviewing account, verdict, review URL, and the partner's response. Earlier Lab 1 or Lab 2 reviews are not Lab 3 evidence.
+
+## Remaining review and release steps
+
+- Issue #41 final quality audit and documentation are in progress. No staging PR is open as of this check; peer review is pending.
+- Complete the reciprocal-review evidence for the partner's Lab 3 work.
+- Finish the documentation and obtain the student's explicit confirmation before preparing the release to `main`.
+- After approval, the peer reviewer merges the release. Record the actual merge and final-main verification afterward.
+
+## Confirmed project decisions
+
+The student authorized the ten-Issue plan and confirmed that Admin manages users and reads Tickets while IT Staff performs Ticket updates. The student also required completed documentation and an explicit confirmation before release to `main`. Specification confirmation and earlier implementation approvals do not replace that release confirmation.

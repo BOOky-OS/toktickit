@@ -83,8 +83,9 @@ part(1, "Git workflow and peer review")
 add("TokTickIT - Lab 3 evidence draft", "Title")
 add("Supapanya Yathip | 67070503443<br/>Partner reviewer: Atip Infa-Udom | Atip-Infa")
 add("<b>PRE-RELEASE DRAFT - NOT READY FOR SUBMISSION.</b> Issue #41 is in progress. "
-    "Student reflection, reciprocal peer-review evidence, final audit review and the explicit "
+    "Reciprocal peer-review evidence, final audit review and the explicit "
     "documentation gate remain outstanding. Main merge and final-main results do not yet exist for this release.")
+add("Evidence updated: 2026-09-13. Local audit snapshot: b32dd4b plus the current test and documentation changes.", "SmallNote")
 add(link("Repository", REPO) + " | " + link("Project board", "https://github.com/users/BOOky-OS/projects/2") +
     " | " + link("Final audit Issue #41", REPO + "/issues/41"))
 table(["Issue", "Increment", "PR to lab3-staging"], [
@@ -96,11 +97,12 @@ table(["Issue", "Increment", "PR to lab3-staging"], [
 add("Issues #32-#40 entered staging through feature PRs. Current audit branch: "
     "feature/41-lab3-quality-release, based on 7831409. PR #50 was approved by Atip-Infa "
     "at cf788ca and merged by that reviewer as 7831409181d8728c765216f64d747148ad1d8d01.")
-add(link("PR #50 review", REPO + "/pull/50") + " | " +
+add(link("PR #50 approval", REPO + "/pull/50#pullrequestreview-5186273018") + " | " +
     link("Author after approval", REPO + "/pull/50#issuecomment-5645571107") + " | " +
     link("Author after merge", REPO + "/pull/50#issuecomment-5645572981"))
-add("The full historical review record is in " + document("reviewer.md") +
-    ". All-Issues-Done board capture and main release history are pending; this draft does not substitute old Lab 2 evidence.")
+add("PRs #42-#50 have linked review, author approval-response and post-merge evidence in " + document("reviewer.md") +
+    ". PR #42 approval covered a0a53e6; the peer later merged b6933ce. All-Done board capture, reciprocal Lab 3 review and main release history remain pending.")
+add("GitHub document links refer to the integrated staging versions; the newer local edits summarized in this PDF await commit, push and peer integration.", "SmallNote")
 
 part(2, "Specification-driven development")
 add("The engineering contract preceded feature implementation in Issue #32 / PR #42. "
@@ -120,16 +122,19 @@ part(3, "Test-driven development and verification")
 add("The plan was reviewed with the contract before implementation. Tests distinguish unit/component checks, "
     "real PostgreSQL API/concurrency checks, mocked browser checks and real-browser E2E.")
 table(["Observed execution", "Result and limits"], [
-    ["Server regression", "220/220 in 24 files, 125.29 s after session resume; separate new authorization cases recorded in audit."],
+    ["Server regression", "445/445 in 27 files, 134.25 s on 2026-09-13; no failures or skips. Includes the new matrix and safe-error suites."],
+    ["Traceability correction", "API-06: 195 role/method checks using real HTTP login. API-25: 16 safe-error cases. API-04/07 now link completed Admin/Requester tests."],
     ["Client regression", "82/82 in 13 files, 53.57 s; contrast case also passed after the test-import adjustment."],
     ["Real browser suite", "14/14 passed in 1.4 min with queue, upload recovery, user safety and responsive additions."],
-    ["Build", "Client and server builds passed after final TypeScript corrections; Prisma schema validation passed."],
+    ["Build", "Server build passed again on 2026-09-13. Earlier client build and Prisma validation passed; no runtime changes in this follow-up."],
     ["Long-text regression", "Initially failed all three roles. Detail grid wrapping corrected; responsive tests then passed."],
     ["Final main", "Pending reviewer merge and checks on the actual final-main SHA. No main pass claimed."],
 ], [49, 125])
+add("Latest server command: <b>npm test --workspace server -- --maxWorkers=1</b>; build: <b>npm run build --workspace server</b>. Earlier browser/client results are separate executions, not rerun counts.")
 add("Reproduce with TEST_DATABASE_URL set to the isolated local toktickit_lab3_test database and "
     "<b>npm run test:e2e:lab3</b>. Dedicated ports 3006/5176, owned random schema and temporary file storage "
     "prevent tests from reusing the working app. Existing database contents are not reset.")
+add("Matrix grants reach expected read/validation/lookup handlers; successful mutations are covered separately by the domain suites. Safe-error checks inject database/storage failures and verify JSON envelopes without sensitive data.")
 add("The upload recovery case aborts the first HTTP upload as deliberate fault injection. "
     "Retry, database persistence, download bytes and authorization use the real system. "
     "The expiry case changes only its owned session's persisted expiration.")
@@ -137,23 +142,24 @@ add("Commands, file-level traceability and remaining limitations: " + document("
     link("Current local audit branch", REPO + "/tree/feature/41-lab3-quality-release") + ".")
 
 part(4, "AI use and My Reflection")
-add("Assistant: Codex (GPT-6). The following are English translations of eight actual Thai prompt excerpts; "
-    "the original text and observed decisions are preserved in " + document("ai-use.md") + ".")
-table(["#", "Translated actual prompt excerpt", "Result"], [
-    [1, "Read and understand everything first; do not implement yet.", "Read the sheet and workspace before implementation."],
-    [2, "Read this too (GitHub workflow guide).", "Apply reviewer merge, responses and project tracking."],
-    [3, "Summarize what Lab 3 requires and how many Issues.", "Propose ten work packages, not a mandated Issue count."],
-    [4, "Finish documents before going to main.", "Preserve an explicit student documentation gate."],
-    [5, "Do not forget a new branch for Lab 3.", "Feature branches and reviewed staging integration."],
-    [6, "Admin manages users and views Tickets; IT Staff edits Tickets.", "Use the agreed permission matrix."],
-    [7, "Okay, continue implementing.", "Continue after contract confirmation."],
-    [8, "My friend has merged it.", "Verify GitHub merge and replies before the next Issue."],
-], [9, 88, 77])
-add("<b>My Reflection - student contribution pending.</b> The student has been asked what AI helped with, "
-    "what they personally checked or changed, and what they learned. No first-person reflection is fabricated here.")
-add("Observed AI critique: mocked UI tests were insufficient to prove persistence. Real E2E exposed a long-text "
-    "overflow and an awkward create-user password order. The assistant corrected these and ran regression checks. "
-    "These are assistant-performed activities, not claims about student or peer testing.")
+ai_use = (ROOT / "docs/lab-03/ai-use.md").read_text(encoding="utf-8")
+add("<b>Assistant:</b> OpenAI Codex (GPT-6). I use AI to summarize lab documents, help write and fix code, explain errors, and troubleshoot technical problems. It also helps organize documentation and the GitHub workflow.")
+add("These are concise English paraphrases of eight actual requests/answers, following the current " + document("ai-use.md") + ". Technical checks were assistant-run; my role included project decisions and workflow requirements.", "SmallNote")
+table(["#", "Representative prompt", "How AI helped / my decision"], [
+    [1, "Read the Lab 3 sheet and project carefully before implementing.", "Understand requirements and existing code before I authorized work."],
+    [2, "Summarize Lab 3 and the Issues we need.", "Organize ten work packages to guide implementation."],
+    [3, "Follow the guide and the earlier GitHub workflow.", "Apply branches, linked Issues, peer review and complete PR metadata."],
+    [4, "Admin manages users and views Tickets; IT Staff edits Tickets.", "Apply my chosen role separation in the contract and code."],
+    [5, "Does the specification follow the original lab sheet?", "Check alignment before I asked it to continue."],
+    [6, "Continue from the previous session.", "Resume code changes and troubleshoot technical failures."],
+    [7, "Check what is still missing before continuing.", "Audit tests, code and documents; explain remaining work."],
+    [8, "Finish documents and ask me before going to main.", "Keep a documentation checkpoint before release."],
+], [9, 83, 82])
+add("<b>Critical-thinking.</b> I clarified the Admin/IT Staff role decision. Real-browser checks later exposed a long-text layout problem; AI fixed it and reran the checks. This illustrates why the working application and test evidence matter alongside suggestions.")
+add("My Reflection", "Heading2")
+reflection = ai_use.split("## My Reflection", 1)[1].split("\n## ", 1)[0].strip()
+for paragraph in reflection.split("\n\n"):
+    add(escape(" ".join(paragraph.splitlines())))
 
 part(5, "Login and mandatory password change")
 add("Actual email/password login routes three roles to their permitted home. Invalid and inactive credentials "
@@ -196,7 +202,7 @@ shot("login-mobile.png", width=52, max_height=112)
 add("Long persisted Description text wraps inside the detail grid. Keyboard checks cover Login tab order, "
     "create-user initial password before Save, and Staff dialog Escape/focus restoration. "
     "Full screenshot inspection/checklist is recorded separately in " + document("ui-spec.md") + ".")
-add("<b>Before submission:</b> finish the student reflection and reciprocal-review evidence, resolve remaining "
+add("<b>Before submission:</b> complete reciprocal-review evidence, publish the updated audit documents, resolve remaining "
     "audit checklist items, review the staging PR, obtain explicit document approval before main, then add "
     "actual reviewer merge, final-main tests and completed board evidence. This draft must be regenerated afterward.")
 
