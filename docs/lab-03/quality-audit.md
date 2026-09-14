@@ -6,6 +6,8 @@ This is an in-progress audit, not release approval or final-main evidence.
 
 ## Documentation follow-up - 2026-09-14
 
+Latest release checkpoint: the student explicitly approved proceeding to main on 2026-09-14, including addition of the PR #52 review record. PR #52 was approved at `75d65ff` and peer-merged as `4fc4859`. The latest record is on `docs/41-release-review-record` for peer integration before the release becomes ready. The regenerated PDF has nine visually inspected pages and 20 link annotations. No new application execution is claimed. Earlier gate-pending statements below describe the previous checkpoint; workflow.md records the current authorization.
+
 PR #51 was approved at e0a9c75 and peer-merged as 75bd6d3. The revised reviewer record includes ten authored PRs and nine reciprocal reviews, with both partner responses grouped under each partner PR. Partner PR #41 retains a factual note about its title/review and Issue/branch mismatch.
 
 AI-use prompts 3 and 6 now describe reading skill.md for workflow reminders and requesting help fixing errors. The PDF was regenerated on 2026-09-14 and all nine pages were rendered and visually inspected. Parts 1-9 remain in order with current review evidence and AI-use prompts. No application tests were rerun for this documentation-only change.

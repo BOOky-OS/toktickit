@@ -83,9 +83,9 @@ part(1, "Git workflow and peer review")
 add("TokTickIT - Lab 3 evidence draft", "Title")
 add("Supapanya Yathip | 67070503443<br/>Partner reviewer: Atip Infa-Udom | Atip-Infa")
 add("<b>PRE-RELEASE DRAFT - NOT READY FOR SUBMISSION.</b> Issue #41 is in progress. "
-    "Documentation follow-up peer review and the explicit "
-    "documentation gate remain outstanding. Main merge and final-main results do not yet exist for this release.")
-add("Evidence updated: 2026-09-14. Staging: 75bd6d3; local documentation corrections await peer integration.", "SmallNote")
+    "The student approved the documentation gate on 2026-09-14, including the latest review record. "
+    "Peer integration of that record, main merge and final-main results remain outstanding.")
+add("Evidence updated: 2026-09-14. Staging: 4fc4859; latest review record awaits peer integration.", "SmallNote")
 add(link("Repository", REPO) + " | " + link("Project board", "https://github.com/users/BOOky-OS/projects/2") +
     " | " + link("Final audit Issue #41", REPO + "/issues/41"))
 table(["Issue", "Increment", "PR to lab3-staging"], [
@@ -95,6 +95,7 @@ table(["Issue", "Increment", "PR to lab3-staging"], [
     [41, "Audit merged; release pending", 51],
 ], [20, 99, 55])
 add("PRs #42-#51 were peer-merged into staging. Atip-Infa approved PR #51 at e0a9c75 and merged it as 75bd6d3.")
+add("PR #52 documentation was approved at 75d65ff and peer-merged as 4fc4859. " + link("PR #52 review and responses", REPO + "/pull/52") + ".")
 add(link("PR #51 approval", REPO + "/pull/51#pullrequestreview-5191031280") + " | " +
     link("Author after approval", REPO + "/pull/51#issuecomment-5653949998") + " | " +
     link("Author after merge", REPO + "/pull/51#issuecomment-5653963007"))
@@ -201,7 +202,7 @@ add("Long persisted Description text wraps inside the detail grid. Keyboard chec
     "create-user initial password before Save, and Staff dialog Escape/focus restoration. "
     "Full screenshot inspection/checklist is recorded separately in " + document("ui-spec.md") + ".")
 add("<b>Before submission:</b> publish and peer-integrate the corrected documents and reciprocal-review evidence, resolve remaining "
-    "audit checklist items, review the staging PR, obtain explicit document approval before main, then add "
+    "audit checklist items and review the staging PR. Student document approval was granted on 2026-09-14; then add "
     "actual reviewer merge, final-main tests and completed board evidence. This draft must be regenerated afterward.")
 
 

@@ -106,7 +106,7 @@ Its remaining acceptance criteria include student confirmation, reviewer release
 merge, final-main tests and finished submission evidence. Close it only after
 those actual results are available.
 
-Gate state: **Pending; not requested or granted for release.**
+Gate state: **Approved by the student on 2026-09-14.** After the explicit documentation question, the student requested inclusion of the latest review record and authorized proceeding to main. This authorization includes that evidence update. The correction must still receive peer review and enter staging before the release is marked ready. The peer performs the main merge; final-main checks remain outstanding.
 
 ## 5. Repository records and submission
 
