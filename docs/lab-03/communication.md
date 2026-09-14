@@ -1,5 +1,7 @@
 # Ticket communication and resolution indication — Issue #39
 
+Current status (2026-09-14): this feature and the quality audit are peer-merged into staging through PR #51. Verification notes below describe the original increment; later real-browser and visual results are in [quality-audit.md](quality-audit.md), and approvals/merges are in [reviewer.md](reviewer.md). The documentation review, explicit main gate and final-main checks remain outstanding.
+
 Ticket Detail now has independent Public Comments and Internal Notes streams.
 The owning Requester reads/posts public comments; IT Staff reads/posts both;
 Admin reads both without composers. Requester UI does not mount or fetch Notes.

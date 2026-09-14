@@ -83,25 +83,23 @@ part(1, "Git workflow and peer review")
 add("TokTickIT - Lab 3 evidence draft", "Title")
 add("Supapanya Yathip | 67070503443<br/>Partner reviewer: Atip Infa-Udom | Atip-Infa")
 add("<b>PRE-RELEASE DRAFT - NOT READY FOR SUBMISSION.</b> Issue #41 is in progress. "
-    "Reciprocal peer-review evidence, final audit review and the explicit "
+    "Documentation follow-up peer review and the explicit "
     "documentation gate remain outstanding. Main merge and final-main results do not yet exist for this release.")
-add("Evidence updated: 2026-09-13. Local audit snapshot: b32dd4b plus the current test and documentation changes.", "SmallNote")
+add("Evidence updated: 2026-09-14. Staging: 75bd6d3; local documentation corrections await peer integration.", "SmallNote")
 add(link("Repository", REPO) + " | " + link("Project board", "https://github.com/users/BOOky-OS/projects/2") +
     " | " + link("Final audit Issue #41", REPO + "/issues/41"))
 table(["Issue", "Increment", "PR to lab3-staging"], [
     [32, "Engineering contract", 42], [33, "Migration and seed", 43], [34, "Authentication API", 44],
     [35, "Authentication UI", 45], [36, "Requester regression", 46], [37, "Staff queue", 47],
     [38, "Staff operations", 48], [39, "Comments and notes", 49], [40, "User administration", 50],
-    [41, "Final audit and release", "Not yet opened"],
+    [41, "Audit merged; release pending", 51],
 ], [20, 99, 55])
-add("Issues #32-#40 entered staging through feature PRs. Current audit branch: "
-    "feature/41-lab3-quality-release, based on 7831409. PR #50 was approved by Atip-Infa "
-    "at cf788ca and merged by that reviewer as 7831409181d8728c765216f64d747148ad1d8d01.")
-add(link("PR #50 approval", REPO + "/pull/50#pullrequestreview-5186273018") + " | " +
-    link("Author after approval", REPO + "/pull/50#issuecomment-5645571107") + " | " +
-    link("Author after merge", REPO + "/pull/50#issuecomment-5645572981"))
-add("PRs #42-#50 have linked review, author approval-response and post-merge evidence in " + document("reviewer.md") +
-    ". PR #42 approval covered a0a53e6; the peer later merged b6933ce. All-Done board capture, reciprocal Lab 3 review and main release history remain pending.")
+add("PRs #42-#51 were peer-merged into staging. Atip-Infa approved PR #51 at e0a9c75 and merged it as 75bd6d3.")
+add(link("PR #51 approval", REPO + "/pull/51#pullrequestreview-5191031280") + " | " +
+    link("Author after approval", REPO + "/pull/51#issuecomment-5653949998") + " | " +
+    link("Author after merge", REPO + "/pull/51#issuecomment-5653963007"))
+add("Nine reciprocal reviews of Atip-Infa PRs #37-#45, submitted and merged by zerotwobook, include both partner responses in " + document("reviewer.md") +
+    ". Partner PR #41 has a recorded title/review versus Issue/branch mismatch. PR #42 in our repository approved an earlier head; its later merge is recorded separately.")
 add("GitHub document links refer to the integrated staging versions; the newer local edits summarized in this PDF await commit, push and peer integration.", "SmallNote")
 
 part(2, "Specification-driven development")
@@ -139,7 +137,7 @@ add("The upload recovery case aborts the first HTTP upload as deliberate fault i
     "Retry, database persistence, download bytes and authorization use the real system. "
     "The expiry case changes only its owned session's persisted expiration.")
 add("Commands, file-level traceability and remaining limitations: " + document("tests.md") + " and " +
-    link("Current local audit branch", REPO + "/tree/feature/41-lab3-quality-release") + ".")
+    link("Current local audit branch", REPO + "/tree/docs/41-final-reflection-evidence") + ".")
 
 part(4, "AI use and My Reflection")
 ai_use = (ROOT / "docs/lab-03/ai-use.md").read_text(encoding="utf-8")
@@ -148,10 +146,10 @@ add("These are concise English paraphrases of eight actual requests/answers, fol
 table(["#", "Representative prompt", "How AI helped / my decision"], [
     [1, "Read the Lab 3 sheet and project carefully before implementing.", "Understand requirements and existing code before I authorized work."],
     [2, "Summarize Lab 3 and the Issues we need.", "Organize ten work packages to guide implementation."],
-    [3, "Follow the guide and the earlier GitHub workflow.", "Apply branches, linked Issues, peer review and complete PR metadata."],
+    [3, "Read skill.md and remind me at each GitHub workflow step.", "Apply branches, linked Issues, peer review and complete PR metadata."],
     [4, "Admin manages users and views Tickets; IT Staff edits Tickets.", "Apply my chosen role separation in the contract and code."],
     [5, "Does the specification follow the original lab sheet?", "Check alignment before I asked it to continue."],
-    [6, "Continue from the previous session.", "Resume code changes and troubleshoot technical failures."],
+    [6, "Find the code causing the error and help fix it.", "Explain the cause, fix related code and rerun relevant checks."],
     [7, "Check what is still missing before continuing.", "Audit tests, code and documents; explain remaining work."],
     [8, "Finish documents and ask me before going to main.", "Keep a documentation checkpoint before release."],
 ], [9, 83, 82])
@@ -202,7 +200,7 @@ shot("login-mobile.png", width=52, max_height=112)
 add("Long persisted Description text wraps inside the detail grid. Keyboard checks cover Login tab order, "
     "create-user initial password before Save, and Staff dialog Escape/focus restoration. "
     "Full screenshot inspection/checklist is recorded separately in " + document("ui-spec.md") + ".")
-add("<b>Before submission:</b> complete reciprocal-review evidence, publish the updated audit documents, resolve remaining "
+add("<b>Before submission:</b> publish and peer-integrate the corrected documents and reciprocal-review evidence, resolve remaining "
     "audit checklist items, review the staging PR, obtain explicit document approval before main, then add "
     "actual reviewer merge, final-main tests and completed board evidence. This draft must be regenerated afterward.")
 

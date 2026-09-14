@@ -1,5 +1,7 @@
 # Lab 3 Staff Ticket Queue — Issue #37
 
+Current status (2026-09-14): this feature and the quality audit are peer-merged into staging through PR #51. Verification notes below describe the original increment; later real-browser and visual results are in [quality-audit.md](quality-audit.md), and approvals/merges are in [reviewer.md](reviewer.md). The documentation review, explicit main gate and final-main checks remain outstanding.
+
 The Queue now reads all Tickets for authenticated IT Staff and Admin. Requesters
 cannot use either Queue or assignee endpoints. Admin retains read-only Ticket
 access under the student's confirmed permission decision.

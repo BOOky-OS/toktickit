@@ -1,5 +1,7 @@
 # Administrator User Management — Issue #40
 
+Current status (2026-09-14): this feature and the quality audit are peer-merged into staging through PR #51. Verification notes below describe the original increment; later real-browser and visual results are in [quality-audit.md](quality-audit.md), and approvals/merges are in [reviewer.md](reviewer.md). The documentation review, explicit main gate and final-main checks remain outstanding.
+
 Admin now has a minimal User Management page: name/email search, one role filter,
 user list, create/edit form and a confirmed initial-password reset. The list
 shows name, email, role, activation and password-change state. Desktop separates

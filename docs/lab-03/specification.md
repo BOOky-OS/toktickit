@@ -2,9 +2,9 @@
 
 Status: student confirmed the contract on 2026-09-10. Atip-Infa approved its
 contract commit and merged PR #42 into lab3-staging on 2026-09-11 (f16f27b).
-Issue #33 implements identity migration, local seed/provisioning and the minimal
-existing-service adaptations required by the schema. Authentication and the
-remaining features are still planned. Baseline: Lab 2 main `2fc1fe3`.
+Implementation and the quality audit have been peer-merged into lab3-staging
+through PRs #42-#51. Documentation corrections and the explicit release gate
+remain in Issue #41. Baseline: Lab 2 main `2fc1fe3`; current staging: `75bd6d3`.
 
 Sources: `Lab_3_sheet.pdf` (18 pages), the Lab 2 rules explicitly referenced by
 that sheet, `GITHUB_WORKFLOW_AI_GUIDE(1).md`, and the student's instructions.

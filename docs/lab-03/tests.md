@@ -1,7 +1,8 @@
 # Lab 3 Test Plan and Traceability
 
-Status: contract planned before implementation in #32; Issues #33-#40 are
-peer-merged into staging. #41 now adds real browser E2E and final quality fixes.
+Status: contract planned before implementation in #32; Issues #33-#40 and
+the #41 quality audit in PR #51 are peer-merged into staging. Documentation
+corrections are on docs/41-final-reflection-evidence; final-main checks remain pending.
 See [quality-audit.md](quality-audit.md) for current checks and remaining evidence.
 Historical counts are not final-main results.
 Source requirements: [specification.md](specification.md), [api-spec.md](api-spec.md),
@@ -96,7 +97,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | E2E-04 | E2E | FR-11..18; AC-13..20,28 | Staff Queue -> claim/reassign/priority -> comments/notes -> Requester indication -> Staff resolve/close/reopen; Admin read-only and direct role denials | e2e/lab-03/real/staff-ticket-flow.spec.ts; queue-query.spec.ts | Pass in #41: real queue/filter/sort/pages, claim/reassign/priority, comments/notes, indication, resolve/close/reopen and Admin read-only |
 | E2E-05 | E2E | FR-19..22; AC-21..25,29 | Admin search/create/edit/activate/deactivate/reset; duplicate/safety rules and old-session invalidation with multiple browser contexts | e2e/lab-03/real/user-administration.spec.ts | Pass in #41: duplicate rejection, self/last-Admin controls, search, create/edit/reset, session invalidation, deactivate/reactivate |
 | RWD-01 | Browser/style | FR-23; AC-30 | All screen groups at 1440x900, 834x1112, 390x844; long text, overflow/visibility, keyboard/dialog focus, zoom and screenshots | e2e/lab-03/real/responsive-visual.spec.ts | Automated Pass in #41: three viewports, long-text regression, keyboard/focus, 200%-equivalent CSS reflow; actual browser chrome zoom not claimed. Visual inspection tracked separately |
-| DOC-01 | Manual/document | FR-24; AC-32 | Cross-check FR/BR/AC/API/UI/tests, all intended paths and 10 Issue dependencies; no fabricated results | docs/lab-03/quality-audit.md | In progress: traceability updated; AI-use reflection drafted from user input and screenshots inspected. PDF synchronized on 2026-09-13; reciprocal review and final release evidence remain pending |
+| DOC-01 | Manual/document | FR-24; AC-32 | Cross-check FR/BR/AC/API/UI/tests, all intended paths and 10 Issue dependencies; no fabricated results | docs/lab-03/quality-audit.md | Pre-release document checks passed on 2026-09-14: PR #51 and nine reciprocal reviews recorded; AI-use revised; regenerated PDF has nine inspected pages and 19 links. Documentation PR review, explicit main gate and final release evidence remain pending |
 | REL-01 | Full suite/manual | FR-24; AC-32 | Final-main unit/API/integration/UI/E2E/build results, reviewed documents, explicit student main gate, reviewer merge and one ordered evidence PDF | docs/lab-03/workflow.md and actual test files above | Planned |
 
 ## 3. AC-to-test index
