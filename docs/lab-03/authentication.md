@@ -1,5 +1,7 @@
 # Issues #34-35: authentication, authorization and browser session UI
 
+Current status (2026-09-14): this feature and the quality audit are peer-merged into staging through PR #51. Verification notes below describe the original increment; later real-browser and visual results are in [quality-audit.md](quality-audit.md), and approvals/merges are in [reviewer.md](reviewer.md). The documentation review, explicit main gate and final-main checks remain outstanding.
+
 Issue #34 implements `/api/auth/csrf`, `/login`, `/me`, `/password` and
 `/logout` under the auth prefix and protects existing reference, Ticket and
 Attachment endpoints. Issue #35 connects the browser to that contract with
