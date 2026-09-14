@@ -12,14 +12,18 @@ complete PR sidebar checklist and the explicit documentation gate before main.
 - Lab: Lab 3, Users, Roles, IT Staff Ticketing and Admin Screens.
 - Verified baseline main: 2fc1fe3; no open Issues/PRs before sprint initialization.
 - Integration branch: lab3-staging, created from current main.
-- Current documentation branch: `docs/41-final-reflection-evidence`, based on staging `75bd6d3`.
+- Current documentation branch: `docs/41-final-main-evidence`, based on released main `f401341`.
 - Issues #32-#40 were peer-merged. PR #51 was approved at `e0a9c75` and merged by Atip-Infa as `75bd6d3` into `lab3-staging`.
-- Issue #41 remains Open / Started until the documentation gate, peer release merge and final-main verification are complete.
+- The release gate, PR #54 peer merge and final-main checks are complete. The student reviewed the final evidence and authorized PR #55 to merge without an additional peer review; Issue #41 and its Project item complete after integration.
 - Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). Actual reviews and both author responses are linked in [reviewer.md](reviewer.md).
 - Current-lab assignment/new instructor clarification takes precedence over
   historical lab assumptions; follow the student's explicit instructions.
 - Sources read: Lab_3_sheet.pdf, referenced Lab 2 branch/agent/completion rules,
   GITHUB_WORKFLOW_AI_GUIDE(1).md, current repository source and prior review record.
+
+## Current release checkpoint
+
+PR #53 was approved at `b3242ba` and peer-merged as `e233f8e`. PR #54 was approved at `e233f8e` and peer-merged to main as `f401341`. Release approval and both author responses exist; see [reviewer.md](reviewer.md). Final-main checks passed; see [tests.md](tests.md). The student completed the follow-up documentation gate on 2026-09-14 and explicitly authorized PR #55 to merge without an additional peer review.
 
 ## 2. Ten actual Issues and order
 
@@ -106,7 +110,7 @@ Its remaining acceptance criteria include student confirmation, reviewer release
 merge, final-main tests and finished submission evidence. Close it only after
 those actual results are available.
 
-Gate state: **Approved by the student on 2026-09-14.** After the explicit documentation question, the student requested inclusion of the latest review record and authorized proceeding to main. This authorization includes that evidence update. The correction must still receive peer review and enter staging before the release is marked ready. The peer performs the main merge; final-main checks remain outstanding.
+Gate state: **Approved by the student on 2026-09-14.** After the explicit documentation question, the student requested inclusion of the latest review record and authorized proceeding to main. This authorization includes that evidence update. PR #53 integrated the correction, and Atip-Infa merged PR #54 to main. Final-main checks passed at `f401341`. This approval is historical for release #54; the new tracked final-evidence update must pass the documentation gate before its PR to main.
 
 ## 5. Repository records and submission
 

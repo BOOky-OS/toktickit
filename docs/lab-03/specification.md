@@ -2,9 +2,9 @@
 
 Status: student confirmed the contract on 2026-09-10. Atip-Infa approved its
 contract commit and merged PR #42 into lab3-staging on 2026-09-11 (f16f27b).
-Implementation and the quality audit have been peer-merged into lab3-staging
-through PRs #42-#51. Documentation corrections and the explicit release gate
-remain in Issue #41. Baseline: Lab 2 main `2fc1fe3`; current staging: `75bd6d3`.
+Implementation, audit and documentation PRs #42-#53 were integrated into staging.
+Atip-Infa merged release PR #54 to main as `f401341` on 2026-09-14 after the student gate.
+Final-main tests passed; final evidence integration remains in Issue #41. See [tests.md](tests.md).
 
 Sources: `Lab_3_sheet.pdf` (18 pages), the Lab 2 rules explicitly referenced by
 that sheet, `GITHUB_WORKFLOW_AI_GUIDE(1).md`, and the student's instructions.
@@ -440,13 +440,14 @@ from the plan itself.
 
 ### Course delivery and main gate
 
-- [ ] Per-Issue branches, linked PRs, board transitions, reviewer approvals and
-  author responses are complete; reviewer performs merges.
-- [ ] Student reviews the completed pre-release documents and explicitly answers
+- [x] Per-Issue branches, linked PRs, board transitions, reviewer approvals and
+  author responses are complete through release PR #54; the student explicitly
+  authorized the final evidence PR #55 to merge without another peer review.
+- [x] Student reviews the completed pre-release documents and explicitly answers
   the documentation question in workflow.md before release to main proceeds.
-- [ ] Release from lab3-staging receives peer review and reviewer merge; final
+- [x] Release from lab3-staging receives peer review and reviewer merge; final
   main test/evidence capture is completed without silently editing main.
-- [ ] Exactly one concise PDF contains Answer Part 1-9 in order (60 points),
+- [x] Exactly one concise PDF contains Answer Part 1-9 in order (60 points),
   working links, readable screenshots and factual AI/review evidence.
 
 ## 11. Assumptions and Decisions
