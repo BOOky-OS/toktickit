@@ -14,7 +14,7 @@ complete PR sidebar checklist and the explicit documentation gate before main.
 - Integration branch: lab3-staging, created from current main.
 - Current documentation branch: `docs/41-final-main-evidence`, based on released main `f401341`.
 - Issues #32-#40 were peer-merged. PR #51 was approved at `e0a9c75` and merged by Atip-Infa as `75bd6d3` into `lab3-staging`.
-- Issue #41 remains Open / Started until final documentation review and integration are complete. The release gate, PR #54 peer merge and final-main checks are complete.
+- The release gate, PR #54 peer merge and final-main checks are complete. The student reviewed the final evidence and authorized PR #55 to merge without an additional peer review; Issue #41 and its Project item complete after integration.
 - Peer reviewer: [Atip-Infa](https://github.com/Atip-Infa). Actual reviews and both author responses are linked in [reviewer.md](reviewer.md).
 - Current-lab assignment/new instructor clarification takes precedence over
   historical lab assumptions; follow the student's explicit instructions.
@@ -23,7 +23,7 @@ complete PR sidebar checklist and the explicit documentation gate before main.
 
 ## Current release checkpoint
 
-PR #53 was approved at `b3242ba` and peer-merged as `e233f8e`. PR #54 was approved at `e233f8e` and peer-merged to main as `f401341`. Release approval and both author responses exist; see [reviewer.md](reviewer.md). Final-main checks passed; see [tests.md](tests.md). The follow-up evidence branch still requires the student documentation gate and peer integration.
+PR #53 was approved at `b3242ba` and peer-merged as `e233f8e`. PR #54 was approved at `e233f8e` and peer-merged to main as `f401341`. Release approval and both author responses exist; see [reviewer.md](reviewer.md). Final-main checks passed; see [tests.md](tests.md). The student completed the follow-up documentation gate on 2026-09-14 and explicitly authorized PR #55 to merge without an additional peer review.
 
 ## 2. Ten actual Issues and order
 

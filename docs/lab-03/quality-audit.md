@@ -22,13 +22,13 @@ Database tests used isolated `toktickit_lab3_test`; real E2E used its own schema
 
 The default legacy `npm run test:e2e` was not run: its Lab 2 visual suite expects the retired Development Requester selector. Lab 3 authenticated Requester regression is covered by the real E2E command above. Historical dated results below remain evidence of their earlier commits, not additional executions on main.
 
-Final documentation is prepared on `docs/41-final-main-evidence`. PR #54 is Done. Issue #41 was reopened after automatic closure and remains Open / Started until this evidence is reviewed and integrated. No final all-Done board or actual coursework submission is claimed.
+Final documentation is prepared on `docs/41-final-main-evidence` in PR #55. On 2026-09-14 the student reviewed the completed package and authorized PR #55 to merge without an additional peer review. Issue #41 and the Project are completed after integration; no coursework submission is claimed here.
 
 ## Final report verification - 2026-09-14
 
 Generated `output/pdf/Lab_03_Evidence_Supapanya_Yathip_67070503443_FINAL.pdf` from the latest evidence and regenerated real-browser screenshots. All nine pages were rendered and visually inspected: Answer Parts 1-9 remain ordered, text and tables fit, and report regions are readable. All 36 full-page captures were also inspected using six contact sheets. The older DRAFT PDF is historical.
 
-Remaining: student gate for this documentation update, peer integration, and final completed Project evidence. The release itself and application verification are complete. Do not claim final coursework submission or an all-Done board before they exist.
+Closeout decision: the student completed the documentation gate and explicitly authorized PR #55 to merge without an additional peer review. Integrating PR #55 completes Issue #41 and the Project record. The release and application verification are complete; actual coursework submission is outside this repository record.
 
 ## Historical audit checkpoints
 

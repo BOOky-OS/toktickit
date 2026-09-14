@@ -83,7 +83,7 @@ part(1, "Git workflow and peer review")
 add("TokTickIT - Lab 3 release evidence", "Title")
 add("Supapanya Yathip | 67070503443<br/>Partner reviewer: Atip Infa-Udom | Atip-Infa")
 add("<b>MAIN RELEASE VERIFIED.</b> Atip-Infa merged PR #54 on 2026-09-14. "
-    "The implementation was tested at main commit f401341. Final documentation is prepared for peer review; Issue #41 remains open until that integration is complete.")
+    "The implementation was tested at main commit f401341. The student reviewed this final documentation and authorized PR #55 to merge without an additional peer review.")
 add("Verified implementation: f40134124261d2861d7f480adec34f074561fc94.", "SmallNote")
 add(link("Repository", REPO) + " | " + link("Project board", "https://github.com/users/BOOky-OS/projects/2") +
     " | " + link("Final audit Issue #41", REPO + "/issues/41"))
@@ -95,13 +95,13 @@ table(["Issue", "Increment", "PR to lab3-staging"], [
 ], [20, 99, 55])
 add("PRs #42-#51 were peer-merged into staging. Atip-Infa approved PR #51 at e0a9c75 and merged it as 75bd6d3.")
 add("PR #52 documentation was approved at 75d65ff and peer-merged as 4fc4859. " + link("PR #52 review and responses", REPO + "/pull/52") + ".")
-add("PR #53 was approved at b3242ba and merged as e233f8e. PR #54 was approved at e233f8e and merged to main as f401341. " + link("Release approval", REPO + "/pull/54#pullrequestreview-5194876098") + ".")
+add("PR #53 was approved at b3242ba and merged as e233f8e. PR #54 was approved at e233f8e and merged to main as f401341. " + link("Release approval", REPO + "/pull/54#pullrequestreview-5194876098") + " | " + link("Final evidence PR #55", REPO + "/pull/55") + ".")
 add(link("PR #51 approval", REPO + "/pull/51#pullrequestreview-5191031280") + " | " +
     link("Author after approval", REPO + "/pull/51#issuecomment-5653949998") + " | " +
     link("Author after merge", REPO + "/pull/51#issuecomment-5653963007"))
 add("Nine reciprocal reviews of Atip-Infa PRs #37-#45, submitted and merged by zerotwobook, include both partner responses in " + document("reviewer.md") +
     ". Partner PR #41 has a recorded title/review versus Issue/branch mismatch. PR #42 in our repository approved an earlier head; its later merge is recorded separately.")
-add("Document links target main. This final-main evidence update is prepared on docs/41-final-main-evidence and awaits documentation review and integration.", "SmallNote")
+add("Document links target main. PR #55 carries this final-main evidence to main under the student's explicit authorization.", "SmallNote")
 
 part(2, "Specification-driven development")
 add("The engineering contract preceded feature implementation in Issue #32 / PR #42. "
@@ -202,7 +202,7 @@ shot("login-mobile.png", width=52, max_height=112)
 add("Long persisted Description text wraps inside the detail grid. Keyboard checks cover Login tab order, "
     "create-user initial password before Save, and Staff dialog Escape/focus restoration. "
     "Full screenshot inspection/checklist is recorded separately in " + document("ui-spec.md") + ".")
-add("<b>Release evidence:</b> PR #54 peer approval and main merge are recorded; final-main automated checks passed on 2026-09-14. Final documentation review and board completion remain before submission. The older DRAFT PDF is historical; use this report for final documentation review.")
+add("<b>Release evidence:</b> PR #54 peer approval and main merge are recorded; final-main automated checks passed on 2026-09-14. The student reviewed the final package and authorized PR #55 to merge without another peer review. Issue #41 and the Project are completed after integration. The older DRAFT PDF is historical; use this final report.")
 
 
 def footer(canvas, doc):

@@ -440,13 +440,14 @@ from the plan itself.
 
 ### Course delivery and main gate
 
-- [ ] Per-Issue branches, linked PRs, board transitions, reviewer approvals and
-  author responses are complete; reviewer performs merges.
-- [ ] Student reviews the completed pre-release documents and explicitly answers
+- [x] Per-Issue branches, linked PRs, board transitions, reviewer approvals and
+  author responses are complete through release PR #54; the student explicitly
+  authorized the final evidence PR #55 to merge without another peer review.
+- [x] Student reviews the completed pre-release documents and explicitly answers
   the documentation question in workflow.md before release to main proceeds.
-- [ ] Release from lab3-staging receives peer review and reviewer merge; final
+- [x] Release from lab3-staging receives peer review and reviewer merge; final
   main test/evidence capture is completed without silently editing main.
-- [ ] Exactly one concise PDF contains Answer Part 1-9 in order (60 points),
+- [x] Exactly one concise PDF contains Answer Part 1-9 in order (60 points),
   working links, readable screenshots and factual AI/review evidence.
 
 ## 11. Assumptions and Decisions

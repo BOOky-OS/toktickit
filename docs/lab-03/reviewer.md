@@ -11,7 +11,7 @@ Review comments and author responses below are taken directly from GitHub, check
 
 ## Pull Requests I authored and my partner reviewed
 
-PRs #42-#53 target `lab3-staging`; release PR #54 targets `main`. All were merged by `Atip-Infa`.
+PRs #42-#53 target `lab3-staging`; release PR #54 targets `main`. Those PRs were reviewed and merged by `Atip-Infa`. The student explicitly authorized final evidence PR #55 to merge without another peer review.
 
 | Issue | Pull Request | Branch | Reviewer | Verdict |
 | --- | --- | --- | --- | --- |
@@ -28,6 +28,7 @@ PRs #42-#53 target `lab3-staging`; release PR #54 targets `main`. All were merge
 | [#41](https://github.com/BOOky-OS/toktickit/issues/41) | [#52 - Final reflections and evidence](https://github.com/BOOky-OS/toktickit/pull/52) | `docs/41-final-reflection-evidence` | `@Atip-Infa` | Approved and merged |
 | [#41](https://github.com/BOOky-OS/toktickit/issues/41) | [#53 - Release review record](https://github.com/BOOky-OS/toktickit/pull/53) | `docs/41-release-review-record` | `@Atip-Infa` | Approved and merged |
 | [#41](https://github.com/BOOky-OS/toktickit/issues/41) | [#54 - Lab 3 release](https://github.com/BOOky-OS/toktickit/pull/54) | `lab3-staging` | `@Atip-Infa` | Approved and merged to main |
+| [#41](https://github.com/BOOky-OS/toktickit/issues/41) | [#55 - Final-main evidence](https://github.com/BOOky-OS/toktickit/pull/55) | `docs/41-final-main-evidence` | Not requested by student | Student-authorized direct merge |
 
 ## Review comments I received and how I responded
 
@@ -385,6 +386,12 @@ My response after merge:
 [Post-merge response evidence](https://github.com/BOOky-OS/toktickit/pull/54#issuecomment-5660339106)
 
 Approved commit: `e233f8e8a03fc759497f0a75ec12905a9b9e776c`. Merged by `Atip-Infa` into `main` as [`f40134124261d2861d7f480adec34f074561fc94`](https://github.com/BOOky-OS/toktickit/commit/f40134124261d2861d7f480adec34f074561fc94).
+
+### PR #55 - Issue #41
+
+PR #55 contains the final-main test record, release review links, visual audit, and final PDF. On 2026-09-14, after reviewing the completed package, the student explicitly stated that an additional peer review was not required and authorized the PR to merge. This records that exception transparently; no peer review or approval is claimed for PR #55.
+
+[PR #55 evidence](https://github.com/BOOky-OS/toktickit/pull/55)
 
 ## Pull Requests I reviewed for my partner
 

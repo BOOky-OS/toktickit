@@ -22,7 +22,7 @@ Database tests used isolated `toktickit_lab3_test`; real E2E used its own schema
 
 The default legacy `npm run test:e2e` was not run: its Lab 2 visual suite expects the retired Development Requester selector. Lab 3 authenticated Requester regression is covered by the real E2E command above. Historical dated results below remain evidence of their earlier commits, not additional executions on main.
 
-Final documentation is prepared on `docs/41-final-main-evidence`. PR #54 is Done. Issue #41 was reopened after automatic closure and remains Open / Started until this evidence is reviewed and integrated. No final all-Done board or actual coursework submission is claimed.
+Final documentation is prepared on `docs/41-final-main-evidence` in PR #55. On 2026-09-14 the student reviewed the completed package and authorized PR #55 to merge without an additional peer review. Issue #41 and the Project are completed after integration; no coursework submission is claimed here.
 
 ## 1. Strategy and environments
 
@@ -113,7 +113,7 @@ Parameterized rows represent all named cases; partial coverage is labeled Partia
 | E2E-04 | E2E | FR-11..18; AC-13..20,28 | Staff Queue -> claim/reassign/priority -> comments/notes -> Requester indication -> Staff resolve/close/reopen; Admin read-only and direct role denials | e2e/lab-03/real/staff-ticket-flow.spec.ts; queue-query.spec.ts | Pass in #41: real queue/filter/sort/pages, claim/reassign/priority, comments/notes, indication, resolve/close/reopen and Admin read-only |
 | E2E-05 | E2E | FR-19..22; AC-21..25,29 | Admin search/create/edit/activate/deactivate/reset; duplicate/safety rules and old-session invalidation with multiple browser contexts | e2e/lab-03/real/user-administration.spec.ts | Pass in #41: duplicate rejection, self/last-Admin controls, search, create/edit/reset, session invalidation, deactivate/reactivate |
 | RWD-01 | Browser/style | FR-23; AC-30 | All screen groups at 1440x900, 834x1112, 390x844; long text, overflow/visibility, keyboard/dialog focus, zoom and screenshots | e2e/lab-03/real/responsive-visual.spec.ts | Automated Pass in #41: three viewports, long-text regression, keyboard/focus, 200%-equivalent CSS reflow; actual browser chrome zoom not claimed. Visual inspection tracked separately |
-| DOC-01 | Manual/document | FR-24; AC-32 | Cross-check FR/BR/AC/API/UI/tests, all intended paths and 10 Issue dependencies; no fabricated results | docs/lab-03/quality-audit.md | Pass: PRs #53/#54 review, replies and merge links recorded; current PDF has nine visually inspected pages. Final evidence branch awaits peer review and integration |
+| DOC-01 | Manual/document | FR-24; AC-32 | Cross-check FR/BR/AC/API/UI/tests, all intended paths and 10 Issue dependencies; no fabricated results | docs/lab-03/quality-audit.md | Pass: PRs #53/#54 review, replies and merge links recorded; current PDF has nine visually inspected pages. Student reviewed the final package and authorized PR #55 for direct integration |
 | REL-01 | Full suite/manual | FR-24; AC-32 | Final-main unit/API/integration/UI/E2E/build results, reviewed documents, explicit student main gate, reviewer merge and one ordered evidence PDF | docs/lab-03/workflow.md and actual test files above | Partial: student release gate and PR #54 peer merge complete; final-main suites/build/schema checks Pass at f401341. Final evidence integration and completed board evidence remain |
 
 ## 3. AC-to-test index
