@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import {
   Category,
   checkSystem,
@@ -11,13 +11,17 @@ import {
   TicketApiError,
   uploadAttachment,
 } from "./api.js";
-import { RequesterProvider, useRequester } from "./RequesterContext.js";
+import { AuthProvider, homeFor, navigate, useAuth } from "./AuthContext.js";
+import { ApplicationShell, ChangePasswordScreen, LoginScreen, SessionFailure, SessionLoading } from "./AuthScreens.js";
+import type { UserRole } from "./api.js";
 import { MyTickets } from "./MyTickets.js";
+import { StaffTicketQueue } from "./StaffTicketQueue.js";
+import { UserManagement } from "./UserManagement.js";
 import { TicketDetail } from "./TicketDetail.js";
 import "./theme.css";
+import "./auth.css";
 
 type UiState = "idle" | "loading" | "success" | "error";
-type Page = "home" | "create" | "detail";
 type FormState = {
   categoryId: string;
   relatedSystemId: string;
@@ -40,88 +44,13 @@ const ALLOWED_FILE_TYPES = [
 ];
 const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
 
-function RequesterSelection() {
-  const { requesters, state, selectRequester, retry } = useRequester();
-  const [selectedId, setSelectedId] = useState("");
-  function submit(event: FormEvent) {
-    event.preventDefault();
-    if (selectedId) selectRequester(Number(selectedId));
-  }
-  return (
-    <main className="requester-page" id="main-content">
-      <section className="requester-card" aria-labelledby="requester-title">
-        <p className="eyebrow">Development environment</p>
-        <h1>TokTickIT</h1>
-        <h2 id="requester-title">Choose a Development Requester</h2>
-        <p className="text-secondary">
-          This selection is for testing only. It is not a login screen and does
-          not authenticate you.
-        </p>
-        <p className="notice">
-          Authentication will be introduced in Lab 3. For this lab, choose an
-          active requester from PostgreSQL to test requester-owned data.
-        </p>
-        {state === "loading" && (
-          <p className="notice" role="status">
-            Loading development requesters...
-          </p>
-        )}
-        {state === "empty" && (
-          <div className="notice" role="status">
-            <p>No active development requesters are available.</p>
-            <button
-              className="btn btn-outline-success"
-              type="button"
-              onClick={retry}
-            >
-              Retry
-            </button>
-          </div>
-        )}
-        {state === "error" && (
-          <div className="alert alert-danger" role="alert">
-            <p>Unable to load development requesters.</p>
-            <button
-              className="btn btn-outline-danger"
-              type="button"
-              onClick={retry}
-            >
-              Retry
-            </button>
-          </div>
-        )}
-        <form onSubmit={submit}>
-          <label className="form-label" htmlFor="development-requester">
-            Development Requester{" "}
-            <span className="required-marker" aria-hidden="true">
-              *
-            </span>
-          </label>
-          <select
-            className="form-select"
-            id="development-requester"
-            value={selectedId}
-            onChange={(event) => setSelectedId(event.target.value)}
-            disabled={state !== "ready"}
-          >
-            <option value="">Select an active requester</option>
-            {requesters.map((requester) => (
-              <option key={requester.id} value={requester.id}>
-                {requester.displayName}
-              </option>
-            ))}
-          </select>
-          <button
-            className="btn btn-success w-100 mt-3"
-            type="submit"
-            disabled={state !== "ready" || !selectedId}
-          >
-            Continue
-          </button>
-        </form>
-      </section>
-    </main>
-  );
+function newSubmissionKey(): string {
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, value => value.toString(16).padStart(2, "0"));
+  return `${hex.slice(0, 4).join("")}-${hex.slice(4, 6).join("")}-${hex.slice(6, 8).join("")}-${hex.slice(8, 10).join("")}-${hex.slice(10).join("")}`;
 }
 
 function Field({
@@ -160,9 +89,9 @@ function CreateTicket({
   goDetail,
 }: {
   goHome: () => void;
-  goDetail: (ticketId: number) => void;
+  goDetail: (ticketId: number, retryFiles?: File[]) => void;
 }) {
-  const { currentRequester } = useRequester();
+  const { user: currentRequester } = useAuth();
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [categories, setCategories] = useState<Category[]>([]);
   const [systems, setSystems] = useState<RelatedSystem[]>([]);
@@ -177,7 +106,8 @@ function CreateTicket({
   );
   const [created, setCreated] = useState<CreatedTicket | null>(null);
   const [uploadedCount, setUploadedCount] = useState(0);
-  const [uploadFailures, setUploadFailures] = useState<string[]>([]);
+  const [uploadFailures, setUploadFailures] = useState<File[]>([]);
+  const submission = useRef<{ fingerprint: string; key: string } | null>(null);
   async function loadReferenceData() {
     setReferenceState("loading");
     try {
@@ -242,32 +172,30 @@ function CreateTicket({
     setSubmissionLabel("Creating ticket...");
     setApiError("");
     try {
-      const submissionKey =
-        typeof crypto.randomUUID === "function"
-          ? crypto.randomUUID()
-          : `ticket-${Date.now()}`;
-      const ticket = await createTicket(
-        {
-          requesterId: currentRequester.id,
-          categoryId: Number(form.categoryId),
-          relatedSystemId: Number(form.relatedSystemId),
-          summary: form.summary,
-          requestedPriority: form.requestedPriority,
-          description: form.description,
-        },
-        submissionKey,
-      );
+      const input = {
+        categoryId: Number(form.categoryId),
+        relatedSystemId: Number(form.relatedSystemId),
+        summary: form.summary.trim(),
+        requestedPriority: form.requestedPriority,
+        description: form.description.trim(),
+      };
+      const fingerprint = JSON.stringify(input);
+      if (!submission.current || submission.current.fingerprint !== fingerprint) {
+        submission.current = { fingerprint, key: newSubmissionKey() };
+      }
+      const ticket = await createTicket(input, submission.current.key);
+      submission.current = null;
       let completedUploads = 0;
-      const failedUploads: string[] = [];
+      const failedUploads: File[] = [];
       for (const [index, file] of files.entries()) {
         setSubmissionLabel(
           `Uploading attachment ${index + 1} of ${files.length}...`,
         );
         try {
-          await uploadAttachment(ticket.id, currentRequester.id, file);
+          await uploadAttachment(ticket.id, file);
           completedUploads += 1;
         } catch {
-          failedUploads.push(file.name);
+          failedUploads.push(file);
         }
       }
       setUploadedCount(completedUploads);
@@ -309,13 +237,13 @@ function CreateTicket({
               <strong>
                 The Ticket was created, but some files were not uploaded.
               </strong>
-              <p>Open Ticket Detail to retry: {uploadFailures.join(", ")}</p>
+              <p>Open Ticket Detail to retry: {uploadFailures.map(file => file.name).join(", ")}</p>
             </div>
           )}
           <div className="success-actions">
             <button
               className="zen-button zen-button--primary"
-              onClick={() => goDetail(created.id)}
+              onClick={() => goDetail(created.id, uploadFailures)}
             >
               View Ticket Detail
             </button>
@@ -333,6 +261,7 @@ function CreateTicket({
                 setFiles([]);
                 setUploadedCount(0);
                 setUploadFailures([]);
+                submission.current = null;
               }}
             >
               Create another ticket
@@ -426,7 +355,7 @@ function CreateTicket({
               <input
                 id="ticket-it-priority"
                 className="zen-field zen-field--readonly"
-                value="Unassigned"
+                value={form.requestedPriority.charAt(0) + form.requestedPriority.slice(1).toLowerCase()}
                 readOnly
               />
             </div>
@@ -585,6 +514,7 @@ function CreateTicket({
                 setFiles([]);
                 setFieldErrors({});
                 setFileError("");
+                submission.current = null;
               }}
             >
               Clear form
@@ -604,12 +534,16 @@ function CreateTicket({
 }
 
 function ServiceDesk() {
-  const { currentRequester, changeRequester } = useRequester();
-  const [page, setPage] = useState<Page>("home");
-  const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null);
+  const [path, setPath] = useState(window.location.pathname);
   const [systemState, setSystemState] = useState<UiState>("idle");
   const [healthCategories, setHealthCategories] = useState<Category[]>([]);
   const [systemError, setSystemError] = useState("");
+  const [pendingRetry, setPendingRetry] = useState<{ ticketId: number; files: File[] } | null>(null);
+  useEffect(() => {
+    const update = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", update);
+    return () => window.removeEventListener("popstate", update);
+  }, []);
   async function handleCheck() {
     setSystemState("loading");
     try {
@@ -622,111 +556,121 @@ function ServiceDesk() {
       setSystemState("error");
     }
   }
+  const detail = /^\/tickets\/([1-9][0-9]*)$/.exec(path);
   return (
     <>
-      <header className="app-header">
-        <div>
-          <strong>TokTickIT</strong>
-          <span> IT Service Desk</span>
-        </div>
-        <div className="requester-chip">
-          <span>
-            Current Requester: <strong>{currentRequester?.displayName}</strong>
-          </span>
-          <button
-            className="btn btn-sm btn-outline-success"
-            onClick={changeRequester}
-          >
-            Change Requester
-          </button>
-        </div>
-      </header>
       <nav className="app-nav" aria-label="Service desk">
-        <button
-          className={page === "home" || page === "detail" ? "active" : ""}
-          onClick={() => setPage("home")}
-        >
-          My Tickets
-        </button>
-        <button
-          className={page === "create" ? "active" : ""}
-          onClick={() => setPage("create")}
-        >
-          Create Ticket
-        </button>
+        <button className={path === "/my-tickets" || detail ? "active" : ""} aria-current={path === "/my-tickets" || detail ? "page" : undefined}
+          onClick={() => navigate("/my-tickets")}>My Tickets</button>
+        <button className={path === "/tickets/new" ? "active" : ""} aria-current={path === "/tickets/new" ? "page" : undefined}
+          onClick={() => navigate("/tickets/new")}>Create Ticket</button>
       </nav>
-      {page === "create" ? (
+      {path === "/tickets/new" ? (
         <CreateTicket
-          goHome={() => setPage("home")}
-          goDetail={(ticketId) => {
-            setSelectedTicketId(ticketId);
-            setPage("detail");
+          goHome={() => navigate("/my-tickets")}
+          goDetail={(ticketId, files = []) => {
+            setPendingRetry(files.length ? { ticketId, files } : null);
+            navigate(`/tickets/${ticketId}`);
           }}
         />
-      ) : page === "detail" && selectedTicketId ? (
+      ) : detail ? (
         <TicketDetail
-          ticketId={selectedTicketId}
-          requesterId={currentRequester!.id}
-          onBack={() => setPage("home")}
+          ticketId={Number(detail[1])}
+          onBack={() => navigate("/my-tickets")}
+          retryFiles={pendingRetry?.ticketId === Number(detail[1]) ? pendingRetry.files : []}
+          onRetryFilesChange={files => setPendingRetry(files.length ? { ticketId: Number(detail[1]), files } : null)}
         />
       ) : (
         <>
-          <MyTickets
-            requesterId={currentRequester!.id}
-            onCreate={() => setPage("create")}
-          />
+          <MyTickets onCreate={() => navigate("/tickets/new")} onOpen={ticketId => navigate(`/tickets/${ticketId}`)} />
           <section className="container pb-4" style={{ maxWidth: 1100 }}>
-            <button
-              className="btn btn-success"
-              onClick={handleCheck}
-              disabled={systemState === "loading"}
-            >
+            <button className="btn btn-success" onClick={handleCheck} disabled={systemState === "loading"}>
               {systemState === "loading" ? "Loading..." : "Check System"}
             </button>
             {systemState === "success" && (
               <section className="mt-3" aria-live="polite">
-                <div className="alert alert-success" role="status">
-                  <strong>System Status:</strong> Online
-                </div>
+                <div className="alert alert-success" role="status"><strong>System Status:</strong> Online</div>
                 <h2 className="h5">Supported Request Categories</h2>
                 <ol className="list-group list-group-numbered">
-                  {healthCategories.map((category) => (
-                    <li className="list-group-item" key={category.id}>
-                      {category.name}
-                    </li>
-                  ))}
+                  {healthCategories.map((category) => <li className="list-group-item" key={category.id}>{category.name}</li>)}
                 </ol>
               </section>
             )}
-            {systemState === "error" && (
-              <div className="alert alert-danger mt-3" role="alert">
-                <p className="mb-1">
-                  <strong>System Status:</strong> Offline
-                </p>
-                <p className="mb-0">{systemError}</p>
-              </div>
-            )}
+            {systemState === "error" && <div className="alert alert-danger mt-3" role="alert">
+              <p className="mb-1"><strong>System Status:</strong> Offline</p><p className="mb-0">{systemError}</p>
+            </div>}
           </section>
         </>
       )}
     </>
   );
 }
+function PlannedRoleHome() {
+  const { user } = useAuth();
+  const [path, setPath] = useState(window.location.pathname);
+  useEffect(() => {
+    const update = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", update);
+    return () => window.removeEventListener("popstate", update);
+  }, []);
+  const admin = user?.role === "ADMIN";
+  const ticketDetail = /^\/tickets\/[1-9][0-9]*$/.test(path);
+  return <>
+    <nav className="app-nav" aria-label="Service desk">
+      {admin && <button className={path === "/admin/users" ? "active" : ""} aria-current={path === "/admin/users" ? "page" : undefined}
+        onClick={() => navigate("/admin/users")}>Users</button>}
+      <button className={path === "/staff/tickets" ? "active" : ""} aria-current={path === "/staff/tickets" ? "page" : undefined}
+        onClick={() => navigate("/staff/tickets")}>Ticket Queue{admin ? " (read-only)" : ""}</button>
+    </nav>
+    {path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => navigate("/tickets/" + id)} onHome={() => navigate(homeFor(user!.role))} />
+      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable={!admin} onBack={() => navigate("/staff/tickets")} />
+      : path === "/admin/users" ? <UserManagement actorId={user!.id} /> : <main className="page-content" id="main-content">
+      <section className="zen-empty-state">
+        <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator read-only access" : "Role workspace"}</p>
+        <h1>{ticketDetail ? "Ticket Detail" : path === "/staff/tickets" ? "Ticket Queue" : "User Management"}</h1>
+        <p>This destination is available to {user?.displayName} under the signed-in role.</p>
+      </section>
+    </main>}
+  </>;
+}
+function AccessUnavailable() {
+  const { user } = useAuth();
+  return <main className="page-content" id="main-content"><section className="zen-empty-state">
+    <p className="eyebrow">Access unavailable</p><h1>This page is not available for your role</h1>
+    <p>Your signed-in account does not have permission to open this destination.</p>
+    <button className="zen-button zen-button--primary" onClick={() => navigate(homeFor(user!.role))}>Go to my home</button>
+  </section></main>;
+}
+function routeAllowed(role: UserRole, path: string) {
+  if (path === "/change-password") return true;
+  if (role === "REQUESTER") return path === "/my-tickets" || path === "/tickets/new" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  if (role === "IT_STAFF") return path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  return path === "/admin/users" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+}
+function AuthenticatedApp() {
+  const { user } = useAuth();
+  const [path, setPath] = useState(window.location.pathname);
+  useEffect(() => {
+    const update = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", update);
+    return () => window.removeEventListener("popstate", update);
+  }, []);
+  if (!user) return null;
+  if (user.mustChangePassword) return <ChangePasswordScreen />;
+  if (path === "/change-password") return <ApplicationShell><ChangePasswordScreen /></ApplicationShell>;
+  const content = !routeAllowed(user.role, path) ? <AccessUnavailable /> :
+    user.role === "REQUESTER" ? <ServiceDesk /> : <PlannedRoleHome />;
+  return <ApplicationShell>{content}</ApplicationShell>;
+}
 function AppContent() {
-  const { currentRequester } = useRequester();
-  return (
-    <>
-      <a className="skip-link" href="#main-content">
-        Skip to main content
-      </a>
-      {currentRequester ? <ServiceDesk /> : <RequesterSelection />}
-    </>
-  );
+  const { state } = useAuth();
+  return <>
+    <a className="skip-link" href="#main-content">Skip to main content</a>
+    {state === "loading" ? <SessionLoading /> :
+      state === "error" ? <SessionFailure /> :
+      state === "anonymous" ? <LoginScreen /> : <AuthenticatedApp />}
+  </>;
 }
 export default function App() {
-  return (
-    <RequesterProvider>
-      <AppContent />
-    </RequesterProvider>
-  );
+  return <AuthProvider><AppContent /></AuthProvider>;
 }

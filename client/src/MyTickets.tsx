@@ -8,8 +8,8 @@ import {
   RequestedPriority,
   TicketListOptions,
   TicketListResponse,
+  TicketStatus,
 } from "./api.js";
-import { TicketDetail } from "./TicketDetail.js";
 
 type LoadState = "loading" | "ready" | "error";
 type Filters = {
@@ -17,7 +17,7 @@ type Filters = {
   categoryId: string;
   relatedSystemId: string;
   requestedPriority: "" | RequestedPriority;
-  currentStatus: "" | "NEW";
+  currentStatus: "" | TicketStatus;
   sortBy: TicketListOptions["sortBy"];
   sortDir: "asc" | "desc";
 };
@@ -30,17 +30,30 @@ const DEFAULT_FILTERS: Filters = {
   sortBy: "updatedAt",
   sortDir: "desc",
 };
+const STATUSES: TicketStatus[] = [
+  "NEW",
+  "OPEN",
+  "IN_PROGRESS",
+  "WAITING_FOR_REQUESTER",
+  "RESOLVED",
+  "CLOSED",
+  "REOPENED",
+  "CANCELLED",
+];
 
-function priorityLabel(priority: string) {
-  return priority.charAt(0) + priority.slice(1).toLowerCase();
+function enumLabel(value: string) {
+  return value
+    .split("_")
+    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
 }
 
 export function MyTickets({
-  requesterId,
   onCreate,
+  onOpen,
 }: {
-  requesterId: number;
   onCreate: () => void;
+  onOpen: (ticketId: number) => void;
 }) {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [applied, setApplied] = useState<Filters>(DEFAULT_FILTERS);
@@ -49,7 +62,6 @@ export function MyTickets({
   const [response, setResponse] = useState<TicketListResponse | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [systems, setSystems] = useState<RelatedSystem[]>([]);
-  const [openedTicketId, setOpenedTicketId] = useState<number | null>(null);
 
   useEffect(() => {
     void Promise.all([getCategories(), getRelatedSystems()])
@@ -59,6 +71,7 @@ export function MyTickets({
       })
       .catch(() => undefined);
   }, []);
+
   useEffect(() => {
     setState("loading");
     const options: TicketListOptions = {
@@ -71,50 +84,43 @@ export function MyTickets({
       currentStatus: applied.currentStatus || undefined,
       page,
     };
-    void getTickets(requesterId, options)
-      .then((value) => {
+    void getTickets(options)
+      .then(value => {
         setResponse(value);
         setState("ready");
       })
       .catch(() => setState("error"));
-  }, [requesterId, applied, page]);
+  }, [applied, page]);
 
   function set(name: keyof Filters, value: string) {
-    setFilters((current) => ({ ...current, [name]: value }));
+    setFilters(current => ({ ...current, [name]: value }));
   }
+
   function submit(event: FormEvent) {
     event.preventDefault();
     setPage(1);
     setApplied(filters);
   }
+
   function clear() {
     setFilters(DEFAULT_FILTERS);
     setApplied(DEFAULT_FILTERS);
     setPage(1);
   }
+
   const filtered = Boolean(
-    applied.search ||
-      applied.categoryId ||
-      applied.relatedSystemId ||
-      applied.requestedPriority ||
-      applied.currentStatus,
+    applied.search
+      || applied.categoryId
+      || applied.relatedSystemId
+      || applied.requestedPriority
+      || applied.currentStatus,
   );
-  const rangeStart =
-    response && response.totalItems
-      ? (response.page - 1) * response.pageSize + 1
-      : 0;
+  const rangeStart = response && response.totalItems
+    ? (response.page - 1) * response.pageSize + 1
+    : 0;
   const rangeEnd = response
     ? Math.min(response.page * response.pageSize, response.totalItems)
     : 0;
-
-  if (openedTicketId)
-    return (
-      <TicketDetail
-        ticketId={openedTicketId}
-        requesterId={requesterId}
-        onBack={() => setOpenedTicketId(null)}
-      />
-    );
 
   return (
     <main className="page-content" id="main-content">
@@ -124,7 +130,7 @@ export function MyTickets({
             <p className="eyebrow">Service requests</p>
             <h1 id="my-tickets-title">My Tickets</h1>
             <p className="text-secondary mb-0">
-              Only Tickets for the currently selected requester appear here.
+              Only Tickets for your signed-in account appear here.
             </p>
           </div>
           <button className="zen-button zen-button--primary" onClick={onCreate}>
@@ -139,7 +145,7 @@ export function MyTickets({
                 id="ticket-search"
                 className="zen-field"
                 value={filters.search}
-                onChange={(event) => set("search", event.target.value)}
+                onChange={event => set("search", event.target.value)}
                 placeholder="Ticket number or summary"
               />
             </div>
@@ -149,13 +155,11 @@ export function MyTickets({
                 id="filter-category"
                 className="zen-field"
                 value={filters.categoryId}
-                onChange={(event) => set("categoryId", event.target.value)}
+                onChange={event => set("categoryId", event.target.value)}
               >
                 <option value="">All categories</option>
-                {categories.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
+                {categories.map(item => (
+                  <option key={item.id} value={item.id}>{item.name}</option>
                 ))}
               </select>
             </div>
@@ -165,13 +169,11 @@ export function MyTickets({
                 id="filter-system"
                 className="zen-field"
                 value={filters.relatedSystemId}
-                onChange={(event) => set("relatedSystemId", event.target.value)}
+                onChange={event => set("relatedSystemId", event.target.value)}
               >
                 <option value="">All systems</option>
-                {systems.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
+                {systems.map(item => (
+                  <option key={item.id} value={item.id}>{item.name}</option>
                 ))}
               </select>
             </div>
@@ -181,9 +183,7 @@ export function MyTickets({
                 id="filter-priority"
                 className="zen-field"
                 value={filters.requestedPriority}
-                onChange={(event) =>
-                  set("requestedPriority", event.target.value)
-                }
+                onChange={event => set("requestedPriority", event.target.value)}
               >
                 <option value="">All priorities</option>
                 <option value="LOW">Low</option>
@@ -197,10 +197,12 @@ export function MyTickets({
                 id="filter-status"
                 className="zen-field"
                 value={filters.currentStatus}
-                onChange={(event) => set("currentStatus", event.target.value)}
+                onChange={event => set("currentStatus", event.target.value)}
               >
                 <option value="">All statuses</option>
-                <option value="NEW">New</option>
+                {STATUSES.map(status => (
+                  <option key={status} value={status}>{enumLabel(status)}</option>
+                ))}
               </select>
             </div>
             <div>
@@ -209,7 +211,7 @@ export function MyTickets({
                 id="sort-by"
                 className="zen-field"
                 value={filters.sortBy}
-                onChange={(event) => set("sortBy", event.target.value)}
+                onChange={event => set("sortBy", event.target.value)}
               >
                 <option value="updatedAt">Last updated</option>
                 <option value="ticketDate">Created date</option>
@@ -223,7 +225,7 @@ export function MyTickets({
                 id="sort-dir"
                 className="zen-field"
                 value={filters.sortDir}
-                onChange={(event) => set("sortDir", event.target.value)}
+                onChange={event => set("sortDir", event.target.value)}
               >
                 <option value="desc">Newest first</option>
                 <option value="asc">Oldest first</option>
@@ -231,11 +233,7 @@ export function MyTickets({
             </div>
           </div>
           <div className="filter-actions">
-            <button
-              className="zen-button zen-button--secondary"
-              type="button"
-              onClick={clear}
-            >
+            <button className="zen-button zen-button--secondary" type="button" onClick={clear}>
               Clear filters
             </button>
             <button className="zen-button zen-button--primary" type="submit">
@@ -243,20 +241,11 @@ export function MyTickets({
             </button>
           </div>
         </form>
-        {state === "loading" && (
-          <p className="notice" role="status">
-            Loading your Tickets...
-          </p>
-        )}
+        {state === "loading" && <p className="notice" role="status">Loading your Tickets...</p>}
         {state === "error" && (
           <div className="alert alert-danger" role="alert">
             Unable to load Tickets. Your filters are unchanged.{" "}
-            <button
-              className="btn btn-link p-0"
-              onClick={() => setApplied({ ...applied })}
-            >
-              Retry
-            </button>
+            <button className="btn btn-link p-0" onClick={() => setApplied({ ...applied })}>Retry</button>
           </div>
         )}
         {state === "ready" && response && response.items.length === 0 && (
@@ -265,36 +254,21 @@ export function MyTickets({
             <p>
               {filtered
                 ? "Your active search or filters did not find matching Tickets."
-                : "The selected requester has no Tickets yet."}
+                : "Your account has no Tickets yet."}
             </p>
             {filtered ? (
-              <button
-                className="zen-button zen-button--secondary"
-                onClick={clear}
-              >
-                Clear filters
-              </button>
+              <button className="zen-button zen-button--secondary" onClick={clear}>Clear filters</button>
             ) : (
-              <button
-                className="zen-button zen-button--primary"
-                onClick={onCreate}
-              >
-                Create Ticket
-              </button>
+              <button className="zen-button zen-button--primary" onClick={onCreate}>Create Ticket</button>
             )}
           </section>
         )}
         {state === "ready" && response && response.items.length > 0 && (
           <>
-            <div
-              className="ticket-table-wrap"
-              role="region"
-              aria-label="Requester tickets"
-              tabIndex={0}
-            >
+            <div className="ticket-table-wrap" role="region" aria-label="Requester tickets" tabIndex={0}>
               <table className="ticket-table">
                 <caption className="visually-hidden">
-                  Tickets belonging to the current development requester
+                  Tickets belonging to the signed-in requester
                 </caption>
                 <thead>
                   <tr>
@@ -306,52 +280,40 @@ export function MyTickets({
                     <th>Requested Priority</th>
                     <th>IT Priority</th>
                     <th>Current Status</th>
+                    <th>Owner</th>
                     <th>Last Updated</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {response.items.map((ticket) => (
+                  {response.items.map(ticket => (
                     <tr key={ticket.id}>
                       <td>
                         <button
                           className="ticket-link"
                           type="button"
                           aria-label={`Open ${ticket.ticketNumber}`}
-                          onClick={() => setOpenedTicketId(ticket.id)}
+                          onClick={() => onOpen(ticket.id)}
                         >
                           {ticket.ticketNumber}
                         </button>
                       </td>
-                      <td>
-                        {new Date(ticket.ticketDate).toLocaleDateString()}
-                      </td>
+                      <td>{new Date(ticket.ticketDate).toLocaleDateString()}</td>
                       <td>
                         <button
                           className="ticket-link ticket-summary-link"
                           type="button"
                           aria-label={`Open ${ticket.ticketNumber}: ${ticket.summary}`}
-                          onClick={() => setOpenedTicketId(ticket.id)}
+                          onClick={() => onOpen(ticket.id)}
                         >
                           {ticket.summary}
                         </button>
                       </td>
                       <td>{ticket.category.name}</td>
                       <td>{ticket.relatedSystem.name}</td>
-                      <td>
-                        <span className="zen-badge">
-                          {priorityLabel(ticket.requestedPriority)}
-                        </span>
-                      </td>
-                      <td>
-                        <span className="zen-badge">
-                          {priorityLabel(ticket.itPriority)}
-                        </span>
-                      </td>
-                      <td>
-                        <span className="zen-badge">
-                          {priorityLabel(ticket.currentStatus)}
-                        </span>
-                      </td>
+                      <td><span className="zen-badge">{enumLabel(ticket.requestedPriority)}</span></td>
+                      <td><span className="zen-badge">{enumLabel(ticket.itPriority)}</span></td>
+                      <td><span className="zen-badge" data-status={ticket.currentStatus}>{enumLabel(ticket.currentStatus)}</span></td>
+                      <td>{ticket.owner?.displayName ?? "Unassigned"}</td>
                       <td>{new Date(ticket.updatedAt).toLocaleDateString()}</td>
                     </tr>
                   ))}
@@ -359,21 +321,19 @@ export function MyTickets({
               </table>
             </div>
             <div className="pagination-row">
-              <span>
-                Showing {rangeStart}-{rangeEnd} of {response.totalItems} Tickets
-              </span>
+              <span>Showing {rangeStart}-{rangeEnd} of {response.totalItems} Tickets</span>
               <div>
                 <button
                   className="zen-button zen-button--secondary"
                   disabled={!response.hasPreviousPage}
-                  onClick={() => setPage((value) => value - 1)}
+                  onClick={() => setPage(value => value - 1)}
                 >
                   Previous
                 </button>
                 <button
                   className="zen-button zen-button--secondary"
                   disabled={!response.hasNextPage}
-                  onClick={() => setPage((value) => value + 1)}
+                  onClick={() => setPage(value => value + 1)}
                 >
                   Next
                 </button>

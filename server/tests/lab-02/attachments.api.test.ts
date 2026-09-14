@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import request from "supertest";
+import { authenticatedRequest as request, sessionMock } from "../lab-03/legacy-auth-fixture.js";
 
-const prismaMock = vi.hoisted(() => ({
+const prismaMock = vi.hoisted(() => ({ session: { findUnique: vi.fn() },
   $transaction: vi.fn(),
   ticket: { findFirst: vi.fn() },
   attachment: { findMany: vi.fn(), findFirst: vi.fn() },
@@ -25,19 +25,23 @@ const UPLOADED = {
   uploadedAt: new Date("2026-08-20T10:00:00.000Z"),
   removedAt: null,
   removalReason: null,
+  removedByUser: null,
 };
 
 function transaction(overrides: Record<string, unknown> = {}) {
   return {
-    ticket: { findFirst: vi.fn().mockResolvedValue({ id: 42 }) },
+    session: sessionMock(), $executeRaw: vi.fn().mockResolvedValue(1), $queryRaw: vi.fn().mockResolvedValue([{ id: 42 }]),
+    ticket: { findFirst: vi.fn().mockResolvedValue({ id: 42 }), update: vi.fn().mockResolvedValue({ id: 42 }) },
     attachment: {
       count: vi.fn().mockResolvedValue(0),
       create: vi.fn().mockResolvedValue(UPLOADED),
-      findFirst: vi.fn().mockResolvedValue({ id: 9 }),
+      findUnique: vi.fn().mockResolvedValue({ ticketId: 42 }),
+      findFirst: vi.fn().mockResolvedValue({ id: 9, ticketId: 42 }),
       update: vi.fn().mockResolvedValue({
         ...UPLOADED,
         removedAt: new Date("2026-08-20T10:01:00.000Z"),
         removalReason: "Contains sensitive information.",
+        removedByUser: { id: 1, displayName: "Jennifer Anderson" },
       }),
     },
     ...overrides,
@@ -47,6 +51,7 @@ function transaction(overrides: Record<string, unknown> = {}) {
 describe("Attachment lifecycle APIs", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    prismaMock.session.findUnique.mockImplementation(sessionMock().findUnique);
     storageMock.writeStoredAttachment.mockResolvedValue(undefined);
     storageMock.deleteStoredAttachment.mockResolvedValue(undefined);
   });
@@ -57,7 +62,6 @@ describe("Attachment lifecycle APIs", () => {
 
     const response = await request(app)
       .post("/api/tickets/42/attachments")
-      .field("requesterId", "1")
       .attach("file", Buffer.from("%PDF-1.7"), {
         filename: "request.pdf",
         contentType: "application/pdf",
@@ -85,7 +89,6 @@ describe("Attachment lifecycle APIs", () => {
   it("rejects an unsupported signature without writing storage", async () => {
     const response = await request(app)
       .post("/api/tickets/42/attachments")
-      .field("requesterId", "1")
       .attach("file", Buffer.from("not a PDF"), {
         filename: "request.pdf",
         contentType: "application/pdf",
@@ -107,7 +110,6 @@ describe("Attachment lifecycle APIs", () => {
 
     const response = await request(app)
       .post("/api/tickets/42/attachments")
-      .field("requesterId", "2")
       .attach("file", Buffer.from("%PDF-1.7"), {
         filename: "request.pdf",
         contentType: "application/pdf",
@@ -125,7 +127,6 @@ describe("Attachment lifecycle APIs", () => {
 
     const response = await request(app)
       .post("/api/tickets/42/attachments")
-      .field("requesterId", "1")
       .attach("file", Buffer.from("%PDF-1.7"), {
         filename: "request.pdf",
         contentType: "application/pdf",
@@ -141,13 +142,13 @@ describe("Attachment lifecycle APIs", () => {
     storageMock.readStoredAttachment.mockResolvedValue(content);
 
     const response = await request(app).get(
-      "/api/attachments/9/download?requesterId=1",
+      "/api/attachments/9/download",
     );
 
     expect(response.status).toBe(200);
     expect(response.headers["content-type"]).toMatch(/^application\/pdf/);
     expect(response.headers["content-disposition"]).toBe(
-      'attachment; filename="request.pdf"',
+      "attachment; filename=\"request.pdf\"; filename*=UTF-8''request.pdf",
     );
     expect(Buffer.compare(response.body, content)).toBe(0);
     expect(storageMock.readStoredAttachment).toHaveBeenCalledWith(
@@ -159,16 +160,16 @@ describe("Attachment lifecycle APIs", () => {
     prismaMock.attachment.findFirst.mockResolvedValue(null);
 
     const removed = await request(app).get(
-      "/api/attachments/9/download?requesterId=1",
+      "/api/attachments/9/download",
     );
     const unowned = await request(app).get(
-      "/api/attachments/9/download?requesterId=2",
+      "/api/attachments/9/download",
     );
 
     expect(removed.status).toBe(404);
     expect(unowned.status).toBe(404);
-    expect(removed.body).toEqual({ error: "Attachment is unavailable." });
-    expect(unowned.body).toEqual({ error: "Attachment is unavailable." });
+    expect(removed.body).toEqual({ error: "Attachment is unavailable.", code: "NOT_FOUND" });
+    expect(unowned.body).toEqual({ error: "Attachment is unavailable.", code: "NOT_FOUND" });
     expect(storageMock.readStoredAttachment).not.toHaveBeenCalled();
   });
 
@@ -176,6 +177,7 @@ describe("Attachment lifecycle APIs", () => {
     prismaMock.ticket.findFirst.mockResolvedValue(null);
     const tx = transaction({
       attachment: {
+        findUnique: vi.fn().mockResolvedValue({ ticketId: 42 }),
         findFirst: vi.fn().mockResolvedValue(null),
         update: vi.fn(),
       },
@@ -183,11 +185,11 @@ describe("Attachment lifecycle APIs", () => {
     prismaMock.$transaction.mockImplementation((callback) => callback(tx));
 
     const list = await request(app).get(
-      "/api/tickets/42/attachments?requesterId=2",
+      "/api/tickets/42/attachments",
     );
     const removal = await request(app)
       .delete("/api/attachments/9")
-      .send({ requesterId: 2, reason: "Not owned by this requester." });
+      .send({ reason: "Not owned by this requester." });
 
     expect(list.status).toBe(404);
     expect(removal.status).toBe(404);
@@ -202,7 +204,7 @@ describe("Attachment lifecycle APIs", () => {
     );
 
     const response = await request(app).get(
-      "/api/attachments/9/download?requesterId=1",
+      "/api/attachments/9/download",
     );
 
     expect(response.status).toBe(500);
@@ -220,17 +222,18 @@ describe("Attachment lifecycle APIs", () => {
         ...UPLOADED,
         removedAt: new Date("2026-08-20T10:01:00.000Z"),
         removalReason: "Contains sensitive information.",
+        removedByUser: { id: 1, displayName: "Jennifer Anderson" },
       },
     ]);
     const tx = transaction();
     prismaMock.$transaction.mockImplementation((callback) => callback(tx));
 
     const list = await request(app).get(
-      "/api/tickets/42/attachments?requesterId=1",
+      "/api/tickets/42/attachments",
     );
     const removed = await request(app)
       .delete("/api/attachments/9")
-      .send({ requesterId: 1, reason: "Contains sensitive information." });
+      .send({ reason: "Contains sensitive information." });
 
     expect(list.status).toBe(200);
     expect(list.body[0]).toMatchObject({

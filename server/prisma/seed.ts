@@ -28,43 +28,36 @@ export const DEVELOPMENT_REQUESTERS = [
 
 type SeedPrisma = Pick<
   ReturnType<typeof getPrisma>,
-  "category" | "relatedSystem" | "developmentRequester"
+  "category" | "relatedSystem"
 >;
 
 export async function seedReferenceData(prisma: SeedPrisma) {
   for (const category of CATEGORIES) {
     await prisma.category.upsert({
       where: { name: category.name },
-      update: { isActive: category.isActive },
+      update: {},
       create: category,
     });
   }
   for (const system of RELATED_SYSTEMS) {
     await prisma.relatedSystem.upsert({
       where: { name: system.name },
-      update: { isActive: system.isActive },
+      update: {},
       create: system,
-    });
-  }
-  for (const requester of DEVELOPMENT_REQUESTERS) {
-    await prisma.developmentRequester.upsert({
-      where: { email: requester.email },
-      update: { displayName: requester.displayName, isActive: requester.isActive },
-      create: requester,
     });
   }
 }
 
 async function main() {
   const prisma = getPrisma();
-  await seedReferenceData(prisma);
-  console.log("Seeded Lab 2 requester and reference data.");
+  await (await import("./lab3-seed.js")).seedLab3Demo(prisma);
+  console.log("Seeded local Lab 3 demo data without overwriting existing edits.");
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main()
-    .catch((error) => {
-      console.error(error);
+    .catch(() => {
+      console.error("Demo seed failed. Verify local opt-in and migrated database; no credentials are logged.");
       process.exitCode = 1;
     })
     .finally(async () => {

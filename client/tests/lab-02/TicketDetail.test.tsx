@@ -16,6 +16,15 @@ const detail: api.TicketDetail = {
   requestedPriority: "MEDIUM",
   itPriority: "UNASSIGNED",
   currentStatus: "NEW",
+  owner: null,
+  version: 1,
+  updatedAt: "2026-08-20T08:15:00.000Z",
+  requesterResolutionIndicatedAt: null,
+  resolvedAt: null,
+  closedAt: null,
+  cancelledAt: null,
+  resolutionSummary: null,
+  cancellationReason: null,
   attachments: [],
 };
 const active: api.Attachment = {
@@ -30,6 +39,7 @@ const active: api.Attachment = {
 
 describe("Ticket Detail", () => {
   beforeEach(() => {
+    vi.spyOn(api, "getEntries").mockResolvedValue([]);
     vi.spyOn(api, "getTicket").mockResolvedValue(detail);
     vi.spyOn(api, "getAttachments").mockResolvedValue([active]);
   });
@@ -44,7 +54,7 @@ describe("Ticket Detail", () => {
       removedAt: "2026-08-20T09:00:00.000Z",
       removalReason: "Contains private information",
     });
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     expect(
       await screen.findByRole("heading", { name: "TKT-2026-000042" }),
     ).toBeInTheDocument();
@@ -66,7 +76,6 @@ describe("Ticket Detail", () => {
     ).not.toBeInTheDocument();
     expect(api.removeAttachment).toHaveBeenCalledWith(
       9,
-      1,
       "Contains private information",
     );
   });
@@ -80,19 +89,44 @@ describe("Ticket Detail", () => {
       mimeType: "image/png",
     };
     vi.spyOn(api, "uploadAttachment").mockResolvedValue(uploaded);
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
     await user.upload(
       screen.getByLabelText("Add attachment"),
       new File(["image"], "photo.png", { type: "image/png" }),
     );
     expect(await screen.findByText("photo.png")).toBeInTheDocument();
-    expect(api.uploadAttachment).toHaveBeenCalledWith(42, 1, expect.any(File));
+    expect(api.uploadAttachment).toHaveBeenCalledWith(42, expect.any(File));
     expect(screen.getByRole("status")).toHaveTextContent(
       /photo\.png uploaded successfully/i,
     );
   });
 
+  it("retries one failed Create Ticket upload from Detail", async () => {
+    const user = userEvent.setup();
+    const failed = new File(["%PDF-1.7"], "failed.pdf", { type: "application/pdf" });
+    const onRetryFilesChange = vi.fn();
+    vi.spyOn(api, "uploadAttachment").mockResolvedValue({
+      ...active,
+      id: 10,
+      originalFilename: "failed.pdf",
+    });
+    render(
+      <TicketDetail
+        ticketId={42}
+        onBack={vi.fn()}
+        retryFiles={[failed]}
+        onRetryFilesChange={onRetryFilesChange}
+      />,
+    );
+
+    await screen.findByText("Files that still need upload");
+    await user.click(screen.getByRole("button", { name: "Retry upload" }));
+
+    expect(api.uploadAttachment).toHaveBeenCalledWith(42, failed);
+    expect(onRetryFilesChange).toHaveBeenCalledWith([]);
+    expect(await screen.findByText(/failed\.pdf uploaded successfully/i)).toBeInTheDocument();
+  });
   it("disables attachment selection after five active files", async () => {
     vi.mocked(api.getAttachments).mockResolvedValue(
       Array.from({ length: 5 }, (_, index) => ({
@@ -101,7 +135,7 @@ describe("Ticket Detail", () => {
         originalFilename: `file-${index + 1}.pdf`,
       })),
     );
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     expect(
       await screen.findByLabelText("Attachment limit reached"),
     ).toBeDisabled();
@@ -111,7 +145,7 @@ describe("Ticket Detail", () => {
   it("rejects an invalid selected file before calling the upload API", async () => {
     const user = userEvent.setup({ applyAccept: false });
     const upload = vi.spyOn(api, "uploadAttachment");
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
 
     await user.upload(
@@ -130,7 +164,7 @@ describe("Ticket Detail", () => {
     vi.spyOn(api, "uploadAttachment").mockRejectedValue(
       new api.TicketApiError("Unable to upload attachment.", 500),
     );
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
 
     await user.upload(
@@ -150,7 +184,7 @@ describe("Ticket Detail", () => {
     vi.spyOn(api, "removeAttachment").mockRejectedValue(
       new Error("private failure detail"),
     );
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     await screen.findByText("battery.pdf");
     await user.click(screen.getByRole("button", { name: "Remove" }));
     await user.type(
@@ -176,7 +210,7 @@ describe("Ticket Detail", () => {
     vi.mocked(api.getTicket)
       .mockRejectedValueOnce(new Error("private API detail"))
       .mockResolvedValueOnce(detail);
-    render(<TicketDetail ticketId={42} requesterId={1} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       /unable to load Ticket Detail/i,
@@ -193,7 +227,7 @@ describe("Ticket Detail", () => {
     vi.mocked(api.getTicket).mockRejectedValue(
       new api.TicketApiError("not owned", 404),
     );
-    render(<TicketDetail ticketId={42} requesterId={2} onBack={vi.fn()} />);
+    render(<TicketDetail ticketId={42} onBack={vi.fn()} />);
     expect(
       await screen.findByRole("heading", { name: "Ticket unavailable" }),
     ).toBeInTheDocument();

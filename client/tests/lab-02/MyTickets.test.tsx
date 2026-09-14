@@ -3,11 +3,8 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../../src/App.js";
 import * as api from "../../src/api.js";
+import { mockAuthenticatedUser } from "../lab-03/auth-test-helpers.js";
 
-const requesters: api.DevelopmentRequester[] = [
-  { id: 1, displayName: "Jennifer Anderson", email: "jennifer@example.test" },
-  { id: 2, displayName: "Michael Brown", email: "michael@example.test" },
-];
 const list: api.TicketListResponse = {
   items: [
     {
@@ -21,6 +18,8 @@ const list: api.TicketListResponse = {
       requestedPriority: "MEDIUM",
       itPriority: "UNASSIGNED",
       currentStatus: "NEW",
+      owner: null,
+      version: 1,
     },
   ],
   page: 1,
@@ -31,22 +30,15 @@ const list: api.TicketListResponse = {
   hasNextPage: false,
 };
 
-async function enter(
-  user: ReturnType<typeof userEvent.setup>,
-  requesterId = "1",
-) {
+async function enter(user: ReturnType<typeof userEvent.setup>) {
   render(<App />);
-  await user.selectOptions(
-    await screen.findByRole("combobox", { name: /development requester/i }),
-    requesterId,
-  );
-  await user.click(screen.getByRole("button", { name: "Continue" }));
+  await screen.findByRole("heading", { name: "My Tickets" });
 }
 
 describe("My Tickets", () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.spyOn(api, "getDevelopmentRequesters").mockResolvedValue(requesters);
+    mockAuthenticatedUser();
     vi.spyOn(api, "getCategories").mockResolvedValue([
       { id: 2, name: "Hardware" },
     ]);
@@ -60,7 +52,7 @@ describe("My Tickets", () => {
     localStorage.clear();
   });
 
-  it("loads the selected requester's Tickets and sends applied filters to the API", async () => {
+  it("loads the signed-in requester's Tickets and sends applied filters to the API", async () => {
     const user = userEvent.setup();
     const getTickets = vi.mocked(api.getTickets);
     await enter(user);
@@ -71,7 +63,6 @@ describe("My Tickets", () => {
       await screen.findByText("Laptop battery drains quickly"),
     ).toBeInTheDocument();
     expect(getTickets).toHaveBeenLastCalledWith(
-      1,
       expect.objectContaining({
         search: "battery",
         page: 1,
@@ -84,6 +75,14 @@ describe("My Tickets", () => {
     ).toBeInTheDocument();
   });
 
+  it("offers all eight Ticket statuses", async () => {
+    const user = userEvent.setup();
+    await enter(user);
+    const status = screen.getByRole("combobox", { name: "Current Status" });
+    for (const name of ["New", "Open", "In Progress", "Waiting For Requester", "Resolved", "Closed", "Reopened", "Cancelled"]) {
+      expect(within(status).getByRole("option", { name })).toBeInTheDocument();
+    }
+  });
   it("opens Ticket Detail from the Summary link", async () => {
     const user = userEvent.setup();
     vi.spyOn(api, "getTicket").mockResolvedValue({
@@ -99,6 +98,15 @@ describe("My Tickets", () => {
       requestedPriority: "MEDIUM",
       itPriority: "UNASSIGNED",
       currentStatus: "NEW",
+      owner: null,
+      version: 1,
+      updatedAt: "2026-08-20T08:15:00.000Z",
+      requesterResolutionIndicatedAt: null,
+      resolvedAt: null,
+      closedAt: null,
+      cancelledAt: null,
+      resolutionSummary: null,
+      cancellationReason: null,
       attachments: [],
     });
     vi.spyOn(api, "getAttachments").mockResolvedValue([]);
@@ -112,6 +120,7 @@ describe("My Tickets", () => {
     expect(
       await screen.findByRole("heading", { name: "TKT-2026-000042" }),
     ).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/tickets/42");
   });
 
   it("shows an empty state and starts Create Ticket from the empty list", async () => {
@@ -124,7 +133,7 @@ describe("My Tickets", () => {
     });
     await enter(user);
     expect(
-      await screen.findByText(/selected requester has no Tickets/i),
+      await screen.findByText(/your account has no Tickets/i),
     ).toBeInTheDocument();
     await user.click(
       within(
@@ -161,7 +170,7 @@ describe("My Tickets", () => {
     await user.click(screen.getByRole("button", { name: "Retry" }));
 
     expect(await screen.findByText("TKT-2026-000042")).toBeInTheDocument();
-    expect(api.getTickets).toHaveBeenLastCalledWith(1, expect.any(Object));
+    expect(api.getTickets).toHaveBeenLastCalledWith(expect.any(Object));
   });
 
   it("shows no-results and sends every selected filter and sort control", async () => {
@@ -208,7 +217,6 @@ describe("My Tickets", () => {
       await screen.findByRole("heading", { name: "No matching Tickets" }),
     ).toBeInTheDocument();
     expect(api.getTickets).toHaveBeenLastCalledWith(
-      1,
       expect.objectContaining({
         search: "vpn",
         categoryId: 2,
@@ -251,23 +259,17 @@ describe("My Tickets", () => {
     expect(screen.getByRole("button", { name: "Previous" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
     expect(api.getTickets).toHaveBeenLastCalledWith(
-      1,
       expect.objectContaining({ page: 2 }),
     );
   });
 
-  it("reloads Tickets for the new requester after Change Requester", async () => {
+  it("uses the authenticated requester identity without a Change Requester control", async () => {
     const user = userEvent.setup();
     const getTickets = vi.mocked(api.getTickets);
     await enter(user);
     await screen.findByText("TKT-2026-000042");
-    await user.click(screen.getByRole("button", { name: "Change Requester" }));
-    await user.selectOptions(
-      await screen.findByRole("combobox", { name: /development requester/i }),
-      "2",
-    );
-    await user.click(screen.getByRole("button", { name: "Continue" }));
-    await screen.findByText("TKT-2026-000042");
-    expect(getTickets).toHaveBeenLastCalledWith(2, expect.any(Object));
+    expect(getTickets).toHaveBeenLastCalledWith(expect.any(Object));
+    expect(screen.queryByRole("button", { name: "Change Requester" })).not.toBeInTheDocument();
+    expect(localStorage.getItem("toktickit.developmentRequesterId")).toBeNull();
   });
 });

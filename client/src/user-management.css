@@ -1,0 +1,35 @@
+.users-workspace { display: grid; align-items: start; grid-template-columns: minmax(0,1.65fr) minmax(320px,.75fr); gap: 1.25rem; margin-top: 1.5rem; }
+.users-workspace > section { min-width: 0; }
+.users-list { display: grid; list-style: none; margin: 0; padding: 0; border: 1px solid var(--zen-border); border-radius: .8rem; overflow: hidden; background: #fff; }
+.users-list li { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: .75rem; padding: .75rem .9rem; border-bottom: 1px solid var(--zen-border); }
+.users-list li:last-child { border-bottom: 0; }
+.users-list li:hover { background: var(--zen-green-050); }
+.users-list dl { display: grid; grid-template-columns: 1.05fr 1.55fr .75fr .65fr 1.2fr; gap: .65rem; margin: 0; }
+.users-list dl > div { min-width: 0; }
+.users-list dd { margin: .15rem 0 0; font-size: .9rem; }
+.users-list dd, .users-workspace p { overflow-wrap: anywhere; }
+.users-list dt { font-size: .8rem; color: #596273; }
+.users-workspace label { display: block; margin-top: .8rem; }
+.users-workspace .zen-button { margin-top: .8rem; margin-right: .5rem; }
+.ticket-card:has(.users-workspace) > .filter-card .filter-grid { grid-template-columns: minmax(0,2fr) minmax(180px,1fr); }
+.users-workspace > section:last-child { position: sticky; top: 1.25rem; padding: 1.2rem; border: 1px solid #b8d9c7; border-radius: .85rem; background: var(--zen-green-050); }
+.users-workspace fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.users-workspace textarea { min-height: 7rem; }
+@media (max-width: 1100px) {
+  .users-workspace { grid-template-columns: minmax(0,1fr); }
+  .users-workspace > section:first-child { grid-row: 2; }
+  .users-workspace > section:last-child { position: static; grid-row: 1; }
+  .users-list { grid-template-columns: repeat(2,minmax(0,1fr)); gap: .85rem; border: 0; background: transparent; overflow: visible; }
+  .users-list li { align-content: start; border: 1px solid var(--zen-border); border-radius: .8rem; }
+  .users-list li:last-child { border-bottom: 1px solid var(--zen-border); }
+  .users-list dl { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 767px) {
+  .ticket-card:has(.users-workspace) > .filter-card .filter-grid,
+  .users-list { grid-template-columns: minmax(0,1fr); }
+  .users-list dl { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .users-list dl > div:nth-child(2),
+  .users-list dl > div:nth-child(5) { grid-column: 1 / -1; }
+  .users-list li { grid-template-columns: minmax(0,1fr); }
+  .users-list li .zen-button { width: 100%; }
+}

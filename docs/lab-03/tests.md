@@ -1,0 +1,504 @@
+# Lab 3 Test Plan and Traceability
+
+Status: contract planned before implementation in #32; Issues #33-#40 and
+the #41 quality audit in PR #51 are peer-merged into staging. Documentation
+corrections are on docs/41-final-reflection-evidence; final-main checks remain pending.
+See [quality-audit.md](quality-audit.md) for current checks and remaining evidence.
+Historical counts are not final-main results.
+Source requirements: [specification.md](specification.md), [api-spec.md](api-spec.md),
+[ui-spec.md](ui-spec.md). Current documentation checks are recorded separately.
+
+## 1. Strategy and environments
+
+Use existing Vitest, Testing Library, Supertest and Playwright. Start each
+feature with its planned failing tests, confirm the failure is for the missing
+behavior, implement, then refactor and rerun relevant regression. Record actual
+commands/results against the feature PR. Add tests alongside their feature;
+#41 verifies coverage and final evidence, not the first opportunity to test.
+
+Unit tests cover pure policy with boundaries. API tests cover real Express
+middleware/serialization; database integrity, migration, session revocation and
+concurrency additionally require real isolated PostgreSQL integration tests.
+Mocks cannot prove uniqueness, locking, SQL migration or persisted sessions.
+UI tests test visible interactions and accessibility; style assertions and
+real-browser screenshots complement them. E2E includes real server/DB flows and
+explicit fault injection only for failure scenarios.
+
+Use dedicated TEST_DATABASE_URL; the real E2E setup exports its owned schema as
+LAB3_E2E_DATABASE_URL. Never use the user's working
+DATABASE_URL. Before destructive fixture setup verify each test DB name is
+explicitly allowed and differs from the working database; refuse otherwise.
+Apply migrations to test databases only, use fixture-local attachment storage
+and clean only owned test fixtures. Never run migrate reset against working data.
+One fresh migration fixture starts at actual Lab 2 migrations with seeded legacy
+rows; verify pre/post IDs, sequences, snapshots and binary file digests.
+Existing Lab 1 category integration tests must also use the isolated test DB.
+
+Freeze clocks/inject clock for expiry/throttling tests instead of long sleeps.
+Run concurrency via separate DB connections and barriers, not sequential mocked
+calls. Clear bounded test rate-limit buckets between cases. Session/cookie/CSRF
+helpers must exercise actual login for integration/E2E; never bypass auth to
+claim authorization coverage. Avoid flaky arbitrary sleeps in browser tests.
+
+## 2. Test coverage and traceability
+
+Rows remain Planned until their tests exist and results are recorded. Paths for
+unimplemented rows are intended paths. Issue-branch Pass is not final-main Pass.
+Parameterized rows represent all named cases; partial coverage is labeled Partial.
+
+| ID | Type | Requirement / AC | Scenario and expected result | Automated evidence file(s) | Recorded result |
+| --- | --- | --- | --- | --- | --- |
+| UNIT-01 | Unit | BR-02..04; AC-03,05,22 | Password 11/12/128/129 code points, 512-byte limit, Unicode, whitespace, no trimming, confirmation/same-password; hashing salts differ, verify valid/invalid, malformed hashes fail safely | server/tests/lab-03/password.unit.test.ts | Pass in #34: helper boundaries plus real-DB password replacement, confirmation and difference checks in auth.api.test.ts; final-main pending |
+| UNIT-02 | Unit | BR-02,30; AC-21,22 | Name/email normalization and inclusive limits; role allowlist, boolean/type errors, duplicate normalized email semantics | server/tests/lab-03/user-validation.unit.test.ts | Pass in #40 |
+| UNIT-03 | Unit | BR-16,30; AC-11,13,21 | Query defaults, repeated/unknown keys, arrays, invalid enums/IDs, wildcard literal handling, safe page offsets and deterministic priority ranking | server/tests/lab-03/query-validation.unit.test.ts | Queue Pass; Users query coverage added in #40 user-validation.unit.test.ts |
+| UNIT-04 | Unit | BR-20..29; AC-14,15,16,20 | All 64 status pairs, owner eligibility, reasons/confirmation, same-status denial, allowed indication states and no-op rules | server/tests/lab-03/workflow.unit.test.ts | Pass in #38: all 64 status pairs and body/reason validation; resolution-indication cases now covered in #39 API suite |
+| UNIT-05 | Unit | BR-10..12,28; AC-08,09,19 | Table-driven role/resource decisions including Admin read-only, historical requester IDs and no internal fields in requester serializer | server/tests/lab-03/authorization.unit.test.ts; requester-regression.api.test.ts; comments-notes.api.test.ts | Pass in #41: 14 role-matrix cases; historical IDs and requester serialization covered by the existing real API regressions |
+| MIG-01 | DB migration | FR-01; AC-01 | Upgrade actual Lab 2 schema with active/inactive users, Tickets, active/removed Attachments; preserve IDs/text/number/date/ownership/removal authors/file bytes and references | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
+| MIG-02 | DB migration | BR-02,13; AC-01 | Case-fold email collisions/invalid existing email abort before partial mutation; sequence remains above preserved IDs/numbers; UNASSIGNED backfills but set priorities remain | server/tests/lab-03/migration.integration.test.ts | Pass in #33; final-main pending |
+| MIG-03 | DB integration | FR-02; AC-02,24 | Provision only null hashes; inactive users stay inactive; required role/30-ticket/status fixtures; seed twice yields no duplicates and preserves edited name/role/activation/password/entries | server/tests/lab-03/seed.integration.test.ts | Pass in #33; final-main pending |
+| MIG-04 | DB integration | BR-04,31; AC-02,03 | Invalid/missing provisioning secret or production seed refuses; only hashes stored; newly provisioned users require password change | server/tests/lab-03/seed.integration.test.ts | Pass in #33; final-main pending |
+| API-01 | API/DB | FR-03; AC-03 | Valid active login across all roles returns safe UserSummary, rotates session, never exposes auth token/hash | server/tests/lab-03/auth.api.test.ts | Pass in #34; final-main pending |
+| API-02 | API | BR-05; AC-04 | Wrong/unknown/inactive/unprovisioned uniform 401; malformed input 400; IP/email limit boundaries and Retry-After; expiry clears throttle | server/tests/lab-03/auth.api.test.ts | Pass in #34; final-main pending |
+| API-03 | API/DB | FR-04; AC-05 | Initial-password session can use auth-only routes; every protected route rejects until valid confirmed different password, then old sessions fail | server/tests/lab-03/auth.api.test.ts | Pass in #34; final-main pending |
+| API-04 | API/DB | FR-05; AC-06 | me/reload, absolute expiry boundary, logout, revoked token, voluntary change and account change invalidate old sessions; DB failure is safe 500 | server/tests/lab-03/auth.api.test.ts; server/tests/lab-03/users-admin.api.test.ts; e2e/lab-03/real/user-administration.spec.ts | Auth expiry/logout/change and transaction revocation passed in #34; Admin edit/reset revocation passed in #40; real reset/login/old-session flow passed in #41. Final-main pending |
+| API-05 | API | BR-06..09; AC-07 | HttpOnly/SameSite/Secure/path/expiry and no-store; anonymous CSRF cannot authorize; missing/wrong/cross-session token and hostile/missing Origin deny JSON/multipart writes; rotation enforced | server/tests/lab-03/auth.api.test.ts (CSRF, cookies and limits group) | Pass in #34; final-main pending |
+| API-06 | API/DB | FR-06; AC-08 | Parameterize every protected domain endpoint/method for anonymous, forced-change, Requester, Staff, Admin; matrix grants/denials including all Admin Ticket mutations; auth-only routes checked separately | server/tests/lab-03/authorization-matrix.api.test.ts; server/tests/lab-03/authorization.api.test.ts; server/tests/lab-03/auth.api.test.ts; domain API suites API-08..24 | #41 Pass (2026-09-13 full regression): 195 domain route/method/actor checks using real HTTP login; allowed roles reach read/validation/lookup handlers. Successful mutations are verified separately by domain suites; auth-only routes by auth.api.test.ts |
+| API-07 | API/DB | BR-11,12; AC-09 | A's session plus B's ticket/file IDs, requesterId in query/JSON/multipart and forged author/role; reject without disclosing/changing B; legacy selector safe 404 | server/tests/lab-03/authorization.api.test.ts; server/tests/lab-03/requester-regression.api.test.ts; server/tests/lab-03/auth.api.test.ts | Pass in #34/#36: cross-requester Ticket/file denial, query/JSON/multipart forgery, author/role injection, session-owned create/list/detail and retired selector 404. Final-main pending |
+| API-08 | API/DB | FR-08; AC-10 | Valid create stores authenticated ID, numbered NEW/matching priority; input/reference/boundary rejection; matching replay and changed-body conflict preserve original snapshot | server/tests/lab-03/requester-regression.api.test.ts | Pass in #36: session-owned create, replay/conflict and concurrent identical create |
+| API-09 | API/DB | FR-09; AC-11 | Requester search/filters/all eight statuses/sort/page, literal wildcard terms, stable tie-breaker, out-of-range/empty metadata, no cross-user results | server/tests/lab-03/requester-regression.api.test.ts | Pass in #36: all statuses, literal wildcards, stable/beyond-last pages, active references and isolation |
+| API-10 | API/DB | FR-10; AC-12 | Valid MIME/signature/extension; 5 MiB exact/+1; fifth/sixth active; owned upload/list/download/remove, all statuses; removed bytes unavailable to every role and audit retained | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: exact size boundary, all statuses, row-locked cap, version and removal audit |
+| API-11 | API | BR-19,35; AC-12,31 | Storage/metadata failures compensate safely; ticket survives partial uploads; missing file/reason limits/download header sanitation and safe error envelopes | server/tests/lab-03/attachments-regression.api.test.ts | Pass in #36: safe compensation/errors, required reason and RFC 5987 download header |
+| API-12 | API/DB | FR-11; AC-13 | Staff/Admin Queue all query combinations/defaults/priority order/ties/count snapshot; requester denial; inactive historical owner remains visible; assignees active Staff/Admin only | server/tests/lab-03/staff-queue.api.test.ts | Pass (#37); repeatable-read implementation, no forced concurrent count probe |
+| API-13 | API/DB | FR-12,13; AC-14 | Staff Detail, claim, already-self no-op, other-owner conflict, confirmed reassign, null restrictions, inactive/wrong-role rejection, Admin candidate with read-only permissions | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
+| API-14 | API/DB | FR-14; AC-15 | Priority LOW/MEDIUM/HIGH, no UNASSIGNED, immutable Requested Priority, no-op and terminal/role denial | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
+| API-15 | API/DB | FR-15; AC-16 | Every permitted/forbidden status pair; owner, confirmation and public reason prerequisites; timestamps/history/reopen clearing and transaction rollback on history failure | server/tests/lab-03/staff-ticket-detail.api.test.ts | Pass in #38 |
+| API-16 | DB concurrency | BR-15,17,25,32; AC-10,12,17,25 | Racing identical creates -> one Ticket; simultaneous fifth/sixth uploads -> cap; claims/stale versions/admin demotions -> valid winner/conflict; owner deactivation race cannot produce invalid active assignment | server/tests/lab-03/requester-regression.api.test.ts; server/tests/lab-03/attachments-regression.api.test.ts; server/tests/lab-03/staff-ticket-detail.api.test.ts; server/tests/lab-03/users-admin.api.test.ts | Pass across #36/#38/#40: create/attachment races, claims/stale writes, concurrent Admin demotions and owner-deactivation race |
+| API-17 | API/DB | FR-16; AC-18 | Public read/post roles, owned isolation, whitespace/1/2000/2001 limits, author/time injection denial, terminal and PATCH/DELETE denial, stable ordering | server/tests/lab-03/comments-notes.api.test.ts | Pass in #39 |
+| API-18 | API/DB | FR-17; AC-19 | Notes Staff append/Admin read-only, Requester forbidden including guessed IDs; no note/count leaks in detail/list/errors; 1/4000/4001 limits and append-only/terminal rules | server/tests/lab-03/comments-notes.api.test.ts | Pass in #39 |
+| API-19 | API/DB | FR-18; AC-20 | Own eligible confirmed indication sets time/version without status change; repeat no-op, stale/cross-user/ineligible status denial; staff reopen clears it | server/tests/lab-03/resolution-indication.api.test.ts | Pass in #39; reopening clear covered by #38 API regression |
+| API-20 | API/DB | FR-19; AC-21 | Users fields/list/default order/search/optional role/empty/invalid query; non-Admin denial | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-21 | API/DB | FR-20; AC-22 | Create active/inactive single-role user, hash/forced-change defaults; normalized duplicate/racing duplicate and malformed input rejection | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-22 | API/DB | FR-20,22; AC-23 | Name/email/role/active edits, no-op/stale behavior, revocation, active-assignment guard and retained historical authors; old-session mutation after revocation denied | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-23 | API/DB | FR-21; AC-24 | Admin initial reset: old credential/session denied, new login restricted until change, reset not undone by seed | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-24 | API/DB | FR-22; AC-25 | Self-deactivation, final active Admin deactivation/demotion forbidden; different Admin edit allowed; UI-disabled actions also rejected by direct API | server/tests/lab-03/users-admin.api.test.ts | Pass in #40; reset/seed/auth boundaries also covered by existing migration/auth suites |
+| API-25 | API | BR-35; AC-31 | Malformed JSON/content-type/upload/unknown endpoints, session/query/database/storage failure; no stack/hash/path/connection/private data, documented error envelopes | server/tests/lab-03/errors.api.test.ts; server/tests/lab-03/auth.api.test.ts; server/tests/lab-03/attachments-regression.api.test.ts; server/tests/lab-02/attachments.api.test.ts | #41 Pass (2026-09-13 full regression): 16 focused safe-error cases, plus existing session/logout, upload-size and metadata-compensation regressions. DB/storage faults are injected; no real outage is claimed |
+| UI-01 | UI | FR-03,07; AC-26 | Login labels, busy, safe invalid/inactive/rate-limit/network feedback, email retention/password clearing and redirect | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
+| UI-02 | UI | FR-04,05; AC-05,26 | Forced and voluntary change, paste/autocomplete, limits/mismatch/same-password, pending/failure/success, no bypass | client/tests/lab-03/AuthFlow.test.tsx | Pass in #35; final-main pending |
+| UI-03 | UI | FR-06,07; AC-08,26 | Boot loading/me, role menus, forbidden routes, expiry/logout failure/retry, no stale data via Back/reload, old storage key removed | client/tests/lab-03/AuthFlow.test.tsx; AuthApi.test.tsx | Pass in #35; final-main pending |
+| UI-04 | UI | FR-08..10; AC-10,27 | Authenticated requester Create/List/Detail, filters/statuses/empty/retry, key retained across ambiguous failure, partial file recovery, no selector | client/tests/lab-03/RequesterRegression.test.tsx | Pass in #36; Lab 2 requester tests also retained and adapted |
+| UI-05 | UI | FR-11; AC-13,28 | Staff/Admin Queue fields/search/filters/sort/page/card links, loading/empty/no-results/forbidden/failure, read-only Admin context | client/tests/lab-03/StaffTicketQueue.test.tsx | Pass (#37) |
+| UI-06 | UI | FR-12..15; AC-14,15,16,28 | Staff owner/priority/status/reason dialogs, busy/conflict/reload, terminal controls, immutable submissions, Admin no mutation controls | client/tests/lab-03/StaffTicketDetail.test.tsx | Pass in #38 |
+| UI-07 | UI | FR-16..18; AC-18,19,20,28 | Separate public/internal drafts, safe literal HTML text, permissions, empty/failed/terminal posting, requester resolution action/indicator and no note metadata | client/tests/lab-03/CommentsNotes.test.tsx | Pass in #39 |
+| UI-08 | UI | FR-19..22; AC-21..25,29 | User list/search/create/edit/reset, field validation/conflict/safe failure, draft retention/password clearing, safety reasons, self-session invalidation | client/tests/lab-03/UserManagement.test.tsx | Pass in #40 |
+| STYLE-01 | UI style | BR-36; AC-30 | Shared Zen tokens/classes, required markers, read-only/invalid states, aria labels, non-colour badges and button states | client/tests/lab-03/StyleAccessibility.test.tsx; AuthFlow.test.tsx; StaffTicketQueue.test.tsx; UserManagement.test.tsx; e2e/lab-03/real/responsive-visual.spec.ts | Pass: real CSS contrast check for all eight statuses plus component/keyboard checks; visual checklist in ui-spec.md |
+| E2E-01 | E2E | FR-03..07; AC-03..08,26 | Real role logins/invalid/inactive/expiry/logout and direct API access after logout; navigation matrix | e2e/lab-03/real/authentication.spec.ts; session-expiry.spec.ts | Pass in #41: actual role login, invalid/inactive credentials, persisted expiry and revoked logout access |
+| E2E-02 | E2E | FR-04; AC-05,24,26 | Initial-password login -> forced screen/API denial -> valid change -> permitted home; Admin reset repeats forced flow | e2e/lab-03/real/authentication.spec.ts; user-administration.spec.ts | Pass in #41: initial login and Admin reset both require a real password change before protected access |
+| E2E-03 | E2E | FR-08..10; AC-09..12,27 | A creates/uploads/searches/views/removes, B cannot read/download; failure recovery with real persisted Ticket/Attachment | e2e/lab-03/real/requester-regression.spec.ts | Pass in #41: create, failed-upload retry, search, byte persistence, cross-user denial and removal |
+| E2E-04 | E2E | FR-11..18; AC-13..20,28 | Staff Queue -> claim/reassign/priority -> comments/notes -> Requester indication -> Staff resolve/close/reopen; Admin read-only and direct role denials | e2e/lab-03/real/staff-ticket-flow.spec.ts; queue-query.spec.ts | Pass in #41: real queue/filter/sort/pages, claim/reassign/priority, comments/notes, indication, resolve/close/reopen and Admin read-only |
+| E2E-05 | E2E | FR-19..22; AC-21..25,29 | Admin search/create/edit/activate/deactivate/reset; duplicate/safety rules and old-session invalidation with multiple browser contexts | e2e/lab-03/real/user-administration.spec.ts | Pass in #41: duplicate rejection, self/last-Admin controls, search, create/edit/reset, session invalidation, deactivate/reactivate |
+| RWD-01 | Browser/style | FR-23; AC-30 | All screen groups at 1440x900, 834x1112, 390x844; long text, overflow/visibility, keyboard/dialog focus, zoom and screenshots | e2e/lab-03/real/responsive-visual.spec.ts | Automated Pass in #41: three viewports, long-text regression, keyboard/focus, 200%-equivalent CSS reflow; actual browser chrome zoom not claimed. Visual inspection tracked separately |
+| DOC-01 | Manual/document | FR-24; AC-32 | Cross-check FR/BR/AC/API/UI/tests, all intended paths and 10 Issue dependencies; no fabricated results | docs/lab-03/quality-audit.md | Pre-release document checks passed on 2026-09-14: PR #51 and nine reciprocal reviews recorded; AI-use revised; regenerated PDF has nine inspected pages and 19 links. Documentation PR review, explicit main gate and final release evidence remain pending |
+| REL-01 | Full suite/manual | FR-24; AC-32 | Final-main unit/API/integration/UI/E2E/build results, reviewed documents, explicit student main gate, reviewer merge and one ordered evidence PDF | docs/lab-03/workflow.md and actual test files above | Planned |
+
+## 3. AC-to-test index
+
+| AC | Planned evidence |
+| --- | --- |
+| AC-01 | MIG-01, MIG-02 |
+| AC-02 | MIG-03, MIG-04 |
+| AC-03 | UNIT-01, API-01, E2E-01 |
+| AC-04 | API-02, E2E-01 |
+| AC-05 | UNIT-01, API-03, UI-02, E2E-02 |
+| AC-06 | API-04, API-22, API-23, E2E-01 |
+| AC-07 | API-05, E2E-01 |
+| AC-08 | UNIT-05, API-06, UI-03, E2E-01, E2E-04 |
+| AC-09 | API-07, E2E-03 |
+| AC-10 | API-08, API-16, UI-04, E2E-03 |
+| AC-11 | UNIT-03, API-09, E2E-03 |
+| AC-12 | API-10, API-11, API-16, E2E-03 |
+| AC-13 | UNIT-03, API-12, UI-05, E2E-04 |
+| AC-14 | UNIT-04, API-13, UI-06, E2E-04 |
+| AC-15 | API-14, UI-06, E2E-04 |
+| AC-16 | UNIT-04, API-15, UI-06, E2E-04 |
+| AC-17 | API-16, API-22 |
+| AC-18 | API-17, UI-07, E2E-04 |
+| AC-19 | UNIT-05, API-18, UI-07, E2E-04 |
+| AC-20 | UNIT-04, API-19, UI-07, E2E-04 |
+| AC-21 | UNIT-02, API-20, UI-08, E2E-05 |
+| AC-22 | UNIT-01, UNIT-02, API-21, UI-08, E2E-05 |
+| AC-23 | API-22, UI-08, E2E-05 |
+| AC-24 | MIG-03, API-23, UI-08, E2E-02, E2E-05 |
+| AC-25 | API-16, API-24, UI-08, E2E-05 |
+| AC-26 | UI-01, UI-02, UI-03, E2E-01, E2E-02 |
+| AC-27 | UI-04, E2E-03 |
+| AC-28 | UI-05, UI-06, UI-07, E2E-04 |
+| AC-29 | UI-08, E2E-05 |
+| AC-30 | STYLE-01, RWD-01, visual checklist |
+| AC-31 | API-11, API-25 and failure cases in UI-01..08 |
+| AC-32 | DOC-01, REL-01, complete suite and workflow evidence |
+
+## 4. TDD and regression evidence by Issue
+
+The dated increment records below preserve what had been implemented at that
+stage. References there to later Issues are historical; section 2 and the latest
+#41 execution record describe current coverage.
+
+| Issue | Main planned coverage |
+| --- | --- |
+| #32 Contract | DOC-01 document checks passed; student confirmed, peer approved contract and merged PR #42; Done |
+| #33 Data migration | MIG-01..04; actual legacy-schema upgrade and fixture safety |
+| #34 Auth/API | UNIT-01, UNIT-05, API-01..07, API-25; adapt earlier API auth expectations |
+| #35 Auth UI | UI-01..03, E2E-01..02 auth portions; remove selector UI/state |
+| #36 Requester | API-08..11, requester parts API-16, UI-04, E2E-03 |
+| #37 Queue | UNIT-03, API-12, UI-05 |
+| #38 Staff operations | UNIT-04, API-13..16, UI-06 |
+| #39 Communication | API-17..19, UI-07, E2E-04 |
+| #40 Admin | UNIT-02, API-20..24, admin parts API-16, UI-08, E2E-05 |
+| #41 Final evidence | Full suite, STYLE-01/RWD-01 final audit, REL-01 and final-main rerun |
+
+Old Lab 1/2 tests remain regression evidence where behavior is unchanged.
+Selector-based tests must be replaced/adapted to real auth rather than skipped;
+new ACs supersede old NEW-only/UNASSIGNED-only expectations. Keep validation,
+numbering, list and file-lifecycle coverage. Record any change to old test intent.
+
+## 5. Commands and result recording
+
+Current commands (run from the repository root):
+
+- `npm run test --workspace server -- --maxWorkers=1`: all server unit/API/migration/integration tests, with `TEST_DATABASE_URL` set to the allowlisted local test database. There is no `test:integration` script.
+- `npm run test --workspace client -- --maxWorkers=1`: client component tests.
+- `npm run build` and `npm run prisma:validate`: builds and schema validation.
+- `npm run test:e2e:lab3`: real Lab 3 browser flows using the isolated E2E setup.
+- `npm run test:e2e`: default Playwright suite, which excludes the real Lab 3 setup.
+- `npm run test:visual`: Lab 2 visual suite only; Lab 3 responsive coverage is included in `test:e2e:lab3`.
+- `npm run lab3:provision --workspace server`: credential provisioning exists but is an explicit setup action, not a test command or part of this audit run.
+
+#41 must document the final exact working commands, Node/npm/PostgreSQL versions,
+environment selection, commit SHA, file/test counts, failures and final status.
+Do not run unimplemented scripts or relabel a build as an authorization test.
+Baseline requirements for all checks pass on main after reviewer release merge.
+Capture pre-release staging evidence first and append final-main observations
+after merge as specified in workflow.md.
+
+## 6. Current results
+
+Historical Issue #33 checks, verified 2026-09-11 on feature/33-lab3-user-migration, based on reviewer merge
+f16f27b. Results cover the implementation submitted in the Issue #33 PR.
+
+| Command / check | Observed result |
+| --- | --- |
+| Initial migration test run before implementation | Required positive upgrade checks failed because the migration SQL did not yet exist |
+| npm test, with isolated TEST_DATABASE_URL | Client 32/32 passed; first server run 67/67 passed |
+| npm test --workspace server, after adding legacy-seed preservation and drift checks | Server 68/68 passed in 12 files, 25.00 s; no skipped tests |
+| npm run build | Client and server passed |
+| npm run prisma:validate | Prisma 5.22.0 schema valid |
+| TypeScript --noEmit --strict on lab3-seed.ts and lab3-provision.ts | Passed, including imported credential helpers |
+| Prisma migrate diff against the upgraded fixture and schema.prisma | Exit 0: no schema drift |
+| Migration/seed real-DB tests | 4 migration + 5 seed/provisioning tests passed in the full server run |
+| Password helper tests | 10 validation/hash/verify cases passed; full auth password-change behavior is not yet implemented |
+
+The actual Lab 2 migration files are applied to random owned schemas in the
+allowlisted local toktickit_lab3_test database before upgrading. Cases verify
+retained IDs, Ticket/reference fields, Attachment audit/bytes, sequence repair,
+email-preflight rollback, fresh data across all roles/statuses/priorities,
+repeat seed after edits, null-only provisioning, disabled/production refusal,
+and migrated demo identity/reference preservation. Negative migration assertions
+require the specific preflight diagnostic, not any arbitrary exception.
+The existing Lab 1 category API test now also uses the isolated DB.
+
+No migration, seed, reset or provisioning was applied to the student's working
+database. At that increment, authentication, staff/Admin UI and Lab 3 E2E/screenshots
+were not implemented; authentication is now covered below. Full final-main
+verification and the student documentation gate remain pending.
+
+- Student contract confirmation: 2026-09-10.
+- Contract approval: Atip-Infa approved a0a53e6; the peer merged final head
+  b6933ce as PR #42 on 2026-09-11. See reviewer.md for actual review/reply links.
+- Issue #33: Atip-Infa approved 8321ca8 and merged PR #43 as a5e23e1; author replies complete, Issue closed and Project items Done.
+
+### Issue #34 authentication and authorization results
+
+Verified 2026-09-11 on feature/34-lab3-auth-api, based on a5e23e1.
+Implementation commit: 29b0a8c, submitted through PR #44. Later PR-link
+documentation updates do not change the tested runtime or test files.
+
+| Command / check | Observed result |
+| --- | --- |
+| Initial server run with Docker off | DB fixture connection failures; not an application pass. Started Docker and reran. |
+| npm test --workspace server -- --maxWorkers=1, with isolated TEST_DATABASE_URL | 100/100 passed in 14 files, 82.80 s; no skipped tests |
+| npm test --workspace client | 32/32 passed in 6 files |
+| npm run build | Client and server passed |
+| npm run prisma:validate | Schema valid |
+| New auth.api.test.ts | 23 cases: persisted session/token rotation, safe credentials/errors, forced/voluntary replacement, expiry, revocation, concurrent replacement, CSRF/cookies/CORS and rate limits |
+| New authorization.api.test.ts | 10 cases: unauthenticated/role denial, owned/nonowned DB reads, forbidden Admin writes, forged query/JSON/multipart, concurrent idempotent create, revocation/upload compensation |
+
+The prior 68 server cases become 67 after replacing the retired public selector
+success test with a safe-404 test and removing its obsolete database-failure
+case. The 33 new cases bring the total to 100; earlier domain tests now pass
+through real auth middleware with mocked session persistence where appropriate.
+Real PostgreSQL fixtures separately prove persisted security decisions. No
+mock test is represented as proof of actual browser/file storage behavior.
+
+Auth API coverage combines the originally planned auth and csrf suites in one
+file to reuse an isolated database fixture. The pure helper boundary tests remain
+in password.unit.test.ts. Session revocation helpers are tested with locked
+account edits; Admin reset/email/role/deactivation endpoints themselves are #40.
+The new auth handlers are build-checked. No dependencies or schema changes were
+needed. Run with one worker to keep the approved scrypt cost and DB fixtures
+within the local machine's memory budget.
+
+No working database migration/reset/provisioning was performed. Browser auth
+is #35, full requester conformance is #36, and Staff/Admin/communication work
+remains later Issues. Lab 3 E2E, UI screenshots, final-main checks and the
+student's completed-document release confirmation remain pending.
+
+### Issue #35 browser authentication UI results
+
+Verified 2026-09-11 on `feature/35-lab3-auth-ui`, based on the peer-merged
+Issue #34 integration commit `968c19b`. The client now uses cookie-backed
+sessions and an in-memory CSRF token; no requester ID or credential is read from
+browser storage or sent to requester APIs. Login, mandatory/voluntary password
+change, role shell, deep-link denial, expiry and retryable logout states are
+covered. The legacy requester selector/context/test was removed and Lab 2
+requester UI tests were adapted to authenticated ownership.
+
+| Command / check | Observed result |
+| --- | --- |
+| `npm test --workspace client -- --maxWorkers=1` | 48/48 passed in 7 files, 20.74 s; no skipped tests |
+| `npm test --workspace server -- --maxWorkers=1` with isolated `TEST_DATABASE_URL` | 100/100 passed in 14 files, 70.13 s; no skipped tests |
+| `npm run build --workspace client` | TypeScript and Vite production build passed |
+| `npm run build --workspace server` | TypeScript build passed |
+| `npm run prisma:validate` | Schema valid |
+| GitHub metadata | Issue #35 assigned to BOOky-OS; enhancement/documentation labels, Lab 3 milestone, verified Development link to PR #45 and PR Review Project status present |
+
+`AuthFlow.test.tsx` covers labelled loading/Login, validation, paste/show,
+keyboard-only submission, duplicate prevention, uniform/rate/network errors,
+first-password change and no bypass, mandatory logout, three role menus,
+wrong-role direct access, logout failure/retry, expiry and reload retry.
+`AuthApi.test.tsx` covers credentialed fetch, CSRF rotation, no browser storage,
+no requesterId transport and correct protected-401/password-required events.
+Existing Create/List/Detail UI regression remains passing after session ownership
+replaced the selector plumbing.
+
+Real role-login E2E and screenshots are not claimed by this Issue result. They
+remain Planned under E2E-01/E2E-02/RWD-01 for the isolated E2E environment and
+final evidence audit. No working database migration/reset/provisioning occurred;
+the server regression used only allowlisted `toktickit_lab3_test`.
+### Issue #36 authenticated Requester workflow results
+
+Verified 2026-09-11 on `feature/36-lab3-requester-regression`, based on the
+peer-merged Issue #35 integration commit `a97f020`. Runtime and regression
+implementation commit: `ff4b2e9`.
+
+| Command / check | Observed result |
+| --- | --- |
+| Initial focused Lab 3 API run before implementation | 3/14 passed and 11 expected failures exposed all-status list, metadata, wildcard/reference validation, exact-size upload, version/audit and safe-header gaps |
+| `npm test --workspace server -- --maxWorkers=1` with isolated `TEST_DATABASE_URL` | 114/114 passed in 16 files, 92.13 s; no skipped tests |
+| Focused real-DB Requester and Attachment regression | 14/14 passed in 2 files |
+| `npm test --workspace client -- --run` | 54/54 passed in 8 files, 10.58 s; no skipped tests |
+| `npm run build` | Client TypeScript/Vite and server TypeScript builds passed |
+| `npm run prisma:validate` | Prisma 5.22.0 schema valid |
+| Diff hygiene | `git diff --check` passed; no obsolete Requester selector/transport was reintroduced |
+| GitHub metadata | PR #46 targets `lab3-staging`; Issue/PR are linked in Development, assigned/labeled/milestoned and both Project items are in PR Review; Atip-Infa requested after the final evidence push |
+
+The Requester UI retains one UUID for an unchanged uncertain submission and
+creates a new UUID after submitted fields change. My Tickets supports all eight
+statuses and opens URL-backed Detail pages. A Ticket remains saved when one or
+more uploads fail, and each retained browser `File` can be retried from Detail.
+
+The API derives Requester identity from the authenticated session. Real PostgreSQL
+tests prove one Ticket for concurrent matching creates, a row-locked five-active-
+Attachment cap, Ticket version increments, retained removal actor/reason/time,
+literal wildcard searches, active reference filters, cross-user denial and safe
+download headers. No storage key or internal note is serialized.
+
+Authenticated browser E2E and screenshot evidence is not claimed by this
+increment. `E2E-03` and responsive visual evidence remain Planned for the
+isolated final browser harness; API/DB and component coverage above are actual
+Issue #36 evidence. No working database migration, reset, seed or provisioning
+was performed.
+
+## Issue #37 Queue results — 2026-09-12
+
+Branch: `feature/37-lab3-staff-queue`, based on peer-merged `24b4dd5` (#36).
+Runtime/test implementation commit: `453746e`, submitted through PR #47.
+
+| Command / evidence | Observed result |
+| --- | --- |
+| Initial focused DB attempt with Docker off | Fixture connection failed; not an application pass or test-first behavioral failure |
+| `npm test --workspace server -- --maxWorkers=1` with isolated `TEST_DATABASE_URL` | 125/125 passed in 18 files; 131.90 s; no skips |
+| `npm test --workspace client -- --maxWorkers=1` | 60/60 passed in 9 files; 48.94 s; no skips |
+| `npm run build` | Client TypeScript/Vite and server TypeScript passed after fixing an unsupported test-query option |
+| `npm run prisma:validate` | Schema valid |
+| `npx playwright test --config playwright.queue.config.ts` | 3/3 passed; 9.2 s; Chrome desktop/tablet/mobile with mocked API fixtures |
+| `git diff --check` | Passed |
+
+New coverage: four Queue query unit cases, seven real-DB Queue API cases and
+six Queue/read-only Detail component cases. Priority ordering and ties use real
+PostgreSQL enum ordering. Row/count consistency is implemented via RepeatableRead;
+this increment does not claim a forced concurrent-change snapshot test.
+Browser tests assert table/cards, no page overflow, filter failure/no-results,
+Detail URL/reload/back and hidden upload controls. Screenshot captures are local
+ignored artifacts, not completed manual visual inspection or real login E2E.
+See [Queue implementation and reproduction](staff-queue.md) for paths and scope.
+No working database reset, migration, seed or provisioning occurred.
+Independent peer review, full authenticated E2E and final-main checks remain pending.
+## Issue #38 Staff operations results — 2026-09-12
+
+Branch: `feature/38-lab3-staff-operations`, based on peer-merged `ed33913` (#37).
+Implementation commit: `68538b8`; submitted through PR #48.
+
+| Command / evidence | Observed result |
+| --- | --- |
+| Full server regression, isolated TEST_DATABASE_URL, `--maxWorkers=1` | 198/198 passed in 20 files; 131.74 s; no skips |
+| Full client regression, `--maxWorkers=1` | 67/67 passed in 10 files; 38.68 s; no skips |
+| Final focused backend workflow/API regression | 73/73 passed in 2 files after strict IT Priority type validation; 22.31 s |
+| Final focused client StaffTicketDetail regression | 7/7 passed after the dialog-error handling adjustment |
+| `npm run build` | Client TypeScript/Vite and server TypeScript passed after final code adjustments |
+| `npm run prisma:validate` | Schema valid |
+| `npx playwright test --config playwright.operations.config.ts` | 3/3 passed after final adjustment; 18.9 s; Chrome desktop/tablet/mobile with mocked APIs |
+| `git diff --check` | Passed |
+
+The full regressions preceded two final boundary adjustments: explicitly reject
+array-valued IT Priority and dismiss confirmation on API error so the retained
+draft and safe error are accessible. Focused backend/UI checks and browser checks
+were rerun on those final files. The recorded full-run counts are not represented
+as a second full run after those adjustments.
+
+New suites contain 65 unit cases (64 status pairs plus exact-body/reason checks),
+eight PostgreSQL API cases and seven component cases. API cases exercise all 64
+pairs, concurrent claims, stale/no-op handling, invalid owners, terminal rules,
+public-history visibility, timestamps/reopening and rollback on forced history
+insertion failure. Admin account-edit races remain #40; resolution indication
+and comments/notes remain #39.
+
+See [Staff operations](staff-operations.md) for reproduction and screenshot paths.
+Browser APIs are mocked; real authenticated E2E and manual visual inspection
+remain pending. No working database reset/migration/seed/provisioning occurred.
+Peer review, reviewer merge and final-main documentation confirmation are pending.
+
+## Issue #39 communication results — 2026-09-12
+
+Branch: `feature/39-lab3-comments-notes`, based on peer-merged `790a99c` (#38).
+Implementation commit: `4a7266e`; submitted through PR #49.
+
+| Command / evidence | Observed result |
+| --- | --- |
+| Focused real PostgreSQL comments/notes and resolution-indication suites | 9/9 passed in 2 files; 13.10 s |
+| Initial full client regression | 71 passed, 3 old Attachment tests failed because their new Comments API fixture was missing |
+| Full server regression with isolated TEST_DATABASE_URL and `--maxWorkers=1` | 207/207 passed in 22 files; 104.03 s; no skips |
+| Full client regression with `--maxWorkers=1`, after adding the empty Comments fixture | 74/74 passed in 11 files; 37.13 s; no skips |
+| `npm run build` | Client TypeScript/Vite and server TypeScript passed |
+| `npm run prisma:validate` | Schema valid |
+| `npx playwright test --config playwright.communication.config.ts` | 3/3 passed; 11.3 s; Chrome desktop/tablet/mobile, mocked APIs |
+| `git diff --check` | Passed |
+
+Nine new API cases cover public/internal role and ownership boundaries, forged
+fields, trim/content limits, append-only/terminal rules, concurrent appends,
+rollback on failed Ticket update and indication state/no-op/stale/concurrency.
+Seven component cases cover private-stream omission, independent drafts, literal
+rendering, read-only/terminal controls, failure/reload and indication confirmation.
+Chrome runs all three roles at each viewport and verifies no Requester Notes
+requests, retained drafts, Escape/focus, and unchanged formal status after indication.
+
+Browser fixtures are mocked and screenshots are captures, not manual inspection.
+See [communication.md](communication.md) for reproduction and artifact paths.
+Real authenticated E2E, final visual audit and final-main verification remain
+pending. No working database migration/reset/seed/provisioning occurred.
+Independent peer review and the completed-document/main gate remain pending.
+
+## Issue #40 Administrator results — 2026-09-12
+
+Branch: `feature/40-lab3-user-management`, based on peer-merged `711f20f` (#39).
+Implementation commit: `8e50218`; submitted through PR #50.
+
+| Command / evidence | Observed result |
+| --- | --- |
+| Initial focused user validation/API suites | 12/12 passed before adding the claim/deactivation race |
+| Full server regression with isolated TEST_DATABASE_URL and `--maxWorkers=1` | 220/220 passed in 24 files; 117.98 s; no skips |
+| Full client regression with `--maxWorkers=1` | 81/81 passed in 12 files; 43.84 s; no skips |
+| `npm run build` | Client TypeScript/Vite and server TypeScript passed |
+| `npm run prisma:validate` | Schema valid |
+| `npx playwright test --config playwright.users.config.ts` | 3/3 passed; 9.9 s; Chrome desktop/tablet/mobile, mocked APIs |
+| `git diff --check` | Passed |
+
+New suites: three validation/query unit cases, ten real PostgreSQL API cases and
+seven component cases. API cases cover real password hashing/reset, normalized
+concurrent duplicates, typed queries, role denial, self/last-Admin guards,
+concurrent demotions, active/terminal ownership, sessions and claim/deactivation
+races. The revocation case verifies a revoked actor cannot mutate; it does not
+claim instrumentation proving exactly when middleware completed relative to the
+advisory lock. Existing authentication/migration suites retain forced-change and
+seed-preservation coverage; real role-login/reset browser E2E remains final audit.
+
+Chrome verifies create/edit/reset, conflict reload, retained non-password drafts,
+password clearing, Escape/focus and page overflow. Fixtures are mocked; screenshot
+capture is not manual visual inspection. See [User Management](user-management.md)
+for reproduction and artifacts. No working DB migration/reset/seed/provisioning
+occurred. Peer approval/reviewer merge and completed-document/main gate are pending.
+
+## 7. Visual checklist and deferred scope
+
+Complete the ui-spec.md checklist with screenshot paths, observed results and
+reviewer notes during implementation/#41. No required Lab 3 test is deliberately
+deferred; Planned means evidence has not yet been completed, including release
+checks that require the future main merge. Excluded
+Actions Taken, email delivery and production infrastructure are not counted as
+missing Lab 3 coverage. Concurrency/session/migration tests are required.
+
+## Issue #41 current audit execution
+
+The original 220 server tests passed in 24 files after resuming the interrupted
+session (125.29 s). The additional authorization contract suite passed separately:
+14/14 in 944 ms. These are separate observed executions, not an invented combined
+234-test run. The expanded real Chrome suite passed 14/14 in 1.3 minutes.
+
+The real upload recovery case aborts the first upload request as intentional
+network fault injection, then retries against the actual saved Ticket. No API
+success response is mocked. Actual file bytes, permissions and removal are checked.
+The E2E setup uses migrations, real sessions and a fresh schema/file directory.
+
+Reproduce with an explicitly isolated local TEST_DATABASE_URL:
+
+```powershell
+npm run test:e2e:lab3
+npm run test --workspace server -- --maxWorkers=1
+npm run test --workspace client -- --maxWorkers=1
+npm run build
+npm run prisma:validate
+```
+
+Final audit revision, remaining visual checks and report limits are maintained in
+[quality-audit.md](quality-audit.md). Final-main checks remain pending the student
+documentation gate and the reviewer's actual release merge.
+## Issue #41 traceability correction - 2026-09-13
+
+Scope: API-04, API-06, API-07, API-25 and stale #36/#40 references in the current table.
+Executed on `feature/41-lab3-quality-release`, base commit `b32dd4b` plus the
+uncommitted audit tests/documentation changes. These are pre-release results,
+not final-main results. The application implementation was unchanged in this correction.
+
+| Row | Concrete evidence checked |
+| --- | --- |
+| API-04 | `auth.api.test.ts`: voluntary change/logout, exact expiry, activation/role re-read, transaction revocation and safe session-store errors. `users-admin.api.test.ts`: `checks versions before no-ops and revokes sessions only for security-sensitive edits`, `resets an initial password, requires replacement, and revokes target sessions`, and `revalidates an actor revoked while a domain mutation waits on the security lock`. Browser reset/login evidence is recorded separately under E2E-05. |
+| API-06 | Added `authorization-matrix.api.test.ts`: 26 registered domain method/path combinations plus 13 implicit HEAD routes, each checked as anonymous, forced-change Admin, Requester, IT Staff and Admin (195 cases). Sessions come from real CSRF/login HTTP calls and persisted users. Denials check status/error code; allowed roles reach the expected read, validation or missing-resource handler. Successful domain mutations remain covered by API-08..24; auth-only endpoints by `auth.api.test.ts`. This is not 195 successful workflow mutations. |
+| API-07 | `authorization.api.test.ts`: session-scoped list/detail/files; identical missing/nonowned responses; forged requesterId in query/JSON/multipart; unsupported author/role fields. `requester-regression.api.test.ts`: authenticated creation/replay, own list/Detail and forged identity rejection. `auth.api.test.ts` and `errors.api.test.ts`: retired selector route returns JSON 404. |
+| API-25 | Added `errors.api.test.ts`: malformed/oversized JSON, unsupported content type, four invalid-query forms, unknown/retired routes, unexpected multipart field, unsupported upload bytes, injected session/reference-query/Ticket-query failures, and storage read/write failures (16 cases). Each checks the JSON envelope, no-store and absence of sensitive canary data. Existing auth tests cover failed logout; attachment suites cover upload limits and metadata/storage compensation. |
+
+| Command / check | Actual result |
+| --- | --- |
+| `npm test --workspace server -- --maxWorkers=1` | **445/445 passed in 27 files**, 134.25 s; no failed or skipped tests. Includes both new suites and existing #34/#36/#40 regression tests. |
+| `npm run build --workspace server` | Passed |
+| Traceability evidence paths | All table file references resolve, including shortened sibling paths |
+| `git diff --check` | Passed |
+
+Environment: existing allowlisted local `toktickit_lab3_test` database with
+fixture-owned random schemas and actual migrations; working database untouched.
+The matrix uses real HTTP login. Error tests deliberately inject database/storage
+failures; they do not claim a real service outage. Initial runs exposed mistakes
+in the new tests (fixture email normalization, status HTTP method and expected
+error-code names); these were corrected against the contracts before the full pass.
+
+Historical increment notes retain their original timing. Current rows no longer
+say that Requester/Admin coverage is waiting for #36/#40. Release/main checks
+remain pending. The PDF was subsequently regenerated with this correction on 2026-09-13; see quality-audit.md.

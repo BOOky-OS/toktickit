@@ -1,5 +1,77 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
+export type UserRole = "REQUESTER" | "IT_STAFF" | "ADMIN";
+export interface CurrentUser {
+  id: number;
+  displayName: string;
+  email: string;
+  role: UserRole;
+  mustChangePassword: boolean;
+}
+type ErrorBody = { error?: string; code?: string; fieldErrors?: Record<string, string> };
+let csrfToken = "";
+
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number,
+    public readonly code = "",
+    public readonly fieldErrors: Record<string, string> = {},
+    public readonly retryAfter?: number,
+  ) { super(message); }
+}
+async function responseError(response: Response, fallback: string): Promise<ApiError> {
+  const body = await response.json().catch(() => ({})) as ErrorBody;
+  return new ApiError(body.error ?? fallback, response.status, body.code, body.fieldErrors,
+    response.status === 429 ? Number(response.headers.get("Retry-After") ?? 0) : undefined);
+}
+async function apiFetch(path: string, init: RequestInit = {}): Promise<Response> {
+  const headers = new Headers(init.headers);
+  if (init.method && !["GET", "HEAD"].includes(init.method)) headers.set("X-CSRF-Token", csrfToken);
+  const response = await fetch(`${API_URL}${path}`, { ...init, headers, credentials: "include" });
+  if (response.status === 401 && path !== "/api/auth/login" && path !== "/api/auth/me") window.dispatchEvent(new Event("toktickit:session-expired"));
+  if (response.status === 403) {
+    const body = await response.clone().json().catch(() => ({})) as ErrorBody;
+    if (body.code === "PASSWORD_CHANGE_REQUIRED") window.dispatchEvent(new Event("toktickit:password-change-required"));
+  }
+  return response;
+}
+export function clearAuthTransport() { csrfToken = ""; }
+export async function getCsrf(): Promise<string> {
+  const response = await apiFetch("/api/auth/csrf");
+  if (!response.ok) throw await responseError(response, "Unable to prepare sign in.");
+  csrfToken = ((await response.json()) as { csrfToken: string }).csrfToken;
+  return csrfToken;
+}
+export async function getCurrentUser(): Promise<CurrentUser> {
+  const response = await apiFetch("/api/auth/me");
+  if (!response.ok) throw await responseError(response, "Unable to restore your session.");
+  return ((await response.json()) as { user: CurrentUser }).user;
+}
+export async function login(email: string, password: string): Promise<CurrentUser> {
+  await getCsrf();
+  const response = await apiFetch("/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }) });
+  if (!response.ok) throw await responseError(response, "Unable to sign in.");
+  const body = await response.json() as { user: CurrentUser; csrfToken: string };
+  csrfToken = body.csrfToken;
+  return body.user;
+}
+export async function changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Promise<CurrentUser> {
+  const response = await apiFetch("/api/auth/password", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ currentPassword, newPassword, confirmPassword }) });
+  if (!response.ok) throw await responseError(response, "Unable to change password.");
+  const body = await response.json() as { user: CurrentUser; csrfToken: string };
+  csrfToken = body.csrfToken;
+  return body.user;
+}
+export async function logout(): Promise<void> {
+  const response = await apiFetch("/api/auth/logout", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+  if (!response.ok) throw await responseError(response, "Unable to sign out.");
+  clearAuthTransport();
+}
+
+
 export interface Category {
   id: number;
   name: string;
@@ -11,9 +83,19 @@ export interface RelatedSystem {
 }
 
 export type RequestedPriority = "LOW" | "MEDIUM" | "HIGH";
+export type ItPriority = "LOW" | "MEDIUM" | "HIGH" | "UNASSIGNED";
+export type TicketStatus =
+  | "NEW"
+  | "OPEN"
+  | "IN_PROGRESS"
+  | "WAITING_FOR_REQUESTER"
+  | "RESOLVED"
+  | "CLOSED"
+  | "REOPENED"
+  | "CANCELLED";
+export type TicketOwner = { id: number; displayName: string; role: UserRole } | null;
 
 export interface CreateTicketInput {
-  requesterId: number;
   categoryId: number;
   relatedSystemId: number;
   summary: string;
@@ -30,15 +112,24 @@ export interface CreatedTicket {
   relatedSystem: RelatedSystem;
   summary: string;
   requestedPriority: RequestedPriority;
-  itPriority: string;
-  currentStatus: string;
+  itPriority: ItPriority;
+  currentStatus: TicketStatus;
   description: string;
+  owner: TicketOwner;
+  version: number;
+  updatedAt: string;
+  requesterResolutionIndicatedAt: string | null;
+  resolvedAt: string | null;
+  closedAt: string | null;
+  cancelledAt: string | null;
+  resolutionSummary: string | null;
+  cancellationReason: string | null;
   attachments: [];
 }
 
 export interface Attachment {
   id: number; originalFilename: string; mimeType: string; sizeBytes: number; uploadedAt: string;
-  state: "ACTIVE" | "REMOVED"; canDownload: boolean; removedAt?: string; removalReason?: string;
+  state: "ACTIVE" | "REMOVED"; canDownload: boolean; removedAt?: string; removalReason?: string; removedBy?: { id: number; displayName: string } | null;
 }
 export interface TicketDetail extends Omit<CreatedTicket, "attachments"> { attachments: Attachment[]; }
 
@@ -48,22 +139,8 @@ export class TicketApiError extends Error {
   }
 }
 
-export interface DevelopmentRequester {
-  id: number;
-  displayName: string;
-  email: string;
-}
-
-export async function getDevelopmentRequesters(): Promise<DevelopmentRequester[]> {
-  const response = await fetch(`${API_URL}/api/development-requesters`);
-  if (!response.ok) {
-    throw new Error(`Requester request failed with status ${response.status}`);
-  }
-  return (await response.json()) as DevelopmentRequester[];
-}
-
 async function getReferenceData<T>(path: string, safeName: string): Promise<T[]> {
-  const response = await fetch(`${API_URL}${path}`);
+  const response = await apiFetch(path);
   if (!response.ok) throw new Error(`Unable to load ${safeName}`);
   return (await response.json()) as T[];
 }
@@ -72,7 +149,7 @@ export function getCategories(): Promise<Category[]> { return getReferenceData<C
 export function getRelatedSystems(): Promise<RelatedSystem[]> { return getReferenceData<RelatedSystem>("/api/related-systems", "related systems"); }
 
 export async function createTicket(input: CreateTicketInput, idempotencyKey: string): Promise<CreatedTicket> {
-  const response = await fetch(`${API_URL}/api/tickets`, { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey }, body: JSON.stringify(input) });
+  const response = await apiFetch("/api/tickets", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": idempotencyKey }, body: JSON.stringify(input) });
   const body = await response.json().catch(() => ({})) as { error?: string; fieldErrors?: Record<string, string> };
   if (!response.ok) throw new TicketApiError(body.error ?? "Unable to create ticket", response.status, body.fieldErrors);
   return body as CreatedTicket;
@@ -81,47 +158,47 @@ export async function createTicket(input: CreateTicketInput, idempotencyKey: str
 export type TicketSortBy = "updatedAt" | "ticketDate" | "ticketNumber" | "summary";
 export interface TicketListOptions {
   search?: string; categoryId?: number; relatedSystemId?: number; requestedPriority?: RequestedPriority;
-  currentStatus?: "NEW"; sortBy?: TicketSortBy; sortDir?: "asc" | "desc"; page?: number; pageSize?: 10 | 25 | 50;
+  currentStatus?: TicketStatus; sortBy?: TicketSortBy; sortDir?: "asc" | "desc"; page?: number; pageSize?: 10 | 25 | 50;
 }
 export interface TicketListItem {
   id: number; ticketNumber: string; ticketDate: string; summary: string; category: Category; relatedSystem: RelatedSystem;
-  requestedPriority: RequestedPriority; itPriority: string; currentStatus: string; updatedAt: string;
+  requestedPriority: RequestedPriority; itPriority: ItPriority; currentStatus: TicketStatus; updatedAt: string; owner: TicketOwner; version: number;
 }
 export interface TicketListResponse {
   items: TicketListItem[]; page: number; pageSize: number; totalItems: number; totalPages: number; hasPreviousPage: boolean; hasNextPage: boolean;
 }
-export async function getTickets(requesterId: number, options: TicketListOptions = {}): Promise<TicketListResponse> {
-  const params = new URLSearchParams({ requesterId: String(requesterId) });
+export async function getTickets(options: TicketListOptions = {}): Promise<TicketListResponse> {
+  const params = new URLSearchParams();
   Object.entries(options).forEach(([key, value]) => { if (value !== undefined && value !== "") params.set(key, String(value)); });
-  const response = await fetch(`${API_URL}/api/tickets?${params.toString()}`);
+  const response = await apiFetch(`/api/tickets${params.size ? `?${params.toString()}` : ""}`);
   if (!response.ok) throw new Error("Unable to load tickets");
   return (await response.json()) as TicketListResponse;
 }
 
-export async function getTicket(ticketId: number, requesterId: number): Promise<TicketDetail> {
-  const response = await fetch(`${API_URL}/api/tickets/${ticketId}?requesterId=${requesterId}`);
+export async function getTicket(ticketId: number): Promise<TicketDetail> {
+  const response = await apiFetch(`/api/tickets/${ticketId}`);
   if (!response.ok) throw new TicketApiError("Ticket is unavailable", response.status);
   return (await response.json()) as TicketDetail;
 }
-export async function getAttachments(ticketId: number, requesterId: number): Promise<Attachment[]> {
-  const response = await fetch(`${API_URL}/api/tickets/${ticketId}/attachments?requesterId=${requesterId}`);
+export async function getAttachments(ticketId: number): Promise<Attachment[]> {
+  const response = await apiFetch(`/api/tickets/${ticketId}/attachments`);
   if (!response.ok) throw new TicketApiError("Attachments are unavailable", response.status);
   return (await response.json()) as Attachment[];
 }
-export async function uploadAttachment(ticketId: number, requesterId: number, file: File): Promise<Attachment> {
-  const form = new FormData(); form.append("requesterId", String(requesterId)); form.append("file", file);
-  const response = await fetch(`${API_URL}/api/tickets/${ticketId}/attachments`, { method: "POST", body: form });
+export async function uploadAttachment(ticketId: number, file: File): Promise<Attachment> {
+  const form = new FormData(); form.append("file", file);
+  const response = await apiFetch(`/api/tickets/${ticketId}/attachments`, { method: "POST", body: form });
   const body = await response.json().catch(() => ({})) as { error?: string };
   if (!response.ok) throw new TicketApiError(body.error ?? "Unable to upload attachment", response.status);
   return body as Attachment;
 }
-export async function removeAttachment(attachmentId: number, requesterId: number, reason: string): Promise<Attachment> {
-  const response = await fetch(`${API_URL}/api/attachments/${attachmentId}`, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requesterId, reason }) });
+export async function removeAttachment(attachmentId: number, reason: string): Promise<Attachment> {
+  const response = await apiFetch(`/api/attachments/${attachmentId}`, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reason }) });
   const body = await response.json().catch(() => ({})) as { error?: string };
   if (!response.ok) throw new TicketApiError(body.error ?? "Unable to remove attachment", response.status);
   return body as Attachment;
 }
-export function attachmentDownloadUrl(attachmentId: number, requesterId: number) { return `${API_URL}/api/attachments/${attachmentId}/download?requesterId=${requesterId}`; }
+export function attachmentDownloadUrl(attachmentId: number) { return `${API_URL}/api/attachments/${attachmentId}/download`; }
 
 export interface SystemStatus {
   online: boolean;
@@ -145,7 +222,7 @@ export async function checkSystem(): Promise<SystemStatus> {
     throw new Error("Health check returned an unexpected response");
   }
 
-  const categoryResponse = await fetch(`${API_URL}/api/categories`);
+  const categoryResponse = await apiFetch("/api/categories");
   if (!categoryResponse.ok) {
     throw new Error(`Category request failed with status ${categoryResponse.status}`);
   }
@@ -153,3 +230,83 @@ export async function checkSystem(): Promise<SystemStatus> {
   const categories = (await categoryResponse.json()) as Category[];
   return { online: true, categories };
 }
+
+export interface StaffQueueOptions extends Omit<TicketListOptions, "sortBy"> {
+  sortBy?: TicketSortBy | "itPriority";
+  itPriority?: RequestedPriority;
+  owner?: string;
+}
+export interface StaffQueueItem extends TicketListItem {
+  requester: { id: number; displayName: string };
+}
+export interface StaffQueueResponse extends Omit<TicketListResponse, "items"> {
+  items: StaffQueueItem[];
+}
+export async function getStaffQueue(options: StaffQueueOptions = {}): Promise<StaffQueueResponse> {
+  const params = new URLSearchParams();
+  Object.entries(options).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") params.set(key, String(value));
+  });
+  const response = await apiFetch("/api/staff/tickets?" + params.toString());
+  if (!response.ok) throw await responseError(response, "Unable to load ticket queue.");
+  return response.json() as Promise<StaffQueueResponse>;
+}
+export async function getAssignees(): Promise<Array<NonNullable<TicketOwner>>> {
+  const response = await apiFetch("/api/staff/assignees");
+  if (!response.ok) throw await responseError(response, "Unable to load owners.");
+  return response.json() as Promise<Array<NonNullable<TicketOwner>>>;
+}
+
+export interface StatusHistoryEntry {
+  id: number; fromStatus: string; toStatus: string; reason: string | null;
+  createdAt: string; author: NonNullable<TicketOwner>;
+}
+export async function getStatusHistory(id: number): Promise<StatusHistoryEntry[]> {
+  const response = await apiFetch(`/api/tickets/${id}/status-history`);
+  if (!response.ok) throw await responseError(response, "Unable to load status history.");
+  return response.json();
+}
+export async function mutateStaffTicket(id: number, operation: "claim" | "owner" | "priority" | "status", body: Record<string, unknown>): Promise<TicketDetail> {
+  const response = await apiFetch(`/api/staff/tickets/${id}/${operation}`, {
+    method: operation === "owner" || operation === "priority" ? "PATCH" : "POST",
+    headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  if (!response.ok) throw await responseError(response, "Unable to update Ticket.");
+  return response.json();
+}
+
+export interface CommunicationEntry { id: number; body: string; createdAt: string; author: NonNullable<TicketOwner>; }
+export async function getEntries(id: number, stream: "comments" | "notes"): Promise<CommunicationEntry[]> {
+  const response = await apiFetch(`/api/tickets/${id}/${stream}`);
+  if (!response.ok) throw await responseError(response, "Unable to load messages.");
+  return response.json();
+}
+export async function postEntry(id: number, stream: "comments" | "notes", body: string): Promise<CommunicationEntry> {
+  const response = await apiFetch(`/api/tickets/${id}/${stream}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ body }) });
+  if (!response.ok) throw await responseError(response, "Unable to post message.");
+  return response.json();
+}
+export async function indicateResolution(id: number, version: number): Promise<TicketDetail> {
+  const response = await apiFetch(`/api/tickets/${id}/resolution-indication`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ version, confirmed: true }) });
+  if (!response.ok) throw await responseError(response, "Unable to record indication.");
+  return response.json();
+}
+
+export interface AdminUser { id: number; displayName: string; email: string; role: UserRole; isActive: boolean; mustChangePassword: boolean; version: number; createdAt: string; updatedAt: string; }
+export interface UserFields { displayName: string; email: string; role: UserRole; isActive: boolean; }
+export async function getUsers(search?: string, role?: UserRole): Promise<{items: AdminUser[]; totalItems: number}> {
+  const query = new URLSearchParams(); if (search) query.set("search", search); if (role) query.set("role", role);
+  const response = await apiFetch(`/api/admin/users${query.size ? "?" + query : ""}`);
+  if (!response.ok) throw await responseError(response, "Unable to load users."); return response.json();
+}
+export async function getAdminUser(id: number): Promise<AdminUser> {
+  const response = await apiFetch(`/api/admin/users/${id}`);
+  if (!response.ok) throw await responseError(response, "Unable to load user."); return response.json();
+}
+async function writeUser(path: string, method: string, body: unknown): Promise<AdminUser> {
+  const response = await apiFetch(path, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!response.ok) throw await responseError(response, "Unable to save user."); return response.json();
+}
+export const createUser = (body: UserFields & {initialPassword: string}) => writeUser("/api/admin/users", "POST", body);
+export const editUser = (id: number, body: UserFields & {version: number}) => writeUser(`/api/admin/users/${id}`, "PATCH", body);
+export const resetInitialPassword = (id: number, version: number, initialPassword: string) => writeUser(`/api/admin/users/${id}/initial-password`, "POST", { version, initialPassword, confirmed: true });

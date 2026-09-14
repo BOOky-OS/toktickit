@@ -1,0 +1,31 @@
+import { test, expect } from "@playwright/test";
+import { signIn } from "./helpers";
+
+test("real queue combines filters, sorts, pages and recovers from no results", async ({ page }) => {
+  await signIn(page, "staff2");
+  await expect(page).toHaveURL(/\/staff\/tickets$/);
+  await page.getByLabel("Search", { exact: true }).fill("Queue audit");
+  await page.getByLabel("Status", { exact: true }).selectOption("OPEN");
+  await page.getByLabel("Owner", { exact: true }).selectOption("unassigned");
+  await page.getByLabel("IT Priority", { exact: true }).selectOption("LOW");
+  await page.getByLabel("Sort by", { exact: true }).selectOption("summary");
+  await page.getByLabel("Order", { exact: true }).selectOption("asc");
+  await page.getByLabel("Page size", { exact: true }).selectOption("10");
+  await page.getByRole("button", { name: "Apply filters" }).click();
+  await expect(page.getByText("Showing 1-10 of 12 Tickets", { exact: true })).toBeVisible();
+  const rows = page.getByRole("table").locator("tbody tr");
+  await expect(rows).toHaveCount(10);
+  await expect(rows.first()).toContainText("Queue audit 00");
+  await expect(rows.last()).toContainText("Queue audit 09");
+  await page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page.getByText("Showing 11-12 of 12 Tickets", { exact: true })).toBeVisible();
+  await expect(rows).toHaveCount(2);
+  await expect(rows.first()).toContainText("Queue audit 10");
+  await expect(page.getByRole("button", { name: "Next", exact: true })).toBeDisabled();
+  await page.getByLabel("Search", { exact: true }).fill("NoSuchQueueResult123");
+  await page.getByRole("button", { name: "Apply filters" }).click();
+  await expect(page.getByRole("heading", { name: "No matching Tickets" })).toBeVisible();
+  await page.getByRole("button", { name: "Clear search and filters" }).click();
+  await expect(page.getByRole("table")).toBeVisible();
+  await expect(page.getByLabel("Search", { exact: true })).toHaveValue("");
+});
