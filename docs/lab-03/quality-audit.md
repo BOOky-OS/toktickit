@@ -1,5 +1,37 @@
 # Lab 3 quality and release audit (#41)
 
+## Final-main verification - 2026-09-14
+
+Atip-Infa approved [release PR #54](https://github.com/BOOky-OS/toktickit/pull/54) at `e233f8e8a03fc759497f0a75ec12905a9b9e776c` and merged it on 2026-09-14 at 07:11:43 UTC.
+The assistant ran server, client, build, schema and real E2E checks on clean released main `f40134124261d2861d7f480adec34f074561fc94`. Mocked browser suites were repeated while preparing documentation to recover complete output; application and test code remained identical to that commit.
+
+| Command | Observed result |
+| --- | --- |
+| `npm test --workspace server -- --maxWorkers=1` | 445/445 passed; 27 files; 114.80 s |
+| `npm test --workspace client -- --maxWorkers=1` | 82/82 passed; 13 files; 54.97 s |
+| `npm run build` | Client and server builds passed |
+| `npm run prisma:validate` | Schema valid |
+| `npm run test:e2e:lab3` | 14/14 passed; 1.0 min; 36 full-page captures plus six report regions regenerated |
+| `npx playwright test --config playwright.queue.config.ts` | 3/3 passed; 8.3 s; mocked API |
+| `npx playwright test --config playwright.operations.config.ts` | 3/3 passed; 9.0 s; mocked API |
+| `npx playwright test --config playwright.communication.config.ts` | 3/3 passed; 10.4 s; mocked API |
+| `npx playwright test --config playwright.users.config.ts` | 3/3 passed; 8.8 s; mocked API |
+
+Environment: Windows, Node 24.19.0, npm 11.17.0, PostgreSQL 16.13, Vitest 4.1.10.
+Database tests used isolated `toktickit_lab3_test`; real E2E used its own schema, storage and ports 3006/5176. No working database reset or provisioning occurred.
+
+The default legacy `npm run test:e2e` was not run: its Lab 2 visual suite expects the retired Development Requester selector. Lab 3 authenticated Requester regression is covered by the real E2E command above. Historical dated results below remain evidence of their earlier commits, not additional executions on main.
+
+Final documentation is prepared on `docs/41-final-main-evidence`. PR #54 is Done. Issue #41 was reopened after automatic closure and remains Open / Started until this evidence is reviewed and integrated. No final all-Done board or actual coursework submission is claimed.
+
+## Final report verification - 2026-09-14
+
+Generated `output/pdf/Lab_03_Evidence_Supapanya_Yathip_67070503443_FINAL.pdf` from the latest evidence and regenerated real-browser screenshots. All nine pages were rendered and visually inspected: Answer Parts 1-9 remain ordered, text and tables fit, and report regions are readable. All 36 full-page captures were also inspected using six contact sheets. The older DRAFT PDF is historical.
+
+Remaining: student gate for this documentation update, peer integration, and final completed Project evidence. The release itself and application verification are complete. Do not claim final coursework submission or an all-Done board before they exist.
+
+## Historical audit checkpoints
+
 Current documentation branch: `docs/41-final-reflection-evidence`, based on peer-merged staging `75bd6d3`.
 Implementation audit history below was recorded on `feature/41-lab3-quality-release`.
 This is an in-progress audit, not release approval or final-main evidence.

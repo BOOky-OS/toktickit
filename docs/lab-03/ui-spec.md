@@ -213,6 +213,8 @@ text. Verify contrast for every chosen foreground/background pair.
 
 ## 9. Visual and E2E evidence
 
+Final-main verification, 2026-09-14: the real E2E suite passed 14/14 at `f401341`. All 36 regenerated full-page images were inspected in six contact sheets; report regions were also inspected in the rendered PDF. The 12 groups across desktop/tablet/mobile show consistent spacing, wrapping and role controls, with no overlapping controls observed. Automated overflow and keyboard assertions passed. This is assistant inspection; release peer approval is recorded in [reviewer.md](reviewer.md).
+
 Screenshots under artifacts/lab-03/screenshots/:
 authentication, requester-regression, staff-queue, staff-ticket-detail,
 user-management; each has desktop/tablet/mobile subdirectories.

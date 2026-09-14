@@ -4,7 +4,7 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 established
 the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
 responsive requester-owned Ticketing MVP.
 
-## Lab 3 staging complete; documentation review and release pending
+## Lab 3 released to main; final evidence review
 
 Lab 3 begins with the [engineering contract](docs/lab-03/specification.md),
 [API contract](docs/lab-03/api-spec.md), [UI specification](docs/lab-03/ui-spec.md)
@@ -17,9 +17,10 @@ Issue #39 adds [Ticket communication and resolution indication](docs/lab-03/comm
 Issue #40 adds [Administrator User Management](docs/lab-03/user-management.md).
 See [authentication setup](docs/lab-03/authentication.md). Issue #41 adds the
 [real-browser quality audit](docs/lab-03/quality-audit.md), responsive corrections
-and the submission draft. With the isolated local TEST_DATABASE_URL configured,
+and the release evidence report. With the isolated local TEST_DATABASE_URL configured,
 run `npm run test:e2e:lab3`; it starts dedicated services on ports 3006/5176 and
-uses an owned temporary schema and file directory. Final release remains pending.
+uses an owned temporary schema and file directory. Release PR #54 was peer-merged as `f401341`; final-main checks passed.
+See [recorded results](docs/lab-03/tests.md). Final documentation review remains in Issue #41.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
 #32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.

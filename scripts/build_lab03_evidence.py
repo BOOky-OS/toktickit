@@ -1,4 +1,4 @@
-"""Build the pre-release Lab 3 evidence draft; never imply final-main completion.
+"""Build the Lab 3 verified-main evidence report.
 
 Run after npm run test:e2e:lab3 has generated the real browser screenshots.
 Dependencies: reportlab, pillow. All source data is local, with explicit links.
@@ -15,7 +15,7 @@ from reportlab.lib.units import mm
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "output/pdf/Lab_03_Evidence_Supapanya_Yathip_67070503443_DRAFT.pdf"
+OUT = ROOT / "output/pdf/Lab_03_Evidence_Supapanya_Yathip_67070503443_FINAL.pdf"
 SHOTS = ROOT / "artifacts/lab-03/screenshots/real"
 REPO = "https://github.com/BOOky-OS/toktickit"
 GREEN = colors.HexColor("#006b3c")
@@ -43,7 +43,7 @@ def link(title, url):
 
 
 def document(name):
-    return link(name, f"{REPO}/blob/lab3-staging/docs/lab-03/{name}")
+    return link(name, f"{REPO}/blob/main/docs/lab-03/{name}")
 
 
 def table(headers, rows, widths):
@@ -80,28 +80,28 @@ def part(number, title):
 
 
 part(1, "Git workflow and peer review")
-add("TokTickIT - Lab 3 evidence draft", "Title")
+add("TokTickIT - Lab 3 release evidence", "Title")
 add("Supapanya Yathip | 67070503443<br/>Partner reviewer: Atip Infa-Udom | Atip-Infa")
-add("<b>PRE-RELEASE DRAFT - NOT READY FOR SUBMISSION.</b> Issue #41 is in progress. "
-    "The student approved the documentation gate on 2026-09-14, including the latest review record. "
-    "Peer integration of that record, main merge and final-main results remain outstanding.")
-add("Evidence updated: 2026-09-14. Staging: 4fc4859; latest review record awaits peer integration.", "SmallNote")
+add("<b>MAIN RELEASE VERIFIED.</b> Atip-Infa merged PR #54 on 2026-09-14. "
+    "The implementation was tested at main commit f401341. Final documentation is prepared for peer review; Issue #41 remains open until that integration is complete.")
+add("Verified implementation: f40134124261d2861d7f480adec34f074561fc94.", "SmallNote")
 add(link("Repository", REPO) + " | " + link("Project board", "https://github.com/users/BOOky-OS/projects/2") +
     " | " + link("Final audit Issue #41", REPO + "/issues/41"))
 table(["Issue", "Increment", "PR to lab3-staging"], [
     [32, "Engineering contract", 42], [33, "Migration and seed", 43], [34, "Authentication API", 44],
     [35, "Authentication UI", 45], [36, "Requester regression", 46], [37, "Staff queue", 47],
     [38, "Staff operations", 48], [39, "Comments and notes", 49], [40, "User administration", 50],
-    [41, "Audit merged; release pending", 51],
+    [41, "Audit and main release verified", 51],
 ], [20, 99, 55])
 add("PRs #42-#51 were peer-merged into staging. Atip-Infa approved PR #51 at e0a9c75 and merged it as 75bd6d3.")
 add("PR #52 documentation was approved at 75d65ff and peer-merged as 4fc4859. " + link("PR #52 review and responses", REPO + "/pull/52") + ".")
+add("PR #53 was approved at b3242ba and merged as e233f8e. PR #54 was approved at e233f8e and merged to main as f401341. " + link("Release approval", REPO + "/pull/54#pullrequestreview-5194876098") + ".")
 add(link("PR #51 approval", REPO + "/pull/51#pullrequestreview-5191031280") + " | " +
     link("Author after approval", REPO + "/pull/51#issuecomment-5653949998") + " | " +
     link("Author after merge", REPO + "/pull/51#issuecomment-5653963007"))
 add("Nine reciprocal reviews of Atip-Infa PRs #37-#45, submitted and merged by zerotwobook, include both partner responses in " + document("reviewer.md") +
     ". Partner PR #41 has a recorded title/review versus Issue/branch mismatch. PR #42 in our repository approved an earlier head; its later merge is recorded separately.")
-add("GitHub document links refer to the integrated staging versions; the newer local edits summarized in this PDF await commit, push and peer integration.", "SmallNote")
+add("Document links target main. This final-main evidence update is prepared on docs/41-final-main-evidence and awaits documentation review and integration.", "SmallNote")
 
 part(2, "Specification-driven development")
 add("The engineering contract preceded feature implementation in Issue #32 / PR #42. "
@@ -121,15 +121,16 @@ part(3, "Test-driven development and verification")
 add("The plan was reviewed with the contract before implementation. Tests distinguish unit/component checks, "
     "real PostgreSQL API/concurrency checks, mocked browser checks and real-browser E2E.")
 table(["Observed execution", "Result and limits"], [
-    ["Server regression", "445/445 in 27 files, 134.25 s on 2026-09-13; no failures or skips. Includes the new matrix and safe-error suites."],
+    ["Server regression", "445/445 in 27 files, 114.80 s on 2026-09-14; no failures or skips. Includes the new matrix and safe-error suites."],
     ["Traceability correction", "API-06: 195 role/method checks using real HTTP login. API-25: 16 safe-error cases. API-04/07 now link completed Admin/Requester tests."],
-    ["Client regression", "82/82 in 13 files, 53.57 s; contrast case also passed after the test-import adjustment."],
-    ["Real browser suite", "14/14 passed in 1.4 min with queue, upload recovery, user safety and responsive additions."],
-    ["Build", "Server build passed again on 2026-09-13. Earlier client build and Prisma validation passed; no runtime changes in this follow-up."],
+    ["Client regression", "82/82 in 13 files, 54.97 s on verified main."],
+    ["Real browser suite", "14/14 passed in 1.0 min on verified main with queue, upload recovery, user safety and responsive additions."],
+    ["Build", "Client and server production builds passed; Prisma schema validation passed on verified main."],
     ["Long-text regression", "Initially failed all three roles. Detail grid wrapping corrected; responsive tests then passed."],
-    ["Final main", "Pending reviewer merge and checks on the actual final-main SHA. No main pass claimed."],
+    ["Mocked browser regressions", "Queue, operations, communication and users: 3/3 each across desktop, tablet and mobile. These complement real E2E."],
+    ["Final main", "Passed at f401341. Node 24.19.0; npm 11.17.0; PostgreSQL 16.13. Documentation integration is separate."],
 ], [49, 125])
-add("Latest server command: <b>npm test --workspace server -- --maxWorkers=1</b>; build: <b>npm run build --workspace server</b>. Earlier browser/client results are separate executions, not rerun counts.")
+add("Latest server command: <b>npm test --workspace server -- --maxWorkers=1</b>; build: <b>npm run build</b>. Client: <b>npm test --workspace client -- --maxWorkers=1</b>. All were rerun on released main.")
 add("Reproduce with TEST_DATABASE_URL set to the isolated local toktickit_lab3_test database and "
     "<b>npm run test:e2e:lab3</b>. Dedicated ports 3006/5176, owned random schema and temporary file storage "
     "prevent tests from reusing the working app. Existing database contents are not reset.")
@@ -138,7 +139,7 @@ add("The upload recovery case aborts the first HTTP upload as deliberate fault i
     "Retry, database persistence, download bytes and authorization use the real system. "
     "The expiry case changes only its owned session's persisted expiration.")
 add("Commands, file-level traceability and remaining limitations: " + document("tests.md") + " and " +
-    link("Current local audit branch", REPO + "/tree/docs/41-final-reflection-evidence") + ".")
+    link("Final evidence branch", REPO + "/tree/docs/41-final-main-evidence") + ".")
 
 part(4, "AI use and My Reflection")
 ai_use = (ROOT / "docs/lab-03/ai-use.md").read_text(encoding="utf-8")
@@ -201,16 +202,14 @@ shot("login-mobile.png", width=52, max_height=112)
 add("Long persisted Description text wraps inside the detail grid. Keyboard checks cover Login tab order, "
     "create-user initial password before Save, and Staff dialog Escape/focus restoration. "
     "Full screenshot inspection/checklist is recorded separately in " + document("ui-spec.md") + ".")
-add("<b>Before submission:</b> publish and peer-integrate the corrected documents and reciprocal-review evidence, resolve remaining "
-    "audit checklist items and review the staging PR. Student document approval was granted on 2026-09-14; then add "
-    "actual reviewer merge, final-main tests and completed board evidence. This draft must be regenerated afterward.")
+add("<b>Release evidence:</b> PR #54 peer approval and main merge are recorded; final-main automated checks passed on 2026-09-14. Final documentation review and board completion remain before submission. The older DRAFT PDF is historical; use this report for final documentation review.")
 
 
 def footer(canvas, doc):
     canvas.saveState()
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(GREEN)
-    canvas.drawString(18 * mm, 12 * mm, "TokTickIT | Lab 3 | PRE-RELEASE DRAFT")
+    canvas.drawString(18 * mm, 12 * mm, "TokTickIT | Lab 3 | VERIFIED MAIN")
     canvas.drawRightString(A4[0] - 18 * mm, 12 * mm, str(doc.page))
     canvas.restoreState()
 
@@ -219,6 +218,6 @@ if __name__ == "__main__":
     OUT.parent.mkdir(parents=True, exist_ok=True)
     SimpleDocTemplate(str(OUT), pagesize=A4, rightMargin=18 * mm, leftMargin=18 * mm,
                       topMargin=17 * mm, bottomMargin=20 * mm,
-                      title="Lab 3 evidence draft - Supapanya Yathip", author="Supapanya Yathip").build(
+                      title="Lab 3 release evidence - Supapanya Yathip", author="Supapanya Yathip").build(
         story, onFirstPage=footer, onLaterPages=footer)
     print(OUT)
