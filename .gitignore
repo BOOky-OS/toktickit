@@ -17,3 +17,6 @@ server/prisma/*.db
 # logs & OS
 *.log
 .DS_Store
+
+lab3-submission
+tmp
