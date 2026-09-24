@@ -41,7 +41,9 @@ TicketSummary = { id, ticketNumber, summary, currentStatus, itPriority,
   updatedAt, requester: {id,displayName}, owner: Person|null }
 ```
 
-Revision snapshots serialize safe action fields only, including the names/roles captured at that revision. No receipt request/response storage, seed keys or private notes are exposed. Summary fields do not replace the existing full TicketDetail response. Requester Dashboard need not include requester identity since every row is its own.
+Revision snapshots serialize safe action fields only, including the names/roles captured at that revision. No receipt request/response storage, seed keys or private notes are exposed. Summary fields do not replace the existing full TicketDetail response. Requester Dashboard uses the exact same TicketSummary shape, including its own requester identity.
+
+The form reuses GET /staff/assignees for active Staff/Admin options, ordered displayName ASC/id ASC. Historical assignees remain visible in Action responses; eligibility is rechecked on writes. Internal workCycle is not a public DTO or input field.
 
 ## 3. Actions Taken endpoints
 
@@ -78,7 +80,7 @@ POST status exact body: `{status,version,ticketVersion,confirmed:true,reason?}`.
 
 Every action mutation requires UUID `Idempotency-Key`. Canonicalization uses validated field values and fixed key ordering; normalized payload includes supplied versions. Receipt replay follows BR-18 and returns original HTTP status/body with `Idempotency-Replayed: true`. After replay the UI refetches current Ticket/actions, because the saved original response may be older than later edits. Expose the replay header to the configured allowed frontend origin. A new changed request gets a new key. After ambiguous transport failure retry the same body/key; never generate a second key automatically.
 
-Transaction order: acquire security advisory lock; revalidate current actor/session/role and authorized resource scope; resolve existing receipt; lock Ticket then action; check expected versions; check parent/action state, assignee, fields and transitions; write action/revision/parent version/receipt; commit. Any failure rolls back all writes. Reusing a key on another method/path is a conflict, not a replay. Failed validations do not reserve a successful receipt. Two identical simultaneous requests serialize to one effective write and one replay.
+Transaction order: acquire security advisory lock; revalidate current actor/session/role and authorized resource scope; resolve existing receipt; lock Ticket then action; check expected versions; check parent/action state, assignee, fields and transitions; write action/revision/parent version/receipt; commit. Any failure rolls back all writes. Reusing a key on another method/path is a conflict, not a replay. Failed validations do not reserve a successful receipt. Missing/malformed Idempotency-Key is 400 VALIDATION_ERROR. A current-version same-value PATCH returns unchanged data and stores its receipt without a new revision. Validate fields before detecting a no-op. After version checks, a terminal action returns ACTION_READ_ONLY and an ineligible parent returns TICKET_READ_ONLY. Two identical simultaneous requests serialize to one effective write and one replay.
 
 ## 4. Ticket workflow and account extensions
 

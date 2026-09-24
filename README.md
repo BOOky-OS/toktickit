@@ -4,7 +4,11 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 established
 the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
 responsive requester-owned Ticketing MVP.
 
-## Lab 3 released to main; final evidence review
+## Lab 4 contract in peer review
+
+See the [contract](docs/lab-04/specification.md), [API](docs/lab-04/api-spec.md), [UI](docs/lab-04/ui-spec.md), [tests](docs/lab-04/tests.md), [workflow and current limitations](docs/lab-04/workflow.md), [review record](docs/lab-04/reviewer.md) and [AI use](docs/lab-04/ai-use.md). Issue #56 / PR #57 targets lab4-staging. Lab 4 runtime features and tests are planned; the setup below remains the existing baseline.
+
+## Lab 3 released baseline
 
 Lab 3 begins with the [engineering contract](docs/lab-03/specification.md),
 [API contract](docs/lab-03/api-spec.md), [UI specification](docs/lab-03/ui-spec.md)
@@ -20,7 +24,7 @@ See [authentication setup](docs/lab-03/authentication.md). Issue #41 adds the
 and the release evidence report. With the isolated local TEST_DATABASE_URL configured,
 run `npm run test:e2e:lab3`; it starts dedicated services on ports 3006/5176 and
 uses an owned temporary schema and file directory. Release PR #54 was peer-merged as `f401341`; final-main checks passed.
-See [recorded results](docs/lab-03/tests.md). Final documentation review remains in Issue #41.
+See [recorded results](docs/lab-03/tests.md). Issue #41 is closed; final evidence was integrated through PR #55.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
 #32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.

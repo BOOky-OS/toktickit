@@ -14,14 +14,14 @@ Status: planned before implementation, Issue #56, 2026-09-24. This document desc
 
 ## 2. Planned automated tests
 
-All paths in this table are **planned new files and do not yet exist** in this documentation increment. They must be created in their implementation Issues and verified before replacing Planned with a final result. Multiple Test IDs may be distinct scenarios in one file; do not infer test-case counts from this table.
+Runtime test paths in this table are **planned new files and do not yet exist** in this documentation increment. DOC-01 references this existing plan and evidence records, not a missing automated test. They must be created in their implementation Issues and verified before replacing Planned with a final result. Multiple Test IDs may be distinct scenarios in one file; do not infer test-case counts from this table.
 
 | Test ID | Type | FR / BR / AC | Scenario and expected result | Planned test file | Final |
 | --- | --- | --- | --- | --- | --- |
 | UNIT-01 | Unit | FR-01/02; BR-02..08; AC-01/02 | Boundary lengths, whitespace, explicit offsets, date limits, booleans, Result/follow-up requirements and all 16 action state pairs; invalid data rejected. | `server/tests/lab-04/action-validation.unit.test.ts` | Planned |
-| UNIT-02 | Unit | FR-04; BR-11..15; AC-05/06 | All 64 Ticket state pairs, owner requirements, cycle boundary and legacy closure predicates. | `server/tests/lab-04/workflow.unit.test.ts` | Planned |
+| UNIT-02 | Unit | FR-04; BR-11..15; AC-05/06 | All 64 Ticket state pairs, owner requirements, integer cycle changes including equal-timestamp reopening, legacy closure and unassigned NEW Ticket cancellation. | `server/tests/lab-04/workflow.unit.test.ts` | Planned |
 | API-01 | API/integration | FR-01; BR-01..05/09/17; AC-01 | Create correctly parented action, default status, automatic creator, eligible different assignee, first revision and both versions; reject spoofed fields. | `server/tests/lab-04/actions-taken.api.test.ts` | Planned |
-| API-02 | API/integration | FR-02; BR-04..09; AC-02 | Edit/assign/start/complete/cancel; invalid/inactive assignees; missing completion Result/follow-up; terminal parent/action and cross-parent IDs; no-op version handling. | `server/tests/lab-04/actions-taken.api.test.ts` | Planned |
+| API-02 | API/integration | FR-02; BR-04..09; AC-02 | Edit/assign/start/complete/cancel; invalid/inactive assignees; missing completion Result/follow-up; terminal parent/action and cross-parent IDs; no-op version/receipt handling and missing/invalid idempotency headers. | `server/tests/lab-04/actions-taken.api.test.ts` | Planned |
 | API-03 | API/integration | FR-02/03; BR-09/10; AC-02/03 | More than one page; stable creation ordering after edits; all current terminal items visible; revisions ordered with immutable snapshots; no delete/history rewrite routes. | `server/tests/lab-04/actions-taken.api.test.ts` | Planned |
 | AUTH-01 | API/integration | FR-03/09; BR-10; AC-03/04 | Three-role endpoint matrix, foreign Requester 404, write 403, missing CSRF, expired/revoked/forced-change sessions; no private data/count leaks. | `server/tests/lab-04/authorization.api.test.ts` | Planned |
 | AUTH-02 | API/integration | FR-09/11; BR-10/19; AC-04/07 | Admin operational/comments/notes writes succeed; Staff cannot administer users; Requester-only file/create/indication restrictions remain; pending assignments block demotion/deactivation. | `server/tests/lab-04/authorization.api.test.ts` | Planned |
@@ -124,3 +124,7 @@ TDD sequence per implementation Issue: map its ACs; implement a meaningful faili
 For actual executions append `Test ID | command | environment | SHA | date | result/counts/skips | evidence`. Update the table's planned paths to real files after creation and retain precise failed/not-run explanations. Final-main evidence must name the actual peer-merged SHA and be rerun if relevant code changes.
 
 Manual visual review uses the complete checklist in [ui-spec.md](ui-spec.md), records screenshot paths and observed limitations, and distinguishes assistant inspection from peer review. Submission audit checks Answer Parts 1-9, all links, readable screenshots and the final-main source of truth. Final Issue remains open until student documentation gate, peer merge, required main checks and submission evidence are complete.
+
+## Repeatable document audit
+
+Run from repository root: `python -X utf8 docs/lab-04/validate_contract.py`, followed by `git diff --check`. This validates document structure, links, JSON examples and requirement/test mappings. It does not execute runtime acceptance tests or substitute for semantic peer review.
