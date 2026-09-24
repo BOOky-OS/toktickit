@@ -1,6 +1,6 @@
 # Lab 4 UI Specification
 
-Status: proposed contract for Issue #56, 2026-09-24. No Lab 4 screenshots or rendered implementation are claimed. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
+Status: peer-reviewed contract from Issue #56 / PR #57, 2026-09-24. UI implementation remains planned from #59. No Lab 4 screenshots or rendered implementation are claimed. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
 
 ## 1. Shared shell and navigation
 

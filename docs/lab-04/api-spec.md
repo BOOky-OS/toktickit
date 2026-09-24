@@ -1,6 +1,6 @@
 # Lab 4 REST API Contract
 
-Status: proposed contract for Issue #56, 2026-09-24; endpoints/filters below are planned, not implemented. Business rules and authorization are defined in [specification.md](specification.md). Existing [Lab 3 APIs](../lab-03/api-spec.md) continue except the explicit extensions here.
+Status: peer-reviewed contract from #56 / PR #57, 2026-09-24. Issue #58 implements the Actions endpoints, Admin/account extensions and workCycle storage/reopen increment. Final Ticket gates and dashboard/filter endpoints remain planned for #60-#62. Business rules and authorization are defined in [specification.md](specification.md). Existing [Lab 3 APIs](../lab-03/api-spec.md) continue except the explicit extensions here.
 
 ## 1. Common conventions and authorization
 

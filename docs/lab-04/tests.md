@@ -1,6 +1,6 @@
 # Lab 4 Test Plan and Traceability
 
-Status: planned before implementation, Issue #56, 2026-09-24. This document describes tests to build and run. All Lab 4 runtime results are **Planned / Not run**; no previous lab count is reused as a Lab 4 pass. Baseline inspected: `754a81d`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
+Status: reviewed plan from #56, updated for #58 on 2026-09-24. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). UI, final workflow gates, dashboards, product hardening and final-main verification remain Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
 
 ## 1. Execution environments and safety
 
@@ -14,9 +14,9 @@ Status: planned before implementation, Issue #56, 2026-09-24. This document desc
 
 ## 2. Planned automated tests
 
-Runtime test paths in this table are **planned new files and do not yet exist** in this documentation increment. DOC-01 references this existing plan and evidence records, not a missing automated test. They must be created in their implementation Issues and verified before replacing Planned with a final result. Multiple Test IDs may be distinct scenarios in one file; do not infer test-case counts from this table.
+The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and DB-01 now exist; their feature-branch results are in [foundation-evidence.md](foundation-evidence.md). The other new paths remain planned. CON-02 has only its assignment/deactivation scenario so far. The Final-main column remains Planned until release verification. Multiple Test IDs may be scenarios in one file; do not infer test counts from this table.
 
-| Test ID | Type | FR / BR / AC | Scenario and expected result | Planned test file | Final |
+| Test ID | Type | FR / BR / AC | Scenario and expected result | Planned / implemented test file | Final-main |
 | --- | --- | --- | --- | --- | --- |
 | UNIT-01 | Unit | FR-01/02; BR-02..08; AC-01/02 | Boundary lengths, whitespace, explicit offsets, date limits, booleans, Result/follow-up requirements and all 16 action state pairs; invalid data rejected. | `server/tests/lab-04/action-validation.unit.test.ts` | Planned |
 | UNIT-02 | Unit | FR-04; BR-11..15; AC-05/06 | All 64 Ticket state pairs, owner requirements, integer cycle changes including equal-timestamp reopening, legacy closure and unassigned NEW Ticket cancellation. | `server/tests/lab-04/workflow.unit.test.ts` | Planned |
@@ -98,7 +98,7 @@ npm run test:e2e:lab3
 npm run test:visual
 ```
 
-Use the existing isolated TEST_DATABASE_URL setup before DB-dependent commands. The existing default/visual E2E commands include historical scenarios; inspect their config before interpreting results. No runtime test commands were run for this documentation-only increment.
+Use the existing isolated TEST_DATABASE_URL setup before DB-dependent commands. The existing default/visual E2E commands include historical scenarios; inspect their config before interpreting results. PR #57 was documentation-only. Actual #58 commands, environment, results and failures are in [foundation-evidence.md](foundation-evidence.md); dedicated setup is in [migration.md](migration.md).
 
 Once corresponding files exist, targeted commands use existing Vitest scripts:
 
@@ -117,7 +117,7 @@ TDD sequence per implementation Issue: map its ACs; implement a meaningful faili
 | --- | --- | --- |
 | Baseline inspection | `754a81d`; Windows workspace; source/package scripts/GitHub inspected 2026-09-24 | Read-only inspection; no runtime pass inferred |
 | Issue #56 contract | `docs/56-lab4-contract`; see PR head for exact documentation commit | Static contract checks recorded in PR; runtime suites Not run |
-| Feature branches | Not implemented | Planned |
+| Issue #58 feature branch | `feature/58-actions-foundation`; isolated PostgreSQL 16.13, Node 24.19.0 | Backend evidence recorded in [foundation-evidence.md](foundation-evidence.md); peer review pending |
 | Complete staging | Not reached | Planned |
 | Final main | Not released | Planned |
 
