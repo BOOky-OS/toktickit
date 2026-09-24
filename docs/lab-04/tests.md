@@ -125,6 +125,6 @@ For actual executions append `Test ID | command | environment | SHA | date | res
 
 Manual visual review uses the complete checklist in [ui-spec.md](ui-spec.md), records screenshot paths and observed limitations, and distinguishes assistant inspection from peer review. Submission audit checks Answer Parts 1-9, all links, readable screenshots and the final-main source of truth. Final Issue remains open until student documentation gate, peer merge, required main checks and submission evidence are complete.
 
-## Repeatable document audit
+## Document review
 
-Run from repository root: `python -X utf8 docs/lab-04/validate_contract.py`, followed by `git diff --check`. This validates document structure, links, JSON examples and requirement/test mappings. It does not execute runtime acceptance tests or substitute for semantic peer review.
+Review the Markdown files directly: check numbered requirements, API/UI consistency, relative links and each acceptance criterion's planned tests. Run `git diff --check` for whitespace. The optional Python validator was removed at the student's request; no Python tool is required for this contract. Earlier static-check results describe the historical audit, not an available script or runtime test result.
