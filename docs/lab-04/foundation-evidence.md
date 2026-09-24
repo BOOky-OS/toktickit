@@ -2,6 +2,8 @@
 
 Date: 2026-09-24. Assistant-run checks on `feature/58-actions-foundation`, based on peer-merged staging `b45c4f057a06ee400c9b7b249561e027de785663`. These are feature-branch results, not peer-run, staging-release or final-main results.
 
+Implementation/code commit: `ac7d1929e06ac767e4bd41fc225ac21e49eb0f1c`. PR [#65](https://github.com/BOOky-OS/toktickit/pull/65) targets lab4-staging. Later evidence/metadata updates do not change application/test code.
+
 ## Environment and commands
 
 Windows PowerShell; Node 24.19.0; Prisma 5.22.0; Vitest 4.1.10; PostgreSQL 16.13 in the dedicated Docker container `toktickit-lab4-test`, bound to localhost:5544. Each suite owns a random schema in the allowlisted `toktickit_lab3_test` database. The working database and uploads were not migrated or reset. See [setup/recovery instructions](migration.md).
@@ -41,4 +43,4 @@ The initial implementation preceded its first new test run; this is not recorded
 
 ## Remaining scope
 
-Actions UI (#59), final Ticket resolution/cancel gates (#60), dashboards (#61/#62), product hardening (#63), student reflection/reciprocal review, final report and main release (#64). Atip-Infa must review and merge this increment into lab4-staging before #59 begins. The Project-wide listing discrepancy remains documented separately in [workflow.md](workflow.md).
+Actions UI (#59), final Ticket resolution/cancel gates (#60), dashboards (#61/#62), product hardening (#63), student reflection/reciprocal review, final report and main release (#64). Atip-Infa must review and merge this increment into lab4-staging before #59 begins. The latest Project collection query now includes #57, #58-#64 and #65; the earlier discrepancy and this verification are recorded in [workflow.md](workflow.md).

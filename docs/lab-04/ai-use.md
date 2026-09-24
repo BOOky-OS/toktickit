@@ -23,7 +23,7 @@ These are English paraphrases of actual Thai requests, not verbatim English quot
 
 ## Critical-thinking
 
-The student identified that the PR was not visible in the Project despite the assistant reporting complete metadata. Readback showed individual Project membership but no corresponding entry in the Project-wide collection. Re-adding/repositioning through GraphQL and REST did not prove visibility repaired. This remains an explicit external-state limitation.
+The student identified that the PR was not visible in the Project despite the assistant reporting complete metadata. Readback showed individual Project membership but no corresponding entry in the Project-wide collection. Re-adding/repositioning through GraphQL and REST did not prove visibility repaired. A later continuation query returned all #57-#65 cards in the Project collection. The assistant records this API evidence and does not claim a browser visual check or a known cause for the earlier omission.
 
 The branch initially used example number 42, while the real contract Issue was #56. The assistant created docs/56-lab4-contract without deleting the old branch. The handout also leaves action lifecycle and resolution details open; the contract labels those choices as design proposals. Atip-Infa later explicitly approved the contract in PR #57; this is peer approval, not a new instructor requirement.
 
