@@ -90,9 +90,10 @@ export function permittedRoles(method: string, path: string): readonly UserRole[
   const read = method === "GET" || method === "HEAD";
   const all: UserRole[] = ["REQUESTER", "IT_STAFF", "ADMIN"];
   if (path.startsWith("/admin/")) return ["ADMIN"];
-  if (path.startsWith("/staff/")) return read ? ["IT_STAFF", "ADMIN"] : ["IT_STAFF"];
-  if (/^\/tickets\/[^/]+\/notes\/?$/.test(path)) return read ? ["IT_STAFF", "ADMIN"] : ["IT_STAFF"];
-  if (/^\/tickets\/[^/]+\/comments\/?$/.test(path)) return read ? all : ["REQUESTER", "IT_STAFF"];
+  if (/^\/tickets\/[^/]+\/actions(?:\/|$)/.test(path)) return read && !/\/history\/?$/.test(path) ? all : ["IT_STAFF", "ADMIN"];
+  if (path.startsWith("/staff/")) return ["IT_STAFF", "ADMIN"];
+  if (/^\/tickets\/[^/]+\/notes\/?$/.test(path)) return ["IT_STAFF", "ADMIN"];
+  if (/^\/tickets\/[^/]+\/comments\/?$/.test(path)) return all;
   if (/^\/tickets\/[^/]+\/resolution-indication\/?$/.test(path)) return ["REQUESTER"];
   if (/^\/tickets\/?$/.test(path)) return ["REQUESTER"];
   if (/^\/(tickets|attachments)\//.test(path)) return read ? all : ["REQUESTER"];

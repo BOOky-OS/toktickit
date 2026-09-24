@@ -1,6 +1,6 @@
 # Lab 4 Sprint Engineering Specification
 
-Status: proposed engineering contract for Issue [#56](https://github.com/BOOky-OS/toktickit/issues/56), prepared 2026-09-24. Student and peer review pending. This records target behavior, not completed implementation or passing tests.
+Status: reviewed engineering contract for Issue [#56](https://github.com/BOOky-OS/toktickit/issues/56), prepared 2026-09-24. Peer-approved in PR #57 at `eeddb0b`, merged into staging at `b45c4f0`. This records target behavior, not completed implementation or passing tests.
 
 Sources: `SE+Lab+4.pdf`, sections 1-14 and the nine-part rubric; existing Lab 3 contracts and code at `754a81d`; root `skill.md`. No newer instructor announcement was supplied. This contract extends [Lab 3](../lab-03/specification.md); the explicit changes below supersede its affected rules. Companion documents: [UI](ui-spec.md), [API](api-spec.md), [tests](tests.md).
 
@@ -41,7 +41,7 @@ Excluded: SLA clocks, escalation, on-call schedules, external notifications, sto
 
 - **BR-01:** Each Action Taken belongs to exactly one existing Ticket. No endpoint moves an action to another Ticket or deletes it.
 - **BR-02:** Ticket owner coordinates the Ticket. Action `assigneeId` can be a different active IT_STAFF or ADMIN. Assignment is required, defaults to the actor, and is revalidated on create/edit/start/complete. Inactive or Requester targets produce `409 INVALID_ASSIGNEE`. Historical terminal assignees remain visible.
-- **BR-03:** `performedById` is the authenticated creator and immutable; `createdAt` is server time. Assignment represents responsibility for the action/follow-up, not permission to impersonate its recorder. Each later edit records its actual actor in revision history. This interpretation is a proposed decision; see section 11.
+- **BR-03:** `performedById` is the authenticated creator and immutable; `createdAt` is server time. Assignment represents responsibility for the action/follow-up, not permission to impersonate its recorder. Each later edit records its actual actor in revision history. This interpretation was accepted in the peer contract review; see section 11.
 - **BR-04:** `actionAt` is an offset-qualified ISO instant, no earlier than Ticket creation and no later than transaction time. UI defaults it to now; server stores UTC. Description is trimmed 5-2000 characters; Result is 0-2000, required 5-2000 on completion; follow-up and attachment notes are each 0-1000. Text is plain text; lengths use JavaScript UTF-16 code units, consistent with existing validation.
 - **BR-05:** `followUpRequired` is a required boolean. If true, trimmed `followUpNote` must be 5-1000 characters. If false, the note may remain as historical context. Completion requires `followUpRequired=false`; the user must explicitly record the final Result and resolve follow-up first. No automatic clearing of flags or notes.
 - **BR-06:** New actions start `PLANNED`. Permitted transitions: PLANNED -> IN_PROGRESS or CANCELLED; IN_PROGRESS -> COMPLETED or CANCELLED. All other pairs, including same-state requests, fail with `409 INVALID_ACTION_TRANSITION`. COMPLETED/CANCELLED actions are immutable; corrections use a new action referencing the previous action ID in its description.
@@ -86,7 +86,7 @@ Lab 4 section 4.3 explicitly gives Admin IT Staff behavior. This changes Lab 3's
 | CANCELLED | None |
 
 - **BR-12:** Keep existing version, confirmation, active owner and public reason rules. Entering IN_PROGRESS, WAITING_FOR_REQUESTER or RESOLVED requires an active eligible owner. Reasons of 5-1000 are required for RESOLVED, CLOSED, REOPENED and CANCELLED. An explicit unassign operation is permitted only in NEW/OPEN; cancellation of an unassigned NEW/OPEN Ticket may retain null ownership; owner/priority edits remain forbidden on CLOSED/CANCELLED.
-- **BR-13:** Resolution gate (proposed): at least one COMPLETED action exists in the current work cycle; no PLANNED/IN_PROGRESS actions remain on the Ticket in any cycle. A completed action has valid Result and no unresolved follow-up. Ticket.workCycle starts at 1 and increments atomically on REOPENED. Each new action copies that value; clients cannot set it. Compare cycle integers, not timestamps, so equal timestamps cannot qualify old work. Old completed actions do not resolve a newly reopened problem. Gate failure is `409 RESOLUTION_BLOCKED`.
+- **BR-13:** Resolution gate (peer-reviewed design): at least one COMPLETED action exists in the current work cycle; no PLANNED/IN_PROGRESS actions remain on the Ticket in any cycle. A completed action has valid Result and no unresolved follow-up. Ticket.workCycle starts at 1 and increments atomically on REOPENED. Each new action copies that value; clients cannot set it. Compare cycle integers, not timestamps, so equal timestamps cannot qualify old work. Old completed actions do not resolve a newly reopened problem. Gate failure is `409 RESOLUTION_BLOCKED`.
 - **BR-14:** Closing a previously RESOLVED legacy Ticket is permitted without fabricating actions. Ticket cancellation requires zero nonterminal actions (`409 ACTIVE_ACTIONS` otherwise); staff must cancel those actions individually first. Ticket changes never silently cancel or complete actions.
 - **BR-15:** Requester indication is advisory and changes no Ticket status. Retain its existing permitted states and idempotent same-version behavior. Resolve sets `resolvedAt`/summary; Close sets `closedAt`; Cancel sets `cancelledAt`/reason. Reopen clears resolved/closed time, resolution summary and requester indication, retaining immutable public history and all action records.
 - **BR-16:** Ticket status and its history record commit together. History uses `createdAt ASC, id ASC`, is visible to the owning Requester and Staff/Admin, and is append-only. Comments and notes retain their existing append-only rules and separate visibility.
@@ -191,7 +191,7 @@ Every criterion maps to planned tests in [tests.md](tests.md). No Lab 4 acceptan
 
 ## 11. Assumptions and Decisions
 
-These are AI-authored proposals for Issue #56 review, not instructor statements or recorded student acceptance of individual rules. The student selected an eight-Issue plan and confirmed Atip-Infa as reviewer on 2026-09-24.
+These began as AI-authored proposals for Issue #56, not instructor statements or recorded student acceptance of individual rules. Atip-Infa approved the contract in PR #57; the source of each design choice remains distinct from the handout. The student selected an eight-Issue plan and confirmed Atip-Infa as reviewer on 2026-09-24.
 
 | Topic | Source tension / chosen interpretation |
 | --- | --- |

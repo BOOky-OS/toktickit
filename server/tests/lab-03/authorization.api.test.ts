@@ -76,7 +76,7 @@ describe("Backend role and ownership boundaries", () => {
       .field("requesterId", String(actors.b.id)).attach("file", Buffer.from("%PDF-1.7"), "x.pdf")).status).toBe(400);
     expect(writeStoredAttachment).not.toHaveBeenCalled();
   });
-  it("denies wrong roles before lookup, including Admin ticket mutations and Requester notes", async () => {
+  it("denies wrong roles before lookup, including Admin Requester-only mutations and Requester notes", async () => {
     for (const role of ["staff", "admin"]) {
       expect((await request(app).get("/api/tickets").set(headers(role))).status).toBe(403);
       expect((await request(app).post("/api/tickets").set(headers(role)).send({})).status).toBe(403);
@@ -87,7 +87,7 @@ describe("Backend role and ownership boundaries", () => {
       const res = await request(app).get(`/api${path}`).set(headers("a")); expect(res.status).toBe(403); expect(res.body.code).toBe("FORBIDDEN");
     }
     for (const path of ["/staff/tickets/999999/claim", "/tickets/999999/comments", "/tickets/999999/notes"]) {
-      expect((await request(app).post(`/api${path}`).set(headers("admin")).send({})).status).toBe(403);
+      expect((await request(app).post(`/api${path}`).set(headers("admin")).send({})).status).toBe(400);
     }
     expect(writeStoredAttachment).not.toHaveBeenCalled();
   });

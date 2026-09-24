@@ -31,7 +31,7 @@ for (const stream of ["comments", "notes"] as const) {
     const id = ticketId(req.params.ticketId), actor = res.locals.actor as Identity;
     const body = entryBody(req.body, internal);
     const entry = await getPrisma().$transaction(async tx => {
-      await mutationGuard(actor, internal ? ["IT_STAFF"] : ["REQUESTER", "IT_STAFF"])(tx);
+      await mutationGuard(actor, internal ? ["IT_STAFF", "ADMIN"] : ["REQUESTER", "IT_STAFF", "ADMIN"])(tx);
       await tx.$queryRaw`SELECT id FROM "Ticket" WHERE id = ${id} FOR UPDATE`;
       const ticket = await tx.ticket.findFirst({ where: ownedWhere(id, actor), select: { currentStatus: true } });
       if (!ticket) throw unavailable();

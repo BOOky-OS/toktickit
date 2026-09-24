@@ -4,9 +4,9 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 established
 the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
 responsive requester-owned Ticketing MVP.
 
-## Lab 4 contract in peer review
+## Lab 4 Actions Taken foundation
 
-See the [contract](docs/lab-04/specification.md), [API](docs/lab-04/api-spec.md), [UI](docs/lab-04/ui-spec.md), [tests](docs/lab-04/tests.md), [workflow and current limitations](docs/lab-04/workflow.md), [review record](docs/lab-04/reviewer.md) and [AI use](docs/lab-04/ai-use.md). Issue #56 / PR #57 targets lab4-staging. Lab 4 runtime features and tests are planned; the setup below remains the existing baseline.
+See the [contract](docs/lab-04/specification.md), [API](docs/lab-04/api-spec.md), [UI](docs/lab-04/ui-spec.md), [tests](docs/lab-04/tests.md), [workflow and current limitations](docs/lab-04/workflow.md), [review record](docs/lab-04/reviewer.md) and [AI use](docs/lab-04/ai-use.md). The contract (#56 / PR #57) is peer-approved and merged into lab4-staging. Issue #58 adds the Actions Taken API, additive migration, repeatable seed and isolated tests. See [Lab 4 database/test setup and recovery](docs/lab-04/migration.md). Actions UI, final Ticket gates and dashboards follow in #59-#62; this is not the final Lab 4 release.
 
 ## Lab 3 released baseline
 
@@ -163,7 +163,7 @@ npm test
 
 Server integration tests require the dedicated local `toktickit_lab3_test`
 database and `TEST_DATABASE_URL`; follow the [isolated test setup](docs/lab-03/migration.md).
-The fixture guard refuses the working database.
+The fixture guard refuses the working database. Lab 4 recovery tests also require the dedicated Docker service and `LAB4_TEST_POSTGRES_CONTAINER` from the [Lab 4 setup](docs/lab-04/migration.md).
 
 Automated tests are located in:
 
@@ -171,6 +171,7 @@ Automated tests are located in:
 - `client/tests/lab-01/` for Vitest UI tests
 - `server/tests/lab-02/` for Ticket, ownership, and Attachment API/unit tests
 - `server/tests/lab-03/` for migration, seed, provisioning, authentication and authorization checks
+- `server/tests/lab-04/` for Actions API/security/concurrency, additive migration, seed and backup recovery
 - `client/tests/lab-02/` for requester workflow regression tests
 - `client/tests/lab-03/` for authentication transport, Login, password change, role-shell and authenticated Requester regression tests
 - `e2e/lab-02/` for the desktop, tablet, and mobile Playwright workflow

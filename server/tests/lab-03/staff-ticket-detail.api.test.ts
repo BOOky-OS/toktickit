@@ -31,9 +31,9 @@ function write(id: number, operation: string, body: object, role = "Staff") {
   return request(app)[method](`/api/staff/tickets/${id}/${operation}`).set("Cookie", `toktickit.sid=${sessions[role].token}`)
     .set("Origin", origin()).set("X-CSRF-Token", sessions[role].csrfToken).send(body);
 }
-it("denies Admin/Requester writes and missing CSRF without changing Tickets", async () => {
+it("denies Requester writes and missing CSRF without changing Tickets", async () => {
   const ticket = await make();
-  for (const role of ["Admin", "Requester"]) expect((await write(ticket.id, "claim", { version: 1 }, role)).status).toBe(403);
+  for (const role of ["Requester"]) expect((await write(ticket.id, "claim", { version: 1 }, role)).status).toBe(403);
   expect((await request(app).post(`/api/staff/tickets/${ticket.id}/claim`).set("Cookie", `toktickit.sid=${sessions.Staff.token}`).send({ version: 1 })).status).toBe(403);
   expect((await fixture.prisma.ticket.findUniqueOrThrow({ where: { id: ticket.id } })).version).toBe(1);
 });
@@ -114,4 +114,11 @@ it("rolls back status and version if history insertion fails", async () => {
     expect(result.status).toBe(500); expect(result.text).not.toContain("forced test failure");
     expect(await fixture.prisma.ticket.findUniqueOrThrow({ where: { id: ticket.id } })).toMatchObject({ currentStatus: "NEW", version: 1 });
   } finally { await fixture.prisma.$executeRawUnsafe('DROP TRIGGER fail_history ON "TicketStatusChange"'); }
+});
+
+it("allows Admin operations and advances the work cycle on reopen", async () => {
+  const ticket = await make("RESOLVED", users.Admin);
+  const response = await write(ticket.id, "status", { version: 1, currentStatus: "REOPENED", confirmed: true, reason: "Issue recurred after resolution" }, "Admin");
+  expect(response.status).toBe(200);
+  expect((await fixture.prisma.ticket.findUniqueOrThrow({ where: { id: ticket.id } })).workCycle).toBe(2);
 });

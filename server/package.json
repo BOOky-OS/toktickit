@@ -12,7 +12,8 @@
     "prisma:seed": "tsx prisma/seed.ts",
     "test": "vitest run",
     "lab3:provision": "tsx prisma/lab3-provision.ts",
-    "lab3:seed": "tsx prisma/lab3-seed.ts"
+    "lab3:seed": "tsx prisma/lab3-seed.ts",
+    "lab4:seed": "tsx prisma/lab4-seed.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

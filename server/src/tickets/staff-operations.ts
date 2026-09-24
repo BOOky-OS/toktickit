@@ -46,7 +46,7 @@ export const detailSelect = {
 export async function operate(actor: Identity, id: number, operation: Operation, body: Record<string, unknown>) {
   parseOperation(operation, body);
   return getPrisma().$transaction(async tx => {
-    await mutationGuard(actor, ["IT_STAFF"])(tx);
+    await mutationGuard(actor, ["IT_STAFF", "ADMIN"])(tx);
     await tx.$queryRaw`SELECT id FROM "Ticket" WHERE id = ${id} FOR UPDATE`;
     const ticket = await tx.ticket.findUnique({ where: { id } });
     if (!ticket) throw new ApiError(404, "NOT_FOUND", "Ticket is unavailable.");
@@ -76,7 +76,7 @@ export async function operate(actor: Identity, id: number, operation: Operation,
       if (next === "RESOLVED") { data.resolvedAt = now; data.resolutionSummary = reason; }
       if (next === "CLOSED") data.closedAt = now;
       if (next === "CANCELLED") { data.cancelledAt = now; data.cancellationReason = reason; }
-      if (next === "REOPENED") { data.resolvedAt = null; data.closedAt = null; data.resolutionSummary = null; data.requesterResolutionIndicatedAt = null; }
+      if (next === "REOPENED") { data.workCycle = { increment: 1 }; data.resolvedAt = null; data.closedAt = null; data.resolutionSummary = null; data.requesterResolutionIndicatedAt = null; }
       await tx.ticketStatusChange.create({ data: { ticketId: id, authorId: actor.user.id, fromStatus: ticket.currentStatus, toStatus: next, reason } });
     }
     if (Object.keys(data).length) await tx.ticket.update({ where: { id }, data: { ...data, version: { increment: 1 } } });

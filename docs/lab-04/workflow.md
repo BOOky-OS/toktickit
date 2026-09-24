@@ -1,6 +1,8 @@
 # Lab 4 Workflow and Audit
 
-Current work: Issue #56 / PR #57, docs/56-lab4-contract -> lab4-staging.
+Current work: Issue #58 / [PR #65](https://github.com/BOOky-OS/toktickit/pull/65), feature/58-actions-foundation -> lab4-staging.
+Code commit: `ac7d1929e06ac767e4bd41fc225ac21e49eb0f1c`. Both individual items are PR Review; Atip-Infa is requested. Reviewer, author assignee, enhancement label, Lab 4 milestone, Project and real Development link to #58 are verified.
+Prerequisite #56 / PR #57 was approved and merged by Atip-Infa at `b45c4f0`; Issue #56 is closed and its/PR #57 individual Project items are Done.
 Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
 
 ## Eight accepted work packages
@@ -16,17 +18,21 @@ Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual s
 | 7 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | Regression/hardening | #62 Done | feature/63-final-hardening |
 | 8 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | Documentation/release | #63 Done | docs/64-lab4-release |
 
-Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Their individual Project items are Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
+Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #58 is PR Review; #59-#64 remain Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
 
 ## Project listing discrepancy, 2026-09-24
 
 Project: [TokTickIT Individual Sprints](https://github.com/users/BOOky-OS/projects/2).
 Individual PR/Issue queries show Project membership and field values, but GraphQL items and REST Project list return only 39 older entries ending at #56. PR #57 and new #58-#64 are absent from that collection. Both saved views have no filter.
 
-Attempts: inspect archive state; re-add PR card; restore PR Review; explicitly reposition; independently recreate using REST. Each mutation succeeded and individual lookup worked, but collection readback did not confirm repair. No Issue/PR content or reviews were deleted. This is an unresolved listing discrepancy, not evidence that the PR is visible. Do not create duplicate Issues/PRs or mark work Done to work around it.
+Attempts: inspect archive state; re-add PR card; restore PR Review; explicitly reposition; independently recreate using REST. Each mutation succeeded and individual lookup worked, but collection readback did not confirm repair. No Issue/PR content or reviews were deleted. At that time this was an unresolved listing discrepancy, not evidence that the PR was visible. Do not create duplicate Issues/PRs or mark work Done to work around it.
+
+### Continuation verification
+
+A fresh Project collection query after opening PR #65 returned 48 items, including #57, all #58-#64 and #65. The earlier collection omission is no longer reproduced by the API. Individual #58 and #65 items both report PR Review, and #56/#57 are Done. This is an API readback verification; no browser screenshot inspection is claimed. The cause of the earlier delayed listing is unknown.
 
 ## Review and release
 
-Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. Complete the four contract documents and audit evidence, then have the peer review the current head and merge to staging. Keep #56 open until verified.
+Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. The contract review and merge are verified in [reviewer.md](reviewer.md). Issue #58 must now complete its own checks and peer review/merge before #59 begins.
 
 For #64, present complete pre-release artifacts and ask the exact documentation gate from root skill.md before creating a main PR. Peer reviews/merges release; final-main test/evidence verification precedes closing #64. This contract PR does not authorize main release.
