@@ -10,6 +10,8 @@ import {
   uploadAttachment,
 } from "./api.js";
 
+import { useAuth } from "./AuthContext.js";
+import { ActionsTaken } from "./ActionsTaken.js";
 import { StaffOperations } from "./StaffOperations.js";
 import { TicketCommunication } from "./TicketCommunication.js";
 type DetailState = "loading" | "ready" | "error" | "unavailable";
@@ -44,6 +46,7 @@ export function TicketDetail({
   staffEditable?: boolean;
   onRetryFilesChange?: (files: File[]) => void;
 }) {
+  const { user } = useAuth();
   const [state, setState] = useState<DetailState>("loading");
   const [ticket, setTicket] = useState<TicketDetailData | null>(null);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -234,7 +237,9 @@ export function TicketDetail({
 
         {readOnly && <StaffOperations ticket={ticket} editable={staffEditable} onUpdate={setTicket} />}
 
-        <TicketCommunication ticket={ticket} role={readOnly ? staffEditable ? "IT_STAFF" : "ADMIN" : "REQUESTER"} onUpdate={setTicket} />
+        {user && <ActionsTaken key={`${ticket.id}-${user.id}-${user.role}`} ticket={ticket} actor={user} onUpdate={setTicket} />}
+
+        <TicketCommunication ticket={ticket} role={user?.role ?? "REQUESTER"} onUpdate={setTicket} />
 
         {pendingRetries.length > 0 && (
           <section className="attachment-section" aria-labelledby="retry-attachments">

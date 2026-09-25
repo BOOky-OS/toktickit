@@ -310,3 +310,32 @@ async function writeUser(path: string, method: string, body: unknown): Promise<A
 export const createUser = (body: UserFields & {initialPassword: string}) => writeUser("/api/admin/users", "POST", body);
 export const editUser = (id: number, body: UserFields & {version: number}) => writeUser(`/api/admin/users/${id}`, "PATCH", body);
 export const resetInitialPassword = (id: number, version: number, initialPassword: string) => writeUser(`/api/admin/users/${id}/initial-password`, "POST", { version, initialPassword, confirmed: true });
+
+export type ActionState = "PLANNED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+export interface ActionTaken {
+  id: number; ticketId: number; actionAt: string; description: string; result: string;
+  performedBy: NonNullable<TicketOwner>; assignee: NonNullable<TicketOwner>;
+  followUpRequired: boolean; followUpNote: string; attachmentNotes: string;
+  status: ActionState; version: number; createdAt: string; updatedAt: string;
+  completedAt: string | null; cancelledAt: string | null; cancellationReason: string | null;
+}
+export interface ActionPage<T> { items: T[]; page: number; pageSize: number; totalItems: number; totalPages: number; hasPreviousPage: boolean; hasNextPage: boolean; }
+export interface ActionList extends ActionPage<ActionTaken> { ticketVersion: number; }
+export interface ActionRevision { id: number; actionId: number; version: number; event: string; actor: NonNullable<TicketOwner>; createdAt: string; snapshot: ActionTaken; }
+export async function getActions(ticketId: number, page = 1, pageSize = 10): Promise<ActionList> {
+  const response = await apiFetch(`/api/tickets/${ticketId}/actions?page=${page}&pageSize=${pageSize}`);
+  if (!response.ok) throw await responseError(response, "Unable to load actions.");
+  return response.json();
+}
+export async function getActionHistory(ticketId: number, actionId: number, page = 1): Promise<ActionPage<ActionRevision>> {
+  const response = await apiFetch(`/api/tickets/${ticketId}/actions/${actionId}/history?page=${page}`);
+  if (!response.ok) throw await responseError(response, "Unable to load action history.");
+  return response.json();
+}
+export async function writeAction(ticketId: number, actionId: number | null, operation: "create" | "edit" | "status", body: Record<string, unknown>, key: string): Promise<{ action: ActionTaken; ticketVersion: number; replayed: boolean }> {
+  const response = await apiFetch(`/api/tickets/${ticketId}/actions${actionId === null ? "" : `/${actionId}`}${operation === "status" ? "/status" : ""}`, {
+    method: operation === "edit" ? "PATCH" : "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": key }, body: JSON.stringify(body),
+  });
+  if (!response.ok) throw await responseError(response, "Unable to save action.");
+  return { ...await response.json(), replayed: response.headers.get("Idempotency-Replayed") === "true" };
+}

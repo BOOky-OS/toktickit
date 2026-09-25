@@ -55,7 +55,7 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
   const open = (t: StaffQueueItem, summary = false) => <button className="ticket-link" onClick={() => onOpen(t.id)}
     aria-label={`Open ${t.ticketNumber}${summary ? ": " + t.summary : ""}`}>{summary ? t.summary : t.ticketNumber}</button>;
   return <main className="page-content" id="main-content"><section className="ticket-card staff-queue">
-    <h1>Ticket Queue</h1><p>{admin ? "Administrator read-only access" : "All service requests across the support team."}</p>
+    <h1>Ticket Queue</h1><p>{admin ? "Administrator support workspace" : "All service requests across the support team."}</p>
     <form className="filter-card" onSubmit={apply}>
       <div className="filter-grid">
         <div className="filter-wide"><label htmlFor="queue-search">Search</label><input id="queue-search" className="zen-field" maxLength={120}

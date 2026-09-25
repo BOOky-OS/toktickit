@@ -1,6 +1,6 @@
 # Lab 4 Test Plan and Traceability
 
-Status: reviewed plan from #56, updated for #58 on 2026-09-24. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). UI, final workflow gates, dashboards, product hardening and final-main verification remain Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
+Status: reviewed plan from #56, updated for #58 on 2026-09-24. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates, dashboards, product hardening and final-main verification remain Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
 
 ## 1. Execution environments and safety
 
@@ -14,7 +14,7 @@ Status: reviewed plan from #56, updated for #58 on 2026-09-24. The Actions found
 
 ## 2. Planned automated tests
 
-The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and DB-01 now exist; their feature-branch results are in [foundation-evidence.md](foundation-evidence.md). The other new paths remain planned. CON-02 has only its assignment/deactivation scenario so far. The Final-main column remains Planned until release verification. Multiple Test IDs may be scenarios in one file; do not infer test counts from this table.
+The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and DB-01 now exist; their feature-branch results are in [foundation-evidence.md](foundation-evidence.md). UI-01 now exists in client/tests/lab-04/ActionsTaken.test.tsx plus ActionsApi.test.tsx; E2E-01 and the Actions subset of E2E-04 exist in e2e/lab-04/. The other new paths remain planned. CON-02 has only its assignment/deactivation scenario so far. The Final-main column remains Planned until release verification. Multiple Test IDs may be scenarios in one file; do not infer test counts from this table.
 
 | Test ID | Type | FR / BR / AC | Scenario and expected result | Planned / implemented test file | Final-main |
 | --- | --- | --- | --- | --- | --- |
@@ -107,7 +107,7 @@ npm run test --workspace server -- tests/lab-04/actions-taken.api.test.ts
 npm run test --workspace client -- tests/lab-04/ActionsTaken.test.tsx
 ```
 
-Implementation must add `playwright.lab4.config.ts` and the root `test:e2e:lab4` script; both are **planned and currently absent**. The eventual `npm run test:e2e:lab4` must use the isolated real server/database setup, not mocked network responses for persistence/security proof. Update this section with exact implemented commands and required non-secret environment configuration before recording a pass.
+`playwright.lab4.config.ts` and `npm run test:e2e:lab4` now exist for Actions Taken on dedicated ports 3007/5177. Set TEST_DATABASE_URL using [migration.md](migration.md). The real server/database setup and recorded results are in [actions-ui-evidence.md](actions-ui-evidence.md). Dashboard/final-workflow E2E files remain planned.
 
 TDD sequence per implementation Issue: map its ACs; implement a meaningful failing test; record observed failure; implement the smallest coherent feature; run targeted unit/integration/UI tests; verify relevant earlier regression; review diff and update actual results. Finish cross-product, accessibility, performance and final-main verification in the hardening/release work packages. No claim of a red/green run without actual output.
 
@@ -118,6 +118,7 @@ TDD sequence per implementation Issue: map its ACs; implement a meaningful faili
 | Baseline inspection | `754a81d`; Windows workspace; source/package scripts/GitHub inspected 2026-09-24 | Read-only inspection; no runtime pass inferred |
 | Issue #56 contract | `docs/56-lab4-contract`; see PR head for exact documentation commit | Static contract checks recorded in PR; runtime suites Not run |
 | Issue #58 feature branch | `feature/58-actions-foundation`; isolated PostgreSQL 16.13, Node 24.19.0 | Backend evidence recorded in [foundation-evidence.md](foundation-evidence.md); peer review pending |
+| Issue #59 feature branch | `feature/59-actions-ui`; Chrome/real API/PostgreSQL | [Actions UI evidence](actions-ui-evidence.md); peer review pending |
 | Complete staging | Not reached | Planned |
 | Final main | Not released | Planned |
 

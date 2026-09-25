@@ -1,8 +1,7 @@
 # Lab 4 Workflow and Audit
 
-Current work: Issue #58 / [PR #65](https://github.com/BOOky-OS/toktickit/pull/65), feature/58-actions-foundation -> lab4-staging.
-Code commit: `ac7d1929e06ac767e4bd41fc225ac21e49eb0f1c`. Both individual items are PR Review; Atip-Infa is requested. Reviewer, author assignee, enhancement label, Lab 4 milestone, Project and real Development link to #58 are verified.
-Prerequisite #56 / PR #57 was approved and merged by Atip-Infa at `b45c4f0`; Issue #56 is closed and its/PR #57 individual Project items are Done.
+Current work: Issue #59, feature/59-actions-ui -> lab4-staging.
+Prerequisite #58 / PR #65 is approved and peer-merged at `3c303e6`; Issue #58 and PR #65 items are Done. Author replies already exist; no duplicates are needed.
 Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
 
 ## Eight accepted work packages
@@ -18,7 +17,7 @@ Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual s
 | 7 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | Regression/hardening | #62 Done | feature/63-final-hardening |
 | 8 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | Documentation/release | #63 Done | docs/64-lab4-release |
 
-Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #58 is PR Review; #59-#64 remain Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
+Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #59 is Started; #60-#64 remain Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
 
 ## Project listing discrepancy, 2026-09-24
 
@@ -33,6 +32,6 @@ A fresh Project collection query after opening PR #65 returned 48 items, includi
 
 ## Review and release
 
-Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. The contract review and merge are verified in [reviewer.md](reviewer.md). Issue #58 must now complete its own checks and peer review/merge before #59 begins.
+Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. The contract review and merge are verified in [reviewer.md](reviewer.md). Issue #58 is also verified complete. Issue #59 requires its own peer review/merge before #60 begins.
 
 For #64, present complete pre-release artifacts and ask the exact documentation gate from root skill.md before creating a main PR. Peer reviews/merges release; final-main test/evidence verification precedes closing #64. This contract PR does not authorize main release.

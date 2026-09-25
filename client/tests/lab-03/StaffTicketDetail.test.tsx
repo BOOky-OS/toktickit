@@ -22,7 +22,7 @@ function Harness({ initial = ticket, editable = true }: { initial?: api.TicketDe
   const [value, setValue] = useState(initial);
   return <StaffOperations ticket={value} editable={editable} onUpdate={setValue} />;
 }
-it("shows read-only Admin history without operational controls", async () => {
+it("shows history without operational controls when explicitly read-only", async () => {
   vi.mocked(api.getStatusHistory).mockResolvedValue([{ id: 1, fromStatus: "NEW", toStatus: "OPEN", reason: "<script>literal text</script>", author: ticket.owner!, createdAt: "2026-09-01T00:00:00Z" }]);
   render(<Harness editable={false} />);
   expect(await screen.findByText("<script>literal text</script>")).toBeInTheDocument();

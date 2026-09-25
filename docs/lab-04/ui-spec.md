@@ -1,6 +1,6 @@
 # Lab 4 UI Specification
 
-Status: peer-reviewed contract from Issue #56 / PR #57, 2026-09-24. UI implementation remains planned from #59. No Lab 4 screenshots or rendered implementation are claimed. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
+Status: peer-reviewed contract from Issue #56 / PR #57, 2026-09-24. Issue #59 implements the Actions Taken section and shared Admin permission controls; dashboards/final Ticket gates remain planned. See [UI implementation evidence](actions-ui-evidence.md) for actual tests, screenshots and limits. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
 
 ## 1. Shared shell and navigation
 
@@ -81,7 +81,7 @@ Verify desktop 1440x900, tablet 834x1112, mobile 390x844 and narrow 320px layout
 
 ## 8. Planned visual evidence checklist
 
-Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`, `actions-taken/` and `ticket-workflow/`, with desktop/tablet/mobile subfolders. Use demo data without secrets. These paths are planned, not current evidence. Retain readable original captures and document the tested commit/environment.
+Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`, `actions-taken/` and `ticket-workflow/`, with desktop/tablet/mobile subfolders. Use demo data without secrets. Actions Taken captures now exist locally in those folders (plus narrow/); dashboard/workflow captures remain planned. Retain readable original captures and document the tested commit/environment.
 
 - [ ] Initial, loading, zero/empty, populated and safe-failure dashboards; exact DB count comparison.
 - [ ] Requester ownership, Staff/Admin navigation, current-user actions and drill-down filters.

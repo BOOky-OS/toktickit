@@ -1,0 +1,19 @@
+.actions-section { min-width: 0; }
+.action-list { list-style: none; margin: 1rem 0; padding: 0; display: grid; gap: 1rem; }
+.action-card, .action-editor, .action-history { border: 1px solid #ccdcd3; border-radius: 1rem; padding: 1.25rem; background: #fff; min-width: 0; overflow-wrap: anywhere; }
+.action-editor { background: #f4faf6; margin: 1rem 0; }
+.action-fields, .action-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; border: 0; padding: 0; margin: 1rem 0; min-width: 0; }
+.action-fields div, .action-form-grid div { min-width: 0; }
+.action-fields dt { color: #405b4b; font-size: .875rem; font-weight: 600; }
+.action-fields dd { white-space: pre-wrap; overflow-wrap: anywhere; margin: .25rem 0 0; }
+.action-wide { grid-column: 1 / -1; }
+.action-form-grid label { display: block; font-weight: 600; margin-bottom: .35rem; }
+.action-form-grid small { display: block; margin-top: .3rem; }
+.actions-section button, .action-pagination select { min-height: 44px; }
+.action-pagination, .action-review { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin: 1rem 0; }
+.action-dialog { position: fixed; inset: 0; margin: auto; box-sizing: border-box; width: min(36rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); overflow-y: auto; border: 1px solid #446c53; border-radius: 1rem; padding: 1.5rem; color: #203d2c; }
+.action-dialog::backdrop { background: rgb(15 34 23 / 55%); }
+.actions-section :focus-visible, .action-card:focus { outline: 3px solid #216f45; outline-offset: 3px; }
+.actions-section .ticket-actions { flex-wrap: wrap; }
+.actions-section input, .actions-section textarea, .actions-section select { max-width: 100%; min-width: 0; }
+@media (max-width: 767px) { .action-fields, .action-form-grid { grid-template-columns: minmax(0, 1fr); } .action-card, .action-editor { padding: .85rem; } .action-dialog { padding: 1rem; } }
