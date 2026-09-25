@@ -2,6 +2,8 @@
 
 Date: 2026-09-24. Assistant-run work on `feature/59-actions-ui`, based on the verified peer merge `3c303e637e24dc01bc45c6d15eaf74afb24d9b7a` for #58 / PR #65. These are feature-branch results, not final-main or independent peer execution.
 
+Implementation commit: `a1b5223834f9bb29533fa3e96031c966cd60f66e`. PR [#66](https://github.com/BOOky-OS/toktickit/pull/66) targets lab4-staging. Checks were run against this implementation; the subsequent evidence update changes documentation only. Peer review and merge are pending. Build and whitespace checks were rechecked on 2026-09-25.
+
 ## Implemented scope
 
 - Ticket Detail shows current actions to the owning Requester and Staff/Admin. Requesters have no action writes, assignee lookup or private revision controls.

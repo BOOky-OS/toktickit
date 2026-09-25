@@ -10,6 +10,7 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 | --- | --- | --- | --- | --- |
 | [#56](https://github.com/BOOky-OS/toktickit/issues/56) | [#57](https://github.com/BOOky-OS/toktickit/pull/57) | docs/56-lab4-contract | Atip-Infa | Approved; merged |
 | [#58](https://github.com/BOOky-OS/toktickit/issues/58) | [#65](https://github.com/BOOky-OS/toktickit/pull/65) | feature/58-actions-foundation | Atip-Infa | Approved; merged |
+| [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Review requested; pending |
 
 ## PR #57 evidence
 
@@ -34,6 +35,13 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 - [Ready comment](https://github.com/BOOky-OS/toktickit/pull/65#issuecomment-5815361874), [author approval reply](https://github.com/BOOky-OS/toktickit/pull/65#issuecomment-5815380023), [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/65#issuecomment-5815387614). No duplicate replies needed.
 - Merged by Atip-Infa at 2026-09-24 13:49:14 UTC; merge `3c303e637e24dc01bc45c6d15eaf74afb24d9b7a` verified in lab4-staging. Inline comment/thread queries returned no outstanding threads and no further page.
 - The continuation corrected Issue/Project state and this record after the author's post-merge comment; those updates had not yet been applied when that comment was posted.
+
+## PR #66 evidence
+
+- Implementation commit: `a1b5223834f9bb29533fa3e96031c966cd60f66e`; follow-up documentation records this PR and evidence.
+- Target lab4-staging; reviewer Atip-Infa requested. Author BOOky-OS, enhancement label, Lab 4 milestone, real Development link to #59 and Project membership verified. Issue #59 and PR #66 are in PR Review.
+- [Assistant-run checks and limitations](actions-ui-evidence.md): 96 client tests, 8 real browser tests, 4 final responsive/keyboard reruns, build and whitespace checks passed.
+- Peer verdict, approved head, author ready/approval/post-merge replies and merge remain pending. Copyable comments are drafts, not posted evidence.
 
 ## Reciprocal reviews
 
