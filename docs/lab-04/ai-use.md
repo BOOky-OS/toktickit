@@ -1,6 +1,6 @@
 # Lab 4 - AI Use and Reflection
 
-LLM/agent used: OpenAI Codex (GPT-6). Status: contract, foundation and Issue #59 UI implementation record, 2026-09-24. The foundation was peer-approved/merged in PR #65; UI peer review remains pending.
+LLM/agent used: OpenAI Codex (GPT-6). Status: contract, foundation, Actions UI and Issue #60 workflow record, 2026-09-26. The foundation and UI were peer-approved/merged in PR #65/#66; workflow peer review remains pending.
 
 AI read the assignment and existing project, explained the workflow, drafted the four contracts, inspected GitHub metadata and prepared the Issues/PR. The student selected eight work packages, confirmed Atip-Infa and requested corrections when comments and Project visibility were incomplete. The assistant then implemented the Actions Taken database/API foundation, isolated tests, demo seed and recovery checks. The assistant continued with Actions Taken forms, draft/retry handling, Admin controls and component/real-browser tests. Actual check results are recorded in tests.md; they are assistant-run, not student-run.
 
@@ -19,7 +19,7 @@ These are English paraphrases of actual Thai requests, not verbatim English quot
 | 7 | Why is the PR missing from the Project? | Checked individual membership and collection listings. | Challenged a completion claim based only on PR metadata. |
 | 8 | Check anything else missing and fix it; continue after the usage interruption. | Audited contracts/evidence and completed the eight-Issue backlog. | Requested verification rather than assuming successful API writes prove visible results. |
 | 9 | I deleted the Python validator; do not upload output files. | Removed the optional validator and excluded generated output from Git. | Chose the repository cleanup and corrected unnecessary tooling. |
-| 10 | Continue and read the lab and skill again. | Verified peer merges, completed prerequisite metadata and continued #58/#59 on their own branches with database and UI/browser tests. | Authorized the next implementation step under the existing workflow. |
+| 10 | Continue and read the lab and skill again. | Verified peer merges, completed prerequisite metadata and continued #58/#59/#60 on their own branches with database and UI/browser tests. | Authorized the next implementation step under the existing workflow. |
 
 ## Critical-thinking
 
@@ -31,6 +31,8 @@ During #58, a real paginated action-list test failed because the old global quer
 
 During #59, component tests were drafted before the UI; the first run failed because the component did not yet exist. Real browser keyboard checks then exposed Tab escaping the cancellation dialog. The assistant added focus containment and reran the checks. The student also requested shorter review comments and asked why tests used a separate Docker container; the explanation distinguished the working database from disposable test fixtures.
 
+During #60, new API tests first demonstrated that missing work and old-cycle work were incorrectly accepted for resolution. UI tests first exposed missing gate-specific feedback and dialog focus containment. The assistant then added the guards and reran the checks. Existing regression fixtures were updated to include qualifying completed work while retaining their assertions.
+
 ## My Reflection
 
-Pending student confirmation. The conversation establishes use of AI for assignment explanations, work planning, specification drafting and workflow corrections. The student has not yet supplied a personal reflection on what they learned. The coding agent has now implemented and tested #58/#59; the student's personal coding-stage reflection is still pending; do not reuse a prior lab's experience or describe planned tests as executed.
+Pending student confirmation. The conversation establishes use of AI for assignment explanations, work planning, specification drafting and workflow corrections. The student has not yet supplied a personal reflection on what they learned. The coding agent has now implemented and tested #58/#59/#60; the student's personal coding-stage reflection is still pending; do not reuse a prior lab's experience or describe planned tests as executed.

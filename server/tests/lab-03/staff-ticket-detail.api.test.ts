@@ -70,10 +70,16 @@ it("updates only IT Priority and rejects forged fields and stale no-ops", async 
   expect((await write(ticket.id, "priority", { version: 2, itPriority: "HIGH" })).body.version).toBe(2);
   expect((await write(ticket.id, "priority", { version: 1, itPriority: "HIGH" })).body.code).toBe("STALE_VERSION");
 });
+async function completedWork(ticketId: number) {
+  await fixture.prisma.actionTaken.create({ data: { ticketId, performedById: users.Staff, assigneeId: users.Staff,
+    actionAt: new Date(), description: "Verified repair", result: "Battery replaced and tested", followUpRequired: false,
+    followUpNote: "", attachmentNotes: "", status: "COMPLETED", completedAt: new Date(), workCycle: 1 } });
+}
 const allowed = new Set(["NEW:OPEN", "NEW:CANCELLED", "OPEN:IN_PROGRESS", "OPEN:WAITING_FOR_REQUESTER", "OPEN:RESOLVED", "OPEN:CANCELLED", "IN_PROGRESS:WAITING_FOR_REQUESTER", "IN_PROGRESS:RESOLVED", "IN_PROGRESS:CANCELLED", "WAITING_FOR_REQUESTER:IN_PROGRESS", "WAITING_FOR_REQUESTER:RESOLVED", "WAITING_FOR_REQUESTER:CANCELLED", "RESOLVED:CLOSED", "RESOLVED:REOPENED", "CLOSED:REOPENED", "REOPENED:OPEN", "REOPENED:IN_PROGRESS", "REOPENED:WAITING_FOR_REQUESTER", "REOPENED:RESOLVED", "REOPENED:CANCELLED"]);
 it("enforces all 64 status pairs and atomically records only permitted changes", async () => {
   for (const from of Object.values(TicketStatus)) for (const to of Object.values(TicketStatus)) {
     const ticket = await make(from, users.Staff);
+    await completedWork(ticket.id); // Lab 4 resolution prerequisite; matrix assertions unchanged.
     const result = await write(ticket.id, "status", { version: 1, currentStatus: to, confirmed: true, reason: "Verified public reason" });
     const valid = allowed.has(`${from}:${to}`);
     expect(result.status, `${from}:${to}`).toBe(valid ? 200 : 409);
@@ -93,6 +99,7 @@ it("enforces active owner prerequisites and public confirmation/reasons", async 
 it("sets resolution/close dates, clears current resolution on reopen and preserves public history", async () => {
   const ticket = await make("OPEN", users.Staff);
   await fixture.prisma.ticket.update({ where: { id: ticket.id }, data: { requesterResolutionIndicatedAt: new Date() } });
+  await completedWork(ticket.id);
   const resolved = await write(ticket.id, "status", { version: 1, currentStatus: "RESOLVED", confirmed: true, reason: "  Replaced battery  " });
   expect(resolved.body.resolvedAt).not.toBeNull(); expect(resolved.body.resolutionSummary).toBe("Replaced battery");
   expect((await write(ticket.id, "status", { version: 2, currentStatus: "CLOSED", confirmed: true, reason: "Requester confirmed" })).body.closedAt).not.toBeNull();

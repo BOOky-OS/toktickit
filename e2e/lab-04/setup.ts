@@ -21,7 +21,7 @@ export default async function setup() {
   try {
     const passwordHash = await hashPassword("Lab4-test-only-password!");
     const users: Record<string, number> = {};
-    for (const [name, role] of [["requester", "REQUESTER"], ["other", "REQUESTER"], ["staff", "IT_STAFF"], ["second", "IT_STAFF"], ["admin", "ADMIN"]] as const) {
+    for (const [name, role] of [["requester", "REQUESTER"], ["other", "REQUESTER"], ["staff", "IT_STAFF"], ["second", "IT_STAFF"], ["admin", "ADMIN"], ["workflowdesktop", "IT_STAFF"], ["workflowtablet", "IT_STAFF"], ["workflowmobile", "IT_STAFF"]] as const) {
       users[name] = (await fixture.prisma.user.create({ data: { displayName: `E2E ${name}`, email: `${name}@lab4.example`, role, passwordHash, mustChangePassword: false } })).id;
     }
     const category = await fixture.prisma.category.create({ data: { name: "Network" } });
@@ -33,6 +33,9 @@ export default async function setup() {
       if (i === 12) for (let n = 0; n < 12; n++) await fixture.prisma.actionTaken.create({ data: { ticketId: ticket.id, performedById: users.staff, assigneeId: users.second, actionAt: new Date("2026-01-02T00:00:00Z"),
         description: `Linked action ${n + 1}`, result: "", followUpRequired: false, followUpNote: "", attachmentNotes: "", workCycle: 1 } });
     }
+    // Explicit fixture IDs/numbers must not collide with Tickets created through the real UI.
+    await fixture.prisma.$queryRawUnsafe(`SELECT setval('"Ticket_id_seq"', 12, true)`);
+    await fixture.prisma.$queryRawUnsafe("SELECT setval('ticket_number_seq', 12, true)");
     process.env.LAB4_E2E_DATABASE_URL = fixture.url; process.env.DATABASE_URL = fixture.url;
     process.env.CLIENT_ORIGIN = "http://localhost:5177"; process.env.ALLOW_LOCAL_HTTP = "true";
     process.chdir(storage);

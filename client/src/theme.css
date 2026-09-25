@@ -583,3 +583,6 @@ p { max-width: 72ch; }
 .zen-badge[data-status="WAITING_FOR_REQUESTER"] { color: #854d0e; background: #fef9c3; }
 .zen-badge[data-status="RESOLVED"], .zen-badge[data-status="CLOSED"] { color: #166534; background: #dcfce7; }
 .zen-badge[data-status="CANCELLED"] { color: #991b1b; background: #fee2e2; }
+
+.workflow-dialog { position: fixed; inset: 0; margin: auto; box-sizing: border-box; width: min(32rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); overflow-y: auto; border: 1px solid #446c53; border-radius: 1rem; padding: 1.25rem; color: #203d2c; overflow-wrap: anywhere; }
+.workflow-dialog::backdrop { background: rgb(15 34 23 / 55%); }

@@ -14,12 +14,12 @@ Status: reviewed plan from #56, updated for #58 on 2026-09-24. The Actions found
 
 ## 2. Planned automated tests
 
-The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and DB-01 now exist; their feature-branch results are in [foundation-evidence.md](foundation-evidence.md). UI-01 now exists in client/tests/lab-04/ActionsTaken.test.tsx plus ActionsApi.test.tsx; E2E-01 and the Actions subset of E2E-04 exist in e2e/lab-04/. The other new paths remain planned. CON-02 has only its assignment/deactivation scenario so far. The Final-main column remains Planned until release verification. Multiple Test IDs may be scenarios in one file; do not infer test counts from this table.
+The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and DB-01 now exist; their feature-branch results are in [foundation-evidence.md](foundation-evidence.md). UI-01 now exists in client/tests/lab-04/ActionsTaken.test.tsx plus ActionsApi.test.tsx; E2E-01 and the Actions subset of E2E-04 exist in e2e/lab-04/. UNIT-02/API-04/API-05/UI-02/E2E-02 now exist for #60; workflow concurrency scenarios in ticket-workflow.api.test.ts complement the earlier assignment/deactivation tests. Other new paths remain planned. The Final-main column remains Planned until release verification. Multiple Test IDs may be scenarios in one file; do not infer test counts from this table.
 
 | Test ID | Type | FR / BR / AC | Scenario and expected result | Planned / implemented test file | Final-main |
 | --- | --- | --- | --- | --- | --- |
 | UNIT-01 | Unit | FR-01/02; BR-02..08; AC-01/02 | Boundary lengths, whitespace, explicit offsets, date limits, booleans, Result/follow-up requirements and all 16 action state pairs; invalid data rejected. | `server/tests/lab-04/action-validation.unit.test.ts` | Planned |
-| UNIT-02 | Unit | FR-04; BR-11..15; AC-05/06 | All 64 Ticket state pairs, owner requirements, integer cycle changes including equal-timestamp reopening, legacy closure and unassigned NEW Ticket cancellation. | `server/tests/lab-04/workflow.unit.test.ts` | Planned |
+| UNIT-02 | Unit | FR-04; BR-11..15; AC-05/06 | All 64 Ticket state pairs, owner requirements, integer cycle changes including equal-timestamp reopening, legacy closure and unassigned NEW Ticket cancellation. | `server/tests/lab-04/ticket-workflow.api.test.ts` (matrix predicate plus real API) | Planned |
 | API-01 | API/integration | FR-01; BR-01..05/09/17; AC-01 | Create correctly parented action, default status, automatic creator, eligible different assignee, first revision and both versions; reject spoofed fields. | `server/tests/lab-04/actions-taken.api.test.ts` | Planned |
 | API-02 | API/integration | FR-02; BR-04..09; AC-02 | Edit/assign/start/complete/cancel; invalid/inactive assignees; missing completion Result/follow-up; terminal parent/action and cross-parent IDs; no-op version/receipt handling and missing/invalid idempotency headers. | `server/tests/lab-04/actions-taken.api.test.ts` | Planned |
 | API-03 | API/integration | FR-02/03; BR-09/10; AC-02/03 | More than one page; stable creation ordering after edits; all current terminal items visible; revisions ordered with immutable snapshots; no delete/history rewrite routes. | `server/tests/lab-04/actions-taken.api.test.ts` | Planned |
@@ -129,3 +129,7 @@ Manual visual review uses the complete checklist in [ui-spec.md](ui-spec.md), re
 ## Document review
 
 Review the Markdown files directly: check numbered requirements, API/UI consistency, relative links and each acceptance criterion's planned tests. Run `git diff --check` for whitespace. The optional Python validator was removed at the student's request; no Python tool is required for this contract. Earlier static-check results describe the historical audit, not an available script or runtime test result.
+
+## Issue #60 feature-branch checks
+
+See [workflow-evidence.md](workflow-evidence.md) for actual commands, red/green results, real concurrency/browser scenarios, regression fixture changes and remaining limits. UNIT-02/API-04/API-05 and workflow CON-02 scenarios are in server/tests/lab-04/ticket-workflow.api.test.ts; UI-02 in client/tests/lab-04/TicketWorkflow.test.tsx; E2E-02 in e2e/lab-04/ticket-resolution.spec.ts. Final-main statuses above remain Planned.

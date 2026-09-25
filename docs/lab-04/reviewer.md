@@ -10,7 +10,7 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 | --- | --- | --- | --- | --- |
 | [#56](https://github.com/BOOky-OS/toktickit/issues/56) | [#57](https://github.com/BOOky-OS/toktickit/pull/57) | docs/56-lab4-contract | Atip-Infa | Approved; merged |
 | [#58](https://github.com/BOOky-OS/toktickit/issues/58) | [#65](https://github.com/BOOky-OS/toktickit/pull/65) | feature/58-actions-foundation | Atip-Infa | Approved; merged |
-| [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Review requested; pending |
+| [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Approved; merged |
 
 ## PR #57 evidence
 
@@ -39,9 +39,12 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 ## PR #66 evidence
 
 - Implementation commit: `a1b5223834f9bb29533fa3e96031c966cd60f66e`; follow-up documentation records this PR and evidence.
-- Target lab4-staging; reviewer Atip-Infa requested. Author BOOky-OS, enhancement label, Lab 4 milestone, real Development link to #59 and Project membership verified. Issue #59 and PR #66 are in PR Review.
+- Target lab4-staging; reviewer Atip-Infa requested. Author BOOky-OS, enhancement label, Lab 4 milestone, real Development link to #59 and Project membership verified. Issue #59 is closed and both Issue/PR Project items are Done.
 - [Assistant-run checks and limitations](actions-ui-evidence.md): 96 client tests, 8 real browser tests, 4 final responsive/keyboard reruns, build and whitespace checks passed.
-- Peer verdict, approved head, author ready/approval/post-merge replies and merge remain pending. Copyable comments are drafts, not posted evidence.
+- [Peer approval](https://github.com/BOOky-OS/toktickit/pull/66#pullrequestreview-5315005371), submitted 2026-09-25 07:45:14 UTC. Summary: Atip-Infa checked roles, lifecycle, retries/conflicts and focus; accepted reported test evidence without rerunning it; no blockers.
+- Approved head: b11f41adaf5ed94dc8da8b02541eed7b0ea59226. Merged by Atip-Infa at 2026-09-25 07:45:31 UTC; merge 99bedd09ee4c0091003df2e843a7aba4f2795bb5 verified in lab4-staging.
+- [Ready comment](https://github.com/BOOky-OS/toktickit/pull/66#issuecomment-5828812403), [approval reply](https://github.com/BOOky-OS/toktickit/pull/66#issuecomment-5828822920), [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/66#issuecomment-5828825706) already exist. No duplicate replies needed.
+- Inline review-thread query returned no threads and no further page. The continuation corrected Issue/Project metadata after the post-merge comment, which had reported those actions before they were applied.
 
 ## Reciprocal reviews
 
@@ -49,4 +52,4 @@ No Lab 4 reciprocal-review evidence has been supplied or verified. Prior Lab 3 r
 
 ## Remaining work
 
-Issue #59 is implemented on `feature/59-actions-ui` from the verified merge above. Its peer review/approval/merge remain pending. Release and final-main evidence belong to #64.
+Issue #60 continues on `feature/60-ticket-workflow` from the verified merge above. Its peer review/approval/merge remain pending. Release and final-main evidence belong to #64.

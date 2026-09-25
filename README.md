@@ -6,7 +6,7 @@ responsive requester-owned Ticketing MVP.
 
 ## Lab 4 Actions Taken foundation
 
-See the [contract](docs/lab-04/specification.md), [API](docs/lab-04/api-spec.md), [UI](docs/lab-04/ui-spec.md), [tests](docs/lab-04/tests.md), [workflow and current limitations](docs/lab-04/workflow.md), [review record](docs/lab-04/reviewer.md) and [AI use](docs/lab-04/ai-use.md). The contract (#56 / PR #57) is peer-approved and merged into lab4-staging. Issue #58 adds the Actions Taken API, additive migration, repeatable seed and isolated tests. See [Lab 4 database/test setup and recovery](docs/lab-04/migration.md). Issue #59 adds the Actions UI; see [UI/browser evidence](docs/lab-04/actions-ui-evidence.md) and run `npm run test:e2e:lab4` with the isolated database. Final Ticket gates and dashboards follow in #60-#62; this is not the final Lab 4 release.
+See the [contract](docs/lab-04/specification.md), [API](docs/lab-04/api-spec.md), [UI](docs/lab-04/ui-spec.md), [tests](docs/lab-04/tests.md), [workflow and current limitations](docs/lab-04/workflow.md), [review record](docs/lab-04/reviewer.md) and [AI use](docs/lab-04/ai-use.md). The contract (#56 / PR #57) is peer-approved and merged into lab4-staging. Issue #58 adds the Actions Taken API, additive migration, repeatable seed and isolated tests. See [Lab 4 database/test setup and recovery](docs/lab-04/migration.md). Issue #59 adds the Actions UI; see [UI/browser evidence](docs/lab-04/actions-ui-evidence.md) and run `npm run test:e2e:lab4` with the isolated database. Issue #60 adds final Ticket gates and feedback; see [workflow evidence](docs/lab-04/workflow-evidence.md). Dashboards follow in #61/#62; this is not the final Lab 4 release.
 
 ## Lab 3 released baseline
 

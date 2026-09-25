@@ -70,6 +70,16 @@ export async function operate(actor: Identity, id: number, operation: Operation,
       if (!canTransition(ticket.currentStatus, next)) throw conflict("INVALID_TRANSITION", "This status transition is unavailable.");
       if (["IN_PROGRESS", "WAITING_FOR_REQUESTER", "RESOLVED"].includes(next)
         && (ticket.ownerId === null || !await eligible(ticket.ownerId))) throw conflict("OWNER_REQUIRED", "Assign an active eligible owner first.");
+      // The shared mutation guard and parent row lock also serialize action writes.
+      // Evaluate gates before history/status updates so failures leave no partial state.
+      if (next === "RESOLVED" || next === "CANCELLED") {
+        const pending = await tx.actionTaken.count({ where: { ticketId: id, status: { in: ["PLANNED", "IN_PROGRESS"] } } });
+        if (next === "CANCELLED" && pending > 0) throw conflict("ACTIVE_ACTIONS", "Cancel pending Actions Taken individually before cancelling this Ticket.");
+        if (next === "RESOLVED") {
+          const completed = await tx.actionTaken.count({ where: { ticketId: id, workCycle: ticket.workCycle, status: "COMPLETED" } });
+          if (pending > 0 || completed === 0) throw conflict("RESOLUTION_BLOCKED", "Review Actions Taken: complete work in the current cycle and finish or cancel all pending actions before resolving.");
+        }
+      }
       const reason = typeof body.reason === "string" ? body.reason.trim() : null;
       data.currentStatus = next;
       const now = new Date();
