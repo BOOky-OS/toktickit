@@ -12,6 +12,8 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 | [#58](https://github.com/BOOky-OS/toktickit/issues/58) | [#65](https://github.com/BOOky-OS/toktickit/pull/65) | feature/58-actions-foundation | Atip-Infa | Approved; merged |
 | [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Approved; merged |
 
+| [#60](https://github.com/BOOky-OS/toktickit/issues/60) | [#67](https://github.com/BOOky-OS/toktickit/pull/67) | feature/60-ticket-workflow | Atip-Infa | Review requested; pending |
+
 ## PR #57 evidence
 
 - Initial contract commit: de6cde5. Audit corrections are subsequent commits on the same PR; use its current head when reviewing.
