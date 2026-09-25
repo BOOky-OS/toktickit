@@ -1,6 +1,6 @@
 # Lab 4 Workflow and Audit
 
-Current work: Issue #60, feature/60-ticket-workflow -> lab4-staging. Prerequisite #59 / PR #66 was approved and merged by Atip-Infa at 99bedd0; Issue/PR items are Done and all author replies already exist.
+Current work: Issue #60 / [PR #67](https://github.com/BOOky-OS/toktickit/pull/67), feature/60-ticket-workflow -> lab4-staging. Both Issue/PR items are in PR Review; Atip-Infa review/merge is pending. Prerequisite #59 / PR #66 was approved and merged by Atip-Infa at 99bedd0; Issue/PR items are Done and all author replies already exist.
 Prerequisite #58 / PR #65 is approved and peer-merged at `3c303e6`; Issue #58 and PR #65 items are Done. Author replies already exist; no duplicates are needed.
 Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
 
@@ -17,7 +17,7 @@ Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual s
 | 7 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | Regression/hardening | #62 Done | feature/63-final-hardening |
 | 8 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | Documentation/release | #63 Done | docs/64-lab4-release |
 
-Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #60 is Started; #61-#64 remain Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
+Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #60 and PR #67 are in PR Review; #61-#64 remain Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
 
 ## Project listing discrepancy, 2026-09-24
 

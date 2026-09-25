@@ -11,7 +11,6 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 | [#56](https://github.com/BOOky-OS/toktickit/issues/56) | [#57](https://github.com/BOOky-OS/toktickit/pull/57) | docs/56-lab4-contract | Atip-Infa | Approved; merged |
 | [#58](https://github.com/BOOky-OS/toktickit/issues/58) | [#65](https://github.com/BOOky-OS/toktickit/pull/65) | feature/58-actions-foundation | Atip-Infa | Approved; merged |
 | [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Approved; merged |
-
 | [#60](https://github.com/BOOky-OS/toktickit/issues/60) | [#67](https://github.com/BOOky-OS/toktickit/pull/67) | feature/60-ticket-workflow | Atip-Infa | Review requested; pending |
 
 ## PR #57 evidence
@@ -47,6 +46,13 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 - Approved head: b11f41adaf5ed94dc8da8b02541eed7b0ea59226. Merged by Atip-Infa at 2026-09-25 07:45:31 UTC; merge 99bedd09ee4c0091003df2e843a7aba4f2795bb5 verified in lab4-staging.
 - [Ready comment](https://github.com/BOOky-OS/toktickit/pull/66#issuecomment-5828812403), [approval reply](https://github.com/BOOky-OS/toktickit/pull/66#issuecomment-5828822920), [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/66#issuecomment-5828825706) already exist. No duplicate replies needed.
 - Inline review-thread query returned no threads and no further page. The continuation corrected Issue/Project metadata after the post-merge comment, which had reported those actions before they were applied.
+
+## PR #67 evidence
+
+- Implementation commit: `47b455546e8310ab12d5ac01f85af6bb07c01797`; subsequent changes record review metadata only.
+- Target lab4-staging; Atip-Infa review requested, BOOky-OS assigned, enhancement label, Lab 4 milestone and real Development link to #60 verified. Issue #60 and PR #67 are in PR Review.
+- [Assistant-run evidence](workflow-evidence.md): 560 server, 107 client, 12 Lab 4 browser tests and 1 affected prior browser flow passed; build and whitespace checks passed.
+- Peer review, approved head, ready/approval/post-merge comment links and merge remain pending. No template is represented as actual review evidence.
 
 ## Reciprocal reviews
 
