@@ -620,13 +620,13 @@ function PlannedRoleHome() {
       {admin && <button className={path === "/admin/users" ? "active" : ""} aria-current={path === "/admin/users" ? "page" : undefined}
         onClick={() => navigate("/admin/users")}>Users</button>}
       <button className={path === "/staff/tickets" ? "active" : ""} aria-current={path === "/staff/tickets" ? "page" : undefined}
-        onClick={() => navigate("/staff/tickets")}>Ticket Queue{admin ? " (read-only)" : ""}</button>
+        onClick={() => navigate("/staff/tickets")}>Ticket Queue</button>
     </nav>
     {path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => navigate("/tickets/" + id)} onHome={() => navigate(homeFor(user!.role))} />
-      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable={!admin} onBack={() => navigate("/staff/tickets")} />
+      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable onBack={() => navigate("/staff/tickets")} />
       : path === "/admin/users" ? <UserManagement actorId={user!.id} /> : <main className="page-content" id="main-content">
       <section className="zen-empty-state">
-        <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator read-only access" : "Role workspace"}</p>
+        <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator workspace" : "Role workspace"}</p>
         <h1>{ticketDetail ? "Ticket Detail" : path === "/staff/tickets" ? "Ticket Queue" : "User Management"}</h1>
         <p>This destination is available to {user?.displayName} under the signed-in role.</p>
       </section>

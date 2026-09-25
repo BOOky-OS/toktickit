@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TicketDetail } from "../../src/TicketDetail.js";
 import * as api from "../../src/api.js";
+vi.mock("../../src/AuthContext.js", async importOriginal => ({ ...await importOriginal<object>(), useAuth: () => ({ user: { id: 1, displayName: "Jennifer Anderson", role: "REQUESTER" } }) }));
 
 const detail: api.TicketDetail = {
   id: 42,
@@ -39,6 +40,7 @@ const active: api.Attachment = {
 
 describe("Ticket Detail", () => {
   beforeEach(() => {
+  vi.spyOn(api, "getActions").mockResolvedValue({ items: [], ticketVersion: 1, page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });
     vi.spyOn(api, "getEntries").mockResolvedValue([]);
     vi.spyOn(api, "getTicket").mockResolvedValue(detail);
     vi.spyOn(api, "getAttachments").mockResolvedValue([active]);

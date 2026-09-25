@@ -17,7 +17,8 @@
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
     "db:status": "docker compose ps",
-    "prisma:validate": "npm run prisma:validate --workspace server"
+    "prisma:validate": "npm run prisma:validate --workspace server",
+    "test:e2e:lab4": "playwright test --config playwright.lab4.config.ts"
   },
   "engines": {
     "node": ">=20"

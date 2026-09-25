@@ -98,7 +98,7 @@ export function TicketCommunication({ ticket, role, onUpdate }: { ticket: Ticket
   async function refresh() { onUpdate(await getTicket(ticket.id)); }
   return <>
     {role === "REQUESTER" && <ResolutionIndication key={`indication-${ticket.id}`} ticket={ticket} onUpdate={onUpdate} />}
-    <EntryStream key={`comments-${ticket.id}`} ticket={ticket} stream="comments" canPost={role !== "ADMIN"} onRefresh={refresh} />
-    {role !== "REQUESTER" && <EntryStream key={`notes-${ticket.id}`} ticket={ticket} stream="notes" canPost={role === "IT_STAFF"} onRefresh={refresh} />}
+    <EntryStream key={`comments-${ticket.id}`} ticket={ticket} stream="comments" canPost={true} onRefresh={refresh} />
+    {role !== "REQUESTER" && <EntryStream key={`notes-${ticket.id}`} ticket={ticket} stream="notes" canPost={true} onRefresh={refresh} />}
   </>;
 }

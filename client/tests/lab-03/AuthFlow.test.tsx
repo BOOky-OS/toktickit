@@ -112,7 +112,7 @@ describe("Lab 3 authentication UI and role shell", () => {
   it.each([
     ["REQUESTER", "/my-tickets", ["My Tickets", "Create Ticket"]],
     ["IT_STAFF", "/staff/tickets", ["Ticket Queue"]],
-    ["ADMIN", "/admin/users", ["Users", "Ticket Queue (read-only)"]],
+    ["ADMIN", "/admin/users", ["Users", "Ticket Queue"]],
   ] as const)("renders %s identity and permitted navigation", async (role, home, links) => {
     const current = { ...requesterUser, role, displayName: role };
     mockAuthenticatedUser(current); if (role === "REQUESTER") vi.spyOn(api, "getTickets").mockResolvedValue({ items: [], page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });

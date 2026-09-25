@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import App from "../../src/App.js";
 import { TicketDetail } from "../../src/TicketDetail.js";
 import * as api from "../../src/api.js";
+vi.mock("../../src/AuthContext.js", async importOriginal => ({ ...await importOriginal<object>(), useAuth: () => ({ user: { id: 1, displayName: "Jennifer Anderson", role: "REQUESTER" } }) }));
 import { mockAuthenticatedUser } from "./auth-test-helpers.js";
 
 const ticket: api.TicketDetail = {
@@ -69,6 +70,7 @@ async function openCreate(user: ReturnType<typeof userEvent.setup>) {
 
 describe("Lab 3 authenticated Requester regression", () => {
   beforeEach(() => {
+  vi.spyOn(api, "getActions").mockResolvedValue({ items: [], ticketVersion: 1, page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });
     mockAuthenticatedUser();
     vi.spyOn(api, "getCategories").mockResolvedValue([ticket.category]);
     vi.spyOn(api, "getRelatedSystems").mockResolvedValue([ticket.relatedSystem]);

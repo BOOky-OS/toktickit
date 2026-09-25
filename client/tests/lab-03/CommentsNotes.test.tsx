@@ -38,9 +38,10 @@ it("maintains independent public/internal drafts and clears only the posted stre
   await user.click(screen.getByRole("button", { name: "Post internal note" }));
   expect(api.postEntry).toHaveBeenLastCalledWith(42, "notes", "Private draft");
 });
-it("keeps Admin read-only and disables posting in terminal states", async () => {
+it("permits Admin posting and disables posting in terminal states", async () => {
   const { unmount } = render(<Harness role="ADMIN" />); await screen.findByText("No internal notes yet.");
-  expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Post public comment" })).toBeEnabled();
+  expect(screen.getByRole("button", { name: "Post internal note" })).toBeEnabled();
   expect(screen.queryByRole("button", { name: "Problem Appears Resolved" })).not.toBeInTheDocument();
   unmount(); render(<Harness initial={{ ...ticket, currentStatus: "CLOSED" }} />);
   expect(screen.getByRole("button", { name: "Post public comment" })).toBeDisabled();
