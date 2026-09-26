@@ -1,6 +1,6 @@
 # Lab 4 REST API Contract
 
-Status: peer-reviewed contract from #56 / PR #57, 2026-09-24. Issue #58 implements the Actions endpoints, Admin/account extensions and workCycle storage/reopen increment. Issue #60 implements the final Ticket gates; dashboard/filter endpoints remain planned for #61/#62. See [workflow evidence](workflow-evidence.md). Business rules and authorization are defined in [specification.md](specification.md). Existing [Lab 3 APIs](../lab-03/api-spec.md) continue except the explicit extensions here.
+Status: peer-reviewed contract from #56 / PR #57, 2026-09-24. Issue #58 implements the Actions endpoints, Admin/account extensions and workCycle storage/reopen increment. Issue #60 implements the final Ticket gates; Staff/Admin dashboard and Staff Queue filter extensions are implemented in #61; Requester dashboard/My Tickets filter extensions remain planned for #62. See [workflow evidence](workflow-evidence.md). Business rules and authorization are defined in [specification.md](specification.md). Existing [Lab 3 APIs](../lab-03/api-spec.md) continue except the explicit extensions here.
 
 ## 1. Common conventions and authorization
 

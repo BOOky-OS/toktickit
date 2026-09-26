@@ -31,6 +31,7 @@ import { validateCreateTicket } from "./tickets/ticket-validation.js";
 import { listTickets, parseTicketList } from "./tickets/list-tickets.js";
 import { listAssignees, parseQueue, staffQueue } from "./tickets/staff-queue.js";
 import { staffOperations } from "./tickets/staff-operations.js";
+import { dashboardRouter } from "./tickets/staff-dashboard.js";
 import { actionsRouter } from "./tickets/actions.js";
 import { communication } from "./tickets/communication.js";
 import { userManagement } from "./auth/user-management.js";
@@ -370,6 +371,7 @@ app.delete("/api/attachments/:attachmentId", async (req: Request, res: Response)
 app.use("/api", staffOperations);
 app.use("/api", communication);
 app.use("/api", actionsRouter);
+app.use("/api", dashboardRouter);
 app.use("/api", userManagement);
 app.use((_req, res) => { res.status(404).json({ error: "Resource is unavailable.", code: "NOT_FOUND" }); });
 

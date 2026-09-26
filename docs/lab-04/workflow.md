@@ -1,6 +1,6 @@
 # Lab 4 Workflow and Audit
 
-Current work: Issue #60 / [PR #67](https://github.com/BOOky-OS/toktickit/pull/67), feature/60-ticket-workflow -> lab4-staging. Both Issue/PR items are in PR Review; Atip-Infa review/merge is pending. Prerequisite #59 / PR #66 was approved and merged by Atip-Infa at 99bedd0; Issue/PR items are Done and all author replies already exist.
+Current work: Issue #61 / [PR #68](https://github.com/BOOky-OS/toktickit/pull/68), feature/61-staff-dashboard -> lab4-staging. Both Issue/PR are in PR Review; Atip-Infa review/merge pending. Prerequisite #60 / PR #67 is peer-approved/merged at 93d2053; Issue/PR items are Done and author replies already exist. Prerequisite #59 / PR #66 was approved and merged by Atip-Infa at 99bedd0; Issue/PR items are Done and all author replies already exist.
 Prerequisite #58 / PR #65 is approved and peer-merged at `3c303e6`; Issue #58 and PR #65 items are Done. Author replies already exist; no duplicates are needed.
 Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
 
@@ -17,7 +17,7 @@ Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual s
 | 7 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | Regression/hardening | #62 Done | feature/63-final-hardening |
 | 8 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | Documentation/release | #63 Done | docs/64-lab4-release |
 
-Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #60 and PR #67 are in PR Review; #61-#64 remain Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
+Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #61 and PR #68 are in PR Review; #62-#64 remain Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
 
 ## Project listing discrepancy, 2026-09-24
 
@@ -32,8 +32,19 @@ A fresh Project collection query after opening PR #65 returned 48 items, includi
 
 ## Review and release
 
-Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. The contract review and merge are verified in [reviewer.md](reviewer.md). Issue #58 is also verified complete. Issue #59 is verified complete; Issue #60 requires peer review/merge before #61 begins.
+Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. The contract review and merge are verified in [reviewer.md](reviewer.md). Issue #58 is also verified complete. Issue #59 is verified complete; Issue #60 is verified complete; #61 requires peer review/merge before #62 begins.
 
 For #64, present complete pre-release artifacts and ask the exact documentation gate from root skill.md before creating a main PR. Peer reviews/merges release; final-main test/evidence verification precedes closing #64. This contract PR does not authorize main release.
 
 PR #66 continuation: real Development link to #59, reviewer, author assignee, enhancement label, Lab 4 milestone and both PR Review Project items were verified on 2026-09-25.
+
+## Student review gates before peer review (direct instruction, 2026-09-26)
+
+These two additional gates are required by the student and take precedence over automatic PR/reviewer handoff:
+
+1. **#63 Final Regression and Hardening:** prepare the implementation, checks and a runnable UI preview/screenshots, then pause for the student to inspect the UI and request changes. Apply requested changes and obtain explicit confirmation before requesting peer review or handing this increment to Atip-Infa. Complete this student review before proceeding to the final documentation package (#64).
+2. **#64 Documentation and Release:** prepare the actual documents/report and review records/comment drafts for the student to inspect. Pause for their corrections, apply them and obtain explicit confirmation before requesting peer review or handing this increment to Atip-Infa. Do not treat completion of the drafts as permission to send them for peer review.
+
+Do authorized preparation before each pause so the student can review a concrete result. A general request to continue, a prior peer approval, or approval at the other gate does not satisfy either gate. Do not open a ready-for-review PR, request a reviewer, or move to PR Review for these increments before their respective student confirmation. If a draft PR is used for preview, keep it draft with no peer review request.
+
+The existing explicit documentation gate before any main-target PR remains required as well. These gates do not change the current #60 PR or the sequential #61/#62 workflow.

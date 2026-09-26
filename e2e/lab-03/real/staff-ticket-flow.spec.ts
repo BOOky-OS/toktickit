@@ -20,7 +20,8 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   expect(data.currentStatus).toBe("NEW");
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "staff");
-  await expect(page).toHaveURL(/\/staff\/tickets$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
+  await page.getByRole("navigation").getByRole("button", {name:"Ticket Queue",exact:true}).click();
   await page.getByLabel("Search", { exact: true }).fill("Real browser laptop repair");
   await page.getByRole("button", { name: "Apply filters" }).click();
   await page.getByRole("button", { name: `Open ${data.ticketNumber}`, exact: true }).click();
@@ -65,7 +66,8 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   expect((await readTicket()).currentStatus).toBe(data.currentStatus);
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "staff");
-  await expect(page).toHaveURL(/\/staff\/tickets$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
+  await page.getByRole("navigation").getByRole("button", {name:"Ticket Queue",exact:true}).click();
   await page.goto(ticketPath);
   // Lab 4 requires actual completed work before formal resolution.
   await page.getByRole("button", { name: "Add action" }).click();
@@ -97,7 +99,7 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   expect(reopened.requesterResolutionIndicatedAt).toBeNull();
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "admin");
-  await expect(page).toHaveURL(/\/admin\/users$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
   await page.goto(ticketPath);
   await expect(page.getByText("PRIVATE_REAL_E2E_NOTE", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Change status", exact: true })).toBeVisible();

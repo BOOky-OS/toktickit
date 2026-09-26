@@ -11,7 +11,8 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 | [#56](https://github.com/BOOky-OS/toktickit/issues/56) | [#57](https://github.com/BOOky-OS/toktickit/pull/57) | docs/56-lab4-contract | Atip-Infa | Approved; merged |
 | [#58](https://github.com/BOOky-OS/toktickit/issues/58) | [#65](https://github.com/BOOky-OS/toktickit/pull/65) | feature/58-actions-foundation | Atip-Infa | Approved; merged |
 | [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Approved; merged |
-| [#60](https://github.com/BOOky-OS/toktickit/issues/60) | [#67](https://github.com/BOOky-OS/toktickit/pull/67) | feature/60-ticket-workflow | Atip-Infa | Review requested; pending |
+| [#60](https://github.com/BOOky-OS/toktickit/issues/60) | [#67](https://github.com/BOOky-OS/toktickit/pull/67) | feature/60-ticket-workflow | Atip-Infa | Approved; merged |
+| [#61](https://github.com/BOOky-OS/toktickit/issues/61) | [#68](https://github.com/BOOky-OS/toktickit/pull/68) | feature/61-staff-dashboard | Atip-Infa | Review requested; pending |
 
 ## PR #57 evidence
 
@@ -50,9 +51,19 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 ## PR #67 evidence
 
 - Implementation commit: `47b455546e8310ab12d5ac01f85af6bb07c01797`; subsequent changes record review metadata only.
-- Target lab4-staging; Atip-Infa review requested, BOOky-OS assigned, enhancement label, Lab 4 milestone and real Development link to #60 verified. Issue #60 and PR #67 are in PR Review.
+- Target lab4-staging; Atip-Infa review requested, BOOky-OS assigned, enhancement label, Lab 4 milestone and real Development link to #60 verified. Issue #60 is closed and both Issue/PR Project items are Done.
 - [Assistant-run evidence](workflow-evidence.md): 560 server, 107 client, 12 Lab 4 browser tests and 1 affected prior browser flow passed; build and whitespace checks passed.
-- Peer review, approved head, ready/approval/post-merge comment links and merge remain pending. No template is represented as actual review evidence.
+- [Peer approval](https://github.com/BOOky-OS/toktickit/pull/67#pullrequestreview-5325574938), submitted 2026-09-26 10:12:24 UTC. Summary: Atip-Infa checked gates, cycles, permissions and UI feedback; reviewed reported checks without rerunning them; no blockers.
+- Approved head b0691c2df672c79570685e479fee12ce46a47deb. Merged by Atip-Infa at 2026-09-26 10:13:07 UTC, merge 93d205335899d669728aca46adc2dbc7cf7b5ef2 verified in lab4-staging.
+- [Ready comment](https://github.com/BOOky-OS/toktickit/pull/67#issuecomment-5837498069), [approval reply](https://github.com/BOOky-OS/toktickit/pull/67#issuecomment-5845381874), [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/67#issuecomment-5845384563) already exist; no duplicates needed. Inline review-thread API returned zero threads and no further page.
+- Issue/Project completion metadata was corrected during continuation after the author's post-merge comment, which had described those actions before they were applied.
+
+## PR #68 evidence
+
+- Implementation commit: `67b3e8dfd6b0d573d7a9e57a08b548b39af657a9`; later documentation-only commit records this PR.
+- Target lab4-staging; reviewer Atip-Infa requested, author BOOky-OS assigned, enhancement label, Lab 4 milestone, real Development link to #61 and both Project items in PR Review verified.
+- [Assistant-run evidence](staff-dashboard-evidence.md): 568 server, 111 client, 16 Lab 4 browser tests and 1 affected prior browser flow passed; build passed. Performance smoke p95 53.02 ms, four dashboard reads, 1000 Tickets/3000 actions.
+- Peer verdict/approved head, ready/approval/post-merge comment links and merge remain pending; no template is actual review evidence.
 
 ## Reciprocal reviews
 
@@ -60,4 +71,4 @@ No Lab 4 reciprocal-review evidence has been supplied or verified. Prior Lab 3 r
 
 ## Remaining work
 
-Issue #60 continues on `feature/60-ticket-workflow` from the verified merge above. Its peer review/approval/merge remain pending. Release and final-main evidence belong to #64.
+Issue #61 continues on `feature/61-staff-dashboard` from the verified merge above. Its peer review/approval/merge remain pending. Release and final-main evidence belong to #64.

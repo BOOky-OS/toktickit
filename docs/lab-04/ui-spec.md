@@ -1,6 +1,6 @@
 # Lab 4 UI Specification
 
-Status: peer-reviewed contract from Issue #56 / PR #57, 2026-09-24. Issue #59 implements the Actions Taken section and shared Admin permission controls; Issue #60 implements final Ticket gate feedback and confirmation focus. Dashboards remain planned. See [UI implementation evidence](actions-ui-evidence.md) for actual tests, screenshots and limits. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
+Status: peer-reviewed contract from Issue #56 / PR #57, 2026-09-24. Issue #59 implements the Actions Taken section and shared Admin permission controls; Issue #60 implements final Ticket gate feedback and confirmation focus. Issue #61 implements Staff/Admin dashboard navigation, states and URL-based Queue drill-down. Requester dashboard remains planned for #62. See [UI implementation evidence](actions-ui-evidence.md) for actual tests, screenshots and limits. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
 
 ## 1. Shared shell and navigation
 
