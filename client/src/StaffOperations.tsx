@@ -21,6 +21,8 @@ export function StaffOperations({ ticket, editable, onUpdate }: { ticket: Ticket
   const [retry, setRetry] = useState(0);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [gate, setGate] = useState("");
+  const saving = useRef(false);
   const [blocked, setBlocked] = useState(false);
   const [confirm, setConfirm] = useState<"owner" | "status" | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -41,16 +43,16 @@ export function StaffOperations({ ticket, editable, onUpdate }: { ticket: Ticket
     return () => { live = false; };
   }, [ticket.id, ticket.version, editable, retry]);
   useEffect(() => {
-    if (confirm) dialog.current?.showModal();
+    if (confirm) { dialog.current?.showModal(); dialog.current?.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus(); }
     else if (dialog.current?.open) { dialog.current.close(); trigger.current?.focus(); }
   }, [confirm]);
   function ask(operation: "owner" | "status") { trigger.current = document.activeElement as HTMLElement; setConfirm(operation); }
   async function save(operation: Operation) {
-    if (busy || blocked) return;
+    if (saving.current || busy || blocked) return;
     if (operation === "status" && requiresReason && (reason.trim().length < 5 || reason.trim().length > 1000)) {
       setMessage("Enter a public reason between 5 and 1000 characters."); return;
     }
-    setBusy(true); setMessage("");
+    saving.current = true; setBusy(true); setMessage(""); setGate("");
     try {
       const body = operation === "owner" ? { ownerId: owner ? Number(owner) : null, confirmed: true }
         : operation === "priority" ? { itPriority: priority }
@@ -61,20 +63,26 @@ export function StaffOperations({ ticket, editable, onUpdate }: { ticket: Ticket
       setConfirm(null); setMessage("Ticket updated.");
     } catch (error) {
       setConfirm(null);
-      if (!(error instanceof ApiError) || error.status >= 500 || error.status === 409) {
+      if (error instanceof ApiError && ["RESOLUTION_BLOCKED", "ACTIVE_ACTIONS"].includes(error.code)) {
+        setGate(error.code); setBlocked(true);
+        setMessage(error.code === "RESOLUTION_BLOCKED"
+          ? "Complete work in the current cycle and finish or cancel every pending action before resolving. Your draft is retained."
+          : "Cancel pending actions individually before cancelling this Ticket. Your draft is retained.");
+      } else if (!(error instanceof ApiError) || error.status >= 500 || error.status === 409) {
         setBlocked(true); setConfirm(null); setMessage("Ticket may have changed. Your draft is retained. Reload and review before saving again.");
       } else setMessage(error.status === 403 ? "Your account cannot perform this operation." : error.status === 404 ? "Ticket is unavailable." : "Check your selection, confirmation and public reason.");
-    } finally { setBusy(false); }
+    } finally { saving.current = false; setBusy(false); }
   }
   async function reload() {
     setBusy(true);
-    try { onUpdate(await getTicket(ticket.id)); setBlocked(false); setMessage("Latest Ticket loaded. Review current values and your retained draft before saving."); }
+    try { onUpdate(await getTicket(ticket.id)); setBlocked(false); setGate(""); setMessage("Latest Ticket loaded. Review current values and your retained draft before saving."); }
     catch { setMessage("Unable to reload Ticket. Your draft is retained. Try again."); }
     finally { setBusy(false); }
   }
   return <section className="attachment-section" aria-labelledby="staff-operations-heading">
     <h2 id="staff-operations-heading">{editable ? "Ticket operations" : "Status history"}</h2>
     {message && <p role="status">{message}</p>}
+    {gate && <a href="#actions-heading" onClick={() => document.getElementById("actions-heading")?.focus()}>Review Actions Taken</a>}
     {blocked && <button className="zen-button zen-button--secondary" disabled={busy} onClick={() => void reload()}>Reload Ticket</button>}
     {editable && <>
       {terminal && <p>Assignment and priority are read-only for this status.</p>}
@@ -94,13 +102,22 @@ export function StaffOperations({ ticket, editable, onUpdate }: { ticket: Ticket
             <option value="">Choose next status</option>{status && !options.includes(status) && <option value={status} disabled>{label(status)} (no longer available)</option>}
             {options.map(s => <option key={s} value={s}>{label(s)}</option>)}
           </select>{requiresOwner && !validOwner && <p>Assign an active eligible owner before entering this status.</p>}
-          <button className="zen-button zen-button--primary" disabled={!options.includes(status) || (requiresOwner && !validOwner)} onClick={() => ask("status")}>Change status</button></div>
+          {status === "RESOLVED" && <p id="workflow-gate-help">Resolve requires completed work in the current work cycle and no pending actions. Reopened Tickets need new work.</p>}
+          {status === "CANCELLED" && <p id="workflow-gate-help">Cancel each pending action first. Changing Ticket status never automatically changes Actions Taken.</p>}
+          <button className="zen-button zen-button--primary" aria-describedby={["RESOLVED", "CANCELLED"].includes(status) ? "workflow-gate-help" : undefined} disabled={!options.includes(status) || (requiresOwner && !validOwner)} onClick={() => ask("status")}>Change status</button></div>
         </div>
         <label htmlFor="staff-reason">Public status reason{requiresReason ? " (required)" : " (optional)"}</label>
         <p>Visible to the requester. Required reasons must contain 5–1000 characters.</p>
         <textarea id="staff-reason" className="zen-field" value={reason} onChange={e => setReason(e.target.value)} maxLength={1000} required={requiresReason} />
       </fieldset>
-      <dialog ref={dialog} aria-labelledby="staff-confirm-title" onCancel={e => { if (busy) e.preventDefault(); else setConfirm(null); }} style={{ maxWidth: "min(32rem, 90vw)", borderRadius: "1rem" }}>
+      <dialog className="workflow-dialog" onKeyDown={e => {
+        if (e.key !== "Tab") return;
+        const controls = Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"));
+        const first = controls[0], last = controls.at(-1);
+        if (!first) { e.preventDefault(); return; }
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }} ref={dialog} aria-labelledby="staff-confirm-title" onCancel={e => { if (busy) e.preventDefault(); else setConfirm(null); }}>
         <h2 id="staff-confirm-title">{confirm === "owner" ? "Confirm owner change" : "Confirm status change"}</h2>
         <p>{confirm === "owner" ? `Assign responsibility to ${owners.find(o => String(o.id) === owner)?.displayName ?? "Unassigned"}?` : `Change status from ${label(ticket.currentStatus)} to ${label(status)}?`}</p>
         {confirm === "status" && reason && <p style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>Public reason: {reason}</p>}
