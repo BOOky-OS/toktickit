@@ -2,7 +2,9 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { ApiError } from "../auth/security.js";
 import { parseTicketList } from "./list-tickets.js";
 
-const keys = ["search", "currentStatus", "requestedPriority", "itPriority", "categoryId", "relatedSystemId", "owner", "sortBy", "sortDir", "page", "pageSize"];
+import { dashboardFilters, dashboardFilterKeys } from "./dashboard-filters.js";
+
+const keys = ["search", "currentStatus", "requestedPriority", "itPriority", "categoryId", "relatedSystemId", "owner", "sortBy", "sortDir", "page", "pageSize", ...dashboardFilterKeys];
 const validation = (fieldErrors: Record<string, string>) => new ApiError(400, "VALIDATION_ERROR", "Validation failed.", fieldErrors);
 export function parseQueue(query: Record<string, unknown>, actorId: number) {
   if (Object.keys(query).some(key => !keys.includes(key) || typeof query[key] !== "string")) {
@@ -23,7 +25,8 @@ export function parseQueue(query: Record<string, unknown>, actorId: number) {
     && (!/^[1-9][0-9]*$/.test(owner) || !Number.isSafeInteger(Number(owner)))) {
     throw validation({ owner: "Choose an eligible owner, me or unassigned." });
   }
-  return { ...parsed.value, sortBy: query.sortBy === "itPriority" ? "itPriority" as const : parsed.value.sortBy,
+  const dashboardWhere = dashboardFilters(query, actorId);
+  return { dashboardWhere, ...parsed.value, sortBy: query.sortBy === "itPriority" ? "itPriority" as const : parsed.value.sortBy,
     itPriority: query.itPriority as "LOW" | "MEDIUM" | "HIGH" | undefined, owner };
 }
 
@@ -43,6 +46,7 @@ export async function staffQueue(prisma: PrismaClient, input: ReturnType<typeof 
     if (Object.keys(errors).length) throw validation(errors);
     const search = input.search?.replace(/[\\%_]/g, char => `\\${char}`);
     const where: Prisma.TicketWhereInput = {
+      ...input.dashboardWhere,
       ...(search ? { OR: [
         { ticketNumber: { contains: search, mode: "insensitive" } },
         { summary: { contains: search, mode: "insensitive" } },

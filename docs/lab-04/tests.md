@@ -133,3 +133,7 @@ Review the Markdown files directly: check numbered requirements, API/UI consiste
 ## Issue #60 feature-branch checks
 
 See [workflow-evidence.md](workflow-evidence.md) for actual commands, red/green results, real concurrency/browser scenarios, regression fixture changes and remaining limits. UNIT-02/API-04/API-05 and workflow CON-02 scenarios are in server/tests/lab-04/ticket-workflow.api.test.ts; UI-02 in client/tests/lab-04/TicketWorkflow.test.tsx; E2E-02 in e2e/lab-04/ticket-resolution.spec.ts. Final-main statuses above remain Planned.
+
+## Issue #61 feature-branch checks
+
+DASH-02/DASH-03/PERF-01/UI-03 and the Staff portion of E2E-03 now exist in their planned files: staff-dashboard.api.test.ts, dashboard-drilldown.api.test.ts, dashboard-performance.integration.test.ts, StaffDashboard.test.tsx and dashboards.spec.ts. See [Staff dashboard evidence](staff-dashboard-evidence.md) for actual commands/results, independent SQL, performance dataset/query plan, screenshots and limits. Requester scenarios remain #62; final-main statuses remain Planned.

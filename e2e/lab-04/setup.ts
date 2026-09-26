@@ -21,7 +21,7 @@ export default async function setup() {
   try {
     const passwordHash = await hashPassword("Lab4-test-only-password!");
     const users: Record<string, number> = {};
-    for (const [name, role] of [["requester", "REQUESTER"], ["other", "REQUESTER"], ["staff", "IT_STAFF"], ["second", "IT_STAFF"], ["admin", "ADMIN"], ["workflowdesktop", "IT_STAFF"], ["workflowtablet", "IT_STAFF"], ["workflowmobile", "IT_STAFF"]] as const) {
+    for (const [name, role] of [["requester", "REQUESTER"], ["other", "REQUESTER"], ["staff", "IT_STAFF"], ["second", "IT_STAFF"], ["admin", "ADMIN"], ["workflowdesktop", "IT_STAFF"], ["workflowtablet", "IT_STAFF"], ["workflowmobile", "IT_STAFF"], ["dashdesktop", "IT_STAFF"], ["dashtablet", "IT_STAFF"], ["dashmobile", "IT_STAFF"]] as const) {
       users[name] = (await fixture.prisma.user.create({ data: { displayName: `E2E ${name}`, email: `${name}@lab4.example`, role, passwordHash, mustChangePassword: false } })).id;
     }
     const category = await fixture.prisma.category.create({ data: { name: "Network" } });
