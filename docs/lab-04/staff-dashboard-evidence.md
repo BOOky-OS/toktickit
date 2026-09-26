@@ -2,6 +2,8 @@
 
 Assistant-run work on `feature/61-staff-dashboard`, based on the verified peer merge of PR #67 (`93d205335899d669728aca46adc2dbc7cf7b5ef2`). These are feature-branch results, not final-main or independent peer execution.
 
+Implementation commit: `67b3e8dfd6b0d573d7a9e57a08b548b39af657a9`; [PR #68](https://github.com/BOOky-OS/toktickit/pull/68) targets lab4-staging. Follow-up commit records documentation/review metadata only. Peer approval/merge remain pending.
+
 ## Delivered scope
 
 - Staff/Admin dashboard with authoritative counts: unassigned active Tickets, own active Tickets, own pending actions, all eight status buckets and three active-priority buckets, including zeros.
