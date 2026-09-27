@@ -1,0 +1,13 @@
+.dashboard { overflow-wrap: anywhere; min-width: 0; }
+.dashboard-metrics { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap: 1rem; margin: 1rem 0 1.5rem; }
+.dashboard-metric { border: 1px solid #ccdcd3; border-radius: 1rem; background: #f4faf6; min-width: 0; }
+.dashboard-metric a { display: flex; flex-direction: column; padding: 1rem; min-height: 7rem; color: #205338; text-decoration: none; }
+.dashboard-metric strong { font-size: 2rem; }
+.dashboard-lists { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.25rem; }
+.dashboard-list { border: 1px solid #ccdcd3; border-radius: 1rem; padding: 1rem; min-width: 0; }
+.dashboard-list ul { list-style: none; padding: 0; }
+.dashboard-list li { padding: .8rem 0; border-bottom: 1px solid #dbe8df; }
+.dashboard a { color: #205338; }
+.dashboard a:focus-visible { outline: 3px solid #216f45; outline-offset: 3px; }
+.dashboard-list a, .dashboard > p a { display: inline-block; min-height: 44px; }
+@media(max-width:1023px) { .dashboard-lists { grid-template-columns: 1fr; } }

@@ -2,7 +2,7 @@
 
 Assistant-run implementation on `feature/60-ticket-workflow`, based on the verified Atip-Infa merge of PR #66 (`99bedd09ee4c0091003df2e843a7aba4f2795bb5`). These are feature-branch checks, not final-main or independent peer execution.
 
-Implementation commit: `47b455546e8310ab12d5ac01f85af6bb07c01797`; [PR #67](https://github.com/BOOky-OS/toktickit/pull/67) targets lab4-staging. The following commit only records PR/evidence metadata. Peer review/merge remain pending.
+Implementation commit: `47b455546e8310ab12d5ac01f85af6bb07c01797`; [PR #67](https://github.com/BOOky-OS/toktickit/pull/67) targets lab4-staging. The following commit only records PR/evidence metadata. Continuation: PR #67 was approved and peer-merged; see reviewer.md for the actual approved head, merge and replies.
 
 ## Implemented behavior
 

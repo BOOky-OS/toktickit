@@ -89,6 +89,7 @@ export const asyncRoute = (fn: (req: Request, res: Response) => Promise<unknown>
 export function permittedRoles(method: string, path: string): readonly UserRole[] | null {
   const read = method === "GET" || method === "HEAD";
   const all: UserRole[] = ["REQUESTER", "IT_STAFF", "ADMIN"];
+  if (/^\/dashboards\/staff\/?$/.test(path)) return read ? ["IT_STAFF", "ADMIN"] : [];
   if (path.startsWith("/admin/")) return ["ADMIN"];
   if (/^\/tickets\/[^/]+\/actions(?:\/|$)/.test(path)) return read && !/\/history\/?$/.test(path) ? all : ["IT_STAFF", "ADMIN"];
   if (path.startsWith("/staff/")) return ["IT_STAFF", "ADMIN"];

@@ -232,6 +232,7 @@ export async function checkSystem(): Promise<SystemStatus> {
 }
 
 export interface StaffQueueOptions extends Omit<TicketListOptions, "sortBy"> {
+  statusGroup?: string; actionAssignee?: string; updatedSince?: string; updatedBefore?: string; resolvedSince?: string; resolvedBefore?: string;
   sortBy?: TicketSortBy | "itPriority";
   itPriority?: RequestedPriority;
   owner?: string;
@@ -338,4 +339,16 @@ export async function writeAction(ticketId: number, actionId: number | null, ope
   });
   if (!response.ok) throw await responseError(response, "Unable to save action.");
   return { ...await response.json(), replayed: response.headers.get("Idempotency-Replayed") === "true" };
+}
+
+export interface StaffDashboardData {
+  generatedAt: string; timeZone: string; recentWindow: {from:string;to:string};
+  metrics: {unassignedTickets:number;myOwnedTickets:number;myPendingActions:number;byStatus:Record<string,number>;activeByPriority:Record<string,number>};
+  recentTickets:StaffQueueItem[]; urgentTickets:StaffQueueItem[];
+  myPendingActions:Array<{id:number;ticketId:number;description:string;status:string;updatedAt:string;ticket:{id:number;ticketNumber:string;summary:string;currentStatus:string}}>;
+}
+export async function getStaffDashboard():Promise<StaffDashboardData> {
+  const response=await apiFetch("/api/dashboards/staff");
+  if(!response.ok)throw await responseError(response,"Unable to load dashboard.");
+  return response.json() as Promise<StaffDashboardData>;
 }

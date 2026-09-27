@@ -15,11 +15,11 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function homeFor(role: api.UserRole) {
-  return role === "REQUESTER" ? "/my-tickets" : role === "IT_STAFF" ? "/staff/tickets" : "/admin/users";
+  return role === "REQUESTER" ? "/my-tickets" : "/staff/dashboard";
 }
 export function navigate(path: string, replace = false) {
   if (!replace && !window.dispatchEvent(new Event("toktickit:before-navigate", { cancelable: true }))) return;
-  if (window.location.pathname !== path) window.history[replace ? "replaceState" : "pushState"]({}, "", path);
+  if (window.location.pathname + window.location.search + window.location.hash !== path) window.history[replace ? "replaceState" : "pushState"]({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
 

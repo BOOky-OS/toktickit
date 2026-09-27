@@ -15,6 +15,7 @@ import { AuthProvider, homeFor, navigate, useAuth } from "./AuthContext.js";
 import { ApplicationShell, ChangePasswordScreen, LoginScreen, SessionFailure, SessionLoading } from "./AuthScreens.js";
 import type { UserRole } from "./api.js";
 import { MyTickets } from "./MyTickets.js";
+import { StaffDashboard } from "./StaffDashboard.js";
 import { StaffTicketQueue } from "./StaffTicketQueue.js";
 import { UserManagement } from "./UserManagement.js";
 import { TicketDetail } from "./TicketDetail.js";
@@ -606,6 +607,7 @@ function ServiceDesk() {
   );
 }
 function PlannedRoleHome() {
+  const queueReturn = useRef("/staff/tickets");
   const { user } = useAuth();
   const [path, setPath] = useState(window.location.pathname);
   useEffect(() => {
@@ -617,13 +619,14 @@ function PlannedRoleHome() {
   const ticketDetail = /^\/tickets\/[1-9][0-9]*$/.test(path);
   return <>
     <nav className="app-nav" aria-label="Service desk">
+      <button className={path === "/staff/dashboard" ? "active" : ""} aria-current={path === "/staff/dashboard" ? "page" : undefined} onClick={() => navigate("/staff/dashboard")}>Dashboard</button>
       {admin && <button className={path === "/admin/users" ? "active" : ""} aria-current={path === "/admin/users" ? "page" : undefined}
         onClick={() => navigate("/admin/users")}>Users</button>}
       <button className={path === "/staff/tickets" ? "active" : ""} aria-current={path === "/staff/tickets" ? "page" : undefined}
         onClick={() => navigate("/staff/tickets")}>Ticket Queue</button>
     </nav>
-    {path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => navigate("/tickets/" + id)} onHome={() => navigate(homeFor(user!.role))} />
-      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable onBack={() => navigate("/staff/tickets")} />
+    {path === "/staff/dashboard" ? <StaffDashboard name={user!.displayName} /> : path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => { queueReturn.current = window.location.pathname + window.location.search; navigate("/tickets/" + id); }} onHome={() => navigate(homeFor(user!.role))} />
+      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable onBack={() => navigate(queueReturn.current)} />
       : path === "/admin/users" ? <UserManagement actorId={user!.id} /> : <main className="page-content" id="main-content">
       <section className="zen-empty-state">
         <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator workspace" : "Role workspace"}</p>
@@ -644,8 +647,8 @@ function AccessUnavailable() {
 function routeAllowed(role: UserRole, path: string) {
   if (path === "/change-password") return true;
   if (role === "REQUESTER") return path === "/my-tickets" || path === "/tickets/new" || /^\/tickets\/[1-9][0-9]*$/.test(path);
-  if (role === "IT_STAFF") return path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
-  return path === "/admin/users" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  if (role === "IT_STAFF") return path === "/staff/dashboard" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  return path === "/staff/dashboard" || path === "/admin/users" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
 }
 function AuthenticatedApp() {
   const { user } = useAuth();

@@ -10,6 +10,7 @@ function authError(status: number, code: string, message = "Safe error", fields:
 }
 describe("Lab 3 authentication UI and role shell", () => {
   beforeEach(() => {
+    vi.spyOn(api, "getStaffDashboard").mockRejectedValue(new Error("No fixture dashboard"));
     localStorage.clear(); sessionStorage.clear(); window.history.replaceState({}, "", "/login");
   });
   afterEach(() => { vi.restoreAllMocks(); localStorage.clear(); sessionStorage.clear(); });
@@ -111,8 +112,8 @@ describe("Lab 3 authentication UI and role shell", () => {
   });
   it.each([
     ["REQUESTER", "/my-tickets", ["My Tickets", "Create Ticket"]],
-    ["IT_STAFF", "/staff/tickets", ["Ticket Queue"]],
-    ["ADMIN", "/admin/users", ["Users", "Ticket Queue"]],
+    ["IT_STAFF", "/staff/dashboard", ["Dashboard", "Ticket Queue"]],
+    ["ADMIN", "/staff/dashboard", ["Dashboard", "Users", "Ticket Queue"]],
   ] as const)("renders %s identity and permitted navigation", async (role, home, links) => {
     const current = { ...requesterUser, role, displayName: role };
     mockAuthenticatedUser(current); if (role === "REQUESTER") vi.spyOn(api, "getTickets").mockResolvedValue({ items: [], page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });

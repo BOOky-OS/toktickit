@@ -4,13 +4,14 @@ import userEvent from "@testing-library/user-event";
 import { StaffTicketQueue } from "../../src/StaffTicketQueue.js";
 import { TicketDetail } from "../../src/TicketDetail.js";
 import * as api from "../../src/api.js";
-vi.mock("../../src/AuthContext.js", () => ({ useAuth: () => ({ user: { id: 4, displayName: "Assigned Staff", role: "IT_STAFF" } }) }));
+vi.mock("../../src/AuthContext.js", async (original) => ({ ...await original<typeof import("../../src/AuthContext.js")>(), useAuth: () => ({ user: { id: 4, displayName: "Assigned Staff", role: "IT_STAFF" } }) }));
 
 const item: api.StaffQueueItem = { id: 42, ticketNumber: "TKT-2026-000042", summary: "Battery drains quickly", requester: { id: 1, displayName: "Requester" },
   category: { id: 2, name: "Hardware" }, relatedSystem: { id: 3, name: "Laptop" }, requestedPriority: "MEDIUM", itPriority: "HIGH", currentStatus: "WAITING_FOR_REQUESTER",
   ticketDate: "2026-09-01T00:00:00Z", updatedAt: "2026-09-02T00:00:00Z", owner: { id: 4, displayName: "Assigned Staff", role: "IT_STAFF" }, version: 1 };
 const result: api.StaffQueueResponse = { items: [item], page: 1, pageSize: 10, totalItems: 11, totalPages: 2, hasNextPage: true, hasPreviousPage: false };
 beforeEach(() => {
+  window.history.replaceState({}, "", "/staff/tickets");
   vi.spyOn(api, "getActions").mockResolvedValue({ items: [], ticketVersion: 1, page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });
   vi.spyOn(api, "getCategories").mockResolvedValue([item.category]);
   vi.spyOn(api, "getRelatedSystems").mockResolvedValue([item.relatedSystem]);

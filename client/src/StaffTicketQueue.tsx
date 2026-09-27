@@ -2,17 +2,19 @@ import { FormEvent, useEffect, useState } from "react";
 import { ApiError, Category, getAssignees, getCategories, getRelatedSystems, getStaffQueue,
   StaffQueueItem, StaffQueueOptions, StaffQueueResponse, TicketOwner } from "./api.js";
 import "./staff-queue.css";
+import { navigate } from "./AuthContext.js";
 
 const statuses = ["NEW", "OPEN", "IN_PROGRESS", "WAITING_FOR_REQUESTER", "RESOLVED", "CLOSED", "REOPENED", "CANCELLED"];
 const priorities = ["LOW", "MEDIUM", "HIGH"];
 export const queueLabel = (s: string) => s.charAt(0) + s.slice(1).toLowerCase().replaceAll("_", " ");
-type Controls = Record<"search" | "currentStatus" | "categoryId" | "relatedSystemId" | "requestedPriority" | "itPriority" | "owner" | "sortBy" | "sortDir" | "pageSize", string>;
-const defaults: Controls = { search: "", currentStatus: "", categoryId: "", relatedSystemId: "", requestedPriority: "", itPriority: "", owner: "", sortBy: "updatedAt", sortDir: "desc", pageSize: "10" };
+type Controls = Record<"statusGroup" | "actionAssignee" | "updatedSince" | "updatedBefore" | "resolvedSince" | "resolvedBefore" | "search" | "currentStatus" | "categoryId" | "relatedSystemId" | "requestedPriority" | "itPriority" | "owner" | "sortBy" | "sortDir" | "pageSize", string>;
+const defaults: Controls = { statusGroup: "", actionAssignee: "", updatedSince: "", updatedBefore: "", resolvedSince: "", resolvedBefore: "", search: "", currentStatus: "", categoryId: "", relatedSystemId: "", requestedPriority: "", itPriority: "", owner: "", sortBy: "updatedAt", sortDir: "desc", pageSize: "10" };
 
+function readQueue() { const params = new URLSearchParams(window.location.search); const controls = {...defaults}; for (const key of Object.keys(defaults) as Array<keyof Controls>) controls[key] = params.get(key) ?? defaults[key]; return {controls,page:Number(params.get("page") ?? 1)}; }
 export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; onOpen: (id: number) => void; onHome: () => void }) {
-  const [draft, setDraft] = useState(defaults);
-  const [applied, setApplied] = useState(defaults);
-  const [page, setPage] = useState(1);
+  const [draft, setDraft] = useState(() => readQueue().controls);
+  const [applied, setApplied] = useState(() => readQueue().controls);
+  const [page, setPage] = useState(() => readQueue().page);
   const [retry, setRetry] = useState(0);
   const [data, setData] = useState<StaffQueueResponse | null>(null);
   const [state, setState] = useState("loading");
@@ -41,14 +43,17 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
       });
     return () => { live = false; };
   }, [applied, page, retry]);
+  useEffect(() => { const read = () => { const next=readQueue(); setDraft(next.controls);setApplied(next.controls);setPage(next.page); }; window.addEventListener("popstate",read);return()=>window.removeEventListener("popstate",read); },[]);
+  function go(controls:Controls,nextPage:number) { const params=new URLSearchParams();for(const [key,value] of Object.entries(controls))if(value)params.set(key,value);params.set("page",String(nextPage));navigate("/staff/tickets?"+params); }
   const set = (key: keyof Controls, value: string) => setDraft(current => ({ ...current, [key]: value }));
-  function apply(event: FormEvent) { event.preventDefault(); setPage(1); setApplied({ ...draft }); }
-  function clear() { setDraft(defaults); setApplied(defaults); setPage(1); }
+  function apply(event: FormEvent) { event.preventDefault(); go(draft,1); }
+  function clear() { go(defaults,1); }
   function select(key: keyof Controls, label: string, options: Array<[string, string]>) {
     return <div><label htmlFor={`queue-${key}`}>{label}</label><select id={`queue-${key}`} className="zen-field" value={draft[key]}
       onChange={event => {
         set(key, event.target.value);
-        if (key === "pageSize") { setPage(1); setApplied(current => ({ ...current, pageSize: event.target.value })); }
+        if (key === "currentStatus" || key === "statusGroup") setDraft(c=>({...c,[key === "currentStatus" ? "statusGroup" : "currentStatus"]:"",resolvedSince:"",resolvedBefore:""}));
+        if (key === "pageSize") { go({ ...applied, pageSize: event.target.value },1); }
       }}>{options.map(([value, text]) => <option key={value} value={value}>{text}</option>)}</select></div>;
   }
   const filtered = Object.entries(applied).some(([key, value]) => !["sortBy", "sortDir", "pageSize"].includes(key) && value);
@@ -56,10 +61,13 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
     aria-label={`Open ${t.ticketNumber}${summary ? ": " + t.summary : ""}`}>{summary ? t.summary : t.ticketNumber}</button>;
   return <main className="page-content" id="main-content"><section className="ticket-card staff-queue">
     <h1>Ticket Queue</h1><p>{admin ? "Administrator support workspace" : "All service requests across the support team."}</p>
+    {(applied.updatedSince || applied.resolvedSince) && <p>Active date filter: {applied.updatedSince ? "Updated" : "Resolved"} from {applied.updatedSince || applied.resolvedSince} to {applied.updatedBefore || applied.resolvedBefore}. <button onClick={()=>go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""},1)}>Clear date filter</button></p>}
     <form className="filter-card" onSubmit={apply}>
       <div className="filter-grid">
         <div className="filter-wide"><label htmlFor="queue-search">Search</label><input id="queue-search" className="zen-field" maxLength={120}
           value={draft.search} onChange={event => set("search", event.target.value)} placeholder="Ticket number, summary or requester" /></div>
+        {select("statusGroup", "Status group", [["", "All groups"], ["active", "Active Tickets"]])}
+        {select("actionAssignee", "Pending action assignee", [["", "Anyone"], ["me", "Me"]])}
         {select("currentStatus", "Status", [["", "All statuses"], ...statuses.map(s => [s, queueLabel(s)] as [string, string])])}
         {select("categoryId", "Category", [["", "All categories"], ...refs.categories.map(r => [String(r.id), r.name] as [string, string])])}
         {select("relatedSystemId", "Related System", [["", "All systems"], ...refs.systems.map(r => [String(r.id), r.name] as [string, string])])}
@@ -95,8 +103,8 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
         </article>)}</div>
       </>}
       <div className="pagination-row"><span>Showing {data.items.length ? (data.page - 1) * data.pageSize + 1 : 0}-{data.items.length ? Math.min(data.page * data.pageSize, data.totalItems) : 0} of {data.totalItems} Tickets</span>
-        <div><button className="zen-button zen-button--secondary" disabled={!data.hasPreviousPage} onClick={() => setPage(p => p - 1)}>Previous</button>
-          <button className="zen-button zen-button--secondary" disabled={!data.hasNextPage} onClick={() => setPage(p => p + 1)}>Next</button></div></div>
+        <div><button className="zen-button zen-button--secondary" disabled={!data.hasPreviousPage} onClick={() => go(applied,page-1)}>Previous</button>
+          <button className="zen-button zen-button--secondary" disabled={!data.hasNextPage} onClick={() => go(applied,page+1)}>Next</button></div></div>
     </>}
   </section></main>;
 }
