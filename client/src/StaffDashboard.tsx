@@ -14,7 +14,7 @@ export function StaffDashboard({name}:{name:string}) {
   },[retry]);
   const link=(title:string,href:string,children:React.ReactNode)=> <a href={href} onClick={e=>{if(e.button===0&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&!e.altKey){e.preventDefault();navigate(href);}}} aria-label={title}>{children}</a>;
   const queue=(query:Record<string,string>)=>"/staff/tickets?"+new URLSearchParams({...query,page:"1",pageSize:"10"});
-  const card=(title:string,value:number,query:Record<string,string>)=><div className="dashboard-metric" key={title}>{link(title,queue(query),<><span>{title}</span><strong>{value}</strong></>)}</div>;
+  const card=(title:string,value:number,query:Record<string,string>)=><div className="dashboard-metric" key={title}>{link(title+", "+value,queue(query),<><span>{title}</span><strong>{value}</strong></>)}</div>;
   const tickets=(title:string,items:StaffDashboardData["recentTickets"])=><section className="dashboard-list"><h2>{title}</h2>{items.length?<ul>{items.map(t=><li key={t.id}>{link(`Open ${t.ticketNumber}`,`/tickets/${t.id}`,<><strong>{t.ticketNumber}</strong> {t.summary}</>)}<p><span className="zen-badge">{label(t.currentStatus)}</span> · {label(t.itPriority)} · {t.owner?.displayName??"Unassigned"}</p><small>Updated {time(t.updatedAt)} (Bangkok)</small></li>)}</ul>:<p>No matching Tickets.</p>}</section>;
   return <main className="page-content" id="main-content"><section className="ticket-card dashboard" aria-busy={busy}>
     <div className="ticket-heading"><div><h1>Staff Dashboard</h1><p>Hello, {name}. Overview of all service requests.</p></div><button className="zen-button zen-button--secondary" disabled={busy} onClick={()=>setRetry(n=>n+1)}>Refresh dashboard</button></div>

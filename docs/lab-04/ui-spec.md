@@ -91,3 +91,7 @@ Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`,
 - [ ] Zen Green consistency, labels, spacing, colors, focus, modal operation and keyboard reachability.
 - [ ] No clipped text, overlapping controls, horizontal overflow, broken links, console errors or unfinished controls.
 - [ ] Desktop/tablet/mobile and zoom/reflow evidence reviewed; limitations reported explicitly.
+
+## Issue #63 student inspection
+
+The runnable preview, role accounts and correction checklist are in [ui-review.md](ui-review.md). The automated/assistant audit is recorded in [hardening-evidence.md](hardening-evidence.md). Checklist completion and final UI acceptance remain pending student review; this is not a final product sign-off.

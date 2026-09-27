@@ -10,6 +10,7 @@ test("role-separated messages, uncertain retry and requester indication", async 
     const path = new URL(route.request().url()).pathname;
     let body: unknown = [], status = 200;
     if (path === "/api/auth/me") body = { user: { id: role === "REQUESTER" ? 1 : 4, displayName: role === "REQUESTER" ? "Jennifer Anderson" : "Alex Chen", email: "local@example.test", role, mustChangePassword: false } };
+    else if (path.endsWith("/actions")) body = {items:[],ticketVersion:1,page:1,pageSize:10,totalItems:0,totalPages:0,hasPreviousPage:false,hasNextPage:false};
     else if (path === "/api/auth/csrf") body = { csrfToken: "a".repeat(64) };
     else if (path === "/api/staff/assignees") body = [author];
     else if (path === "/api/tickets/42") body = ticket;
@@ -45,8 +46,8 @@ test("role-separated messages, uncertain retry and requester indication", async 
   await page.screenshot({ path: `artifacts/lab-03/screenshots/communication/${info.project.name}/staff.png`, fullPage: true });
   role = "ADMIN"; await page.reload();
   await expect(page.getByRole("heading", { name: "Internal Notes", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Post internal note" })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Post public comment" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Post internal note" })).toBeVisible(); // Lab 4 Admin operational access.
+  await expect(page.getByRole("button", { name: "Post public comment" })).toBeVisible();
   role = "REQUESTER"; const previousNotes = noteRequests; await page.reload();
   await expect(page.getByRole("heading", { name: "Public Comments", exact: true })).toBeVisible();
   await expect(page.getByText("PRIVATE_INTERNAL_MARKER", { exact: true })).toHaveCount(0);
