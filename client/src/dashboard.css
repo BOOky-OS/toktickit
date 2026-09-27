@@ -11,3 +11,9 @@
 .dashboard a:focus-visible { outline: 3px solid #216f45; outline-offset: 3px; }
 .dashboard-list a, .dashboard > p a { display: inline-block; min-height: 44px; }
 @media(max-width:1023px) { .dashboard-lists { grid-template-columns: 1fr; } }
+
+.dashboard .filter-actions a { display: inline-flex; align-items: center; min-height: 44px; }
+@media(max-width:767px) {
+  .dashboard .ticket-heading { flex-direction: column; align-items: stretch; }
+  .dashboard .ticket-heading > button { flex-shrink: 0; white-space: normal; overflow-wrap: normal; min-height: 44px; }
+}

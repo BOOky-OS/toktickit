@@ -50,6 +50,7 @@ for (const account of ["requester", "staff", "admin"]) {
       await expect(page.getByLabel("Category *", { exact: true })).toBeEnabled();
       await capture(page, "requester-create");
     } else if (account === "admin") {
+      await page.getByRole("navigation").getByRole("button",{name:"Users",exact:true}).click();
       await page.getByRole("button", { name: "Create user", exact: true }).click();
       await expect(page.getByRole("button", { name: "Save new user" })).toBeVisible();
       await page.getByLabel("Initial password *", { exact: true }).focus();

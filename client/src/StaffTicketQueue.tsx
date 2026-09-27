@@ -53,7 +53,7 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
       onChange={event => {
         set(key, event.target.value);
         if (key === "currentStatus" || key === "statusGroup") setDraft(c=>({...c,[key === "currentStatus" ? "statusGroup" : "currentStatus"]:"",resolvedSince:"",resolvedBefore:""}));
-        if (key === "pageSize") { go({ ...applied, pageSize: event.target.value },1); }
+        if (key === "pageSize") { go({ ...draft, pageSize: event.target.value },1); }
       }}>{options.map(([value, text]) => <option key={value} value={value}>{text}</option>)}</select></div>;
   }
   const filtered = Object.entries(applied).some(([key, value]) => !["sortBy", "sortDir", "pageSize"].includes(key) && value);

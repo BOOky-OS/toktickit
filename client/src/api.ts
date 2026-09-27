@@ -157,6 +157,7 @@ export async function createTicket(input: CreateTicketInput, idempotencyKey: str
 
 export type TicketSortBy = "updatedAt" | "ticketDate" | "ticketNumber" | "summary";
 export interface TicketListOptions {
+  statusGroup?: string; updatedSince?: string; updatedBefore?: string; resolvedSince?: string; resolvedBefore?: string;
   search?: string; categoryId?: number; relatedSystemId?: number; requestedPriority?: RequestedPriority;
   currentStatus?: TicketStatus; sortBy?: TicketSortBy; sortDir?: "asc" | "desc"; page?: number; pageSize?: 10 | 25 | 50;
 }
@@ -351,4 +352,15 @@ export async function getStaffDashboard():Promise<StaffDashboardData> {
   const response=await apiFetch("/api/dashboards/staff");
   if(!response.ok)throw await responseError(response,"Unable to load dashboard.");
   return response.json() as Promise<StaffDashboardData>;
+}
+
+export interface RequesterDashboardData {
+  generatedAt: string; timeZone: string; recentWindow: {from:string;to:string};
+  metrics: {openTickets:number;waitingForRequester:number;recentlyUpdated:number;recentlyResolved:number};
+  recentTickets: Array<Pick<StaffQueueItem,"id"|"ticketNumber"|"summary"|"currentStatus"|"itPriority"|"updatedAt"|"requester"|"owner">>;
+}
+export async function getRequesterDashboard(): Promise<RequesterDashboardData> {
+  const response=await apiFetch("/api/dashboards/requester");
+  if(!response.ok)throw await responseError(response,"Unable to load dashboard.");
+  return response.json() as Promise<RequesterDashboardData>;
 }

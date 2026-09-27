@@ -3,7 +3,8 @@ import { signIn, changeInitialPassword, initialPassword } from "./helpers";
 
 test("Admin creates, edits, resets and deactivates an account across real sessions", async ({ page, browser }) => {
   await signIn(page, "admin");
-  await expect(page).toHaveURL(/\/admin\/users$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
+  await page.getByRole("navigation").getByRole("button",{name:"Users",exact:true}).click();
   await page.getByRole("button", { name: "Edit E2E admin", exact: true }).click();
   await expect(page.getByLabel("Active account", { exact: true })).toBeDisabled();
   await expect(page.getByLabel("Role *", { exact: true })).toBeDisabled();
@@ -26,7 +27,8 @@ test("Admin creates, edits, resets and deactivates an account across real sessio
   try {
     await signIn(requester, "created");
     await changeInitialPassword(requester, initialPassword, "First-changed-password!");
-    await expect(requester).toHaveURL(/\/my-tickets$/);
+    await expect(requester).toHaveURL(/\/dashboard$/);
+  await requester.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
     await page.reload();
     await page.getByRole("button", { name: "Edit Created Requester", exact: true }).click();
     await page.getByLabel("Display name *", { exact: true }).fill("Renamed Requester");
@@ -42,7 +44,8 @@ test("Admin creates, edits, resets and deactivates an account across real sessio
     await expect(requester.getByRole("alert")).toContainText("Unable to sign in");
     await signIn(requester, "created", "Reset-initial-password!");
     await changeInitialPassword(requester, "Reset-initial-password!", "Second-changed-password!");
-    await expect(requester).toHaveURL(/\/my-tickets$/);
+    await expect(requester).toHaveURL(/\/dashboard$/);
+  await requester.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
     await page.reload();
     await page.getByRole("button", { name: "Edit Renamed Requester", exact: true }).click();
     await page.getByLabel("Active account", { exact: true }).uncheck();
@@ -56,7 +59,8 @@ test("Admin creates, edits, resets and deactivates an account across real sessio
     await page.getByRole("button", { name: "Save user changes" }).click();
     await expect(page.getByText("User saved.", { exact: true })).toBeVisible();
     await signIn(requester, "created", "Second-changed-password!");
-    await expect(requester).toHaveURL(/\/my-tickets$/);
+    await expect(requester).toHaveURL(/\/dashboard$/);
+  await requester.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
     await page.getByLabel("Search name or email").fill("Renamed Requester");
     await page.getByLabel("Filter by role").selectOption("REQUESTER");
     await page.getByRole("button", { name: "Apply filters", exact: true }).click();

@@ -9,6 +9,7 @@ describe("App", () => {
   beforeEach(() => {
     localStorage.clear();
     mockAuthenticatedUser();
+    window.history.replaceState({}, "", "/my-tickets");
   });
 
   afterEach(() => {

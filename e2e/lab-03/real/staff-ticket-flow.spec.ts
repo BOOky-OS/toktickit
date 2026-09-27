@@ -3,7 +3,8 @@ import { signIn } from "./helpers";
 
 test("Requester creates a ticket; Staff claims, prioritizes, communicates and resolves it", async ({ page }) => {
   await signIn(page, "requester");
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
   await page.getByRole("navigation").getByRole("button", { name: "Create Ticket", exact: true }).click();
   await page.getByLabel("Category *", { exact: true }).selectOption({ label: "E2E Hardware" });
   await page.getByLabel("Related System *", { exact: true }).selectOption({ label: "E2E Laptop" });
@@ -55,7 +56,8 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   await expect(page.getByLabel("Internal note", { exact: true })).toHaveValue("");
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "requester");
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
   await page.goto(ticketPath);
   await expect(page.getByText("The replacement battery is ready.", { exact: true })).toBeVisible();
   await expect(page.getByText("PRIVATE_REAL_E2E_NOTE")).toHaveCount(0);

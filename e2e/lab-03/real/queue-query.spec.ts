@@ -3,7 +3,8 @@ import { signIn } from "./helpers";
 
 test("real queue combines filters, sorts, pages and recovers from no results", async ({ page }) => {
   await signIn(page, "staff2");
-  await expect(page).toHaveURL(/\/staff\/tickets$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
+  await page.getByRole("navigation").getByRole("button",{name:"Ticket Queue",exact:true}).click();
   await page.getByLabel("Search", { exact: true }).fill("Queue audit");
   await page.getByLabel("Status", { exact: true }).selectOption("OPEN");
   await page.getByLabel("Owner", { exact: true }).selectOption("unassigned");
