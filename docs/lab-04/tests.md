@@ -1,6 +1,6 @@
 # Lab 4 Test Plan and Traceability
 
-Status: reviewed plan from #56, updated for #58 on 2026-09-24. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates, dashboards, product hardening and final-main verification remain Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
+Status: reviewed plan from #56, updated through #62 on 2026-09-27. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates and both dashboards now have feature-branch evidence. Product hardening and final-main verification remain Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
 
 ## 1. Execution environments and safety
 
@@ -14,7 +14,7 @@ Status: reviewed plan from #56, updated for #58 on 2026-09-24. The Actions found
 
 ## 2. Planned automated tests
 
-The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and DB-01 now exist; their feature-branch results are in [foundation-evidence.md](foundation-evidence.md). UI-01 now exists in client/tests/lab-04/ActionsTaken.test.tsx plus ActionsApi.test.tsx; E2E-01 and the Actions subset of E2E-04 exist in e2e/lab-04/. UNIT-02/API-04/API-05/UI-02/E2E-02 now exist for #60; workflow concurrency scenarios in ticket-workflow.api.test.ts complement the earlier assignment/deactivation tests. Other new paths remain planned. The Final-main column remains Planned until release verification. Multiple Test IDs may be scenarios in one file; do not infer test counts from this table.
+The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and DB-01 now exist; their feature-branch results are in [foundation-evidence.md](foundation-evidence.md). UI-01 now exists in client/tests/lab-04/ActionsTaken.test.tsx plus ActionsApi.test.tsx; E2E-01 and the Actions subset of E2E-04 exist in e2e/lab-04/. UNIT-02/API-04/API-05/UI-02/E2E-02 now exist for #60; workflow concurrency scenarios in ticket-workflow.api.test.ts complement the earlier assignment/deactivation tests. Requester DASH-01/DASH-03/UI-04/E2E-03 now exist in requester-dashboard.api.test.ts, requester-performance.integration.test.ts, RequesterDashboard.test.tsx and e2e/lab-04/requester-dashboard.spec.ts; see [Requester evidence](requester-dashboard-evidence.md). Other new paths remain planned. The Final-main column remains Planned until release verification. Multiple Test IDs may be scenarios in one file; do not infer test counts from this table.
 
 | Test ID | Type | FR / BR / AC | Scenario and expected result | Planned / implemented test file | Final-main |
 | --- | --- | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and D
 | DB-01 | Recovery/integration | FR-08/09; BR-20/21; AC-08 | Backup/restore on isolated copy retains old data and file references; fixture cleanup rejects working DB and unsafe schema. | `server/tests/lab-04/recovery.integration.test.ts` | Planned |
 | DASH-01 | API/integration | FR-05; BR-22..25; AC-09 | Independent SQL matches every Requester count/list, zero records, mixed owners, exact lower/upper instants, outside-window and Bangkok/UTC boundaries; IDs cannot override scope. | `server/tests/lab-04/requester-dashboard.api.test.ts` | Planned |
 | DASH-02 | API/integration | FR-06; BR-22..25; AC-10 | Independent SQL matches all eight statuses, three active priorities, null/me ownership, pending assigned actions, five-item limits/ties, urgent/recent ordering and inactive historical actors. | `server/tests/lab-04/staff-dashboard.api.test.ts` | Planned |
-| DASH-03 | API/integration | FR-07; BR-25; AC-11 | Card predicates equal list totals on a frozen fixture; new filters compose/reject invalid pairs; repeated/unknown params rejected; EXISTS prevents duplicate Ticket rows across action assignments. | `server/tests/lab-04/dashboard-drilldown.api.test.ts` | Planned |
+| DASH-03 | API/integration | FR-07; BR-25; AC-11 | Card predicates equal list totals on a frozen fixture; new filters compose/reject invalid pairs; repeated/unknown params rejected; EXISTS prevents duplicate Ticket rows across action assignments. | `server/tests/lab-04/dashboard-drilldown.api.test.ts`, `server/tests/lab-04/requester-dashboard.api.test.ts` | Planned |
 | UI-01 | Component | FR-01/02/10; BR-02..09/17/18; AC-12 | Action list/create/assign/edit/status, conditional errors, inactive option, read-only fields, retained drafts, replay refresh, stale conflict and duplicate-click prevention. | `client/tests/lab-04/ActionsTaken.test.tsx` | Planned |
 | UI-02 | Component | FR-04/10; BR-10..16; AC-05/06/13 | Only allowed transitions/roles; gate hints, confirmation/reasons, public history, advisory indication and refresh after writes. | `client/tests/lab-04/TicketWorkflow.test.tsx` | Planned |
 | UI-03 | Component | FR-06/07/10; BR-22..25; AC-10/11/13 | Staff/Admin cards, my actions, urgent/recent lists; busy/empty/forbidden/500; stale labels, correct links, no invented trends. | `client/tests/lab-04/StaffDashboard.test.tsx` | Planned |
@@ -42,9 +42,9 @@ The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and D
 | STYLE-01 | Style/accessibility | FR-10; AC-13 | Zen tokens, text/contrast, required labels, landmarks, aria feedback, role controls, visible focus and no color-only meaning. | `client/tests/lab-04/StyleAccessibility.test.tsx` | Planned |
 | E2E-01 | Real browser | FR-01/02/03/09; AC-01/02/03/07/12 | Real login, several actions and performers on one Ticket, assign/edit/start/complete/cancel, Requester read-only view, safe retry and conflict. | `e2e/lab-04/actions-taken-flow.spec.ts` | Planned |
 | E2E-02 | Real browser | FR-04/11; AC-05/06/14 | Create Ticket through work/resolve/close/reopen/new-cycle resolution; alternate cancellation flow; indication cannot bypass gate; stable public history. | `e2e/lab-04/ticket-resolution.spec.ts` | Planned |
-| E2E-03 | Real browser | FR-05/06/07; AC-09/10/11/13 | Three-role dashboards and links against real DB; filter paging, Back/Forward/refresh, mutation refresh and cross-user protection. | `e2e/lab-04/dashboards.spec.ts` | Planned |
+| E2E-03 | Real browser | FR-05/06/07; AC-09/10/11/13 | Three-role dashboards and links against real DB; filter paging, Back/Forward/refresh, mutation refresh and cross-user protection. | `e2e/lab-04/dashboards.spec.ts`, `e2e/lab-04/requester-dashboard.spec.ts` | Planned |
 | E2E-04 | Responsive/keyboard/visual | FR-10; AC-12/13 | All major screens at 1440x900, 834x1112, 390x844 and 320px; long content, overflow, dialogs, keyboard/focus, zoom/reflow, console errors. | `e2e/lab-04/responsive-accessibility.spec.ts` | Planned |
-| PERF-01 | Performance smoke | FR-06/09; BR-22..25; AC-15 | 1000 Tickets/3000 actions, independent expected counts, <=10 read queries excluding auth, no N+1, five warm-ups then 30 requests with p95 <=1000ms on recorded machine. | `server/tests/lab-04/dashboard-performance.integration.test.ts` | Planned |
+| PERF-01 | Performance smoke | FR-06/09; BR-22..25; AC-15 | 1000 Tickets/3000 actions, independent expected counts, <=10 read queries excluding auth, no N+1, five warm-ups then 30 requests with p95 <=1000ms on recorded machine. | `server/tests/lab-04/dashboard-performance.integration.test.ts`, `server/tests/lab-04/requester-performance.integration.test.ts` | Planned |
 | REG-01 | Full regression | FR-11; BR-10/19/20; AC-04/14 | Existing suites below pass with narrowly documented Admin/gate/landing-page expectation changes; no disabled tests hiding regressions. | Existing suites plus `e2e/lab-04/regression.spec.ts` (new) | Planned |
 | DOC-01 | Manual evidence audit | FR-12; AC-16 | Actual test paths/results/SHA, reviewer replies/approvals, AI prompts/reflection, README/ignore, screenshots, PDF parts/links and peer release/main proof complete. | `docs/lab-04/tests.md` and future release records | Planned |
 
@@ -107,7 +107,7 @@ npm run test --workspace server -- tests/lab-04/actions-taken.api.test.ts
 npm run test --workspace client -- tests/lab-04/ActionsTaken.test.tsx
 ```
 
-`playwright.lab4.config.ts` and `npm run test:e2e:lab4` now exist for Actions Taken on dedicated ports 3007/5177. Set TEST_DATABASE_URL using [migration.md](migration.md). The real server/database setup and recorded results are in [actions-ui-evidence.md](actions-ui-evidence.md). Dashboard/final-workflow E2E files remain planned.
+`playwright.lab4.config.ts` and `npm run test:e2e:lab4` now exist for Actions Taken on dedicated ports 3007/5177. Set TEST_DATABASE_URL using [migration.md](migration.md). The real server/database setup and recorded results are in [actions-ui-evidence.md](actions-ui-evidence.md). Dashboard and final-workflow E2E files now exist; see their linked evidence records.
 
 TDD sequence per implementation Issue: map its ACs; implement a meaningful failing test; record observed failure; implement the smallest coherent feature; run targeted unit/integration/UI tests; verify relevant earlier regression; review diff and update actual results. Finish cross-product, accessibility, performance and final-main verification in the hardening/release work packages. No claim of a red/green run without actual output.
 
@@ -117,7 +117,7 @@ TDD sequence per implementation Issue: map its ACs; implement a meaningful faili
 | --- | --- | --- |
 | Baseline inspection | `754a81d`; Windows workspace; source/package scripts/GitHub inspected 2026-09-24 | Read-only inspection; no runtime pass inferred |
 | Issue #56 contract | `docs/56-lab4-contract`; see PR head for exact documentation commit | Static contract checks recorded in PR; runtime suites Not run |
-| Issue #58 feature branch | `feature/58-actions-foundation`; isolated PostgreSQL 16.13, Node 24.19.0 | Backend evidence recorded in [foundation-evidence.md](foundation-evidence.md); peer review pending |
+| Issue #58 feature branch | `feature/58-actions-foundation`; isolated PostgreSQL 16.13, Node 24.19.0 | Backend evidence recorded in [foundation-evidence.md](foundation-evidence.md); peer-approved and merged; see reviewer.md |
 | Issue #59 feature branch | `feature/59-actions-ui`; Chrome/real API/PostgreSQL | [Actions UI evidence](actions-ui-evidence.md); peer review pending |
 | Complete staging | Not reached | Planned |
 | Final main | Not released | Planned |
@@ -136,4 +136,8 @@ See [workflow-evidence.md](workflow-evidence.md) for actual commands, red/green 
 
 ## Issue #61 feature-branch checks
 
-DASH-02/DASH-03/PERF-01/UI-03 and the Staff portion of E2E-03 now exist in their planned files: staff-dashboard.api.test.ts, dashboard-drilldown.api.test.ts, dashboard-performance.integration.test.ts, StaffDashboard.test.tsx and dashboards.spec.ts. See [Staff dashboard evidence](staff-dashboard-evidence.md) for actual commands/results, independent SQL, performance dataset/query plan, screenshots and limits. Requester scenarios remain #62; final-main statuses remain Planned.
+DASH-02/DASH-03/PERF-01/UI-03 and the Staff portion of E2E-03 now exist in their planned files: staff-dashboard.api.test.ts, dashboard-drilldown.api.test.ts, dashboard-performance.integration.test.ts, StaffDashboard.test.tsx and dashboards.spec.ts. See [Staff dashboard evidence](staff-dashboard-evidence.md) for actual commands/results, independent SQL, performance dataset/query plan, screenshots and limits. Requester scenarios are implemented in #62; final-main statuses remain Planned.
+
+## Issue #62 Requester Dashboard execution
+
+See [Requester dashboard evidence](requester-dashboard-evidence.md) for commands, passing feature tests, exact initial failures and targeted corrections, independent owner/date SQL comparisons, performance, screenshots and remaining student gates. Final-main statuses remain Planned.

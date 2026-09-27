@@ -10,6 +10,7 @@ function authError(status: number, code: string, message = "Safe error", fields:
 }
 describe("Lab 3 authentication UI and role shell", () => {
   beforeEach(() => {
+    vi.spyOn(api, "getRequesterDashboard").mockResolvedValue({generatedAt:"2026-09-27T00:00:00Z",timeZone:"Asia/Bangkok",recentWindow:{from:"2026-09-20T00:00:00Z",to:"2026-09-27T00:00:00Z"},metrics:{openTickets:0,waitingForRequester:0,recentlyUpdated:0,recentlyResolved:0},recentTickets:[]});
     vi.spyOn(api, "getStaffDashboard").mockRejectedValue(new Error("No fixture dashboard"));
     localStorage.clear(); sessionStorage.clear(); window.history.replaceState({}, "", "/login");
   });
@@ -76,7 +77,7 @@ describe("Lab 3 authentication UI and role shell", () => {
     await user.tab(); expect(screen.getByRole("button", { name: "Show password" })).toHaveFocus(); await user.keyboard("{Enter}");
     expect(screen.getByLabelText("Password *")).toHaveAttribute("type", "text");
     await user.tab(); expect(screen.getByRole("button", { name: "Sign in" })).toHaveFocus(); await user.keyboard("{Enter}");
-    expect(await screen.findByRole("heading", { name: "My Tickets" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Requester Dashboard" })).toBeInTheDocument();
   });
   it("allows logout from the mandatory password screen without exposing normal navigation", async () => {
     mockAuthenticatedUser({ ...requesterUser, mustChangePassword: true });
@@ -107,11 +108,11 @@ describe("Lab 3 authentication UI and role shell", () => {
     await user.type(screen.getByLabelText("New password *"), "Replacement Password 456");
     await user.type(screen.getByLabelText("Confirm new password *"), "Replacement Password 456");
     await user.click(screen.getByRole("button", { name: "Save new password" }));
-    expect(await screen.findByRole("heading", { name: "My Tickets" })).toBeInTheDocument();
-    expect(window.location.pathname).toBe("/my-tickets"); expect(replace).toHaveBeenCalledWith("Initial Password 123", "Replacement Password 456", "Replacement Password 456");
+    expect(await screen.findByRole("heading", { name: "Requester Dashboard" })).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/dashboard"); expect(replace).toHaveBeenCalledWith("Initial Password 123", "Replacement Password 456", "Replacement Password 456");
   });
   it.each([
-    ["REQUESTER", "/my-tickets", ["My Tickets", "Create Ticket"]],
+    ["REQUESTER", "/dashboard", ["Dashboard", "My Tickets", "Create Ticket"]],
     ["IT_STAFF", "/staff/dashboard", ["Dashboard", "Ticket Queue"]],
     ["ADMIN", "/staff/dashboard", ["Dashboard", "Users", "Ticket Queue"]],
   ] as const)("renders %s identity and permitted navigation", async (role, home, links) => {
@@ -123,7 +124,7 @@ describe("Lab 3 authentication UI and role shell", () => {
   });
   it("keeps the role shell and Logout available for voluntary password changes", async () => {
     mockAuthenticatedUser(); vi.spyOn(api, "getTickets").mockResolvedValue({ items: [], page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });
-    const user = userEvent.setup(); render(<App />); await screen.findByRole("heading", { name: "My Tickets" });
+    const user = userEvent.setup(); render(<App />); await screen.findByRole("heading", { name: "Requester Dashboard" });
     await user.click(screen.getByRole("button", { name: "Change Password" }));
     expect(await screen.findByRole("heading", { name: "Change password" })).toBeInTheDocument();
     expect(screen.getByText("Jennifer Anderson")).toBeInTheDocument();
@@ -133,12 +134,12 @@ describe("Lab 3 authentication UI and role shell", () => {
     mockAuthenticatedUser(); window.history.replaceState({}, "", "/admin/users"); render(<App />);
     expect(await screen.findByRole("heading", { name: /not available for your role/i })).toBeInTheDocument();
     await userEvent.setup().click(screen.getByRole("button", { name: "Go to my home" }));
-    expect(window.location.pathname).toBe("/my-tickets");
+    expect(window.location.pathname).toBe("/dashboard");
   });
   it("does not claim logout success after failure and clears protected content after success", async () => {
     mockAuthenticatedUser(); vi.spyOn(api, "getTickets").mockResolvedValue({ items: [], page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });
     const logout = vi.spyOn(api, "logout").mockRejectedValueOnce(new Error("server secret")).mockResolvedValueOnce();
-    const user = userEvent.setup(); render(<App />); await screen.findByRole("heading", { name: "My Tickets" });
+    const user = userEvent.setup(); render(<App />); await screen.findByRole("heading", { name: "Requester Dashboard" });
     await user.click(screen.getByRole("button", { name: "Logout" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/may still be active/i); expect(screen.getByText("Jennifer Anderson")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry" }));
@@ -157,6 +158,6 @@ describe("Lab 3 authentication UI and role shell", () => {
     vi.spyOn(api, "getCsrf").mockResolvedValue("csrf"); vi.spyOn(api, "getTickets").mockResolvedValue({ items: [], page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });
     render(<App />); expect(await screen.findByRole("heading", { name: /unable to check/i })).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent("database secret"); await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
-    await waitFor(() => expect(window.location.pathname).toBe("/my-tickets"));
+    await waitFor(() => expect(window.location.pathname).toBe("/dashboard"));
   });
 });

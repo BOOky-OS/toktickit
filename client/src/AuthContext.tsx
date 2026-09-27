@@ -15,7 +15,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function homeFor(role: api.UserRole) {
-  return role === "REQUESTER" ? "/my-tickets" : "/staff/dashboard";
+  return role === "REQUESTER" ? "/dashboard" : "/staff/dashboard";
 }
 export function navigate(path: string, replace = false) {
   if (!replace && !window.dispatchEvent(new Event("toktickit:before-navigate", { cancelable: true }))) return;

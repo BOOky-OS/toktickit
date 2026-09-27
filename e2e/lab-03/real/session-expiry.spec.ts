@@ -5,7 +5,8 @@ import { signIn } from "./helpers";
 
 test("server expiry denies the old cookie and returns the browser to sign-in", async ({ page }) => {
   await signIn(page, "other");
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
   const token = (await page.context().cookies("http://localhost:3006"))
     .find(cookie => cookie.name === "toktickit.sid")!.value;
   const url = new URL(process.env.LAB3_E2E_DATABASE_URL!);

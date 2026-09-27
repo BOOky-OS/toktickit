@@ -9,9 +9,9 @@ async function login(page: Page, account: string, credential = password) {
 }
 
 for (const [account, route, allowed, denied] of [
-  ["requester", /\/my-tickets$/, "/api/tickets", "/api/admin/users"],
-  ["staff", /\/staff\/tickets$/, "/api/staff/tickets", "/api/admin/users"],
-  ["admin", /\/admin\/users$/, "/api/admin/users", null],
+  ["requester", /\/dashboard$/, "/api/tickets", "/api/admin/users"],
+  ["staff", /\/staff\/dashboard$/, "/api/staff/tickets", "/api/admin/users"],
+  ["admin", /\/staff\/dashboard$/, "/api/admin/users", null],
 ] as const) {
   test(`${account}: real login, role authorization, reload and logout revocation`, async ({ page }) => {
     await login(page, account);
@@ -44,10 +44,13 @@ test("initial password blocks direct access until changed and cannot be reused",
   await page.getByLabel("New password *", { exact: true }).fill("Changed-test-password!");
   await page.getByLabel("Confirm new password *", { exact: true }).fill("Changed-test-password!");
   await page.getByRole("button", { name: "Save new password" }).click();
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
   await page.getByRole("button", { name: "Logout", exact: true }).click();
+  await expect(page.getByRole("heading", {name:"Sign in",exact:true})).toBeVisible();
   await login(page, "first");
   await expect(page.getByRole("alert")).toContainText("Unable to sign in");
   await login(page, "first", "Changed-test-password!");
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
 });

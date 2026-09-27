@@ -1,3 +1,4 @@
+import { requesterDashboard } from "./requester-dashboard.js";
 import { Router } from "express";
 import { Prisma, PrismaClient, TicketStatus } from "@prisma/client";
 import { asyncRoute, invalid } from "../auth/security.js";
@@ -39,4 +40,9 @@ export const dashboardRouter=Router();
 dashboardRouter.get("/dashboards/staff",asyncRoute(async(req,res)=>{
   if(Object.keys(req.query).length || (req.body && Object.keys(req.body).length))throw invalid();
   res.json(await staffDashboard(getPrisma(),res.locals.actor.user.id));
+}));
+
+dashboardRouter.get("/dashboards/requester",asyncRoute(async(req,res)=>{
+  if(Object.keys(req.query).length || (req.body && Object.keys(req.body).length))throw invalid();
+  res.json(await requesterDashboard(getPrisma(),res.locals.actor.user.id));
 }));

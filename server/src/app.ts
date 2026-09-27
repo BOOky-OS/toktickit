@@ -1,3 +1,4 @@
+import { dashboardFilters } from "./tickets/dashboard-filters.js";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { authRouter } from "./auth/routes.js";
@@ -169,14 +170,14 @@ app.get("/api/staff/assignees", async (_req: Request, res: Response) => {
   }
 });
 app.get("/api/tickets", async (req: Request, res: Response) => {
-  if (Object.keys(req.query).some(k => !["search", "categoryId", "relatedSystemId", "requestedPriority", "currentStatus", "sortBy", "sortDir", "page", "pageSize"].includes(k))) { sendError(res, invalid()); return; }
+  if (Object.keys(req.query).some(k => !["search", "categoryId", "relatedSystemId", "requestedPriority", "currentStatus", "sortBy", "sortDir", "page", "pageSize", "statusGroup", "updatedSince", "updatedBefore", "resolvedSince", "resolvedBefore"].includes(k) || typeof req.query[k] !== "string")) { sendError(res, invalid()); return; }
   const parsed = parseTicketList({ ...req.query, requesterId: String(res.locals.actor.user.id) });
   if (!parsed.ok) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR", fieldErrors: parsed.fieldErrors });
     return;
   }
   try {
-    const result = await listTickets(getPrisma(), parsed.value);
+    const result = await listTickets(getPrisma(), { ...parsed.value, dashboardWhere: dashboardFilters(req.query, res.locals.actor.user.id) });
     if (result.kind === "validation") {
       res.status(400).json({
         error: "Validation failed",

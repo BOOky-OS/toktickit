@@ -54,3 +54,7 @@ Requester dashboard and its My Tickets filters are #62; shared Staff Queue filte
 The student's two mandatory review gates are recorded in root skill.md and workflow.md: stop for student UI corrections in #63 before peer handoff/final documentation; stop for student document/report/review-record corrections in #64 before peer handoff. Existing pre-main approval is also required. Neither gate has been passed by this increment.
 
 Final full-suite performance result: p95 53.02 ms over 30 measured HTTP requests, four dashboard reads each. The inspected plan uses the action-assignee index, a hashed distinct aggregation, Ticket primary-key lookups and top-N sorting; EXPLAIN execution time was 2.52 ms. This plan is specific to the synthetic dataset. Whitespace validation passed before commit.
+
+## Peer integration update, 2026-09-27
+
+PR #68 was approved and merged by Atip-Infa into lab4-staging at 604dd9b. Issue #61 and both Project items are complete. Review/comment links and metadata correction timing are recorded in [reviewer.md](reviewer.md). Test counts above remain historical #61 evidence.

@@ -19,7 +19,7 @@ These are English paraphrases of actual Thai requests, not verbatim English quot
 | 7 | Why is the PR missing from the Project? | Checked individual membership and collection listings. | Challenged a completion claim based only on PR metadata. |
 | 8 | Check anything else missing and fix it; continue after the usage interruption. | Audited contracts/evidence and completed the eight-Issue backlog. | Requested verification rather than assuming successful API writes prove visible results. |
 | 9 | I deleted the Python validator; do not upload output files. | Removed the optional validator and excluded generated output from Git. | Chose the repository cleanup and corrected unnecessary tooling. |
-| 10 | Continue and read the lab and skill again. | Verified peer merges, completed prerequisite metadata and continued #58/#59/#60/#61 on their own branches with database and UI/browser tests. | Authorized the next implementation step under the existing workflow. |
+| 10 | Continue and read the lab and skill again. | Verified peer merges, completed prerequisite metadata and continued #58/#59/#60/#61/#62 on their own branches with database and UI/browser tests. | Authorized the next implementation step under the existing workflow. |
 
 ## Critical-thinking
 
@@ -35,6 +35,8 @@ During #60, new API tests first demonstrated that missing work and old-cycle wor
 
 During #61, the assistant compared dashboard metrics with independent database queries, measured real request timings and bounded query count, and tested URL/back navigation in the browser. The student added two explicit review gates for #63 UI and #64 documents/review records before peer handoff; both were saved in skill.md and workflow.md.
 
+During #62, new API tests failed before the endpoint existed, then passed after implementation. Existing regression tests assumed the old role landing pages; their fixtures/navigation were updated to the approved Dashboard destinations while preserving their feature assertions. A browser test initially navigated away before Logout completed; the test now waits for the real Login screen before switching identity. Broader regression also exposed a real Staff Queue bug: changing page size discarded unapplied filters. The assistant fixed the component and reran the unchanged behavioral assertions. Generated evidence stays ignored, and the existing isolated test container was reused.
+
 ## My Reflection
 
-Pending student confirmation. The conversation establishes use of AI for assignment explanations, work planning, specification drafting and workflow corrections. The student has not yet supplied a personal reflection on what they learned. The coding agent has now implemented and tested #58/#59/#60; the student's personal coding-stage reflection is still pending; do not reuse a prior lab's experience or describe planned tests as executed.
+Pending student confirmation. The conversation establishes use of AI for assignment explanations, work planning, specification drafting and workflow corrections. The student has not yet supplied a personal reflection on what they learned. The coding agent has now implemented and tested #58 through #62; the student's personal coding-stage reflection is still pending; do not reuse a prior lab's experience or describe planned tests as executed.

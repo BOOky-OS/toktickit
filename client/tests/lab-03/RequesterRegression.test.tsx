@@ -72,6 +72,7 @@ describe("Lab 3 authenticated Requester regression", () => {
   beforeEach(() => {
   vi.spyOn(api, "getActions").mockResolvedValue({ items: [], ticketVersion: 1, page: 1, pageSize: 10, totalItems: 0, totalPages: 0, hasPreviousPage: false, hasNextPage: false });
     mockAuthenticatedUser();
+    window.history.replaceState({}, "", "/my-tickets");
     vi.spyOn(api, "getCategories").mockResolvedValue([ticket.category]);
     vi.spyOn(api, "getRelatedSystems").mockResolvedValue([ticket.relatedSystem]);
     vi.spyOn(api, "getTickets").mockResolvedValue(list);

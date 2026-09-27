@@ -1,3 +1,4 @@
+import { RequesterDashboard } from "./RequesterDashboard.js";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import {
   Category,
@@ -535,6 +536,8 @@ function CreateTicket({
 }
 
 function ServiceDesk() {
+  const { user } = useAuth();
+  const listReturn = useRef("/my-tickets");
   const [path, setPath] = useState(window.location.pathname);
   const [systemState, setSystemState] = useState<UiState>("idle");
   const [healthCategories, setHealthCategories] = useState<Category[]>([]);
@@ -561,12 +564,13 @@ function ServiceDesk() {
   return (
     <>
       <nav className="app-nav" aria-label="Service desk">
+        <button className={path === "/dashboard" ? "active" : ""} aria-current={path === "/dashboard" ? "page" : undefined} onClick={() => navigate("/dashboard")}>Dashboard</button>
         <button className={path === "/my-tickets" || detail ? "active" : ""} aria-current={path === "/my-tickets" || detail ? "page" : undefined}
           onClick={() => navigate("/my-tickets")}>My Tickets</button>
         <button className={path === "/tickets/new" ? "active" : ""} aria-current={path === "/tickets/new" ? "page" : undefined}
           onClick={() => navigate("/tickets/new")}>Create Ticket</button>
       </nav>
-      {path === "/tickets/new" ? (
+      {path === "/dashboard" ? <RequesterDashboard key={user!.id} name={user!.displayName} /> : path === "/tickets/new" ? (
         <CreateTicket
           goHome={() => navigate("/my-tickets")}
           goDetail={(ticketId, files = []) => {
@@ -577,13 +581,13 @@ function ServiceDesk() {
       ) : detail ? (
         <TicketDetail
           ticketId={Number(detail[1])}
-          onBack={() => navigate("/my-tickets")}
+          onBack={() => navigate(listReturn.current)}
           retryFiles={pendingRetry?.ticketId === Number(detail[1]) ? pendingRetry.files : []}
           onRetryFilesChange={files => setPendingRetry(files.length ? { ticketId: Number(detail[1]), files } : null)}
         />
       ) : (
         <>
-          <MyTickets onCreate={() => navigate("/tickets/new")} onOpen={ticketId => navigate(`/tickets/${ticketId}`)} />
+          <MyTickets onCreate={() => navigate("/tickets/new")} onOpen={ticketId => { listReturn.current = window.location.pathname + window.location.search; navigate(`/tickets/${ticketId}`); }} />
           <section className="container pb-4" style={{ maxWidth: 1100 }}>
             <button className="btn btn-success" onClick={handleCheck} disabled={systemState === "loading"}>
               {systemState === "loading" ? "Loading..." : "Check System"}
@@ -646,7 +650,7 @@ function AccessUnavailable() {
 }
 function routeAllowed(role: UserRole, path: string) {
   if (path === "/change-password") return true;
-  if (role === "REQUESTER") return path === "/my-tickets" || path === "/tickets/new" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  if (role === "REQUESTER") return path === "/dashboard" || path === "/my-tickets" || path === "/tickets/new" || /^\/tickets\/[1-9][0-9]*$/.test(path);
   if (role === "IT_STAFF") return path === "/staff/dashboard" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
   return path === "/staff/dashboard" || path === "/admin/users" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
 }
