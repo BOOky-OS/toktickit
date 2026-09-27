@@ -13,6 +13,7 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 | [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Approved; merged |
 | [#60](https://github.com/BOOky-OS/toktickit/issues/60) | [#67](https://github.com/BOOky-OS/toktickit/pull/67) | feature/60-ticket-workflow | Atip-Infa | Approved; merged |
 | [#61](https://github.com/BOOky-OS/toktickit/issues/61) | [#68](https://github.com/BOOky-OS/toktickit/pull/68) | feature/61-staff-dashboard | Atip-Infa | Approved; merged |
+| [#62](https://github.com/BOOky-OS/toktickit/issues/62) | [#69](https://github.com/BOOky-OS/toktickit/pull/69) | feature/62-requester-dashboard | Atip-Infa | Review requested; pending |
 
 ## PR #57 evidence
 
@@ -67,6 +68,13 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 - Approved head: 11dcc5f37c40d2219f53ddb940af6d7a2e894b58. Merged by Atip-Infa at 2026-09-27 06:20:06 UTC; merge 604dd9ba67b0ebb0efe15815800517c8d9ac1b32 verified in lab4-staging.
 - [Ready comment](https://github.com/BOOky-OS/toktickit/pull/68#issuecomment-5848266251), [approval reply](https://github.com/BOOky-OS/toktickit/pull/68#issuecomment-5853321291), [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/68#issuecomment-5853325778) already exist; no duplicates needed. Inline comments and review threads are empty, with no next page.
 - During continuation, the assistant closed #61 and moved both cards to Done. Those updates had not yet happened when the author's post-merge comment reported them.
+
+## PR #69 evidence
+
+- Implementation/tested-code commit: 9745355d028e69b6c0dd38f3c5bd994b2972cbca; subsequent record update changes documentation only.
+- Target lab4-staging; reviewer Atip-Infa requested, BOOky-OS assigned, enhancement label, Lab 4 milestone, real Development link to #62 and both Project items in PR Review verified.
+- [Assistant-run evidence](requester-dashboard-evidence.md) records the full and targeted test results separately, including both corrected failures. Requester performance p95 41.42 ms with two reads; generated files remain ignored.
+- Peer review, approved commit, author comment links and merge are pending. Draft comments are not review evidence.
 
 ## Reciprocal reviews
 

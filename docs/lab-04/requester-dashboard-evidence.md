@@ -2,6 +2,8 @@
 
 Date: 2026-09-27. Branch: `feature/62-requester-dashboard`, based on peer-merged #61 / PR #68 at `604dd9ba67b0ebb0efe15815800517c8d9ac1b32`. This is feature-branch evidence, not final-main verification or student UI approval. All checks below were assistant-run.
 
+Tested implementation commit: `9745355d028e69b6c0dd38f3c5bd994b2972cbca`. [PR #69](https://github.com/BOOky-OS/toktickit/pull/69) targets lab4-staging; peer review/merge pending. Later documentation-only metadata is not a runtime change.
+
 ## Delivered behavior
 
 - `GET /api/dashboards/requester` permits eligible Requesters only, derives ownership from the session, rejects all caller scope/query inputs and returns four authoritative counts plus at most five safe recent summaries.
@@ -23,7 +25,7 @@ Environment: Windows 11 (10.0.26200), Node 24.19.0, PostgreSQL test container, V
 | `npm run test:e2e:lab4` | 20 passed. New four-viewport tests cover real counts, filters, pagination, Detail return, keyboard activation, refresh failure/retry and identity switching. |
 | `npm run test:e2e:lab3` | After updating obsolete role-home expectations: 13 passed / 1 failed. The remaining test exposed a real Queue bug: changing page size erased unapplied filters. |
 | `npm run test:e2e:lab3 -- queue-query.spec.ts` | 1 passed after Queue page-size navigation was changed to preserve the current draft filters. Existing filtering/sorting/paging assertions retained. |
-| `npm run test:e2e:lab4 -- dashboards.spec.ts requester-dashboard.spec.ts` | Final affected dashboard checks rerun after Queue fix and responsive button adjustment; see execution log. |
+| `npm run test:e2e:lab4 -- dashboards.spec.ts requester-dashboard.spec.ts` | 8 passed after Queue fix and responsive button adjustment. |
 | `npm run build`, `git diff --check` | Client/server build and whitespace validation passed. |
 
 The first new browser run passed desktop/tablet/mobile but the narrow test navigated away before Logout finished. Its helper now waits for the actual Login screen before changing identity. The complete Lab 4 run then passed all 20 tests. Visual inspection also found excessive word wrapping in the small-screen Refresh button; the shared dashboard heading now stacks above a full-width button below 768px.
