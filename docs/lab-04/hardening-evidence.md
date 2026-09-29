@@ -1,5 +1,9 @@
 # Lab 4 - Issue #63 regression preparation
 
+## Current handoff status (2026-09-29)
+
+Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+
 ## Scope and source
 
 Assistant-run checks on 2026-09-27, branch `feature/63-final-hardening`, based on staging merge `26cf6e316331d4f0753f68e425ecacb9642b31df` (PR #69). The implementation and test changes are in the commit introducing this record; `git log --format=fuller -- docs/lab-04/hardening-evidence.md` identifies that commit. Tests were run on the working tree before commit. Backend code is unchanged from that staging merge. Documentation changes after the checks do not change the tested product.

@@ -1,6 +1,10 @@
 # Lab 4 Workflow and Audit
 
-Current work: Issue #63, feature/63-final-hardening -> lab4-staging, based on peer merge 26cf6e3. Preparation is available for student UI inspection; no peer reviewer is requested and the Issue remains Started. Prerequisite #62 / PR #69 is approved/merged by Atip-Infa, Issue closed and both Project items Done.
+## Current handoff status (2026-09-29)
+
+Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+
+Current work: Issue #63, feature/63-final-hardening -> lab4-staging, based on peer merge 26cf6e3. Student UI approval is recorded; preparing the #63 peer-review handoff. Prerequisite #62 / PR #69 is approved/merged by Atip-Infa, Issue closed and both Project items Done.
 Prerequisite #58 / PR #65 is approved and peer-merged at `3c303e6`; Issue #58 and PR #65 items are Done. Author replies already exist; no duplicates are needed.
 Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
 
@@ -17,7 +21,7 @@ Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual s
 | 7 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | Regression/hardening | #62 Done | feature/63-final-hardening |
 | 8 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | Documentation/release | #63 Done | docs/64-lab4-release |
 
-Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #62 / PR #69 are Done; #63 is Started awaiting student UI inspection and #64 remains Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
+Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #62 / PR #69 are Done; #63 is ready for peer review after student UI approval and #64 remains Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
 
 ## Project listing discrepancy, 2026-09-24
 

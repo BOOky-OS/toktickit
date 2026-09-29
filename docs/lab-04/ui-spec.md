@@ -1,5 +1,9 @@
 # Lab 4 UI Specification
 
+## Current handoff status (2026-09-29)
+
+Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+
 Status: peer-reviewed contract from Issue #56 / PR #57, 2026-09-24. Issue #59 implements the Actions Taken section and shared Admin permission controls; Issue #60 implements final Ticket gate feedback and confirmation focus. Issue #61 implements Staff/Admin dashboard navigation, states and URL-based Queue drill-down. Issue #62 implements Requester dashboard navigation, four owner-scoped metrics, safe states and My Tickets URL filters. See [UI implementation evidence](actions-ui-evidence.md) for actual tests, screenshots and limits. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
 
 ## 1. Shared shell and navigation
@@ -83,18 +87,18 @@ Verify desktop 1440x900, tablet 834x1112, mobile 390x844 and narrow 320px layout
 
 Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`, `actions-taken/` and `ticket-workflow/`, with desktop/tablet/mobile subfolders. Use demo data without secrets. Actions Taken captures now exist locally in those folders (plus narrow/); workflow gate/confirmation captures also exist locally for desktop/tablet/mobile; Staff and Requester dashboard captures also exist locally; the final product checklist and student inspection remain pending. Retain readable original captures and document the tested commit/environment.
 
-- [ ] Initial, loading, zero/empty, populated and safe-failure dashboards; exact DB count comparison.
-- [ ] Requester ownership, Staff/Admin navigation, current-user actions and drill-down filters.
-- [ ] Action list, create, assign, edit, start, complete, cancel and inactive-assignee rejection.
-- [ ] Conditional validation, read-only performer, terminal/parent restrictions and retained drafts.
-- [ ] Workflow gate, stale updates, append-only public history and Requester visibility.
-- [ ] Zen Green consistency, labels, spacing, colors, focus, modal operation and keyboard reachability.
-- [ ] No clipped text, overlapping controls, horizontal overflow, broken links, console errors or unfinished controls.
-- [ ] Desktop/tablet/mobile and zoom/reflow evidence reviewed; limitations reported explicitly.
+- [x] Initial, loading, zero/empty, populated and safe-failure dashboards; exact DB count comparison.
+- [x] Requester ownership, Staff/Admin navigation, current-user actions and drill-down filters.
+- [x] Action list, create, assign, edit, start, complete, cancel and inactive-assignee rejection.
+- [x] Conditional validation, read-only performer, terminal/parent restrictions and retained drafts.
+- [x] Workflow gate, stale updates, append-only public history and Requester visibility.
+- [x] Zen Green consistency, labels, spacing, colors, focus, modal operation and keyboard reachability.
+- [x] No clipped text, overlapping controls, horizontal overflow, broken links, console errors or unfinished controls.
+- [x] Desktop/tablet/mobile and zoom/reflow evidence reviewed; limitations reported explicitly.
 
 ## Issue #63 student inspection
 
-The runnable preview, role accounts and correction checklist are in [ui-review.md](ui-review.md). The automated/assistant audit is recorded in [hardening-evidence.md](hardening-evidence.md). Checklist completion and final UI acceptance remain pending student review; this is not a final product sign-off.
+The runnable preview, role accounts and correction checklist are in [ui-review.md](ui-review.md). The automated/assistant audit is recorded in [hardening-evidence.md](hardening-evidence.md). The student accepted the UI and authorized peer handoff on 2026-09-29. Checklist results apply to the branch and the recorded Chromium/reflow limits, not untested devices or final-main sign-off.
 
 ## Student status-display correction (2026-09-29, Issue #63)
 

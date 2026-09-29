@@ -1,6 +1,6 @@
 # Lab 4 - Student UI review before peer handoff
 
-Issue #63 is **Started, awaiting student inspection/corrections**. This is the first mandatory student gate from `skill.md` and [workflow.md](workflow.md). No #63 peer review has been requested. The separate #64 document/review-record gate remains required later.
+Issue #63 is **ready for peer handoff after explicit student UI approval**. This is the first mandatory student gate from `skill.md` and [workflow.md](workflow.md). The student authorized requesting Atip-Infa review on 2026-09-29. The separate #64 document/review-record gate remains required later.
 
 ## Open the preview
 
@@ -46,8 +46,8 @@ Send a screenshot or page/role name plus the change wanted. Examples: "Staff Das
 
 ## Approval status
 
-- [ ] Student inspected UI and supplied corrections or explicitly confirmed no corrections.
-- [ ] Requested corrections applied and affected checks rerun.
-- [ ] Student explicitly confirmed #63 may be handed to Atip-Infa.
+- [x] Student inspected UI and supplied corrections or explicitly confirmed no corrections.
+- [x] Requested corrections applied and affected checks rerun.
+- [x] Student explicitly confirmed #63 may be handed to Atip-Infa.
 
-General "continue" instructions do not satisfy this gate. #63 stays open/Started until this review is complete; peer handoff and #64 are not authorized by preparation alone.
+Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending.
