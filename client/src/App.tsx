@@ -1,3 +1,4 @@
+import { ShellIcon } from "./ShellIcon.js";
 import { RequesterDashboard } from "./RequesterDashboard.js";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import {
@@ -564,11 +565,11 @@ function ServiceDesk() {
   return (
     <>
       <nav className="app-nav" aria-label="Service desk">
-        <button className={path === "/dashboard" ? "active" : ""} aria-current={path === "/dashboard" ? "page" : undefined} onClick={() => navigate("/dashboard")}>Dashboard</button>
+        <button className={path === "/dashboard" ? "active" : ""} aria-current={path === "/dashboard" ? "page" : undefined} onClick={() => navigate("/dashboard")}><ShellIcon name="dashboard" />Dashboard</button>
         <button className={path === "/my-tickets" || detail ? "active" : ""} aria-current={path === "/my-tickets" || detail ? "page" : undefined}
-          onClick={() => navigate("/my-tickets")}>My Tickets</button>
+          onClick={() => navigate("/my-tickets")}><ShellIcon name="tickets" />My Tickets</button>
         <button className={path === "/tickets/new" ? "active" : ""} aria-current={path === "/tickets/new" ? "page" : undefined}
-          onClick={() => navigate("/tickets/new")}>Create Ticket</button>
+          onClick={() => navigate("/tickets/new")}><ShellIcon name="plus" />Create Ticket</button>
       </nav>
       {path === "/dashboard" ? <RequesterDashboard key={user!.id} name={user!.displayName} /> : path === "/tickets/new" ? (
         <CreateTicket
@@ -623,11 +624,11 @@ function PlannedRoleHome() {
   const ticketDetail = /^\/tickets\/[1-9][0-9]*$/.test(path);
   return <>
     <nav className="app-nav" aria-label="Service desk">
-      <button className={path === "/staff/dashboard" ? "active" : ""} aria-current={path === "/staff/dashboard" ? "page" : undefined} onClick={() => navigate("/staff/dashboard")}>Dashboard</button>
+      <button className={path === "/staff/dashboard" ? "active" : ""} aria-current={path === "/staff/dashboard" ? "page" : undefined} onClick={() => navigate("/staff/dashboard")}><ShellIcon name="dashboard" />Dashboard</button>
       {admin && <button className={path === "/admin/users" ? "active" : ""} aria-current={path === "/admin/users" ? "page" : undefined}
-        onClick={() => navigate("/admin/users")}>Users</button>}
-      <button className={path === "/staff/tickets" ? "active" : ""} aria-current={path === "/staff/tickets" ? "page" : undefined}
-        onClick={() => navigate("/staff/tickets")}>Ticket Queue</button>
+        onClick={() => navigate("/admin/users")}><ShellIcon name="users" />Users</button>}
+      <button className={path === "/staff/tickets" || ticketDetail ? "active" : ""} aria-current={path === "/staff/tickets" || ticketDetail ? "page" : undefined}
+        onClick={() => navigate("/staff/tickets")}><ShellIcon name="tickets" />Ticket Queue</button>
     </nav>
     {path === "/staff/dashboard" ? <StaffDashboard name={user!.displayName} /> : path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => { queueReturn.current = window.location.pathname + window.location.search; navigate("/tickets/" + id); }} onHome={() => navigate(homeFor(user!.role))} />
       : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable onBack={() => navigate(queueReturn.current)} />

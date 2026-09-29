@@ -105,3 +105,12 @@ Replaced both date-filter paragraphs with the shared DateFilterNotice component.
 - Evidence: output/date-filter-audit.json and output/date-filter-audit.txt; screenshots in artifacts/lab-04/screenshots/date-filter/. Desktop Staff and 320px Requester panels were visually inspected. These local artifacts remain ignored by Git.
 
 No new peer handoff or final-main execution is claimed. Issue #63 remains Started awaiting student UI confirmation.
+
+## Student UI feedback: shared top bar, 2026-09-29
+
+The student requested a redesigned top bar across the application. Updated shared ApplicationShell header, account layout/buttons, decorative SVG icons, role navigation and Staff Ticket Detail active-navigation indication on the current #63 branch.
+
+- Client suite: 19 files, 116 passed (output/header-client.txt). Client/server build passed (output/header-build.txt); whitespace check passed.
+- Preview audit: 66 captures across Requester/Staff/Admin pages at six widths (1366, 1024, 834, 720, 390, 320px); no page errors, horizontal page overflow or clipped visible status chips detected (output/header-audit.json). Screenshots: artifacts/lab-04/screenshots/header-polish/. Desktop Staff and narrow Admin header/navigation images visually inspected.
+- Real preview browser interactions: six role/viewport combinations (three roles, desktop and 320px) passed navigation/active-state checks, long display-name layout, >=44px password-button height, keyboard Change Password/Cancel and actual Logout (output/header-controls.txt). The long-name layout check temporarily changed rendered text only; no account data was edited.
+- Generated evidence remains local and ignored. These are branch checks, not final-main results. #63 remains Started pending student UI confirmation before peer review.

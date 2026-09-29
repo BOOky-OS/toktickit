@@ -105,3 +105,7 @@ The desktop Queue allocates intrinsic width to Status and permits local table sc
 ## Student date-filter presentation correction (2026-09-29, Issue #63)
 
 Queue and My Tickets share DateFilterNotice: a pale green bordered panel with an active-filter heading, Updated/Resolved label, separate From/Before date and time fields, and a secondary Clear date filter button with a decorative close icon. Dates display in Asia/Bangkok with an explicit UTC+7 label; original ISO timestamps remain in the time element and tooltip. The Before boundary remains exclusive. The button moves to a full-width row on phones, supports visible keyboard focus, clears only date bounds and resets pagination while retaining other filters. Student UI approval remains pending.
+
+## Student application-header correction (2026-09-29, Issue #63)
+
+All authenticated pages share a forest-green header with a decorative brand mark, brand/subtitle, initials avatar, visible full display name and role, and labelled account buttons. Decorative SVG icons are hidden from assistive technology. The role navigation uses icons plus labels, a border/underline and aria-current for the selected page; Staff Ticket Detail keeps Ticket Queue selected. Mobile layouts place account actions below identity information; narrow navigation retains every destination and visible text. Account buttons and navigation have at least 44px targets and visible keyboard focus. No new account menu or authentication behavior is introduced. Student UI acceptance remains pending.

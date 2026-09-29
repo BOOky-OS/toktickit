@@ -1,3 +1,4 @@
+import { ShellIcon } from "./ShellIcon.js";
 import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { ApiError } from "./api.js";
 import { homeFor, navigate, useAuth } from "./AuthContext.js";
@@ -134,11 +135,11 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
   const role = user.role === "IT_STAFF" ? "IT Staff" : user.role === "ADMIN" ? "Administrator" : "Requester";
   return <>
     <header className="app-header">
-      <div><strong>TokTickIT</strong><span> IT Service Desk</span></div>
-      <div className="identity-panel"><span><strong>{user.displayName}</strong></span><span className="zen-badge">{role}</span>
-        <button className="btn btn-sm btn-outline-success" onClick={() => navigate("/change-password")}>Change Password</button>
-        <button ref={logoutButton} className="btn btn-sm btn-outline-danger" disabled={busy} aria-busy={busy} onClick={() => void submitLogout()}>{busy ? "Signing out..." : "Logout"}</button>
-      </div>
+      <div className="shell-brand"><span className="shell-brand-mark"><ShellIcon name="brand" /></span><div className="shell-brand-copy"><strong>TokTickIT</strong><span>IT Service Desk</span></div></div>
+      <div className="identity-panel"><div className="shell-account"><span className="shell-avatar" aria-hidden="true">{user.displayName.trim().split(/\s+/).slice(0, 2).map(part => Array.from(part)[0]).join("").toUpperCase()}</span><div className="shell-account-copy"><strong>{user.displayName}</strong><span>{role}</span></div></div><div className="shell-account-actions">
+        <button className="shell-account-button" onClick={() => navigate("/change-password")}><ShellIcon name="lock" />Change Password</button>
+        <button ref={logoutButton} className="shell-account-button shell-logout" disabled={busy} aria-busy={busy} onClick={() => void submitLogout()}><ShellIcon name="logout" />{busy ? "Signing out..." : "Logout"}</button>
+      </div></div>
     </header>
     {failure && <div className="shell-alert alert alert-danger" role="alert">{failure} <button className="btn btn-link" onClick={() => void submitLogout()}>Retry</button></div>}
     {children}
