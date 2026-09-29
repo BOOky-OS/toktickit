@@ -89,7 +89,7 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
     {referenceError && <p role="alert">Unable to load filter options. <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry options</button></p>}
     {state === "loading" && <p role="status">Loading Ticket Queue...</p>}
     {state === "forbidden" && <section className="zen-empty-state"><h2>Queue unavailable</h2><p>Your account cannot access this queue.</p><button className="zen-button zen-button--secondary" onClick={onHome}>Go to my home</button></section>}
-    {state === "error" && <p role="alert">{error} <button onClick={() => setRetry(v => v + 1)}>Retry</button></p>}
+    {state === "error" && <p role="alert">{error} <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry</button></p>}
     {state === "ready" && data && <>
       {data.items.length === 0 ? <section className="zen-empty-state"><h2>{filtered ? "No matching Tickets" : "No Tickets yet"}</h2>
         <p>{filtered ? "Try another search or clear the filters." : "New service requests will appear here."}</p>

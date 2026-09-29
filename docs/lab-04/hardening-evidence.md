@@ -165,3 +165,7 @@ Polished the shared Staff/Admin Queue heading, filters, sorting, table/cards and
 - Historical mocked Queue browser scenarios: 3 passed across desktop/tablet/mobile, including controls, detail and safe states (output/queue-polish-e2e.txt).
 - Reused the local header preview audit: 66 captures, no page errors, page overflow or clipped status chips detected (output/queue-polish-audit.json and .txt). Current captures are in artifacts/lab-04/screenshots/header-polish/; desktop Admin Queue and mobile Staff filters visually inspected. This path now contains the refreshed capture set. Generated evidence remains ignored.
 - Whitespace check passed. Student UI acceptance is pending; #63 remains Started without peer handoff or final-main evidence.
+
+## Cross-page student UI audit, 2026-09-29
+
+See [ui-audit.md](ui-audit.md) for current 116 client / 18 historical browser / 20 real Lab 4 browser passes, 144 captures, remaining button fixes, the interrupted preview run and inspection limitations. Student approval remains pending.

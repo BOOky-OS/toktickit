@@ -651,3 +651,13 @@ p { max-width: 72ch; }
   .date-filter-range dl { flex-direction: column; gap: .6rem; }
   .date-filter-clear { width: 100%; }
 }
+
+/* Keep recovery and confirmation controls aligned with the shared UI. */
+.ticket-card [role="alert"] .zen-button { margin: .4rem; }
+.ticket-card dialog .zen-button { margin: .35rem .5rem .35rem 0; }
+.action-history > .zen-button { margin: .35rem .5rem .35rem 0; }
+@media(max-width:767px) {
+ .ticket-card .ticket-heading { flex-wrap: wrap; }
+ .ticket-card .ticket-heading > div { min-width: 0; }
+ .ticket-card .ticket-heading h1 { overflow-wrap: anywhere; }
+}
