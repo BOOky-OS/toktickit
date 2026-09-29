@@ -628,3 +628,29 @@ p { max-width: 72ch; }
   .requester-ticket-table td:nth-child(8) { padding-top: .6rem; }
   .requester-ticket-table .ticket-link { text-align: left; }
 }
+
+/* Shared dashboard drill-down date notice, used by both Ticket lists. */
+.date-filter-notice { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; padding: 1rem 1.15rem; margin: 1.25rem 0; border: 1px solid #cce0d4; border-left: 3px solid #38815b; border-radius: .85rem; background: #f5faf7; }
+.date-filter-content { flex: 1 1 28rem; min-width: 0; }
+.date-filter-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .75rem; margin-bottom: .7rem; }
+.date-filter-heading strong { color: #244e37; font-size: .875rem; }
+.date-filter-heading > span { color: #52675b; font-size: .75rem; }
+.date-filter-range { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem 1.25rem; }
+.date-filter-range + .date-filter-range { margin-top: .85rem; }
+.date-filter-kind { color: #28583e; background: #e5f1e9; border: 1px solid #cee1d4; border-radius: .4rem; padding: .25rem .55rem; font-size: .75rem; font-weight: 650; }
+.date-filter-range dl { display: flex; flex-wrap: wrap; gap: .6rem 1.75rem; margin: 0; }
+.date-filter-range dl > div { min-width: 0; }
+.date-filter-range dt { color: #52675b; font-size: .75rem; margin-bottom: .15rem; }
+.date-filter-range dd { margin: 0; color: #244332; font-size: .875rem; font-weight: 600; }
+.date-filter-range time { display: inline-flex; flex-wrap: wrap; gap: .2rem .5rem; font-variant-numeric: tabular-nums; }
+.date-filter-time { color: #52675b; font-weight: 400; }
+.date-filter-clear { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; flex: 0 0 auto; font-size: .875rem; cursor: pointer; }
+.date-filter-clear:hover { background: #e8f4ec; border-color: #28583e; }
+.date-filter-clear:focus-visible { outline: 3px solid #38815b; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .date-filter-notice { padding: .9rem; gap: .9rem; }
+  .date-filter-heading { flex-direction: column; gap: .15rem; }
+  .date-filter-range { align-items: flex-start; flex-direction: column; gap: .6rem; }
+  .date-filter-range dl { flex-direction: column; gap: .6rem; }
+  .date-filter-clear { width: 100%; }
+}

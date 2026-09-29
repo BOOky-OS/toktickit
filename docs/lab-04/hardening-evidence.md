@@ -94,3 +94,14 @@ The student supplied a Queue screenshot showing status text split over several l
 - Assistant visually inspected desktop Queue and mobile Queue/My Tickets, including a full waiting-status card at 320px. Screenshots: 'artifacts/lab-04/screenshots/status-polish/'; detailed audit: 'output/status-polish-audit.json'. Generated outputs remain ignored.
 
 These are UI-branch checks, not final-main results. Student inspection/confirmation is still pending; #63 remains Started with no peer handoff.
+
+## Student UI feedback: date-filter notice, 2026-09-29
+
+Replaced both date-filter paragraphs with the shared DateFilterNotice component. The user requested a styled button everywhere and clearer adjacent text. The underlying filter timestamps and API queries are unchanged; presentation uses labelled Bangkok date/time fields.
+
+- Client: 19 files / 116 tests passed (output/date-filter-client.txt).
+- Client/server build passed (output/date-filter-build.txt); git diff --check passed.
+- Assistant-run preview browser checks: 24 passed, covering Updated and Resolved date ranges for Staff, Admin and Requester at 1366, 834, 390 and 320px. Verified formatted Bangkok time, retained exact datetime values, no page overflow, button within panel with >=44px height, Enter-key clearing, date removal, pagination reset and preservation of search/page size. No page errors observed.
+- Evidence: output/date-filter-audit.json and output/date-filter-audit.txt; screenshots in artifacts/lab-04/screenshots/date-filter/. Desktop Staff and 320px Requester panels were visually inspected. These local artifacts remain ignored by Git.
+
+No new peer handoff or final-main execution is claimed. Issue #63 remains Started awaiting student UI confirmation.

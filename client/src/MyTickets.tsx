@@ -1,3 +1,4 @@
+import { DateFilterNotice } from "./DateFilterNotice.js";
 import { navigate } from "./AuthContext.js";
 import { FormEvent, useEffect, useState } from "react";
 import {
@@ -160,7 +161,7 @@ export function MyTickets({
             Create Ticket
           </button>
         </div>
-        {(applied.updatedSince || applied.resolvedSince) && <p>Active date filter: {applied.updatedSince ? "Updated" : "Resolved"} from {applied.updatedSince || applied.resolvedSince} to {applied.updatedBefore || applied.resolvedBefore} (UTC). <button className="btn btn-link" onClick={() => go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""})}>Clear date filter</button></p>}
+        <DateFilterNotice updatedSince={applied.updatedSince} updatedBefore={applied.updatedBefore} resolvedSince={applied.resolvedSince} resolvedBefore={applied.resolvedBefore} onClear={() => go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""},1)} />
         <form className="filter-card" onSubmit={submit}>
           <div className="filter-grid">
             <div><label htmlFor="filter-active">Status group</label><select id="filter-active" className="zen-field" value={filters.statusGroup} onChange={event => set("statusGroup",event.target.value)}><option value="">All groups</option><option value="active">Active Tickets</option></select></div>

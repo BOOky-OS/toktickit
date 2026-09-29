@@ -1,3 +1,4 @@
+import { DateFilterNotice } from "./DateFilterNotice.js";
 import { FormEvent, useEffect, useState } from "react";
 import { ApiError, Category, getAssignees, getCategories, getRelatedSystems, getStaffQueue,
   StaffQueueItem, StaffQueueOptions, StaffQueueResponse, TicketOwner } from "./api.js";
@@ -61,7 +62,7 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
     aria-label={`Open ${t.ticketNumber}${summary ? ": " + t.summary : ""}`}>{summary ? t.summary : t.ticketNumber}</button>;
   return <main className="page-content" id="main-content"><section className="ticket-card staff-queue">
     <h1>Ticket Queue</h1><p>{admin ? "Administrator support workspace" : "All service requests across the support team."}</p>
-    {(applied.updatedSince || applied.resolvedSince) && <p>Active date filter: {applied.updatedSince ? "Updated" : "Resolved"} from {applied.updatedSince || applied.resolvedSince} to {applied.updatedBefore || applied.resolvedBefore}. <button onClick={()=>go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""},1)}>Clear date filter</button></p>}
+    <DateFilterNotice updatedSince={applied.updatedSince} updatedBefore={applied.updatedBefore} resolvedSince={applied.resolvedSince} resolvedBefore={applied.resolvedBefore} onClear={() => go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""},1)} />
     <form className="filter-card" onSubmit={apply}>
       <div className="filter-grid">
         <div className="filter-wide"><label htmlFor="queue-search">Search</label><input id="queue-search" className="zen-field" maxLength={120}
