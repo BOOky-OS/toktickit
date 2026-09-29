@@ -50,19 +50,20 @@ export function LoginScreen() {
     } finally { setBusy(false); }
   }
   return <main className="auth-page" id="main-content">
-    <section className="auth-card" aria-labelledby="login-title">
-      <p className="eyebrow">IT Service Desk</p><h1>TokTickIT</h1>
+    <section className="auth-card login-card" aria-labelledby="login-title">
+      <div className="login-brand"><span className="login-brand-icon" aria-hidden="true"><ShellIcon name="brand" /></span><div><p className="eyebrow">IT Service Desk</p><h1>TokTickIT</h1></div></div>
       <h2 id="login-title">Sign in</h2>
-      <p className="text-secondary">Use the account and initial password provided by your administrator.</p>
+      <p className="login-intro">Welcome back. Sign in to manage your service requests.</p>
       {notice && <p className="notice" role="status">{notice}</p>}
-      {failure && <div className="alert alert-danger" role="alert">{failure} <button type="button" className="btn btn-link" onClick={() => setFailure("")}>Retry</button></div>}
+      {failure && <div className="alert alert-danger" role="alert">{failure} <button type="button" className="zen-button zen-button--secondary login-retry" onClick={() => setFailure("")}>Retry</button></div>}
       {Object.keys(errors).length > 0 && <div className="error-summary" role="alert">Please correct the highlighted fields.</div>}
       <form noValidate onSubmit={submit} aria-busy={busy}>
         <Field id="login-email" label="Email" type="email" value={email} setValue={setEmail} error={errors.email} autoComplete="username" />
         <Field id="login-password" label="Password" type="password" value={password} setValue={setPassword} error={errors.password}
           autoComplete="current-password" shown={shown} toggle={() => setShown(value => !value)} />
-        <button className="zen-button zen-button--primary auth-submit" type="submit" disabled={busy}>{busy ? "Signing in..." : "Sign in"}</button>
+        <button className="zen-button zen-button--primary auth-submit" type="submit" disabled={busy}>{busy ? "Signing in..." : "Sign in"}<ShellIcon name="arrow" /></button>
       </form>
+      <p className="login-help">Use the account and initial password provided by your administrator.</p>
     </section>
   </main>;
 }

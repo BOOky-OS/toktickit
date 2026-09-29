@@ -136,3 +136,13 @@ The student requested a visual update to Change password. Updated the scoped pas
 - Captured normal and validation states in artifacts/lab-04/screenshots/password-polish/; desktop Staff and narrow Requester cards visually inspected. Logs/screenshots remain ignored. Whitespace check passed.
 
 Student UI acceptance is still pending. #63 remains Started with no peer handoff or final-main claim.
+
+## Student UI feedback: sign-in page, 2026-09-29
+
+Updated the sign-in card and scoped login styles in response to the supplied screenshot.
+
+- AuthFlow.test.tsx: 18 passed (output/login-polish-tests.txt); client/server build passed (output/login-polish-build.txt); whitespace check passed.
+- Preview browser: four viewport flows (1366/834/390/320px) passed required-field validation, keyboard Show/Hide, simulated 503 safe failure and password clearing, Retry, real Staff sign-in/logout and signed-out notice. No page errors or final-page horizontal overflow observed (output/login-polish-audit.txt).
+- Sixteen screenshots cover normal, validation, failure and signed-out states in artifacts/lab-04/screenshots/login-polish/. Desktop signed-out and narrow failure layouts visually inspected. Generated evidence remains ignored.
+
+Student UI confirmation remains pending before #63 peer handoff. No final-main results claimed.

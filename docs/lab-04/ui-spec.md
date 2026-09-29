@@ -117,3 +117,7 @@ Staff/Admin and Requester dashboards now share a structured heading, refresh ico
 ## Student password-page correction (2026-09-29, Issue #63)
 
 Voluntary and mandatory password replacement share the refreshed account-security card: decorative lock icon, account identity panel, structured password requirements, 52px inputs, 44px Show/Hide controls, and separated form actions. The new-password input references its guidance and any validation error through aria-describedby. Narrow screens stack the heading and full-width actions. Password validation, masking defaults, autocomplete, mandatory Logout/no-Cancel and voluntary Cancel behavior are preserved.
+
+## Student sign-in presentation correction (2026-09-29, Issue #63)
+
+Sign in now shares the refreshed account-security design: decorative brand mark, separated heading/intro, rounded 52px fields, 44px Show/Hide target and full-width 50px primary button with decorative arrow. Signed-out/session notices, validation and safe-failure messages have consistent spacing and borders; Retry uses a styled secondary button. Administrator-provided credential guidance remains visible below the form. Autocomplete, labels, masking, authentication and error handling are unchanged. Layout supports 320px screens.
