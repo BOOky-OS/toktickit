@@ -121,3 +121,7 @@ Voluntary and mandatory password replacement share the refreshed account-securit
 ## Student sign-in presentation correction (2026-09-29, Issue #63)
 
 Sign in now shares the refreshed account-security design: decorative brand mark, separated heading/intro, rounded 52px fields, 44px Show/Hide target and full-width 50px primary button with decorative arrow. Signed-out/session notices, validation and safe-failure messages have consistent spacing and borders; Retry uses a styled secondary button. Administrator-provided credential guidance remains visible below the form. Autocomplete, labels, masking, authentication and error handling are unchanged. Layout supports 320px screens.
+
+## Student Admin Users correction (2026-09-29, Issue #63)
+
+User Management now has a heading/Create user toolbar and spaced filter actions. The list occupies the full workspace until create/edit is opened; only the explicit user-editor panel receives editor styling. Desktop editing splits list/editor, while smaller screens show the editor before responsive user cards. Role/status chips retain text labels. Buttons share consistent dimensions and styling, including Retry, Reload and password-reset dialog actions. Selected users receive a visible row highlight. Validation, self-deactivation/last-admin protections and reset confirmation remain intact.

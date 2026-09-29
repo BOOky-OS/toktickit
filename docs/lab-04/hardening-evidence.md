@@ -146,3 +146,13 @@ Updated the sign-in card and scoped login styles in response to the supplied scr
 - Sixteen screenshots cover normal, validation, failure and signed-out states in artifacts/lab-04/screenshots/login-polish/. Desktop signed-out and narrow failure layouts visually inspected. Generated evidence remains ignored.
 
 Student UI confirmation remains pending before #63 peer handoff. No final-main results claimed.
+
+## Student UI feedback: Admin Users, 2026-09-29
+
+Fixed the permanently reserved empty editor column and the last-child selector that incorrectly styled the user list as an editor. Polished heading, filters, list/cards, editor and confirmation buttons on #63.
+
+- UserManagement component tests: 7 passed (output/users-polish-tests.txt); client/server build passed (output/users-polish-build.txt); whitespace check passed.
+- Historical Admin browser scenario: 3 passed (desktop/tablet/mobile), covering mocked create/edit/reset and conflict/reload (output/users-polish-e2e.txt). This UI scenario does not claim new real-database write coverage.
+- Real preview: 16 layout captures of list/create/edit/reset dialog at 1366/834/390/320px; no page errors or horizontal overflow (output/users-polish-audit.txt). No accounts were changed. Desktop list and mobile editor visually inspected. Images in artifacts/lab-04/screenshots/users-polish/ remain ignored with other output.
+
+Student UI confirmation remains pending; no #63 peer handoff or final-main verification is claimed.
