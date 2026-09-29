@@ -1,3 +1,4 @@
+import { ShellIcon } from "./ShellIcon.js";
 import { DateFilterNotice } from "./DateFilterNotice.js";
 import { FormEvent, useEffect, useState } from "react";
 import { ApiError, Category, getAssignees, getCategories, getRelatedSystems, getStaffQueue,
@@ -61,9 +62,10 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
   const open = (t: StaffQueueItem, summary = false) => <button className="ticket-link" onClick={() => onOpen(t.id)}
     aria-label={`Open ${t.ticketNumber}${summary ? ": " + t.summary : ""}`}>{summary ? t.summary : t.ticketNumber}</button>;
   return <main className="page-content" id="main-content"><section className="ticket-card staff-queue">
-    <h1>Ticket Queue</h1><p>{admin ? "Administrator support workspace" : "All service requests across the support team."}</p>
+    <div className="queue-heading"><span className="queue-heading-icon" aria-hidden="true"><ShellIcon name="tickets" /></span><div><span className="queue-eyebrow">Support workspace</span><h1>Ticket Queue</h1><p>{admin ? "Administrator support workspace" : "All service requests across the support team."}</p></div></div>
     <DateFilterNotice updatedSince={applied.updatedSince} updatedBefore={applied.updatedBefore} resolvedSince={applied.resolvedSince} resolvedBefore={applied.resolvedBefore} onClear={() => go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""},1)} />
-    <form className="filter-card" onSubmit={apply}>
+    <form className="filter-card queue-filters" onSubmit={apply}>
+      <div className="queue-filter-heading"><h2>Find a Ticket</h2><p>Search requests and narrow the list using the filters below.</p></div>
       <div className="filter-grid">
         <div className="filter-wide"><label htmlFor="queue-search">Search</label><input id="queue-search" className="zen-field" maxLength={120}
           value={draft.search} onChange={event => set("search", event.target.value)} placeholder="Ticket number, summary or requester" /></div>
@@ -75,22 +77,24 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
         {select("requestedPriority", "Requested Priority", [["", "All priorities"], ...priorities.map(p => [p, queueLabel(p)] as [string, string])])}
         {select("itPriority", "IT Priority", [["", "All priorities"], ...priorities.map(p => [p, queueLabel(p)] as [string, string])])}
         {select("owner", "Owner", [["", "All owners"], ["unassigned", "Unassigned"], ["me", "Me"], ...refs.owners.map(o => [String(o.id), `${o.displayName} (${o.role === "ADMIN" ? "Admin" : "IT Staff"})`] as [string, string])])}
+      </div><fieldset className="queue-sort"><legend>Sort and display</legend><div className="filter-grid">
         {select("sortBy", "Sort by", [["updatedAt", "Last updated"], ["ticketDate", "Created date"], ["ticketNumber", "Ticket number"], ["summary", "Summary"], ["itPriority", "IT Priority"]])}
         {select("sortDir", "Order", [["desc", "Descending"], ["asc", "Ascending"]])}
         {select("pageSize", "Page size", [["10", "10"], ["25", "25"], ["50", "50"]])}
       </div>
+      </fieldset>
       <div className="filter-actions"><button type="button" className="zen-button zen-button--secondary" onClick={clear}>Clear filters</button>
         <button className="zen-button zen-button--primary" type="submit">Apply filters</button></div>
     </form>
-    {referenceError && <p role="alert">Unable to load filter options. <button onClick={() => setRetry(v => v + 1)}>Retry options</button></p>}
+    {referenceError && <p role="alert">Unable to load filter options. <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry options</button></p>}
     {state === "loading" && <p role="status">Loading Ticket Queue...</p>}
-    {state === "forbidden" && <section className="zen-empty-state"><h2>Queue unavailable</h2><p>Your account cannot access this queue.</p><button onClick={onHome}>Go to my home</button></section>}
+    {state === "forbidden" && <section className="zen-empty-state"><h2>Queue unavailable</h2><p>Your account cannot access this queue.</p><button className="zen-button zen-button--secondary" onClick={onHome}>Go to my home</button></section>}
     {state === "error" && <p role="alert">{error} <button onClick={() => setRetry(v => v + 1)}>Retry</button></p>}
     {state === "ready" && data && <>
       {data.items.length === 0 ? <section className="zen-empty-state"><h2>{filtered ? "No matching Tickets" : "No Tickets yet"}</h2>
         <p>{filtered ? "Try another search or clear the filters." : "New service requests will appear here."}</p>
-        {filtered && <button onClick={clear}>Clear search and filters</button>}</section> : <>
-        <div className="queue-desktop ticket-table-wrap"><table className="ticket-table"><caption className="visually-hidden">All service requests</caption>
+        {filtered && <button className="zen-button zen-button--secondary" onClick={clear}>Clear search and filters</button>}</section> : <>
+        <div className="queue-desktop ticket-table-wrap" role="region" aria-label="Ticket Queue results" tabIndex={0}><table className="ticket-table"><caption className="visually-hidden">All service requests</caption>
           <thead><tr>{["Ticket Number", "Created Date", "Summary", "Category", "Requested Priority", "IT Priority", "Status", "Owner", "Last Updated"].map(h => <th key={h}>{h}</th>)}</tr></thead>
           <tbody>{data.items.map(t => <tr key={t.id}><td>{open(t)}</td><td>{new Date(t.ticketDate).toLocaleDateString()}</td><td>{open(t, true)}<small className="queue-secondary">{t.requester.displayName} / {t.relatedSystem.name}</small></td>
             <td>{t.category.name}</td><td><span className="zen-badge">{queueLabel(t.requestedPriority)}</span></td><td><span className="zen-badge">{queueLabel(t.itPriority)}</span></td><td><span className="zen-badge" data-status={t.currentStatus}>{queueLabel(t.currentStatus)}</span></td><td>{t.owner?.displayName ?? "Unassigned"}</td><td>{new Date(t.updatedAt).toLocaleDateString()}</td></tr>)}</tbody>

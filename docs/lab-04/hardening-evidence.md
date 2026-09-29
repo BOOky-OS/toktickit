@@ -156,3 +156,12 @@ Fixed the permanently reserved empty editor column and the last-child selector t
 - Real preview: 16 layout captures of list/create/edit/reset dialog at 1366/834/390/320px; no page errors or horizontal overflow (output/users-polish-audit.txt). No accounts were changed. Desktop list and mobile editor visually inspected. Images in artifacts/lab-04/screenshots/users-polish/ remain ignored with other output.
 
 Student UI confirmation remains pending; no #63 peer handoff or final-main verification is claimed.
+
+## Student UI feedback: Ticket Queue, 2026-09-29
+
+Polished the shared Staff/Admin Queue heading, filters, sorting, table/cards and pagination. No backend changes.
+
+- StaffTicketQueue component tests: 6 passed (output/queue-polish-tests.txt); build passed (output/queue-polish-build.txt).
+- Historical mocked Queue browser scenarios: 3 passed across desktop/tablet/mobile, including controls, detail and safe states (output/queue-polish-e2e.txt).
+- Reused the local header preview audit: 66 captures, no page errors, page overflow or clipped status chips detected (output/queue-polish-audit.json and .txt). Current captures are in artifacts/lab-04/screenshots/header-polish/; desktop Admin Queue and mobile Staff filters visually inspected. This path now contains the refreshed capture set. Generated evidence remains ignored.
+- Whitespace check passed. Student UI acceptance is pending; #63 remains Started without peer handoff or final-main evidence.

@@ -125,3 +125,7 @@ Sign in now shares the refreshed account-security design: decorative brand mark,
 ## Student Admin Users correction (2026-09-29, Issue #63)
 
 User Management now has a heading/Create user toolbar and spaced filter actions. The list occupies the full workspace until create/edit is opened; only the explicit user-editor panel receives editor styling. Desktop editing splits list/editor, while smaller screens show the editor before responsive user cards. Role/status chips retain text labels. Buttons share consistent dimensions and styling, including Retry, Reload and password-reset dialog actions. Selected users receive a visible row highlight. Validation, self-deactivation/last-admin protections and reset confirmation remain intact.
+
+## Student Ticket Queue correction (2026-09-29, Issue #63)
+
+Staff/Admin Queue uses a shared icon/heading, a Find a Ticket filter panel, and a labelled Sort and display fieldset. Apply/Clear actions are grouped; table rows and mobile cards use clearer spacing and typography. Pagination has its own panel; retry, empty and forbidden-state buttons share the existing button style. The desktop table region has an accessible name and keyboard focus for local scrolling. Existing filters, URL state and API behavior are preserved.
