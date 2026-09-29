@@ -214,7 +214,7 @@ export function ActionsTaken({ ticket, actor, onUpdate }: { ticket: TicketDetail
         const active = ["PLANNED", "IN_PROGRESS"].includes(action.status), eligible = assignees.some(a => a.id === action.assignee.id);
         const complete = action.result.trim().length >= 5 && !action.followUpRequired;
         return <li key={action.id}><article id={`action-${action.id}`} tabIndex={-1} className="action-card" aria-label={`Action ${action.id}`}>
-          <div className="ticket-heading"><h3>Action {action.id}</h3><span className="zen-badge">{label(action.status)}</span></div><Fields action={action} />
+          <div className="ticket-heading"><h3>Action {action.id}</h3><span className="zen-badge" data-status={action.status}>{label(action.status)}</span></div><Fields action={action} />
           {canWrite && active && <>
             {!eligible && <p>Current assignee unavailable. Reassign before editing, starting or completing; cancellation is still allowed.</p>}
             {action.status === "IN_PROGRESS" && !complete && <p>Edit the Result to at least 5 characters and set Follow-up required to No before completion.</p>}

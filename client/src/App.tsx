@@ -226,7 +226,7 @@ function CreateTicket({
           <h1>Ticket {created.ticketNumber} has been created</h1>
           <p>
             Keep this official ticket number for your next action. Your status
-            is <span className="zen-badge">{created.currentStatus}</span>.
+            is <span className="zen-badge" data-status={created.currentStatus}>{created.currentStatus.charAt(0) + created.currentStatus.slice(1).toLowerCase().replaceAll("_", " ")}</span>.
           </p>
           {uploadedCount > 0 && (
             <p className="success-message" role="status">
@@ -283,7 +283,7 @@ function CreateTicket({
               Fields marked required are needed before you submit.
             </p>
           </div>
-          <span className="zen-badge">NEW</span>
+          <span className="zen-badge" data-status="NEW">New</span>
         </div>
         {referenceState === "loading" && (
           <p className="notice" role="status">

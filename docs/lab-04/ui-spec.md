@@ -95,3 +95,9 @@ Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`,
 ## Issue #63 student inspection
 
 The runnable preview, role accounts and correction checklist are in [ui-review.md](ui-review.md). The automated/assistant audit is recorded in [hardening-evidence.md](hardening-evidence.md). Checklist completion and final UI acceptance remain pending student review; this is not a final product sign-off.
+
+## Student status-display correction (2026-09-29, Issue #63)
+
+Ticket and Action status chips use a compact rounded rectangle, subtle border, soft status-specific background, decorative dot and complete text label. Labels do not split inside words or truncate. The shared treatment applies to Queue, My Tickets, Detail, dashboards, Actions Taken and Ticket creation feedback. Priority chips also retain whole labels.
+
+The desktop Queue allocates intrinsic width to Status and permits local table scrolling on narrower desktop widths. Mobile/tablet Queue cards give Status a full-width row that wraps the label above the chip when needed. My Tickets uses stacked mobile rows while retaining explicit table roles and the existing visible fields (number, summary, status). This avoids squeezing long status labels into a narrow third column. Student acceptance and peer handoff remain pending.

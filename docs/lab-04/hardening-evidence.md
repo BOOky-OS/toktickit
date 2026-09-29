@@ -82,3 +82,15 @@ Selected desktop and mobile contact sheets were visually inspected. Metric-link 
 - Audit results: `output/lab4-preview-audit.json`, `output/lab4-preview-audit.txt`.
 
 Generated artifacts are intentionally local and are not committed. The final report package is not complete. Any requested UI corrections will be made on this same Issue branch with affected checks rerun before student confirmation and peer handoff.
+
+## Student UI feedback: status presentation, 2026-09-29
+
+The student supplied a Queue screenshot showing status text split over several lines and requested improved desktop/mobile presentation. On the same #63 branch, the assistant changed shared status styling, Queue column sizing/card status rows, and the narrow My Tickets layout. Staff dashboard and Actions Taken badges now include their actual status attribute, and creation feedback uses readable status text. Backend behavior is unchanged.
+
+- Client suite: 19 files, 116 passed ('output/status-polish-client.txt').
+- Historical browser suite: 18 passed ('output/status-polish-e2e.txt'), including mobile Requester creation/list/detail and Staff Queue/operations. Mocked cases retain the limits stated above.
+- Client/server build passed ('output/status-polish-build.txt'); whitespace check passed.
+- Preview audit: 66 captures across 11 role/page combinations at 1366, 1024, 834, 720, 390 and 320 CSS-pixel widths. No page errors, horizontal page overflow or clipped/offscreen visible status text were detected. Narrow desktop tables may scroll within their container. The 720px case remains a reflow approximation, not actual browser zoom.
+- Assistant visually inspected desktop Queue and mobile Queue/My Tickets, including a full waiting-status card at 320px. Screenshots: 'artifacts/lab-04/screenshots/status-polish/'; detailed audit: 'output/status-polish-audit.json'. Generated outputs remain ignored.
+
+These are UI-branch checks, not final-main results. Student inspection/confirmation is still pending; #63 remains Started with no peer handoff.

@@ -99,7 +99,7 @@ export function StaffTicketQueue({ admin, onOpen, onHome }: { admin: boolean; on
             ["Requester", t.requester.displayName], ["Owner", t.owner?.displayName ?? "Unassigned"], ["Status", queueLabel(t.currentStatus)],
             ["Requested Priority", queueLabel(t.requestedPriority)], ["IT Priority", queueLabel(t.itPriority)], ["Category", t.category.name], ["Related System", t.relatedSystem.name],
             ["Created Date", new Date(t.ticketDate).toLocaleDateString()], ["Last Updated", new Date(t.updatedAt).toLocaleDateString()],
-          ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{["Status", "Requested Priority", "IT Priority"].includes(label) ? <span className="zen-badge" data-status={label === "Status" ? t.currentStatus : undefined}>{value}</span> : value}</dd></div>)}</dl><button className="zen-button zen-button--primary" onClick={() => onOpen(t.id)}>Open Ticket</button>
+          ].map(([label, value]) => <div key={label} className={label === "Status" ? "queue-status" : undefined}><dt>{label}</dt><dd>{["Status", "Requested Priority", "IT Priority"].includes(label) ? <span className="zen-badge" data-status={label === "Status" ? t.currentStatus : undefined}>{value}</span> : value}</dd></div>)}</dl><button className="zen-button zen-button--primary" onClick={() => onOpen(t.id)}>Open Ticket</button>
         </article>)}</div>
       </>}
       <div className="pagination-row"><span>Showing {data.items.length ? (data.page - 1) * data.pageSize + 1 : 0}-{data.items.length ? Math.min(data.page * data.pageSize, data.totalItems) : 0} of {data.totalItems} Tickets</span>
