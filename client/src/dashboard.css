@@ -1,19 +1,50 @@
+
 .dashboard { overflow-wrap: anywhere; min-width: 0; }
-.dashboard-metrics { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap: 1rem; margin: 1rem 0 1.5rem; }
-.dashboard-metric { border: 1px solid #ccdcd3; border-radius: 1rem; background: #f4faf6; min-width: 0; }
-.dashboard-metric a { display: flex; flex-direction: column; padding: 1rem; min-height: 7rem; color: #205338; text-decoration: none; }
-.dashboard-metric strong { font-size: 2rem; }
-.dashboard-lists { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.25rem; }
-.dashboard-list { border: 1px solid #ccdcd3; border-radius: 1rem; padding: 1rem; min-width: 0; }
-.dashboard-list ul { list-style: none; padding: 0; }
-.dashboard-list li { padding: .8rem 0; border-bottom: 1px solid #dbe8df; }
+.dashboard .ticket-heading { align-items: center; gap: 1rem; padding-bottom: 1.25rem; margin-bottom: 1rem; border-bottom: 1px solid #e1ebe5; }
+.dashboard-eyebrow { display: block; margin-bottom: .5rem; font-size: .7rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; color: #48725a; }
+.dashboard .ticket-heading h1 { margin: 0 0 .45rem; }
+.dashboard .ticket-heading p { margin: 0; color: #52675b; font-size: .9rem; }
+.dashboard .ticket-heading > button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; flex-shrink: 0; font-size: .85rem; }
+.dashboard .ticket-heading > button:hover:not(:disabled) { background: #edf6f0; }
+.dashboard-updated { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .5rem; max-width: 100%; margin: 0 0 1rem; padding: .45rem .7rem; border: 1px solid #dbe7df; border-radius: .5rem; background: #f7faf8; color: #52675b; font-size: .75rem; }
+.dashboard-note { max-width: none; margin: 0 0 1.2rem; padding: .8rem 1rem; border-left: 3px solid #b4d2c0; border-radius: 0 .5rem .5rem 0; background: #f7faf8; color: #52675b; font-size: .8rem; line-height: 1.7; }
+.dashboard-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; margin: 1rem 0 1.25rem; }
+.dashboard-status-grid, .dashboard-requester-overview { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.dashboard-metric { border: 1px solid #ccdcd3; border-radius: .85rem; background: #fff; min-width: 0; box-shadow: 0 3px 10px #234a3410; transition: border-color 140ms ease, box-shadow 140ms ease; }
+.dashboard-metric:hover { border-color: #7eab90; box-shadow: 0 5px 16px #234a341a; }
+.dashboard-metric a { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: .7rem; padding: 1.1rem; min-height: 8rem; height: 100%; color: #205338; text-decoration: none; border-radius: inherit; }
+.dashboard-metric-label { padding-right: 1.25rem; font-size: .85rem; font-weight: 600; color: #405e4c; line-height: 1.5; }
+.dashboard-metric strong { font-size: 2rem; line-height: 1.15; font-weight: 750; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.dashboard-metric-arrow { position: absolute; right: 1rem; bottom: 1.1rem; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border: 1px solid #d3e4d9; border-radius: 50%; color: #396c4e; background: #f2f8f4; }
+.dashboard-overview .dashboard-metric, .dashboard-requester-overview .dashboard-metric { background: #f0f7f3; border-top: 3px solid #6b9d7e; }
+.dashboard-overview .dashboard-metric strong, .dashboard-requester-overview .dashboard-metric strong { font-size: 2.5rem; }
+.dashboard-section-title { display: flex; align-items: center; gap: .65rem; margin: 1.8rem 0 .9rem; font-size: 1.1rem; }
+.dashboard-section-title::before { content: ""; width: 4px; height: 1.1rem; border-radius: 3px; background: #548966; }
+.dashboard-lists { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.25rem; margin-top: 1.75rem; }
+.dashboard-list { border: 1px solid #d7e3db; border-radius: .85rem; padding: 1.15rem; min-width: 0; background: #fff; }
+.dashboard-list h2 { font-size: 1.05rem; padding-bottom: .85rem; margin: 0; border-bottom: 1px solid #e1ebe5; }
+.dashboard-list ul { list-style: none; padding: 0; margin: 0; }
+.dashboard-list li { padding: 1rem 0; border-bottom: 1px solid #e4ede7; }
+.dashboard-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+.dashboard-list a { line-height: 1.6; text-decoration: none; font-size: .9rem; }
+.dashboard-list a:hover { text-decoration: underline; }
+.dashboard-list a strong { display: block; font-size: .75rem; letter-spacing: .025em; margin-bottom: .25rem; }
+.dashboard-list p { margin: .65rem 0; font-size: .85rem; line-height: 1.8; color: #52675b; }
+.dashboard-list > p { padding: 1rem; margin: 1rem 0 0; background: #f7faf8; border: 1px dashed #cadcd0; border-radius: .6rem; }
+.dashboard-list small { display: block; font-size: .75rem; line-height: 1.7; color: #5a6c60; }
+.dashboard-window { max-width: none; padding-top: 1rem; margin: 1rem 0 .5rem; color: #5a6c60; font-size: .75rem; }
 .dashboard a { color: #205338; }
 .dashboard a:focus-visible { outline: 3px solid #216f45; outline-offset: 3px; }
 .dashboard-list a, .dashboard > p a { display: inline-block; min-height: 44px; }
-@media(max-width:1023px) { .dashboard-lists { grid-template-columns: 1fr; } }
-
-.dashboard .filter-actions a { display: inline-flex; align-items: center; min-height: 44px; }
+.dashboard > p a, .dashboard .filter-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #bdd5c6; border-radius: .6rem; padding: .6rem 1rem; text-decoration: none; font-size: .85rem; font-weight: 600; background: #f3f8f5; }
+.dashboard > p a:hover, .dashboard .filter-actions a:hover { background: #e7f2eb; border-color: #8ab29a; }
+@media(max-width:1100px) { .dashboard-lists { grid-template-columns: 1fr; } .dashboard-requester-overview { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:900px) { .dashboard-status-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media(max-width:767px) {
   .dashboard .ticket-heading { flex-direction: column; align-items: stretch; }
-  .dashboard .ticket-heading > button { flex-shrink: 0; white-space: normal; overflow-wrap: normal; min-height: 44px; }
+  .dashboard .ticket-heading > button { white-space: normal; overflow-wrap: normal; min-height: 44px; }
+  .dashboard-metrics { gap: .75rem; }
+  .dashboard-overview, .dashboard-priority-grid { grid-template-columns: 1fr; }
+  .dashboard-metric a { padding: .9rem; }
 }
+@media(max-width:480px) { .dashboard-status-grid, .dashboard-requester-overview { grid-template-columns: 1fr; } .dashboard-metric a { min-height: 6.5rem; } }

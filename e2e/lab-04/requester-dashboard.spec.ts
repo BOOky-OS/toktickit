@@ -33,7 +33,7 @@ for (const [name,width,height] of [["desktop",1440,900],["tablet",834,1112],["mo
       for(const title of ['Waiting for You 1','Updated in Last 7 Days 12','Resolved in Last 7 Days 1']) {
         await page.getByRole('navigation').getByRole('button',{name:'Dashboard',exact:true}).click();await page.getByRole('link',{name:title,exact:true}).click();
         await expect(page.getByText(title.startsWith('Updated')?'Showing 1-10 of 12 Tickets':'Showing 1-1 of 1 Tickets')).toBeVisible();
-        if(!title.startsWith('Waiting')) {await expect(page.getByText(/Active date filter:/)).toBeVisible();await page.reload();await expect(page.getByText(/Active date filter:/)).toBeVisible();}
+        if(!title.startsWith('Waiting')) {await expect(page.getByRole('region',{name:'Active date filter'})).toBeVisible();await page.reload();await expect(page.getByRole('region',{name:'Active date filter'})).toBeVisible();}
       }
       await page.getByRole('navigation').getByRole('button',{name:'Dashboard',exact:true}).click();await page.getByRole('link',{name:'Open Tickets 11',exact:true}).waitFor();
       await page.route('**/api/dashboards/requester',route=>route.fulfill({status:503,contentType:'application/json',body:'{"error":"private detail"}'}),{times:1});await page.getByRole('button',{name:'Refresh dashboard'}).click();await expect(page.getByRole('alert')).toContainText('out of date');await expect(page.getByRole('link',{name:'Open Tickets 11',exact:true})).toBeVisible();await page.screenshot({path:`${dir}/stale.png`,fullPage:true});

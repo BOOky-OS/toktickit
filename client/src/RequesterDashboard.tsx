@@ -1,3 +1,4 @@
+import { ShellIcon } from "./ShellIcon.js";
 import { ReactNode, useEffect, useState } from "react";
 import { ApiError, getRequesterDashboard, RequesterDashboardData } from "./api.js";
 import { navigate } from "./AuthContext.js";
@@ -31,26 +32,26 @@ export function RequesterDashboard({ name }: { name: string }) {
 
   const card = (title: string, value: number, query: Record<string, string>) =>
     <div className="dashboard-metric"><Link href={"/my-tickets?" + new URLSearchParams({ ...query, page: "1", pageSize: "10" })}>
-      <span>{title}</span><strong>{value}</strong>
+      <span className="dashboard-metric-label">{title}</span><strong>{value}</strong><span className="dashboard-metric-arrow" aria-hidden="true"><ShellIcon name="arrow" /></span>
     </Link></div>;
   return <main className="page-content" id="main-content">
     <section className="ticket-card dashboard" aria-busy={busy}>
       <div className="ticket-heading">
-        <div><h1>Requester Dashboard</h1><p>Hello, {name}. Here is an overview of your Tickets.</p></div>
-        <button className="zen-button zen-button--secondary" disabled={busy} onClick={() => setRetry(value => value + 1)}>Refresh dashboard</button>
+        <div><span className="dashboard-eyebrow">Your workspace</span><h1>Requester Dashboard</h1><p>Hello, {name}. Here is an overview of your Tickets.</p></div>
+        <button className="zen-button zen-button--secondary" disabled={busy} onClick={() => setRetry(value => value + 1)}><ShellIcon name="refresh" />Refresh dashboard</button>
       </div>
       {busy && <p role="status">Loading dashboard...</p>}
       {error && <p role="alert">{data ? "Unable to refresh dashboard. Displayed information may be out of date." : error}</p>}
       {data && <>
-        <p>Updated {time(data.generatedAt)} (Asia/Bangkok){error ? " - Out of date" : ""}</p>
-        <div className="dashboard-metrics">
+        <p className="dashboard-updated">Updated {time(data.generatedAt)} (Asia/Bangkok){error ? " - Out of date" : ""}</p>
+        <div className="dashboard-metrics dashboard-requester-overview">
           {card("Open Tickets", data.metrics.openTickets, { statusGroup: "active" })}
           {card("Waiting for You", data.metrics.waitingForRequester, { currentStatus: "WAITING_FOR_REQUESTER" })}
           {card("Updated in Last 7 Days", data.metrics.recentlyUpdated, { updatedSince: data.recentWindow.from, updatedBefore: data.recentWindow.to })}
           {card("Resolved in Last 7 Days", data.metrics.recentlyResolved, { resolvedSince: data.recentWindow.from, resolvedBefore: data.recentWindow.to })}
         </div>
-        <p>Open excludes Resolved, Closed and Cancelled Tickets. Recent resolutions include currently Closed Tickets resolved during the window. Counts are separate and should not be added together.</p>
-        <p>Recent window: {time(data.recentWindow.from)} to {time(data.recentWindow.to)} (Asia/Bangkok).</p>
+        <p className="dashboard-note">Open excludes Resolved, Closed and Cancelled Tickets. Recent resolutions include currently Closed Tickets resolved during the window. Counts are separate and should not be added together.</p>
+        <p className="dashboard-window">Recent window: {time(data.recentWindow.from)} to {time(data.recentWindow.to)} (Asia/Bangkok).</p>
         <section className="dashboard-list" aria-labelledby="recent-requester-tickets">
           <h2 id="recent-requester-tickets">Recently updated Tickets</h2>
           {data.recentTickets.length ? <ul>{data.recentTickets.map(ticket => <li key={ticket.id}>

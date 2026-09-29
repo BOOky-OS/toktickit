@@ -114,3 +114,14 @@ The student requested a redesigned top bar across the application. Updated share
 - Preview audit: 66 captures across Requester/Staff/Admin pages at six widths (1366, 1024, 834, 720, 390, 320px); no page errors, horizontal page overflow or clipped visible status chips detected (output/header-audit.json). Screenshots: artifacts/lab-04/screenshots/header-polish/. Desktop Staff and narrow Admin header/navigation images visually inspected.
 - Real preview browser interactions: six role/viewport combinations (three roles, desktop and 320px) passed navigation/active-state checks, long display-name layout, >=44px password-button height, keyboard Change Password/Cancel and actual Logout (output/header-controls.txt). The long-name layout check temporarily changed rendered text only; no account data was edited.
 - Generated evidence remains local and ignored. These are branch checks, not final-main results. #63 remains Started pending student UI confirmation before peer review.
+
+## Student UI feedback: dashboard presentation, 2026-09-29
+
+Updated shared dashboard styling and Staff/Requester markup on the current #63 branch in response to the student screenshot. Admin shares the Staff dashboard. No backend calculation or filter behavior was changed.
+
+- Client: 19 files / 116 tests passed (output/dashboard-polish-client.txt); client/server build passed (output/dashboard-polish-build.txt); whitespace check passed.
+- Real Lab 4 browser dashboard suites: 8 passed using npm run test:e2e:lab4 -- dashboards.spec.ts requester-dashboard.spec.ts (output/dashboard-polish-e2e-final.txt). Includes independent count comparisons, role protection, keyboard drill-down, URL filters, refresh/back and stale/error recovery.
+- Initial browser run failed on selectors for the old inline date-filter paragraph introduced before the previous UI change. That run was stopped; both suites now select the named Active date filter region, with Staff also asserting Updated content. Navigation/reload assertions are retained. No product behavior was weakened to make tests pass.
+- Preview audit: 66 captures at six widths across three roles; no page errors, horizontal page overflow or clipped status text detected. Metric-link contrast checks passed. Evidence: output/dashboard-polish-audit.json; screenshots: artifacts/lab-04/screenshots/dashboard-polish/. Desktop Staff and mobile Requester layouts visually inspected.
+
+Generated artifacts remain ignored. Results apply to this Issue branch, not final main. #63 remains Started awaiting student UI confirmation; no peer handoff is requested.
