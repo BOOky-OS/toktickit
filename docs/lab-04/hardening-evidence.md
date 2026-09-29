@@ -125,3 +125,14 @@ Updated shared dashboard styling and Staff/Requester markup on the current #63 b
 - Preview audit: 66 captures at six widths across three roles; no page errors, horizontal page overflow or clipped status text detected. Metric-link contrast checks passed. Evidence: output/dashboard-polish-audit.json; screenshots: artifacts/lab-04/screenshots/dashboard-polish/. Desktop Staff and mobile Requester layouts visually inspected.
 
 Generated artifacts remain ignored. Results apply to this Issue branch, not final main. #63 remains Started awaiting student UI confirmation; no peer handoff is requested.
+
+## Student UI feedback: password page, 2026-09-29
+
+The student requested a visual update to Change password. Updated the scoped password-card layout and accessible guidance association; did not change password rules or API behavior.
+
+- Build passed (output/password-polish-build.txt).
+- AuthFlow.test.tsx: 18 passed (output/password-polish-tests-final.txt), including mandatory replacement, validation, role shell and voluntary change. Two initial selector failures came from helper text matching the validation message and the account name now appearing in both header and card. Assertions now specifically target the field error and banner identity; neither assertion was removed.
+- Preview browser: 12 role/viewport combinations passed (Requester, Staff, Admin at 1366/834/390/320px), with masked input, keyboard Show/Hide, local validation, Cancel and no horizontal overflow. No password-changing API call was made by this audit (output/password-polish-audit.txt).
+- Captured normal and validation states in artifacts/lab-04/screenshots/password-polish/; desktop Staff and narrow Requester cards visually inspected. Logs/screenshots remain ignored. Whitespace check passed.
+
+Student UI acceptance is still pending. #63 remains Started with no peer handoff or final-main claim.

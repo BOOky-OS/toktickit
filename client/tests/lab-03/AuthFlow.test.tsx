@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -97,7 +98,7 @@ describe("Lab 3 authentication UI and role shell", () => {
     await user.type(screen.getByLabelText("New password *"), "Same Password 123");
     await user.type(screen.getByLabelText("Confirm new password *"), "mismatch");
     await user.click(screen.getByRole("button", { name: "Save new password" }));
-    expect(screen.getByText(/different from your current/i)).toBeInTheDocument();
+    expect(screen.getByText(/different from your current/i, { selector: ".field-error" })).toBeInTheDocument();
     expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument();
   });
   it("completes mandatory replacement and routes to role home", async () => {
@@ -127,7 +128,7 @@ describe("Lab 3 authentication UI and role shell", () => {
     const user = userEvent.setup(); render(<App />); await screen.findByRole("heading", { name: "Requester Dashboard" });
     await user.click(screen.getByRole("button", { name: "Change Password" }));
     expect(await screen.findByRole("heading", { name: "Change password" })).toBeInTheDocument();
-    expect(screen.getByText("Jennifer Anderson")).toBeInTheDocument();
+    expect(within(screen.getByRole("banner")).getByText("Jennifer Anderson")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Logout" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
   });  it("shows forbidden feedback for direct wrong-role paths and supports browser navigation", async () => {

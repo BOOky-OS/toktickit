@@ -7,9 +7,9 @@ function PasswordToggle({ shown, toggle, target }: { shown: boolean; toggle(): v
   return <button className="password-toggle" type="button" onClick={toggle} aria-controls={target}
     aria-label={`${shown ? "Hide" : "Show"} password`}>{shown ? "Hide" : "Show"}</button>;
 }
-function Field({ id, label, type = "text", value, setValue, error, autoComplete, shown, toggle }: {
+function Field({ id, label, type = "text", value, setValue, error, autoComplete, shown, toggle, describedBy }: {
   id: string; label: string; type?: string; value: string; setValue(value: string): void;
-  error?: string; autoComplete?: string; shown?: boolean; toggle?(): void;
+  error?: string; autoComplete?: string; shown?: boolean; toggle?(): void; describedBy?: string;
 }) {
   const errorId = `${id}-error`;
   return <div className="auth-field">
@@ -18,7 +18,7 @@ function Field({ id, label, type = "text", value, setValue, error, autoComplete,
       <input id={id} className={`zen-field ${error ? "zen-field--invalid" : ""}`}
         type={type === "password" && shown ? "text" : type} value={value} required
         autoComplete={autoComplete} aria-invalid={Boolean(error)}
-        aria-describedby={error ? errorId : undefined} onChange={event => setValue(event.target.value)} />
+        aria-describedby={[describedBy, error ? errorId : ""].filter(Boolean).join(" ") || undefined} onChange={event => setValue(event.target.value)} />
       {type === "password" && toggle && <PasswordToggle shown={Boolean(shown)} toggle={toggle} target={id} />}
     </div>
     {error && <p id={errorId} className="field-error">{error}</p>}
@@ -98,11 +98,16 @@ export function ChangePasswordScreen() {
   }
   const toggle = (key: string) => setShown(value => ({ ...value, [key]: !value[key] }));
   return <main className="auth-page" id="main-content">
-    <section className="auth-card" aria-labelledby="password-title">
-      <p className="eyebrow">Signed in as {user?.displayName}</p>
-      <h1 id="password-title">{mandatory ? "Create your new password" : "Change password"}</h1>
+    <section className="auth-card password-card" aria-labelledby="password-title">
+      <div className="password-card-heading"><span className="password-card-icon" aria-hidden="true"><ShellIcon name="lock" /></span><div><p className="eyebrow">Account security</p><h1 id="password-title">{mandatory ? "Create your new password" : "Change password"}</h1></div></div>
+      <p className="password-intro">Choose a new password to keep your TokTickIT account secure.</p>
+      <div className="password-identity"><span className="password-identity-dot" aria-hidden="true" /><span>Signed in as <strong>{user?.displayName}</strong></span></div>
       {mandatory && <p className="warning-message">You must replace your initial password before using TokTickIT.</p>}
-      <p className="text-secondary">Use 12-128 characters, no more than 512 UTF-8 bytes, and include non-whitespace text. Passwords are not trimmed.</p>
+      <aside className="password-guidance" id="password-guidance" aria-label="Password requirements">
+        <strong>Your new password</strong>
+        <ul><li>Use 12-128 characters, including a non-space character.</li><li>Choose something different from your current password.</li></ul>
+        <p>Spaces are kept exactly as typed. Maximum 512 UTF-8 bytes.</p>
+      </aside>
       {failure && <div className="alert alert-danger" role="alert">{failure}</div>}
       {logoutFailure && <div className="alert alert-danger" role="alert">{logoutFailure}</div>}
       {Object.keys(errors).length > 0 && <div className="error-summary" role="alert">Please correct the highlighted fields.</div>}
@@ -110,7 +115,7 @@ export function ChangePasswordScreen() {
         <Field id="current-password" label="Current password" type="password" value={current} setValue={setCurrent} error={errors.currentPassword}
           autoComplete="current-password" shown={shown.current} toggle={() => toggle("current")} />
         <Field id="new-password" label="New password" type="password" value={next} setValue={setNext} error={errors.newPassword}
-          autoComplete="new-password" shown={shown.next} toggle={() => toggle("next")} />
+          autoComplete="new-password" describedBy="password-guidance" shown={shown.next} toggle={() => toggle("next")} />
         <Field id="confirm-password" label="Confirm new password" type="password" value={confirmation} setValue={setConfirmation} error={errors.confirmPassword}
           autoComplete="new-password" shown={shown.confirmation} toggle={() => toggle("confirmation")} />
         <div className="auth-actions">

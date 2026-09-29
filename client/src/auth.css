@@ -78,3 +78,39 @@
   .auth-actions .zen-button { width: 100%; }
   .identity-panel { align-items: flex-start; justify-content: flex-start; }
 }
+
+/* Account-security form, including initial password replacement. */
+.password-card { width: min(100%, 560px); border-top: 0; padding: clamp(1.25rem, 4vw, 2.25rem); border-radius: 1.25rem; box-shadow: 0 18px 55px #183e2c16; }
+.password-card-heading { display: flex; align-items: center; gap: .9rem; }
+.password-card-heading > div { min-width: 0; }
+.password-card-icon { display: grid; place-items: center; width: 52px; height: 56px; flex: 0 0 52px; border: 1px solid #cee2d6; border-radius: 1rem; background: #edf6f0; color: #276344; }
+.password-card-icon .shell-icon { width: 26px; height: 26px; }
+.password-card .eyebrow { margin: 0 0 .35rem; font-size: .65rem; letter-spacing: .12em; color: #48725a; }
+.password-card h1 { margin: 0; font-size: clamp(1.6rem, 3vw, 2rem); line-height: 1.2; overflow-wrap: anywhere; }
+.password-intro { margin: 1rem 0; color: #52675b; font-size: .875rem; line-height: 1.65; }
+.password-identity { display: flex; align-items: center; gap: .5rem; padding: .7rem .85rem; background: #f5f9f6; border: 1px solid #dce8e0; border-radius: .65rem; font-size: .8rem; color: #52675b; overflow-wrap: anywhere; }
+.password-identity strong { color: #28533b; }
+.password-identity-dot { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: #427e57; }
+.password-guidance { margin: 1rem 0 1.35rem; padding: .95rem 1rem; border: 1px solid #e0e9e3; border-radius: .75rem; background: #fafcfb; color: #52675b; font-size: .8rem; line-height: 1.65; }
+.password-guidance > strong { color: #304f3c; }
+.password-guidance ul { margin: .45rem 0; padding-left: 1.15rem; }
+.password-guidance li + li { margin-top: .2rem; }
+.password-guidance p { margin: .45rem 0 0; font-size: .75rem; }
+.password-card .auth-field { margin-top: 1.15rem; }
+.password-card .auth-field > label { font-size: .85rem; margin-bottom: .45rem; }
+.password-card .password-field .zen-field { min-height: 52px; border-color: #bfcfc5; border-radius: .65rem; background: #fff; padding-right: 4.8rem; }
+.password-card .password-field .zen-field--invalid { border-color: var(--zen-error); }
+.password-card .password-toggle { min-height: 44px; right: .3rem; border-radius: .45rem; font-size: .8rem; }
+.password-card .password-toggle:hover { background: #edf6f0; }
+.password-card .auth-actions { border-top: 1px solid #e0e9e3; padding-top: 1.25rem; margin-top: 1.5rem; }
+.password-card .auth-actions .zen-button { min-height: 48px; border-radius: .65rem; font-size: .85rem; }
+.password-card .auth-actions .zen-button--primary { flex: 1; }
+.password-card .auth-actions .zen-button--secondary { min-width: 100px; }
+.password-card .zen-button--secondary:hover { background: #edf6f0; }
+.password-card .warning-message { font-size: .85rem; line-height: 1.6; }
+@media(max-width:767px) { .password-card .auth-actions { flex-direction: row; } }
+@media(max-width:400px) {
+  .password-card-heading { flex-direction: column; align-items: flex-start; gap: .75rem; }
+  .password-card .auth-actions { flex-direction: column-reverse; }
+  .password-card .auth-actions .zen-button { width: 100%; }
+}

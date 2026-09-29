@@ -113,3 +113,7 @@ All authenticated pages share a forest-green header with a decorative brand mark
 ## Student dashboard presentation correction (2026-09-29, Issue #63)
 
 Staff/Admin and Requester dashboards now share a structured heading, refresh icon/button, timestamp panel, explanatory notes and metric-card design. Main totals use pale green cards with larger numbers; other metrics use white cards with subtle borders/shadows and a decorative drill-down arrow. The eight Staff status cards use four balanced desktop columns, two at intermediate widths and one on narrow phones. Requester totals use four/two/one columns; primary Staff totals and priorities stack on phones. Lists separate Ticket number, summary, status and supporting information; empty lists have a distinct neutral panel. Labels, counts, metric definitions and query destinations are preserved. Decorative icons are excluded from accessible names. Student UI approval remains pending.
+
+## Student password-page correction (2026-09-29, Issue #63)
+
+Voluntary and mandatory password replacement share the refreshed account-security card: decorative lock icon, account identity panel, structured password requirements, 52px inputs, 44px Show/Hide controls, and separated form actions. The new-password input references its guidance and any validation error through aria-describedby. Narrow screens stack the heading and full-width actions. Password validation, masking defaults, autocomplete, mandatory Logout/no-Cancel and voluntary Cancel behavior are preserved.
