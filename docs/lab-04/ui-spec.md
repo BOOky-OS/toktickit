@@ -1,8 +1,8 @@
 # Lab 4 UI Specification
 
-## Current handoff status (2026-09-29)
+## Current handoff status (2026-09-30)
 
-Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+Atip-Infa approved PR #70 at head 026b00e and merged it into lab4-staging as e484d28285c7f97d8a54f07e221bdf425659df24. Issue #63 is closed and both Project items are Done, verified during continuation. Student UI approval was given on 2026-09-29. Issue #64 is Started on docs/64-lab4-release. Document/report corrections by the student, peer documentation review, the separate pre-main gate and final-main verification remain pending. Earlier preparation entries below are historical, not the current handoff state.
 
 Status: peer-reviewed contract from Issue #56 / PR #57, 2026-09-24. Issue #59 implements the Actions Taken section and shared Admin permission controls; Issue #60 implements final Ticket gate feedback and confirmation focus. Issue #61 implements Staff/Admin dashboard navigation, states and URL-based Queue drill-down. Issue #62 implements Requester dashboard navigation, four owner-scoped metrics, safe states and My Tickets URL filters. See [UI implementation evidence](actions-ui-evidence.md) for actual tests, screenshots and limits. Use [business rules](specification.md), [API shapes](api-spec.md) and [planned verification](tests.md) together.
 

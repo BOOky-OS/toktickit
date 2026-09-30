@@ -1,10 +1,10 @@
 # Lab 4 Test Plan and Traceability
 
-## Current handoff status (2026-09-29)
+## Current handoff status (2026-09-30)
 
-Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+Atip-Infa approved PR #70 at head 026b00e and merged it into lab4-staging as e484d28285c7f97d8a54f07e221bdf425659df24. Issue #63 is closed and both Project items are Done, verified during continuation. Student UI approval was given on 2026-09-29. Issue #64 is Started on docs/64-lab4-release. Document/report corrections by the student, peer documentation review, the separate pre-main gate and final-main verification remain pending. Earlier preparation entries below are historical, not the current handoff state.
 
-Status: reviewed plan from #56, updated through #62 on 2026-09-27. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates and both dashboards now have feature-branch evidence. Product hardening and final-main verification remain Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
+Status: reviewed plan from #56, updated through #62 on 2026-09-27. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates and both dashboards now have feature-branch evidence. Product hardening is complete and peer-merged in PR #70; final-main verification remains Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
 
 ## 1. Execution environments and safety
 
@@ -123,7 +123,7 @@ TDD sequence per implementation Issue: map its ACs; implement a meaningful faili
 | Issue #56 contract | `docs/56-lab4-contract`; see PR head for exact documentation commit | Static contract checks recorded in PR; runtime suites Not run |
 | Issue #58 feature branch | `feature/58-actions-foundation`; isolated PostgreSQL 16.13, Node 24.19.0 | Backend evidence recorded in [foundation-evidence.md](foundation-evidence.md); peer-approved and merged; see reviewer.md |
 | Issue #59 feature branch | `feature/59-actions-ui`; Chrome/real API/PostgreSQL | [Actions UI evidence](actions-ui-evidence.md); peer-approved and merged; see reviewer.md |
-| Complete staging | Not reached | Planned |
+| Complete staging | e484d28; #63 peer merge | Integration reached; fresh release-preparation results are recorded in release.md |
 | Final main | Not released | Planned |
 
 For actual executions append `Test ID | command | environment | SHA | date | result/counts/skips | evidence`. Update the table's planned paths to real files after creation and retain precise failed/not-run explanations. Final-main evidence must name the actual peer-merged SHA and be rerun if relevant code changes.
@@ -148,4 +148,8 @@ See [Requester dashboard evidence](requester-dashboard-evidence.md) for commands
 
 ## Issue #63 preparation and student gate
 
-See [hardening evidence](hardening-evidence.md) for fresh complete suite results, browser/config corrections, AC status and visual limitations. [UI review](ui-review.md) provides the runnable disposable preview and accounts. Issue #63 is Started until student inspection/corrections and explicit permission for peer handoff. Final-main results remain Planned.
+See [hardening evidence](hardening-evidence.md) for fresh complete suite results, browser/config corrections, AC status and visual limitations. [UI review](ui-review.md) provides the runnable disposable preview and accounts. Issue #63 passed student inspection, peer approval and merge; it is now Done. Final-main results remain Planned.
+
+## Issue #64 staging verification, 2026-09-30
+
+Application/test code: e484d28285c7f97d8a54f07e221bdf425659df24. Fresh checks passed: client 116, server 574, default browser 18, real Lab 3 browser 14, real Lab 4 browser 20, build and Prisma validation. The first server attempt failed while its existing test container was stopped; the rerun passed after starting it. Exact commands/logs/environment and evidence limits are in [release.md](release.md). Final-main verification is still Planned.

@@ -1,10 +1,10 @@
 # Lab 4 Workflow and Audit
 
-## Current handoff status (2026-09-29)
+## Current handoff status (2026-09-30)
 
-Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+Atip-Infa approved PR #70 at head 026b00e and merged it into lab4-staging as e484d28285c7f97d8a54f07e221bdf425659df24. Issue #63 is closed and both Project items are Done, verified during continuation. Student UI approval was given on 2026-09-29. Issue #64 is Started on docs/64-lab4-release. Document/report corrections by the student, peer documentation review, the separate pre-main gate and final-main verification remain pending. Earlier preparation entries below are historical, not the current handoff state.
 
-Current work: Issue #63, feature/63-final-hardening -> lab4-staging, based on peer merge 26cf6e3. Student UI approval is recorded; [PR #70](https://github.com/BOOky-OS/toktickit/pull/70) is open into lab4-staging; Atip-Infa review requested. Both Issue and PR are PR Review. Prerequisite #62 / PR #69 is approved/merged by Atip-Infa, Issue closed and both Project items Done.
+Current work: Issue #64, docs/64-lab4-release -> lab4-staging, based on peer merge e484d28. No documentation PR or peer request has been created before the student document gate.
 Prerequisite #58 / PR #65 is approved and peer-merged at `3c303e6`; Issue #58 and PR #65 items are Done. Author replies already exist; no duplicates are needed.
 Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
 
@@ -21,7 +21,7 @@ Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual s
 | 7 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | Regression/hardening | #62 Done | feature/63-final-hardening |
 | 8 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | Documentation/release | #63 Done | docs/64-lab4-release |
 
-Future Issues have scope, acceptance criteria, planned tests, assignee BOOky-OS, Lab 4 milestone and labels. Issue #62 / PR #69 are Done; #63 is ready for peer review after student UI approval and #64 remains Backlog. Branches for future work are planned, not created. One active Issue at a time; peer merges into staging before the next begins.
+Issues #56 and #58-#63 are complete. Issue #64 is Started after reading its scope and AC, verifying #63 peer merge and creating the documentation branch. One active Issue at a time.
 
 ## Project listing discrepancy, 2026-09-24
 
@@ -36,7 +36,7 @@ A fresh Project collection query after opening PR #65 returned 48 items, includi
 
 ## Review and release
 
-Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. The contract review and merge are verified in [reviewer.md](reviewer.md). Issue #58 is also verified complete. Issue #59 is verified complete; Issue #60 is verified complete; #61 is verified complete; #62 is complete; #63 must pass the student UI gate before peer handoff.
+Review templates are drafts only; no comments are posted as the student. Record actual reviews/replies in reviewer.md after they occur. The contract review and merge are verified in [reviewer.md](reviewer.md). Issue #58 is also verified complete. Issue #59 is verified complete; Issue #60 is verified complete; #61 is verified complete; #62 is complete; #63 passed student UI inspection and peer review; its merge is verified.
 
 For #64, present complete pre-release artifacts and ask the exact documentation gate from root skill.md before creating a main PR. Peer reviews/merges release; final-main test/evidence verification precedes closing #64. This contract PR does not authorize main release.
 

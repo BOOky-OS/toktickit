@@ -1,6 +1,6 @@
 # Lab 4 - AI Use and Reflection
 
-LLM/agent used: OpenAI Codex (GPT-6). Status: contract, foundation, Actions UI and Issue #60 workflow record, 2026-09-26. The foundation and UI were peer-approved/merged in PR #65/#66; workflow was peer-approved/merged in PR #67; #61 Staff/Admin dashboard peer review remains pending.
+LLM/agent used: OpenAI Codex (GPT-6). Updated 2026-09-30. The engineering contract and implementation/hardening PRs #57 and #65-#70 are peer-approved and merged into lab4-staging. Issue #64 prepares documentation and the gated release.
 
 AI read the assignment and existing project, explained the workflow, drafted the four contracts, inspected GitHub metadata and prepared the Issues/PR. The student selected eight work packages, confirmed Atip-Infa and requested corrections when comments and Project visibility were incomplete. The assistant then implemented the Actions Taken database/API foundation, isolated tests, demo seed and recovery checks. The assistant continued with Actions Taken forms, draft/retry handling, Admin controls and component/real-browser tests. Actual check results are recorded in tests.md; they are assistant-run, not student-run.
 
@@ -19,7 +19,7 @@ These are English paraphrases of actual Thai requests, not verbatim English quot
 | 7 | Why is the PR missing from the Project? | Checked individual membership and collection listings. | Challenged a completion claim based only on PR metadata. |
 | 8 | Check anything else missing and fix it; continue after the usage interruption. | Audited contracts/evidence and completed the eight-Issue backlog. | Requested verification rather than assuming successful API writes prove visible results. |
 | 9 | I deleted the Python validator; do not upload output files. | Removed the optional validator and excluded generated output from Git. | Chose the repository cleanup and corrected unnecessary tooling. |
-| 10 | Continue and read the lab and skill again. | Verified peer merges, completed prerequisite metadata and continued #58/#59/#60/#61/#62 on their own branches with database and UI/browser tests. | Authorized the next implementation step under the existing workflow. |
+| 10 | Check and improve the UI on desktop/mobile; let me correct the UI and final documents before peer review. | Polished shared controls, dashboards, account screens, Users and Queue; checked Chromium viewports and recorded two student gates. | Requested specific visual fixes and accepted the UI before PR #70; document acceptance is still pending. |
 
 ## Critical-thinking
 
@@ -37,8 +37,8 @@ During #61, the assistant compared dashboard metrics with independent database q
 
 During #62, new API tests failed before the endpoint existed, then passed after implementation. Existing regression tests assumed the old role landing pages; their fixtures/navigation were updated to the approved Dashboard destinations while preserving their feature assertions. A browser test initially navigated away before Logout completed; the test now waits for the real Login screen before switching identity. Broader regression also exposed a real Staff Queue bug: changing page size discarded unapplied filters. The assistant fixed the component and reran the unchanged behavioral assertions. Generated evidence stays ignored, and the existing isolated test container was reused.
 
-During #63 preparation, the assistant repaired historical browser setup/fixtures without removing their behavioral assertions, separated suite trace directories after a concurrent-run artifact collision, and added a failing accessibility test showing metric values were missing from Staff link names. The link names were corrected and the test passed. A disposable preview was prepared for the student's requested UI correction gate; no peer handoff or student approval is inferred.
+During #63 preparation, the assistant repaired historical browser setup/fixtures without removing their behavioral assertions, separated suite trace directories after a concurrent-run artifact collision, and added a failing accessibility test showing metric values were missing from Staff link names. The link names were corrected and the test passed. A disposable preview was prepared for the student's requested UI correction gate; student approval was later explicitly given on 2026-09-29, followed by Atip-Infa approval and merge of PR #70.
 
 ## My Reflection
 
-Pending student confirmation. The conversation establishes use of AI for assignment explanations, work planning, specification drafting and workflow corrections. The student has not yet supplied a personal reflection on what they learned. The coding agent has now implemented and tested #58 through #62; the student's personal coding-stage reflection is still pending; do not reuse a prior lab's experience or describe planned tests as executed.
+Pending student confirmation. The conversation establishes use of AI for assignment explanations, work planning, specification drafting and workflow corrections. The student has not yet supplied a personal reflection on what they learned. The coding agent has now implemented and tested #58 through #63; the student's personal coding-stage reflection is still pending; do not reuse a prior lab's experience or describe planned tests as executed.

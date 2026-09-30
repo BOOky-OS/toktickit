@@ -1,10 +1,10 @@
 # Cross-page UI inspection - 2026-09-29
 
-## Current handoff status (2026-09-29)
+## Current handoff status (2026-09-30)
 
-Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+Atip-Infa approved PR #70 at head 026b00e and merged it into lab4-staging as e484d28285c7f97d8a54f07e221bdf425659df24. Issue #63 is closed and both Project items are Done, verified during continuation. Student UI approval was given on 2026-09-29. Issue #64 is Started on docs/64-lab4-release. Document/report corrections by the student, peer documentation review, the separate pre-main gate and final-main verification remain pending. Earlier preparation entries below are historical, not the current handoff state.
 
-Issue #63, feature/63-final-hardening. Assistant inspection requested by the student after the visual updates. Student acceptance and peer handoff remain pending.
+Issue #63, feature/63-final-hardening. Assistant inspection requested by the student after the visual updates. This paragraph describes the pre-approval audit; student acceptance and peer merge have since occurred as recorded above.
 
 ## Pages and sizes
 
@@ -40,4 +40,4 @@ An intermediate preview audit timed out waiting for the login field and was stop
 
 Open `output/ui-review-gallery.html` for the local screenshot gallery. Main captures are in `artifacts/lab-04/screenshots/ui-review/`; account/editor captures are in `login-polish/`, `password-polish/` and `users-polish/`. All generated outputs remain ignored by Git.
 
-These are Chromium viewport simulations, not physical-device checks. Safari/iOS, Android touch/virtual keyboard, actual browser 200% zoom and a full screen-reader audit have not been verified in this review. The 720px capture is a CSS reflow approximation. Tests apply to this branch, not final main. No claim that all aesthetic preferences are settled: the student still needs to confirm the UI before #63 peer review.
+These are Chromium viewport simulations, not physical-device checks. Safari/iOS, Android touch/virtual keyboard, actual browser 200% zoom and a full screen-reader audit have not been verified in this review. The 720px capture is a CSS reflow approximation. Tests apply to this branch, not final main. The student subsequently accepted the UI and authorized PR #70; further preferences can still be raised during document inspection.
