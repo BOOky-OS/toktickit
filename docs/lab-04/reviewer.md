@@ -1,5 +1,9 @@
 # Lab 4 - Peer Review Record
 
+## Current handoff status (2026-09-29)
+
+Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+
 Checked 2026-09-27. This records actual state, not an approval template.
 
 Author: Supapanya Yathip - 67070503443; authored repository account [BOOky-OS](https://github.com/BOOky-OS).
@@ -13,7 +17,7 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 | [#59](https://github.com/BOOky-OS/toktickit/issues/59) | [#66](https://github.com/BOOky-OS/toktickit/pull/66) | feature/59-actions-ui | Atip-Infa | Approved; merged |
 | [#60](https://github.com/BOOky-OS/toktickit/issues/60) | [#67](https://github.com/BOOky-OS/toktickit/pull/67) | feature/60-ticket-workflow | Atip-Infa | Approved; merged |
 | [#61](https://github.com/BOOky-OS/toktickit/issues/61) | [#68](https://github.com/BOOky-OS/toktickit/pull/68) | feature/61-staff-dashboard | Atip-Infa | Approved; merged |
-| [#62](https://github.com/BOOky-OS/toktickit/issues/62) | [#69](https://github.com/BOOky-OS/toktickit/pull/69) | feature/62-requester-dashboard | Atip-Infa | Review requested; pending |
+| [#62](https://github.com/BOOky-OS/toktickit/issues/62) | [#69](https://github.com/BOOky-OS/toktickit/pull/69) | feature/62-requester-dashboard | Atip-Infa | Approved; merged |
 
 ## PR #57 evidence
 
@@ -72,9 +76,12 @@ Names/student IDs come from the existing Lab 3 identity record; the student expl
 ## PR #69 evidence
 
 - Implementation/tested-code commit: 9745355d028e69b6c0dd38f3c5bd994b2972cbca; subsequent record update changes documentation only.
-- Target lab4-staging; reviewer Atip-Infa requested, BOOky-OS assigned, enhancement label, Lab 4 milestone, real Development link to #62 and both Project items in PR Review verified.
+- Target lab4-staging; reviewer Atip-Infa requested, BOOky-OS assigned, enhancement label, Lab 4 milestone, real Development link to #62 and both Project items are now Done; Issue #62 is closed.
 - [Assistant-run evidence](requester-dashboard-evidence.md) records the full and targeted test results separately, including both corrected failures. Requester performance p95 41.42 ms with two reads; generated files remain ignored.
-- Peer review, approved commit, author comment links and merge are pending. Draft comments are not review evidence.
+- [Peer approval](https://github.com/BOOky-OS/toktickit/pull/69#pullrequestreview-5329383670), submitted 2026-09-27 07:45:06 UTC. Summary: Atip-Infa checked owner scope, all four metrics, dates, links, identity clearing, safe states and Queue preservation; reviewed corrected failures/targeted reruns without rerunning tests; no blockers.
+- Approved commit dbd5cf65ffa0434bdc6cc34974536ed4c81911d6. Merged by Atip-Infa at 2026-09-27 07:49:38 UTC; merge 26cf6e316331d4f0753f68e425ecacb9642b31df verified in staging.
+- [Ready](https://github.com/BOOky-OS/toktickit/pull/69#issuecomment-5853871979), [approval reply](https://github.com/BOOky-OS/toktickit/pull/69#issuecomment-5853937873), [post-merge reply](https://github.com/BOOky-OS/toktickit/pull/69#issuecomment-5853955965) already exist. No duplicate comments needed. Inline comments/threads are empty; no further page.
+- Issue closure and both Done statuses were applied during continuation; the earlier post-merge comment had reported those actions before they occurred.
 
 ## Reciprocal reviews
 
@@ -82,4 +89,8 @@ No Lab 4 reciprocal-review evidence has been supplied or verified. Prior Lab 3 r
 
 ## Remaining work
 
-Issue #62 continues on `feature/62-requester-dashboard` from the verified merge above. Its peer review/approval/merge remain pending. Release and final-main evidence belong to #64.
+Issue #63 is on `feature/63-final-hardening`. Student UI inspection/corrections are required before peer handoff; no peer review is requested. Release and final-main evidence belong to #64.
+
+## PR #70 handoff, 2026-09-29
+
+[PR #70](https://github.com/BOOky-OS/toktickit/pull/70) links Issue #63 through the verified Development relationship. Target lab4-staging; reviewer Atip-Infa requested, BOOky-OS assigned, enhancement label, Lab 4 milestone and both Project items PR Review verified. Student UI approval is recorded above. Tested code a36b6ac; subsequent commits record documentation/handoff only. Peer verdict, author review replies and merge are pending; no comments posted by the assistant. #64 remains Backlog until peer merge and completion of #63.

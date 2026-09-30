@@ -12,6 +12,7 @@ test("Staff confirms changes, retains conflict draft, reloads and sees public hi
     const path = new URL(route.request().url()).pathname;
     let body: unknown = [], status = 200;
     if (path === "/api/auth/me") body = { user: { id: 4, displayName: "Alex Chen", email: "alex@example.test", role, mustChangePassword: false } };
+    else if (path.endsWith("/actions")) body = {items:[],ticketVersion:1,page:1,pageSize:10,totalItems:0,totalPages:0,hasPreviousPage:false,hasNextPage:false};
     else if (path === "/api/auth/csrf") body = { csrfToken: "a".repeat(64) };
     else if (path === "/api/staff/assignees") body = [owner];
     else if (path === "/api/tickets/42") body = ticket;
@@ -52,7 +53,7 @@ test("Staff confirms changes, retains conflict draft, reloads and sees public hi
   await page.screenshot({ path: `artifacts/lab-03/screenshots/staff-ticket-detail/${info.project.name}/resolved.png`, fullPage: true });
   role = "ADMIN";
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Status history", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Change status", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: /Status history/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Change status", exact: true })).toBeVisible(); // Lab 4 Admin has Staff operational rights.
   await expect(page.getByLabel("Add attachment")).toHaveCount(0);
 });

@@ -18,7 +18,8 @@
     "db:down": "docker compose down",
     "db:status": "docker compose ps",
     "prisma:validate": "npm run prisma:validate --workspace server",
-    "test:e2e:lab4": "playwright test --config playwright.lab4.config.ts"
+    "test:e2e:lab4": "playwright test --config playwright.lab4.config.ts",
+    "preview:lab4": "tsx scripts/lab4-preview.ts"
   },
   "engines": {
     "node": ">=20"

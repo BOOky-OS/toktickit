@@ -83,48 +83,45 @@ p { max-width: 72ch; }
   margin-bottom: 0.75rem;
 }
 .app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 76px;
-  padding: 0.9rem max(1.25rem, calc((100vw - 1240px) / 2));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  background: linear-gradient(115deg, #005c34, var(--zen-green-900) 55%, #087748);
-  color: #fff;
-  box-shadow: 0 0.25rem 1.25rem rgba(12, 63, 43, 0.16);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: 1rem 2rem; min-height: 92px;
+  padding: 1rem max(1.25rem, calc((100vw - 1240px) / 2));
+  background: linear-gradient(110deg, #123c2d, #075d3b);
+  color: #fff; border-bottom: 1px solid #285e46;
 }
-.app-header > div:first-child { display: flex; align-items: baseline; gap: 0.7rem; white-space: nowrap; }
-.app-header > div:first-child strong { color: #fff; font-size: 1.45rem; letter-spacing: -0.03em; }
-.app-header > div:first-child span { color: #d8f2e4; font-size: 0.9rem; }
+.shell-icon { flex-shrink: 0; }
+.shell-brand { display: flex; align-items: center; gap: .8rem; }
+.shell-brand-mark { display: grid; place-items: center; width: 42px; height: 46px; border: 1px solid #70a58c; border-radius: 12px; background: #28634b; color: #fff; }
+.shell-brand-mark .shell-icon { width: 25px; height: 25px; }
+.shell-brand-copy { display: flex; flex-direction: column; gap: .1rem; }
+.shell-brand-copy strong { font-size: 1.45rem; letter-spacing: -.04em; line-height: 1.2; }
+.shell-brand-copy > span { color: #d1e7db; font-size: .75rem; letter-spacing: .035em; }
 .requester-chip {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 .app-nav {
-  display: flex;
-  gap: 0.4rem;
-  padding: 0.55rem max(1.25rem, calc((100vw - 1240px) / 2));
-  background: var(--zen-surface);
-  border-bottom: 1px solid var(--zen-border);
-  box-shadow: 0 0.3rem 0.8rem rgba(35, 68, 53, 0.04);
+  display: flex; gap: .45rem; flex-wrap: wrap;
+  padding: .65rem max(1.25rem, calc((100vw - 1240px) / 2));
+  background: #fff; border-bottom: 1px solid #dce7df;
+  box-shadow: 0 3px 10px rgba(23, 57, 42, .035);
 }
 .app-nav button {
-  min-height: 42px;
-  border: 1px solid transparent;
-  border-radius: 0.55rem;
-  background: transparent;
-  padding: 0.5rem 0.85rem;
-  color: var(--zen-text);
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 44px; border: 1px solid transparent; border-radius: .65rem;
+  padding: .55rem 1rem; background: transparent; color: #52675b;
+  font-size: .875rem; font-weight: 550; cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
 }
-.app-nav button:hover { background: var(--zen-green-050); color: var(--zen-green-900); }
-.app-nav button.active {
-  background: var(--zen-green-100);
-  color: var(--zen-green-900);
-  border-color: #b8d9c7;
-  font-weight: 700;
+.app-nav button:hover { background: #f2f7f4; color: #185235; }
+.app-nav button.active { background: #e8f3ed; color: #185235; border-color: #bfdaca; font-weight: 700; box-shadow: inset 0 -2px 0 #37805a; }
+@media (max-width: 600px) {
+  .app-nav { gap: .35rem; padding: .55rem 1rem; }
+  .app-nav button { flex: 1 1 0; min-width: 0; gap: .3rem; padding: .5rem .35rem; font-size: .8rem; }
+  .app-nav .shell-icon { width: 15px; height: 15px; }
 }
+@media (max-width: 359px) { .app-nav button { flex-direction: column; gap: .25rem; } }
 .page-content {
   width: 100%;
   max-width: 1320px;
@@ -280,6 +277,8 @@ p { max-width: 72ch; }
 }
 .zen-badge {
   display: inline-block;
+  white-space: nowrap;
+  overflow-wrap: normal;
   border-radius: 99px;
   padding: 0.3rem 0.65rem;
   background: var(--zen-green-100);
@@ -577,12 +576,88 @@ p { max-width: 72ch; }
   }
 }
 
+/* Shared Ticket and Action status chips. Text remains the non-color cue. */
+.zen-badge[data-status] {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  width: max-content;
+  max-width: 100%;
+  min-height: 1.875rem;
+  padding: .3rem .7rem;
+  border: 1px solid var(--status-border, #cbd5e1);
+  border-radius: .6rem;
+  font-size: .75rem;
+  font-weight: 650;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  vertical-align: middle;
+}
+.zen-badge[data-status]::before {
+  content: "";
+  width: .375rem;
+  height: .375rem;
+  flex: 0 0 .375rem;
+  border-radius: 50%;
+  background: currentColor;
+}
 /* The status text carries meaning independently of the palette. */
-.zen-badge[data-status="NEW"], .zen-badge[data-status="OPEN"] { color: #334155; background: #f1f5f9; }
-.zen-badge[data-status="IN_PROGRESS"], .zen-badge[data-status="REOPENED"] { color: #1e40af; background: #dbeafe; }
-.zen-badge[data-status="WAITING_FOR_REQUESTER"] { color: #854d0e; background: #fef9c3; }
-.zen-badge[data-status="RESOLVED"], .zen-badge[data-status="CLOSED"] { color: #166534; background: #dcfce7; }
-.zen-badge[data-status="CANCELLED"] { color: #991b1b; background: #fee2e2; }
+.zen-badge[data-status="NEW"], .zen-badge[data-status="PLANNED"] { color: #475569; background: #f1f5f9; --status-border: #d6dee8; }
+.zen-badge[data-status="OPEN"] { color: #075985; background: #eff8ff; --status-border: #bedff3; }
+.zen-badge[data-status="IN_PROGRESS"] { color: #1e40af; background: #eff4ff; --status-border: #c8d7fb; }
+.zen-badge[data-status="REOPENED"] { color: #6b21a8; background: #faf5ff; --status-border: #e4d1f5; }
+.zen-badge[data-status="WAITING_FOR_REQUESTER"] { color: #854d0e; background: #fffbeb; --status-border: #f1dda6; }
+.zen-badge[data-status="RESOLVED"], .zen-badge[data-status="COMPLETED"] { color: #166534; background: #edf9f0; --status-border: #bde2c7; }
+.zen-badge[data-status="CLOSED"] { color: #365448; background: #eef4f0; --status-border: #ccdcd2; }
+.zen-badge[data-status="CANCELLED"] { color: #991b1b; background: #fff1f2; --status-border: #f3c9cd; }
 
 .workflow-dialog { position: fixed; inset: 0; margin: auto; box-sizing: border-box; width: min(32rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); overflow-y: auto; border: 1px solid #446c53; border-radius: 1rem; padding: 1.25rem; color: #203d2c; overflow-wrap: anywhere; }
 .workflow-dialog::backdrop { background: rgb(15 34 23 / 55%); }
+
+/* On a phone, give the summary and full status their own rows. */
+@media (max-width: 767px) {
+  .requester-ticket-table, .requester-ticket-table tbody { display: block; width: 100%; }
+  .requester-ticket-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .requester-ticket-table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr); padding: .85rem 1rem; border-bottom: 1px solid var(--zen-border); }
+  .requester-ticket-table tbody tr:last-child { border-bottom: 0; }
+  .requester-ticket-table tbody td { padding: .2rem 0; border: 0; min-width: 0; }
+  .requester-ticket-table td:nth-child(8) { padding-top: .6rem; }
+  .requester-ticket-table .ticket-link { text-align: left; }
+}
+
+/* Shared dashboard drill-down date notice, used by both Ticket lists. */
+.date-filter-notice { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; padding: 1rem 1.15rem; margin: 1.25rem 0; border: 1px solid #cce0d4; border-left: 3px solid #38815b; border-radius: .85rem; background: #f5faf7; }
+.date-filter-content { flex: 1 1 28rem; min-width: 0; }
+.date-filter-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .75rem; margin-bottom: .7rem; }
+.date-filter-heading strong { color: #244e37; font-size: .875rem; }
+.date-filter-heading > span { color: #52675b; font-size: .75rem; }
+.date-filter-range { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem 1.25rem; }
+.date-filter-range + .date-filter-range { margin-top: .85rem; }
+.date-filter-kind { color: #28583e; background: #e5f1e9; border: 1px solid #cee1d4; border-radius: .4rem; padding: .25rem .55rem; font-size: .75rem; font-weight: 650; }
+.date-filter-range dl { display: flex; flex-wrap: wrap; gap: .6rem 1.75rem; margin: 0; }
+.date-filter-range dl > div { min-width: 0; }
+.date-filter-range dt { color: #52675b; font-size: .75rem; margin-bottom: .15rem; }
+.date-filter-range dd { margin: 0; color: #244332; font-size: .875rem; font-weight: 600; }
+.date-filter-range time { display: inline-flex; flex-wrap: wrap; gap: .2rem .5rem; font-variant-numeric: tabular-nums; }
+.date-filter-time { color: #52675b; font-weight: 400; }
+.date-filter-clear { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; flex: 0 0 auto; font-size: .875rem; cursor: pointer; }
+.date-filter-clear:hover { background: #e8f4ec; border-color: #28583e; }
+.date-filter-clear:focus-visible { outline: 3px solid #38815b; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .date-filter-notice { padding: .9rem; gap: .9rem; }
+  .date-filter-heading { flex-direction: column; gap: .15rem; }
+  .date-filter-range { align-items: flex-start; flex-direction: column; gap: .6rem; }
+  .date-filter-range dl { flex-direction: column; gap: .6rem; }
+  .date-filter-clear { width: 100%; }
+}
+
+/* Keep recovery and confirmation controls aligned with the shared UI. */
+.ticket-card [role="alert"] .zen-button { margin: .4rem; }
+.ticket-card dialog .zen-button { margin: .35rem .5rem .35rem 0; }
+.action-history > .zen-button { margin: .35rem .5rem .35rem 0; }
+@media(max-width:767px) {
+ .ticket-card .ticket-heading { flex-wrap: wrap; }
+ .ticket-card .ticket-heading > div { min-width: 0; }
+ .ticket-card .ticket-heading h1 { overflow-wrap: anywhere; }
+}

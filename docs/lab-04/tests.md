@@ -1,5 +1,9 @@
 # Lab 4 Test Plan and Traceability
 
+## Current handoff status (2026-09-29)
+
+Student explicitly confirmed UI completion and authorized the #63 PR in chat on 2026-09-29 after reviewing corrections through a36b6ac. The UI gate is satisfied; peer approval/merge, #64 document review and the separate pre-main gate remain pending. Earlier preparation entries below are dated history.
+
 Status: reviewed plan from #56, updated through #62 on 2026-09-27. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates and both dashboards now have feature-branch evidence. Product hardening and final-main verification remain Planned. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
 
 ## 1. Execution environments and safety
@@ -8,7 +12,7 @@ Status: reviewed plan from #56, updated through #62 on 2026-09-27. The Actions f
 - API/integration tests use real Express, sessions and PostgreSQL for authorization, transactions, versions, seed, migration and query calculations. Do not substitute in-memory mocks for those proofs.
 - Reuse the established dedicated local `toktickit_lab3_test` database allowlist and `TEST_DATABASE_URL` safety policy, with a new random owned schema prefix for Lab 4. The inherited Lab 3 database name is intentional; it is not the working database. Reject wrong host/database, a URL matching working DATABASE_URL, and unsafe schema cleanup. Never reset the working DB or delete its uploads.
 - Migration tests load all pre-Lab-4 migrations/data, capture counts/IDs/content, apply the new migration, check integrity and schema drift, then dispose only owned fixtures. Recovery restores a backup into a separate isolated database/schema and checks representative data and attachments.
-- Real browser tests start dedicated API/client services and owned temporary storage, use real login cookies and CSRF, and fail if their ports are occupied. Proposed Lab 4 ports: 3007/5177. Keep existing Lab 3 ports 3006/5176 intact. Setup/config is planned, not available yet.
+- Real browser tests start dedicated API/client services and owned temporary storage, use real login cookies and CSRF, and fail if their ports are occupied. Proposed Lab 4 ports: 3007/5177. Keep existing Lab 3 ports 3006/5176 intact. Both real-suite setups/configs exist. Each browser config now uses a separate ignored test-results subdirectory.
 - Freeze the backend clock for date-boundary tests. Use at least two Requesters, two Staff, one Admin and inactive/changed-role accounts. No credentials in evidence or public logs.
 - Record environment versions, exact command, tested SHA, UTC time, result/counts/skips and evidence path for each execution. Distinguish feature branch, staging and final-main runs. Retain failure evidence until resolved.
 
@@ -39,13 +43,13 @@ The #58 files for UNIT-01, API-01..03, AUTH-01/02, CON-01, MIG-01, SEED-01 and D
 | UI-02 | Component | FR-04/10; BR-10..16; AC-05/06/13 | Only allowed transitions/roles; gate hints, confirmation/reasons, public history, advisory indication and refresh after writes. | `client/tests/lab-04/TicketWorkflow.test.tsx` | Planned |
 | UI-03 | Component | FR-06/07/10; BR-22..25; AC-10/11/13 | Staff/Admin cards, my actions, urgent/recent lists; busy/empty/forbidden/500; stale labels, correct links, no invented trends. | `client/tests/lab-04/StaffDashboard.test.tsx` | Planned |
 | UI-04 | Component | FR-05/07/10; BR-10/22..25; AC-09/11/13 | Requester cards/recent list, zero states, failure/retry, identity-switch clearing, route/query refresh/back and ownership restrictions. | `client/tests/lab-04/RequesterDashboard.test.tsx` | Planned |
-| STYLE-01 | Style/accessibility | FR-10; AC-13 | Zen tokens, text/contrast, required labels, landmarks, aria feedback, role controls, visible focus and no color-only meaning. | `client/tests/lab-04/StyleAccessibility.test.tsx` | Planned |
+| STYLE-01 | Style/accessibility | FR-10; AC-13 | Zen tokens, text/contrast, required labels, landmarks, aria feedback, role controls, visible focus and no color-only meaning. | `client/tests/lab-04/StyleAccessibility.test.tsx`, `client/tests/lab-03/StyleAccessibility.test.tsx` | Planned |
 | E2E-01 | Real browser | FR-01/02/03/09; AC-01/02/03/07/12 | Real login, several actions and performers on one Ticket, assign/edit/start/complete/cancel, Requester read-only view, safe retry and conflict. | `e2e/lab-04/actions-taken-flow.spec.ts` | Planned |
 | E2E-02 | Real browser | FR-04/11; AC-05/06/14 | Create Ticket through work/resolve/close/reopen/new-cycle resolution; alternate cancellation flow; indication cannot bypass gate; stable public history. | `e2e/lab-04/ticket-resolution.spec.ts` | Planned |
 | E2E-03 | Real browser | FR-05/06/07; AC-09/10/11/13 | Three-role dashboards and links against real DB; filter paging, Back/Forward/refresh, mutation refresh and cross-user protection. | `e2e/lab-04/dashboards.spec.ts`, `e2e/lab-04/requester-dashboard.spec.ts` | Planned |
 | E2E-04 | Responsive/keyboard/visual | FR-10; AC-12/13 | All major screens at 1440x900, 834x1112, 390x844 and 320px; long content, overflow, dialogs, keyboard/focus, zoom/reflow, console errors. | `e2e/lab-04/responsive-accessibility.spec.ts` | Planned |
 | PERF-01 | Performance smoke | FR-06/09; BR-22..25; AC-15 | 1000 Tickets/3000 actions, independent expected counts, <=10 read queries excluding auth, no N+1, five warm-ups then 30 requests with p95 <=1000ms on recorded machine. | `server/tests/lab-04/dashboard-performance.integration.test.ts`, `server/tests/lab-04/requester-performance.integration.test.ts` | Planned |
-| REG-01 | Full regression | FR-11; BR-10/19/20; AC-04/14 | Existing suites below pass with narrowly documented Admin/gate/landing-page expectation changes; no disabled tests hiding regressions. | Existing suites plus `e2e/lab-04/regression.spec.ts` (new) | Planned |
+| REG-01 | Full regression | FR-11; BR-10/19/20; AC-04/14 | Existing suites below pass with narrowly documented Admin/gate/landing-page expectation changes; no disabled tests hiding regressions. | Existing suites including `e2e/lab-03/real/` and the dedicated Lab 4 suite | Planned |
 | DOC-01 | Manual evidence audit | FR-12; AC-16 | Actual test paths/results/SHA, reviewer replies/approvals, AI prompts/reflection, README/ignore, screenshots, PDF parts/links and peer release/main proof complete. | `docs/lab-04/tests.md` and future release records | Planned |
 
 ## 3. Acceptance-criterion coverage
@@ -118,7 +122,7 @@ TDD sequence per implementation Issue: map its ACs; implement a meaningful faili
 | Baseline inspection | `754a81d`; Windows workspace; source/package scripts/GitHub inspected 2026-09-24 | Read-only inspection; no runtime pass inferred |
 | Issue #56 contract | `docs/56-lab4-contract`; see PR head for exact documentation commit | Static contract checks recorded in PR; runtime suites Not run |
 | Issue #58 feature branch | `feature/58-actions-foundation`; isolated PostgreSQL 16.13, Node 24.19.0 | Backend evidence recorded in [foundation-evidence.md](foundation-evidence.md); peer-approved and merged; see reviewer.md |
-| Issue #59 feature branch | `feature/59-actions-ui`; Chrome/real API/PostgreSQL | [Actions UI evidence](actions-ui-evidence.md); peer review pending |
+| Issue #59 feature branch | `feature/59-actions-ui`; Chrome/real API/PostgreSQL | [Actions UI evidence](actions-ui-evidence.md); peer-approved and merged; see reviewer.md |
 | Complete staging | Not reached | Planned |
 | Final main | Not released | Planned |
 
@@ -141,3 +145,7 @@ DASH-02/DASH-03/PERF-01/UI-03 and the Staff portion of E2E-03 now exist in their
 ## Issue #62 Requester Dashboard execution
 
 See [Requester dashboard evidence](requester-dashboard-evidence.md) for commands, passing feature tests, exact initial failures and targeted corrections, independent owner/date SQL comparisons, performance, screenshots and remaining student gates. Final-main statuses remain Planned.
+
+## Issue #63 preparation and student gate
+
+See [hardening evidence](hardening-evidence.md) for fresh complete suite results, browser/config corrections, AC status and visual limitations. [UI review](ui-review.md) provides the runnable disposable preview and accounts. Issue #63 is Started until student inspection/corrections and explicit permission for peer handoff. Final-main results remain Planned.

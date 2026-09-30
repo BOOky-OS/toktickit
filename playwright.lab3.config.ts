@@ -2,6 +2,7 @@ import { defineConfig } from "@playwright/test";
 
 // Dedicated ports and a disposable database schema; never reuse the working app.
 export default defineConfig({
+  outputDir: "test-results/lab3",
   testDir: "./e2e/lab-03/real",
   globalSetup: "./e2e/lab-03/real/setup.ts",
   workers: 1,

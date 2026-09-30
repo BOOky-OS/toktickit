@@ -1,3 +1,4 @@
+import { DateFilterNotice } from "./DateFilterNotice.js";
 import { navigate } from "./AuthContext.js";
 import { FormEvent, useEffect, useState } from "react";
 import {
@@ -160,7 +161,7 @@ export function MyTickets({
             Create Ticket
           </button>
         </div>
-        {(applied.updatedSince || applied.resolvedSince) && <p>Active date filter: {applied.updatedSince ? "Updated" : "Resolved"} from {applied.updatedSince || applied.resolvedSince} to {applied.updatedBefore || applied.resolvedBefore} (UTC). <button className="btn btn-link" onClick={() => go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""})}>Clear date filter</button></p>}
+        <DateFilterNotice updatedSince={applied.updatedSince} updatedBefore={applied.updatedBefore} resolvedSince={applied.resolvedSince} resolvedBefore={applied.resolvedBefore} onClear={() => go({...applied,updatedSince:"",updatedBefore:"",resolvedSince:"",resolvedBefore:""},1)} />
         <form className="filter-card" onSubmit={submit}>
           <div className="filter-grid">
             <div><label htmlFor="filter-active">Status group</label><select id="filter-active" className="zen-field" value={filters.statusGroup} onChange={event => set("statusGroup",event.target.value)}><option value="">All groups</option><option value="active">Active Tickets</option></select></div>
@@ -291,28 +292,28 @@ export function MyTickets({
         {state === "ready" && response && response.items.length > 0 && (
           <>
             <div className="ticket-table-wrap" role="region" aria-label="Requester tickets" tabIndex={0}>
-              <table className="ticket-table">
+              <table className="ticket-table requester-ticket-table" role="table">
                 <caption className="visually-hidden">
                   Tickets belonging to the signed-in requester
                 </caption>
-                <thead>
-                  <tr>
-                    <th>Ticket Number</th>
-                    <th>Created Date</th>
-                    <th>Summary</th>
-                    <th>Category</th>
-                    <th>Related System</th>
-                    <th>Requested Priority</th>
-                    <th>IT Priority</th>
-                    <th>Current Status</th>
-                    <th>Owner</th>
-                    <th>Last Updated</th>
+                <thead role="rowgroup">
+                  <tr role="row">
+                    <th role="columnheader">Ticket Number</th>
+                    <th role="columnheader">Created Date</th>
+                    <th role="columnheader">Summary</th>
+                    <th role="columnheader">Category</th>
+                    <th role="columnheader">Related System</th>
+                    <th role="columnheader">Requested Priority</th>
+                    <th role="columnheader">IT Priority</th>
+                    <th role="columnheader">Current Status</th>
+                    <th role="columnheader">Owner</th>
+                    <th role="columnheader">Last Updated</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody role="rowgroup">
                   {response.items.map(ticket => (
-                    <tr key={ticket.id}>
-                      <td>
+                    <tr key={ticket.id} role="row">
+                      <td role="cell">
                         <button
                           className="ticket-link"
                           type="button"
@@ -322,8 +323,8 @@ export function MyTickets({
                           {ticket.ticketNumber}
                         </button>
                       </td>
-                      <td>{new Date(ticket.ticketDate).toLocaleDateString()}</td>
-                      <td>
+                      <td role="cell">{new Date(ticket.ticketDate).toLocaleDateString()}</td>
+                      <td role="cell">
                         <button
                           className="ticket-link ticket-summary-link"
                           type="button"
@@ -333,13 +334,13 @@ export function MyTickets({
                           {ticket.summary}
                         </button>
                       </td>
-                      <td>{ticket.category.name}</td>
-                      <td>{ticket.relatedSystem.name}</td>
-                      <td><span className="zen-badge">{enumLabel(ticket.requestedPriority)}</span></td>
-                      <td><span className="zen-badge">{enumLabel(ticket.itPriority)}</span></td>
-                      <td><span className="zen-badge" data-status={ticket.currentStatus}>{enumLabel(ticket.currentStatus)}</span></td>
-                      <td>{ticket.owner?.displayName ?? "Unassigned"}</td>
-                      <td>{new Date(ticket.updatedAt).toLocaleDateString()}</td>
+                      <td role="cell">{ticket.category.name}</td>
+                      <td role="cell">{ticket.relatedSystem.name}</td>
+                      <td role="cell"><span className="zen-badge">{enumLabel(ticket.requestedPriority)}</span></td>
+                      <td role="cell"><span className="zen-badge">{enumLabel(ticket.itPriority)}</span></td>
+                      <td role="cell"><span className="zen-badge" data-status={ticket.currentStatus}>{enumLabel(ticket.currentStatus)}</span></td>
+                      <td role="cell">{ticket.owner?.displayName ?? "Unassigned"}</td>
+                      <td role="cell">{new Date(ticket.updatedAt).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>

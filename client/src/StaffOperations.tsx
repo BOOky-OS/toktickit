@@ -86,7 +86,7 @@ export function StaffOperations({ ticket, editable, onUpdate }: { ticket: Ticket
     {blocked && <button className="zen-button zen-button--secondary" disabled={busy} onClick={() => void reload()}>Reload Ticket</button>}
     {editable && <>
       {terminal && <p>Assignment and priority are read-only for this status.</p>}
-      {ownersError && <p role="alert">Unable to load eligible owners. <button onClick={() => setRetry(v => v + 1)}>Retry owners</button></p>}
+      {ownersError && <p role="alert">Unable to load eligible owners. <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry owners</button></p>}
       <fieldset disabled={busy || blocked} aria-busy={busy}>
         {!ticket.owner && !terminal && <button className="zen-button zen-button--primary" onClick={() => void save("claim")}>Claim Ticket</button>}
         <div className="filter-grid">
@@ -126,7 +126,7 @@ export function StaffOperations({ ticket, editable, onUpdate }: { ticket: Ticket
       </dialog>
     </>}
     {editable && <h3>Public status history</h3>}
-    {historyError ? <p role="alert">Unable to load status history. <button onClick={() => setRetry(v => v + 1)}>Retry history</button></p>
+    {historyError ? <p role="alert">Unable to load status history. <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry history</button></p>
       : history.length ? <ol>{history.map(entry => <li key={entry.id}><strong>{label(entry.fromStatus)} → {label(entry.toStatus)}</strong>
         <p>{entry.author.displayName} ({label(entry.author.role)}) · {new Date(entry.createdAt).toLocaleString()}</p>
         {entry.reason && <p style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>{entry.reason}</p>}</li>)}</ol> : <p>No status changes yet.</p>}

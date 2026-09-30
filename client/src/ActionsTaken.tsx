@@ -186,8 +186,8 @@ export function ActionsTaken({ ticket, actor, onUpdate }: { ticket: TicketDetail
     {operational && !writable && <p>Actions are read-only while this Ticket is {label(ticket.currentStatus)}. {ticket.currentStatus === "CANCELLED" ? "Cancelled Tickets cannot reopen." : "Reopen the Ticket before recording more work."}</p>}
     {!cancelAction && feedback}
     {restricted && <button className="zen-button zen-button--secondary" onClick={() => navigate(homeFor(actor.role))}>Go to my home</button>}
-    {error && <p role="alert">{error} {!restricted && <button onClick={() => setRetry(v => v + 1)}>Reload actions</button>}</p>}
-    {assigneeError && !restricted && <p role="alert">Unable to load active assignees. <button onClick={() => setRetry(v => v + 1)}>Retry assignees</button></p>}
+    {error && <p role="alert">{error} {!restricted && <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Reload actions</button>}</p>}
+    {assigneeError && !restricted && <p role="alert">Unable to load active assignees. <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry assignees</button></p>}
     {editor && !restricted && <form className="action-editor" noValidate onSubmit={e => { e.preventDefault(); save(); }}>
       <h3>{editor.action ? `Edit action ${editor.action.id}` : "New action"}</h3>
       <p>Performed by: {editor.action?.performedBy.displayName ?? actor.displayName} (automatic, read-only). Status: {label(editor.action?.status ?? "PLANNED")}.</p>
@@ -214,7 +214,7 @@ export function ActionsTaken({ ticket, actor, onUpdate }: { ticket: TicketDetail
         const active = ["PLANNED", "IN_PROGRESS"].includes(action.status), eligible = assignees.some(a => a.id === action.assignee.id);
         const complete = action.result.trim().length >= 5 && !action.followUpRequired;
         return <li key={action.id}><article id={`action-${action.id}`} tabIndex={-1} className="action-card" aria-label={`Action ${action.id}`}>
-          <div className="ticket-heading"><h3>Action {action.id}</h3><span className="zen-badge">{label(action.status)}</span></div><Fields action={action} />
+          <div className="ticket-heading"><h3>Action {action.id}</h3><span className="zen-badge" data-status={action.status}>{label(action.status)}</span></div><Fields action={action} />
           {canWrite && active && <>
             {!eligible && <p>Current assignee unavailable. Reassign before editing, starting or completing; cancellation is still allowed.</p>}
             {action.status === "IN_PROGRESS" && !complete && <p>Edit the Result to at least 5 characters and set Follow-up required to No before completion.</p>}
@@ -230,10 +230,10 @@ export function ActionsTaken({ ticket, actor, onUpdate }: { ticket: TicketDetail
         <button className="zen-button zen-button--secondary" disabled={!data.hasPreviousPage || loading} onClick={() => setPage(page - 1)}>Previous actions</button><button className="zen-button zen-button--secondary" disabled={!data.hasNextPage || loading} onClick={() => setPage(page + 1)}>Next actions</button></div>
     </>}
     {historyId && operational && !restricted && <section className="action-history" aria-label={`History of action ${historyId}`}><h3>History of action {historyId}</h3>
-      {historyError ? <p role="alert">Unable to load action history. <button onClick={() => setRetry(v => v + 1)}>Retry action history</button></p> : !history ? <p role="status">Loading action history...</p> : <>
+      {historyError ? <p role="alert">Unable to load action history. <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry action history</button></p> : !history ? <p role="status">Loading action history...</p> : <>
         <ol>{history.items.map(r => <li key={r.id}><details><summary>Revision {r.version}: {label(r.event)} by {r.actor.displayName} · {time(r.createdAt)}</summary><Fields action={r.snapshot} showStatus /></details></li>)}</ol>
         {!history.items.length && <p>No revisions on this page.</p>}
-        <button disabled={!history.hasPreviousPage} onClick={() => setHistoryPage(v => v - 1)}>Previous revisions</button><button disabled={!history.hasNextPage} onClick={() => setHistoryPage(v => v + 1)}>Next revisions</button>
+        <button className="zen-button zen-button--secondary" disabled={!history.hasPreviousPage} onClick={() => setHistoryPage(v => v - 1)}>Previous revisions</button><button className="zen-button zen-button--secondary" disabled={!history.hasNextPage} onClick={() => setHistoryPage(v => v + 1)}>Next revisions</button>
       </>}
     </section>}
     <dialog className="action-dialog" onKeyDown={e => {

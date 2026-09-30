@@ -12,6 +12,7 @@ test("Queue layout, controls, read-only detail and safe states", async ({ page }
     let body: unknown = {};
     let status = 200;
     if (url.pathname === "/api/auth/me") body = { user: { id: 4, displayName: "Alex Chen", email: "alex@example.test", role: "IT_STAFF", mustChangePassword: false } };
+    else if (url.pathname.endsWith("/actions")) body = {items:[],ticketVersion:1,page:1,pageSize:10,totalItems:0,totalPages:0,hasPreviousPage:false,hasNextPage:false};
     else if (url.pathname === "/api/auth/csrf") body = { csrfToken: "a".repeat(64) };
     else if (url.pathname === "/api/categories") body = [item.category];
     else if (url.pathname === "/api/related-systems") body = [item.relatedSystem];
