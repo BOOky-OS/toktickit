@@ -1,12 +1,10 @@
 # Lab 4 Workflow and Audit
 
-## Current handoff status (2026-09-30)
+## Current handoff status (2026-10-04)
 
-Atip-Infa approved PR #70 at head 026b00e and merged it into lab4-staging as e484d28285c7f97d8a54f07e221bdf425659df24. Issue #63 is closed and both Project items are Done, verified during continuation. Student UI approval was given on 2026-09-29. Issue #64 is Started on docs/64-lab4-release. Document/report corrections by the student, peer documentation review, the separate pre-main gate and final-main verification remain pending. Earlier preparation entries below are historical, not the current handoff state.
+Atip-Infa approved and merged documentation PR #71 into lab4-staging, then release PR #72 into main at 6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3. The student accepted the document corrections and answered the exact pre-main question before #72 was created. All required assistant-run main checks passed: client 116, server 574, browser 18, real Lab 3 browser 14 and real Lab 4 browser 20; build and Prisma validation also passed.
 
-Current work: Issue #64, docs/64-lab4-release -> lab4-staging, based on peer merge e484d28. No documentation PR or peer request has been created before the student document gate.
-Prerequisite #58 / PR #65 is approved and peer-merged at `3c303e6`; Issue #58 and PR #65 items are Done. Author replies already exist; no duplicates are needed.
-Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
+Current work: Issue #64, docs/64-lab4-main-evidence -> main. The refreshed evidence/report and preview shutdown correction await the separate student gate and peer-reviewed follow-up PR. GitHub auto-closed #64 on release merge; it was reopened and is Started. PR #72 is Done. Final all-Done Project/submission evidence remains pending. Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Earlier dated entries below are historical; the current results are detailed in [release.md](release.md).
 
 ## Eight accepted work packages
 

@@ -69,9 +69,9 @@ These checks verify main application behavior; they do not claim physical-device
 - [ ] Final PDF is regenerated, every page inspected, links checked and final Project evidence captured.
 - [ ] #64 is closed and Done only after its release/evidence AC are complete.
 
-The documentation peer review and merge are complete. Actual #71 author approval and post-merge replies already exist; duplicate comments are unnecessary. The separate pre-main student confirmation was received on 2026-10-04; release peer review may proceed.
+Documentation PR #71 and release PR #72 are both peer-approved and merged. Their author approval and post-merge replies already exist; duplicate comments are unnecessary. The remaining evidence follow-up requires its own student gate and peer review.
 
-## Documentation merge handoff
+## Historical documentation merge handoff, before release PR #72
 
 PR #71 is merged into lab4-staging at e2f9979, with approval covering b860122. Its Project item is Done; #64 remains open and Started for release preparation. Review/comment links and exact replies are in reviewer.md. The updated report is still a pre-release draft: final-main tests, release review/merge and final all-Done board evidence can only be recorded after those events.
 
