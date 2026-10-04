@@ -76,3 +76,7 @@ Documentation checks: whitespace check passed; the pre-release PDF was generated
 Atip-Infa approved documentation PR #71 at b860122 and merged it into lab4-staging at e2f9979. The approval matches the final head. Review/comment pagination is complete, no inline threads were found, and both author replies already exist. PR #71 is Done; #64 is open and Started for release preparation. The local staging branch was fast-forwarded safely; `docs/64-lab4-final-release` was created from the updated staging for release evidence. Exact review and response links are recorded in reviewer.md.
 
 The report is refreshed with documentation merge evidence. Application code is unchanged and the 2026-09-30 staging results remain historical. The separate pre-main confirmation has not yet been answered; no main PR is created at this point.
+
+## Pre-main student confirmation accepted, 2026-10-04
+
+After being shown the updated reviewable documents and PDF, the student answered the exact required question, "เอกสารเสร็จครบแล้วหรือยัง มีอะไรต้องการแก้ก่อนขึ้น main ไหม?", with "ไม่มีแล้วไปต่อได้เลย". The release gate is satisfied. The release branch contains the verified staging history and documentation follow-up; opening its PR into main is authorized. Atip-Infa must review and merge. Issue #64 remains open until actual final-main verification and submission evidence are complete. See release.md for the repository auto-close setting that must be checked before merge.

@@ -709,5 +709,5 @@ The following comments preserve what was posted at review time. This documentati
 - **Completed reviews:** My eight PRs and my partner's ten PRs above are approved and merged into staging. Each approval matches its final PR head. Review/comment pagination was complete; the recorded inline-thread queries were empty.
 - **Current task:** Issue #64, Documentation and Release. Documentation PR #71 is peer-reviewed and merged. Release preparation continues on `docs/64-lab4-final-release`, based on updated staging `e2f9979`.
 - **Student review:** The student accepted the AI-use reflection and document corrections on 2026-10-04.
-- **Release:** The separate pre-main documentation question, peer release review/merge and actual final-main checks are still required. Staging merges do not mean the lab is fully released.
-- **Next step:** Present the updated package and obtain the separate student pre-main confirmation. The release checklist is in [release.md](release.md).
+- **Release:** The student answered the separate pre-main documentation question on 2026-10-04 with no further changes. Peer release review/merge and actual final-main checks are still required. Staging merges do not mean the lab is fully released.
+- **Next step:** Open the approved release PR into main for Atip-Infa to review and merge, then verify the actual main commit. The release checklist is in [release.md](release.md).

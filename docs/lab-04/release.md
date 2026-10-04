@@ -44,14 +44,20 @@ Browser configs ran sequentially to avoid sharing their service ports. The Lab 4
 - [x] Documentation [PR #71](https://github.com/BOOky-OS/toktickit/pull/71) opened into lab4-staging with Atip-Infa requested, author assigned, documentation label, Lab 4 milestone, Project PR Review status and real Development link to #64.
 - [x] Atip-Infa approved current documentation head b860122 and merged PR #71 at e2f9979 on 2026-10-04; PR item Done verified.
 - [x] Updated pre-release documents and report prepared for student inspection after documentation merge.
-- [ ] Student answers the separate explicit pre-main question in skill.md.
+- [x] Student answered the exact pre-main question on 2026-10-04: "ไม่มีแล้วไปต่อได้เลย" (no further document changes; proceed).
 - [ ] Atip-Infa reviews and merges the release PR into main.
 - [ ] Required checks execute on the actual final-main SHA; final logs and review/merge evidence replace draft status.
 - [ ] Final PDF is regenerated, every page inspected, links checked and final Project evidence captured.
 - [ ] #64 is closed and Done only after its release/evidence AC are complete.
 
-The documentation peer review and merge are complete. Actual #71 author approval and post-merge replies already exist; duplicate comments are unnecessary. The separate pre-main student confirmation remains pending.
+The documentation peer review and merge are complete. Actual #71 author approval and post-merge replies already exist; duplicate comments are unnecessary. The separate pre-main student confirmation was received on 2026-10-04; release peer review may proceed.
 
 ## Documentation merge handoff
 
 PR #71 is merged into lab4-staging at e2f9979, with approval covering b860122. Its Project item is Done; #64 remains open and Started for release preparation. Review/comment links and exact replies are in reviewer.md. The updated report is still a pre-release draft: final-main tests, release review/merge and final all-Done board evidence can only be recorded after those events.
+
+## Pre-main confirmation and Issue closure
+
+The assistant asked: "เอกสารเสร็จครบแล้วหรือยัง มีอะไรต้องการแก้ก่อนขึ้น main ไหม?" The student answered: "ไม่มีแล้วไปต่อได้เลย" on 2026-10-04. This satisfies the separate release gate and authorizes opening the release PR into main. Peer approval/merge, actual final-main checks and final submission evidence remain pending.
+
+GitHub Development links are closing references. Before merging the release PR, turn off Settings > General > Issues > Auto-close issues with merged linked pull requests so #64 remains open for final-main verification. The browser automation runtime failed while checking this setting; no setting change is claimed. The reviewer should verify the setting before merging. Close #64 manually only after the remaining acceptance criteria pass.
