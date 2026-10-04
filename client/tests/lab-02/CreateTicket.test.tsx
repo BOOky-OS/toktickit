@@ -46,6 +46,7 @@ describe("Create Ticket", () => {
   beforeEach(() => {
     localStorage.clear();
     mockAuthenticatedUser();
+    window.history.replaceState({}, "", "/my-tickets");
     vi.spyOn(api, "getCategories").mockResolvedValue([
       { id: 2, name: "Hardware" },
     ]);

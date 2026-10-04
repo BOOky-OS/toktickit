@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { permittedRoles } from "../../src/auth/security.js";
 
-describe("approved Lab 3 role boundaries", () => {
+describe("Lab 3 boundaries with approved Lab 4 Admin extensions", () => {
   it.each([
     ["GET", "/staff/tickets", ["IT_STAFF", "ADMIN"]],
-    ["POST", "/staff/tickets/1/claim", ["IT_STAFF"]],
-    ["PATCH", "/staff/tickets/1/priority", ["IT_STAFF"]],
+    ["POST", "/staff/tickets/1/claim", ["IT_STAFF", "ADMIN"]],
+    ["PATCH", "/staff/tickets/1/priority", ["IT_STAFF", "ADMIN"]],
     ["GET", "/tickets/1/notes", ["IT_STAFF", "ADMIN"]],
-    ["POST", "/tickets/1/notes", ["IT_STAFF"]],
+    ["POST", "/tickets/1/notes", ["IT_STAFF", "ADMIN"]],
     ["GET", "/tickets/1/comments", ["REQUESTER", "IT_STAFF", "ADMIN"]],
-    ["POST", "/tickets/1/comments", ["REQUESTER", "IT_STAFF"]],
+    ["POST", "/tickets/1/comments", ["REQUESTER", "IT_STAFF", "ADMIN"]],
     ["POST", "/tickets/1/resolution-indication", ["REQUESTER"]],
     ["POST", "/tickets", ["REQUESTER"]],
     ["POST", "/tickets/1/attachments", ["REQUESTER"]],

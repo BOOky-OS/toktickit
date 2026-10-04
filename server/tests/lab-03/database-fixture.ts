@@ -46,9 +46,9 @@ export function executeScript(url: string, sql: string): void {
   }
 }
 
-export async function databaseFixture(legacy = false) {
+export async function databaseFixture(legacy: boolean | string = false) {
   const baseUrl = testDatabaseUrl();
-  const schema = `lab3_test_${randomUUID().replaceAll("-", "")}`;
+  const schema = `${typeof legacy === "string" ? "lab4" : "lab3"}_test_${randomUUID().replaceAll("-", "")}`;
   const base = new PrismaClient({ datasources: { db: { url: baseUrl } } });
   await base.$executeRawUnsafe(`CREATE SCHEMA "${schema}"`);
   const url = new URL(baseUrl);
@@ -58,22 +58,24 @@ export async function databaseFixture(legacy = false) {
     await prisma.$disconnect();
     // Only this invocation's random, owned schema in the allowlisted test DB.
     testDatabaseUrl();
-    if (!/^lab3_test_[a-f0-9]{32}$/.test(schema)) throw new Error("Unsafe fixture schema.");
+    if (!/^lab[34]_test_[a-f0-9]{32}$/.test(schema)) throw new Error("Unsafe fixture schema.");
     await base.$executeRawUnsafe(`DROP SCHEMA "${schema}" CASCADE`);
     await base.$disconnect();
   };
   try {
     const names = readdirSync(migrationDirectory).filter((name) => /^\d/.test(name)).sort();
     for (const name of names) {
-      if (legacy && name >= upgradeName) continue;
+      if (legacy && name >= (typeof legacy === "string" ? legacy : upgradeName)) continue;
       executeScript(url.toString(), readFileSync(resolve(migrationDirectory, name, "migration.sql"), "utf8"));
     }
   } catch (error) {
     await dispose();
     throw error;
   }
-  return { prisma, url: url.toString(), dispose, upgrade: () => executeScript(url.toString(),
-    readFileSync(resolve(migrationDirectory, upgradeName, "migration.sql"), "utf8")) };
+  return { prisma, schema, url: url.toString(), dispose, upgrade: () => {
+    for (const name of readdirSync(migrationDirectory).filter(n => /^\d/.test(n) && n >= (typeof legacy === "string" ? legacy : upgradeName)).sort())
+      executeScript(url.toString(), readFileSync(resolve(migrationDirectory, name, "migration.sql"), "utf8"));
+  } };
 }
 
 export function checkSchemaDrift(url: string): void {

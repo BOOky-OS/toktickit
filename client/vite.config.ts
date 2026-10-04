@@ -6,6 +6,8 @@ export default defineConfig({
   server: { port: 5173 },
   test: {
     environment: "jsdom",
+    // Bound concurrent jsdom workers on the shared local development machine.
+    maxWorkers: 2,
     globals: true,
     setupFiles: "./tests/setup.ts",
     include: ["tests/**/*.test.tsx"],

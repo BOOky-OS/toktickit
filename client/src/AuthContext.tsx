@@ -15,10 +15,11 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function homeFor(role: api.UserRole) {
-  return role === "REQUESTER" ? "/my-tickets" : role === "IT_STAFF" ? "/staff/tickets" : "/admin/users";
+  return role === "REQUESTER" ? "/dashboard" : "/staff/dashboard";
 }
 export function navigate(path: string, replace = false) {
-  if (window.location.pathname !== path) window.history[replace ? "replaceState" : "pushState"]({}, "", path);
+  if (!replace && !window.dispatchEvent(new Event("toktickit:before-navigate", { cancelable: true }))) return;
+  if (window.location.pathname + window.location.search + window.location.hash !== path) window.history[replace ? "replaceState" : "pushState"]({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
 
@@ -71,6 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(updated); setState("authenticated"); setNotice(""); navigate(homeFor(updated.role), true);
     },
     async signOut() {
+      if (!window.dispatchEvent(new Event("toktickit:before-navigate", { cancelable: true }))) return;
       await api.logout(); setUser(null); setState("anonymous"); setNotice("You have signed out."); navigate("/login", true);
     },
     retry() { void load(); },

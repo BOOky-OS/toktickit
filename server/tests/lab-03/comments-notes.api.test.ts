@@ -27,16 +27,15 @@ function call(id: number, stream: string, method: "get" | "post" | "patch" | "de
     .set("Origin", origin()).set("X-CSRF-Token", sessions[role].csrfToken);
   return body ? req.send(body) : req;
 }
-it("allows public reads for the owner/Staff/Admin, appends only owner/Staff, and isolates other requesters", async () => {
+it("allows public reads for the owner/Staff/Admin, appends owner/Staff/Admin, and isolates other requesters", async () => {
   const ticket = await make();
   expect((await call(ticket.id, "comments", "get", "Requester")).body).toEqual([]);
-  for (const role of ["Requester", "Staff"]) {
+  for (const role of ["Requester", "Staff", "Admin"]) {
     const result = await call(ticket.id, "comments", "post", role, { body: `  Message by ${role}  ` });
     expect(result.status).toBe(201); expect(result.body).toMatchObject({ body: `Message by ${role}`, author: { id: users[role] } });
     expect(Object.keys(result.body).sort()).toEqual(["author", "body", "createdAt", "id"]);
   }
-  for (const role of ["Requester", "Staff", "Admin"]) expect((await call(ticket.id, "comments", "get", role)).body).toHaveLength(2);
-  expect((await call(ticket.id, "comments", "post", "Admin", { body: "Forbidden" })).status).toBe(403);
+  for (const role of ["Requester", "Staff", "Admin"]) expect((await call(ticket.id, "comments", "get", role)).body).toHaveLength(3);
   for (const method of ["get", "post"] as const) expect((await call(ticket.id, "comments", method, "Other", method === "post" ? { body: "Wrong owner" } : undefined)).status).toBe(404);
 });
 it("keeps notes private across direct access, forged fields and requester serializers", async () => {
@@ -47,7 +46,7 @@ it("keeps notes private across direct access, forged fields and requester serial
     const response = await call(id, "notes", method, "Requester", method === "post" ? { body: "forged" } : undefined);
     expect(response.status).toBe(403); expect(response.text).not.toMatch(/PRIVATE_INTERNAL_MARKER|count|author/);
   }
-  expect((await call(ticket.id, "notes", "post", "Admin", { body: "Forbidden" })).status).toBe(403);
+  expect((await call(ticket.id, "notes", "post", "Admin", { body: "Admin operational note" })).status).toBe(201);
   for (const path of [`/api/tickets/${ticket.id}`, "/api/tickets", `/api/tickets/${ticket.id}/comments`]) {
     const response = await request(app).get(path).set("Cookie", `toktickit.sid=${sessions.Requester.token}`);
     expect(response.status).toBe(200); expect(response.text).not.toMatch(/PRIVATE_INTERNAL_MARKER|internalNote|noteCount/);

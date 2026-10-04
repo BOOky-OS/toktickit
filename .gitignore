@@ -18,5 +18,6 @@ server/prisma/*.db
 *.log
 .DS_Store
 
+/output/
 lab3-submission
 tmp

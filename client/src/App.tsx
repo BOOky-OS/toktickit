@@ -1,3 +1,5 @@
+import { ShellIcon } from "./ShellIcon.js";
+import { RequesterDashboard } from "./RequesterDashboard.js";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import {
   Category,
@@ -15,6 +17,7 @@ import { AuthProvider, homeFor, navigate, useAuth } from "./AuthContext.js";
 import { ApplicationShell, ChangePasswordScreen, LoginScreen, SessionFailure, SessionLoading } from "./AuthScreens.js";
 import type { UserRole } from "./api.js";
 import { MyTickets } from "./MyTickets.js";
+import { StaffDashboard } from "./StaffDashboard.js";
 import { StaffTicketQueue } from "./StaffTicketQueue.js";
 import { UserManagement } from "./UserManagement.js";
 import { TicketDetail } from "./TicketDetail.js";
@@ -224,7 +227,7 @@ function CreateTicket({
           <h1>Ticket {created.ticketNumber} has been created</h1>
           <p>
             Keep this official ticket number for your next action. Your status
-            is <span className="zen-badge">{created.currentStatus}</span>.
+            is <span className="zen-badge" data-status={created.currentStatus}>{created.currentStatus.charAt(0) + created.currentStatus.slice(1).toLowerCase().replaceAll("_", " ")}</span>.
           </p>
           {uploadedCount > 0 && (
             <p className="success-message" role="status">
@@ -281,7 +284,7 @@ function CreateTicket({
               Fields marked required are needed before you submit.
             </p>
           </div>
-          <span className="zen-badge">NEW</span>
+          <span className="zen-badge" data-status="NEW">New</span>
         </div>
         {referenceState === "loading" && (
           <p className="notice" role="status">
@@ -534,6 +537,8 @@ function CreateTicket({
 }
 
 function ServiceDesk() {
+  const { user } = useAuth();
+  const listReturn = useRef("/my-tickets");
   const [path, setPath] = useState(window.location.pathname);
   const [systemState, setSystemState] = useState<UiState>("idle");
   const [healthCategories, setHealthCategories] = useState<Category[]>([]);
@@ -560,12 +565,13 @@ function ServiceDesk() {
   return (
     <>
       <nav className="app-nav" aria-label="Service desk">
+        <button className={path === "/dashboard" ? "active" : ""} aria-current={path === "/dashboard" ? "page" : undefined} onClick={() => navigate("/dashboard")}><ShellIcon name="dashboard" />Dashboard</button>
         <button className={path === "/my-tickets" || detail ? "active" : ""} aria-current={path === "/my-tickets" || detail ? "page" : undefined}
-          onClick={() => navigate("/my-tickets")}>My Tickets</button>
+          onClick={() => navigate("/my-tickets")}><ShellIcon name="tickets" />My Tickets</button>
         <button className={path === "/tickets/new" ? "active" : ""} aria-current={path === "/tickets/new" ? "page" : undefined}
-          onClick={() => navigate("/tickets/new")}>Create Ticket</button>
+          onClick={() => navigate("/tickets/new")}><ShellIcon name="plus" />Create Ticket</button>
       </nav>
-      {path === "/tickets/new" ? (
+      {path === "/dashboard" ? <RequesterDashboard key={user!.id} name={user!.displayName} /> : path === "/tickets/new" ? (
         <CreateTicket
           goHome={() => navigate("/my-tickets")}
           goDetail={(ticketId, files = []) => {
@@ -576,13 +582,13 @@ function ServiceDesk() {
       ) : detail ? (
         <TicketDetail
           ticketId={Number(detail[1])}
-          onBack={() => navigate("/my-tickets")}
+          onBack={() => navigate(listReturn.current)}
           retryFiles={pendingRetry?.ticketId === Number(detail[1]) ? pendingRetry.files : []}
           onRetryFilesChange={files => setPendingRetry(files.length ? { ticketId: Number(detail[1]), files } : null)}
         />
       ) : (
         <>
-          <MyTickets onCreate={() => navigate("/tickets/new")} onOpen={ticketId => navigate(`/tickets/${ticketId}`)} />
+          <MyTickets onCreate={() => navigate("/tickets/new")} onOpen={ticketId => { listReturn.current = window.location.pathname + window.location.search; navigate(`/tickets/${ticketId}`); }} />
           <section className="container pb-4" style={{ maxWidth: 1100 }}>
             <button className="btn btn-success" onClick={handleCheck} disabled={systemState === "loading"}>
               {systemState === "loading" ? "Loading..." : "Check System"}
@@ -606,6 +612,7 @@ function ServiceDesk() {
   );
 }
 function PlannedRoleHome() {
+  const queueReturn = useRef("/staff/tickets");
   const { user } = useAuth();
   const [path, setPath] = useState(window.location.pathname);
   useEffect(() => {
@@ -617,16 +624,17 @@ function PlannedRoleHome() {
   const ticketDetail = /^\/tickets\/[1-9][0-9]*$/.test(path);
   return <>
     <nav className="app-nav" aria-label="Service desk">
+      <button className={path === "/staff/dashboard" ? "active" : ""} aria-current={path === "/staff/dashboard" ? "page" : undefined} onClick={() => navigate("/staff/dashboard")}><ShellIcon name="dashboard" />Dashboard</button>
       {admin && <button className={path === "/admin/users" ? "active" : ""} aria-current={path === "/admin/users" ? "page" : undefined}
-        onClick={() => navigate("/admin/users")}>Users</button>}
-      <button className={path === "/staff/tickets" ? "active" : ""} aria-current={path === "/staff/tickets" ? "page" : undefined}
-        onClick={() => navigate("/staff/tickets")}>Ticket Queue{admin ? " (read-only)" : ""}</button>
+        onClick={() => navigate("/admin/users")}><ShellIcon name="users" />Users</button>}
+      <button className={path === "/staff/tickets" || ticketDetail ? "active" : ""} aria-current={path === "/staff/tickets" || ticketDetail ? "page" : undefined}
+        onClick={() => navigate("/staff/tickets")}><ShellIcon name="tickets" />Ticket Queue</button>
     </nav>
-    {path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => navigate("/tickets/" + id)} onHome={() => navigate(homeFor(user!.role))} />
-      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable={!admin} onBack={() => navigate("/staff/tickets")} />
+    {path === "/staff/dashboard" ? <StaffDashboard name={user!.displayName} /> : path === "/staff/tickets" ? <StaffTicketQueue admin={admin} onOpen={id => { queueReturn.current = window.location.pathname + window.location.search; navigate("/tickets/" + id); }} onHome={() => navigate(homeFor(user!.role))} />
+      : ticketDetail ? <TicketDetail ticketId={Number(path.split("/")[2])} readOnly staffEditable onBack={() => navigate(queueReturn.current)} />
       : path === "/admin/users" ? <UserManagement actorId={user!.id} /> : <main className="page-content" id="main-content">
       <section className="zen-empty-state">
-        <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator read-only access" : "Role workspace"}</p>
+        <p className="eyebrow">{admin && (path === "/staff/tickets" || ticketDetail) ? "Administrator workspace" : "Role workspace"}</p>
         <h1>{ticketDetail ? "Ticket Detail" : path === "/staff/tickets" ? "Ticket Queue" : "User Management"}</h1>
         <p>This destination is available to {user?.displayName} under the signed-in role.</p>
       </section>
@@ -643,9 +651,9 @@ function AccessUnavailable() {
 }
 function routeAllowed(role: UserRole, path: string) {
   if (path === "/change-password") return true;
-  if (role === "REQUESTER") return path === "/my-tickets" || path === "/tickets/new" || /^\/tickets\/[1-9][0-9]*$/.test(path);
-  if (role === "IT_STAFF") return path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
-  return path === "/admin/users" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  if (role === "REQUESTER") return path === "/dashboard" || path === "/my-tickets" || path === "/tickets/new" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  if (role === "IT_STAFF") return path === "/staff/dashboard" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
+  return path === "/staff/dashboard" || path === "/admin/users" || path === "/staff/tickets" || /^\/tickets\/[1-9][0-9]*$/.test(path);
 }
 function AuthenticatedApp() {
   const { user } = useAuth();

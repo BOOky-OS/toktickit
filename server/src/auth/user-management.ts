@@ -76,7 +76,8 @@ userManagement.patch("/admin/users/:userId", asyncRoute(async (req, res) => {
     if (current.role === "ADMIN" && current.isActive && (!fields.isActive || fields.role !== "ADMIN")
       && await tx.user.count({ where: { role: "ADMIN", isActive: true } }) <= 1) throw conflict("LAST_ACTIVE_ADMIN", "Keep at least one active Administrator.");
     if ((!fields.isActive || fields.role === "REQUESTER") && current.isActive && ["IT_STAFF", "ADMIN"].includes(current.role)
-      && await tx.ticket.count({ where: { ownerId: userId, currentStatus: { notIn: ["CLOSED", "CANCELLED"] } } })) throw conflict("ACTIVE_ASSIGNMENTS", "Reassign this user's nonterminal Tickets first.");
+      && (await tx.ticket.count({ where: { ownerId: userId, currentStatus: { notIn: ["CLOSED", "CANCELLED"] } } })
+        || await tx.actionTaken.count({ where: { assigneeId: userId, status: { in: ["PLANNED", "IN_PROGRESS"] } } }))) throw conflict("ACTIVE_ASSIGNMENTS", "Reassign this user's nonterminal Tickets and actions first.");
     const changed = fields.displayName !== current.displayName || fields.email !== current.email || fields.role !== current.role || fields.isActive !== current.isActive;
     if (changed) {
       await tx.user.update({ where: { id: userId }, data: { ...fields, version: { increment: 1 } } });

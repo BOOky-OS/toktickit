@@ -43,7 +43,7 @@ function EntryStream({ ticket, stream, canPost, onRefresh }: { ticket: TicketDet
   return <section className="attachment-section" aria-labelledby={`${stream}-heading`}>
     <h2 id={`${stream}-heading`}>{title}</h2>
     <p>{internal ? "Internal — visible to IT Staff and administrators" : "Visible to the requester"}</p>
-    {loading ? <p role="status">Loading {title}...</p> : failed ? <p role="alert">Unable to load {title}. <button onClick={() => setRetry(v => v + 1)}>Retry {title}</button></p>
+    {loading ? <p role="status">Loading {title}...</p> : failed ? <p role="alert">Unable to load {title}. <button className="zen-button zen-button--secondary" onClick={() => setRetry(v => v + 1)}>Retry {title}</button></p>
       : entries.length ? <ol>{entries.map(entry => <li key={entry.id}><p><strong>{entry.author.displayName}</strong> ({entry.author.role}) · {new Date(entry.createdAt).toLocaleString()}</p>
         <p style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>{entry.body}</p></li>)}</ol> : <p>No {internal ? "internal notes" : "public comments"} yet.</p>}
     {message && <p role="status">{message}</p>}
@@ -84,12 +84,12 @@ function ResolutionIndication({ ticket, onUpdate }: { ticket: TicketDetail; onUp
       : <button ref={trigger} className="zen-button zen-button--primary" disabled={busy || blocked || !eligible} onClick={() => dialog.current?.showModal()}>Problem Appears Resolved</button>}
     {!eligible && <p>This action is unavailable in the current status.</p>}
     {message && <p role="status">{message}</p>}
-    {blocked && <button disabled={busy} onClick={() => void reload()}>Reload Ticket</button>}
+    {blocked && <button className="zen-button zen-button--secondary" disabled={busy} onClick={() => void reload()}>Reload Ticket</button>}
     <dialog ref={dialog} aria-labelledby="resolution-confirm-heading" onCancel={e => { if (busy) e.preventDefault(); }} style={{ maxWidth: "min(32rem, 90vw)", borderRadius: "1rem" }}>
       <h2 id="resolution-confirm-heading">Confirm resolution indication</h2>
       <p>Notify IT Staff that the problem appears resolved? The Ticket status will remain unchanged.</p>
-      <button disabled={busy} onClick={() => { dialog.current?.close(); trigger.current?.focus(); }}>Cancel</button>
-      <button disabled={busy} onClick={() => void confirm()}>{busy ? "Saving..." : "Confirm indication"}</button>
+      <button className="zen-button zen-button--secondary" disabled={busy} onClick={() => { dialog.current?.close(); trigger.current?.focus(); }}>Cancel</button>
+      <button className="zen-button zen-button--primary" disabled={busy} onClick={() => void confirm()}>{busy ? "Saving..." : "Confirm indication"}</button>
     </dialog>
   </section>;
 }
@@ -98,7 +98,7 @@ export function TicketCommunication({ ticket, role, onUpdate }: { ticket: Ticket
   async function refresh() { onUpdate(await getTicket(ticket.id)); }
   return <>
     {role === "REQUESTER" && <ResolutionIndication key={`indication-${ticket.id}`} ticket={ticket} onUpdate={onUpdate} />}
-    <EntryStream key={`comments-${ticket.id}`} ticket={ticket} stream="comments" canPost={role !== "ADMIN"} onRefresh={refresh} />
-    {role !== "REQUESTER" && <EntryStream key={`notes-${ticket.id}`} ticket={ticket} stream="notes" canPost={role === "IT_STAFF"} onRefresh={refresh} />}
+    <EntryStream key={`comments-${ticket.id}`} ticket={ticket} stream="comments" canPost={true} onRefresh={refresh} />
+    {role !== "REQUESTER" && <EntryStream key={`notes-${ticket.id}`} ticket={ticket} stream="notes" canPost={true} onRefresh={refresh} />}
   </>;
 }

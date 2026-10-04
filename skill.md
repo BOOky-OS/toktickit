@@ -222,3 +222,8 @@ Read skill.md at the workspace root completely. Resolve the current lab from the
 ```
 
 This root `skill.md` is the user's workspace guide. Do not claim it is automatically installed or loaded as a Codex skill in a new session; the user should explicitly ask the AI to read it.
+
+
+## Student review before peer handoff
+
+Before requesting peer review, check the current lab workflow for explicit student review gates. For Lab 4, the student's 2026-09-26 instruction requires two separate pauses: #63 UI inspection/corrections before peer handoff and before final documentation; #64 document/report/review-record inspection/corrections before peer handoff. Prepare concrete reviewable results, apply corrections, and wait for explicit confirmation at each gate. Full details are in docs/lab-04/workflow.md. The separate pre-main documentation gate still applies.

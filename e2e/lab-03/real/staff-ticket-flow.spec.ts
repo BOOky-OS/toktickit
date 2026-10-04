@@ -3,7 +3,8 @@ import { signIn } from "./helpers";
 
 test("Requester creates a ticket; Staff claims, prioritizes, communicates and resolves it", async ({ page }) => {
   await signIn(page, "requester");
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
   await page.getByRole("navigation").getByRole("button", { name: "Create Ticket", exact: true }).click();
   await page.getByLabel("Category *", { exact: true }).selectOption({ label: "E2E Hardware" });
   await page.getByLabel("Related System *", { exact: true }).selectOption({ label: "E2E Laptop" });
@@ -20,7 +21,8 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   expect(data.currentStatus).toBe("NEW");
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "staff");
-  await expect(page).toHaveURL(/\/staff\/tickets$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
+  await page.getByRole("navigation").getByRole("button", {name:"Ticket Queue",exact:true}).click();
   await page.getByLabel("Search", { exact: true }).fill("Real browser laptop repair");
   await page.getByRole("button", { name: "Apply filters" }).click();
   await page.getByRole("button", { name: `Open ${data.ticketNumber}`, exact: true }).click();
@@ -54,7 +56,8 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   await expect(page.getByLabel("Internal note", { exact: true })).toHaveValue("");
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "requester");
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
   await page.goto(ticketPath);
   await expect(page.getByText("The replacement battery is ready.", { exact: true })).toBeVisible();
   await expect(page.getByText("PRIVATE_REAL_E2E_NOTE")).toHaveCount(0);
@@ -65,8 +68,18 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   expect((await readTicket()).currentStatus).toBe(data.currentStatus);
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "staff");
-  await expect(page).toHaveURL(/\/staff\/tickets$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
+  await page.getByRole("navigation").getByRole("button", {name:"Ticket Queue",exact:true}).click();
   await page.goto(ticketPath);
+  // Lab 4 requires actual completed work before formal resolution.
+  await page.getByRole("button", { name: "Add action" }).click();
+  await page.getByLabel("Description", { exact: true }).fill("Replace and verify the battery");
+  await page.getByLabel("Result", { exact: true }).fill("Battery tested successfully after repair");
+  await page.getByRole("button", { name: "Save action", exact: true }).click();
+  const action = page.getByRole("article").filter({ hasText: "Replace and verify the battery" });
+  await action.getByRole("button", { name: /^Start action/ }).click();
+  await action.getByRole("button", { name: /^Complete action/ }).click();
+  await expect(action.getByText("Completed", { exact: true }).first()).toBeVisible();
   await page.getByLabel("Next status").selectOption("RESOLVED");
   await page.getByLabel("Public status reason (required)").fill("Replaced the battery and verified operation.");
   await page.getByRole("button", { name: "Change status", exact: true }).click();
@@ -88,9 +101,11 @@ test("Requester creates a ticket; Staff claims, prioritizes, communicates and re
   expect(reopened.requesterResolutionIndicatedAt).toBeNull();
   await page.getByRole("button", { name: "Logout", exact: true }).click();
   await signIn(page, "admin");
-  await expect(page).toHaveURL(/\/admin\/users$/);
+  await expect(page).toHaveURL(/\/staff\/dashboard$/);
   await page.goto(ticketPath);
   await expect(page.getByText("PRIVATE_REAL_E2E_NOTE", { exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Change status", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Post internal note" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Change status", exact: true })).toBeVisible();
+  await page.getByLabel("Internal note", { exact: true }).fill("Administrator follow-up after reopening");
+  await page.getByRole("button", { name: "Post internal note" }).click();
+  await expect(page.getByText("Administrator follow-up after reopening", { exact: true })).toBeVisible();
 });

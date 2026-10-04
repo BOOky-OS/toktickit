@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient, TicketStatus } from "@prisma/client";
 
 export type TicketListInput = {
+  dashboardWhere?: Prisma.TicketWhereInput;
   requesterId: number;
   search?: string;
   categoryId?: number;
@@ -157,6 +158,7 @@ export async function listTickets(prisma: PrismaClient, input: TicketListInput):
 
     const search = input.search ? escapeContains(input.search) : undefined;
     const where: Prisma.TicketWhereInput = {
+      ...input.dashboardWhere,
       requesterId: input.requesterId,
       ...(search ? {
         OR: [

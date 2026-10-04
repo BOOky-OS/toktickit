@@ -4,7 +4,24 @@ TokTickIT is an IT service desk application built for CPE334. Lab 1 established
 the React, Express, Prisma, and PostgreSQL foundation. Lab 2 delivers the
 responsive requester-owned Ticketing MVP.
 
-## Lab 3 released to main; final evidence review
+## Lab 4 Actions Taken, dashboards and release preparation
+
+See the [contract](docs/lab-04/specification.md), [API](docs/lab-04/api-spec.md), [UI](docs/lab-04/ui-spec.md), [tests](docs/lab-04/tests.md), [workflow and current limitations](docs/lab-04/workflow.md), [review record](docs/lab-04/reviewer.md) and [AI use](docs/lab-04/ai-use.md). The contract (#56 / PR #57) is peer-approved and merged into lab4-staging. Issue #58 adds the Actions Taken API, additive migration, repeatable seed and isolated tests. See [Lab 4 database/test setup and recovery](docs/lab-04/migration.md). Issue #59 adds the Actions UI; see [UI/browser evidence](docs/lab-04/actions-ui-evidence.md) and run `npm run test:e2e:lab4` with the isolated database. Issue #60 adds final Ticket gates and feedback; see [workflow evidence](docs/lab-04/workflow-evidence.md). Issue #61 adds Staff/Admin dashboards and Queue drill-down; see [dashboard evidence](docs/lab-04/staff-dashboard-evidence.md). Issue #62 adds the owner-scoped Requester dashboard and My Tickets URL filters; see [Requester evidence](docs/lab-04/requester-dashboard-evidence.md); this is not the final Lab 4 release. For the #63 student UI correction gate, see [preview and review instructions](docs/lab-04/ui-review.md); `npm run preview:lab4` starts a disposable local preview after setting TEST_DATABASE_URL.
+
+Current integration: PR #70 was peer-merged into lab4-staging at e484d28. UI inspection is accepted. Issue #64 prepares the [release checklist and evidence](docs/lab-04/release.md) and [Answer Parts 1-9](docs/lab-04/report.md) for student corrections before peer review. Lab 4 has not been released to main.
+
+### Lab 4 local UI preview
+
+Reuse the existing isolated test container; start it only if stopped. See [database setup](docs/lab-04/migration.md) if it has not been created.
+
+```powershell
+$env:TEST_DATABASE_URL = 'postgresql://labtest:labtest@127.0.0.1:5544/toktickit_lab3_test'
+npm run preview:lab4
+```
+
+Open http://localhost:5178. The preview creates disposable fixtures and prints its accounts. Use requester@lab4.example.test, staff@lab4.example.test or admin@lab4.example.test with the local demo password documented in [UI review](docs/lab-04/ui-review.md). Stop with Ctrl+C when finished. For a persistent working database, follow the backup/migration steps instead of using the preview fixture setup.
+
+## Lab 3 released baseline
 
 Lab 3 begins with the [engineering contract](docs/lab-03/specification.md),
 [API contract](docs/lab-03/api-spec.md), [UI specification](docs/lab-03/ui-spec.md)
@@ -20,7 +37,7 @@ See [authentication setup](docs/lab-03/authentication.md). Issue #41 adds the
 and the release evidence report. With the isolated local TEST_DATABASE_URL configured,
 run `npm run test:e2e:lab3`; it starts dedicated services on ports 3006/5176 and
 uses an owned temporary schema and file directory. Release PR #54 was peer-merged as `f401341`; final-main checks passed.
-See [recorded results](docs/lab-03/tests.md). Final documentation review remains in Issue #41.
+See [recorded results](docs/lab-03/tests.md). Issue #41 is closed; final evidence was integrated through PR #55.
 
 Follow [the Lab 3 workflow and release gate](docs/lab-03/workflow.md): Issues
 #32-#41 use individual feature branches into `lab3-staging`, with reviewer merges.
@@ -32,8 +49,7 @@ lab as release approval.
 
 Lab 2 adds Development Requester context, Ticket creation, requester-owned My Tickets search/filter/sort/pagination, read-only Ticket Detail, and Attachment upload/download/soft removal. The selector is a testing mechanism and is not authentication.
 
-The commands below describe the historical Lab 2 baseline. On lab3-staging,
-follow [the guarded Lab 3 migration/seed setup](docs/lab-03/migration.md) instead:
+The commands below describe the historical Lab 2 baseline. For the current Lab 4 branch, follow [the guarded Lab 4 migration/seed setup](docs/lab-04/migration.md). The following commands are historical examples:
 
 ```bash
 npm exec --workspace server prisma migrate deploy
@@ -159,7 +175,7 @@ npm test
 
 Server integration tests require the dedicated local `toktickit_lab3_test`
 database and `TEST_DATABASE_URL`; follow the [isolated test setup](docs/lab-03/migration.md).
-The fixture guard refuses the working database.
+The fixture guard refuses the working database. Lab 4 recovery tests also require the dedicated Docker service and `LAB4_TEST_POSTGRES_CONTAINER` from the [Lab 4 setup](docs/lab-04/migration.md).
 
 Automated tests are located in:
 
@@ -167,6 +183,7 @@ Automated tests are located in:
 - `client/tests/lab-01/` for Vitest UI tests
 - `server/tests/lab-02/` for Ticket, ownership, and Attachment API/unit tests
 - `server/tests/lab-03/` for migration, seed, provisioning, authentication and authorization checks
+- `server/tests/lab-04/` for Actions API/security/concurrency, additive migration, seed and backup recovery
 - `client/tests/lab-02/` for requester workflow regression tests
 - `client/tests/lab-03/` for authentication transport, Login, password change, role-shell and authenticated Requester regression tests
 - `e2e/lab-02/` for the desktop, tablet, and mobile Playwright workflow
@@ -178,12 +195,12 @@ traceability are recorded in `docs/lab-02/tests.md`.
 
 ```text
 toktickit/
-|-- client/src/ and client/tests/lab-01/, lab-02/, lab-03/
-|-- server/src/ and server/tests/lab-01/, lab-02/, lab-03/
+|-- client/src/ and client/tests/lab-01/, lab-02/, lab-03/, lab-04/
+|-- server/src/ and server/tests/lab-01/, lab-02/, lab-03/, lab-04/
 |-- server/prisma/schema.prisma and migrations/
 |-- server/prisma/seed.ts, lab3-seed.ts, lab3-provision.ts
-|-- docs/lab-01/, lab-02/, lab-03/
-|-- e2e/lab-02/, lab-03/
+|-- docs/lab-01/, lab-02/, lab-03/, lab-04/
+|-- e2e/lab-02/, lab-03/, lab-04/
 |-- output/pdf/
 |-- skill.md
 |-- compose.yaml
@@ -200,7 +217,7 @@ Kanban workflow in this order:
 1. add the Issue to `Backlog`;
 2. move it to `Specified` only after its requirements are understood;
 3. create the required feature branch from the current lab's documented base
-   (`lab3-staging` for Lab 3, so completed prerequisites are included), then
+   (`lab4-staging` for Lab 4, so completed prerequisites are included), then
    move the Issue to `Started`;
 4. open a pull request into the active lab staging branch, then move the Issue
    to `PR Review`;

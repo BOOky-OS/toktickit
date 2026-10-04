@@ -36,6 +36,10 @@ model User {
   publicComments     PublicComment[]
   internalNotes      InternalNote[]
   statusChanges      TicketStatusChange[]
+  performedActions   ActionTaken[]        @relation("ActionPerformer")
+  assignedActions    ActionTaken[]        @relation("ActionAssignee")
+  actionRevisions    ActionRevision[]
+  actionReceipts     ActionReceipt[]
 }
 
 enum UserRole {
@@ -84,6 +88,7 @@ model Ticket {
   updatedAt                      DateTime             @updatedAt
   ownerId                        Int?
   version                        Int                  @default(1)
+  workCycle                      Int                  @default(1)
   requesterResolutionIndicatedAt DateTime?
   resolvedAt                     DateTime?
   closedAt                       DateTime?
@@ -99,8 +104,10 @@ model Ticket {
   publicComments                 PublicComment[]
   internalNotes                  InternalNote[]
   statusChanges                  TicketStatusChange[]
+  actions                        ActionTaken[]
 
   @@unique([requesterId, clientSubmissionKey])
+  @@index([requesterId, resolvedAt, id])
   @@index([requesterId, updatedAt])
   @@index([requesterId, currentStatus])
   @@index([requesterId, requestedPriority])
@@ -188,4 +195,76 @@ model TicketStatusChange {
   author     User         @relation(fields: [authorId], references: [id], onDelete: Restrict)
 
   @@index([ticketId, createdAt, id])
+}
+
+enum ActionStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ActionEvent {
+  CREATE
+  EDIT
+  STATUS
+}
+
+model ActionTaken {
+  id                 Int              @id @default(autoincrement())
+  ticketId           Int
+  performedById      Int
+  assigneeId         Int
+  actionAt           DateTime
+  description        String           @db.VarChar(2000)
+  result             String           @db.VarChar(2000)
+  followUpRequired   Boolean
+  followUpNote       String           @db.VarChar(1000)
+  attachmentNotes    String           @db.VarChar(1000)
+  status             ActionStatus     @default(PLANNED)
+  workCycle          Int
+  version            Int              @default(1)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  completedAt        DateTime?
+  cancelledAt        DateTime?
+  cancellationReason String?          @db.VarChar(1000)
+  seedKey            String?          @unique @db.VarChar(80)
+  ticket             Ticket           @relation(fields: [ticketId], references: [id], onDelete: Restrict)
+  performedBy        User             @relation("ActionPerformer", fields: [performedById], references: [id], onDelete: Restrict)
+  assignee           User             @relation("ActionAssignee", fields: [assigneeId], references: [id], onDelete: Restrict)
+  revisions          ActionRevision[]
+
+  @@index([ticketId, createdAt, id])
+  @@index([ticketId, workCycle, status])
+  @@index([assigneeId, status, updatedAt, id])
+}
+
+model ActionRevision {
+  id        Int         @id @default(autoincrement())
+  actionId  Int
+  actorId   Int
+  version   Int
+  event     ActionEvent
+  snapshot  Json
+  createdAt DateTime    @default(now())
+  action    ActionTaken @relation(fields: [actionId], references: [id], onDelete: Restrict)
+  actor     User        @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@unique([actionId, version])
+}
+
+model ActionReceipt {
+  id             Int      @id @default(autoincrement())
+  actorId        Int
+  key            String   @db.Uuid
+  method         String   @db.VarChar(10)
+  path           String   @db.VarChar(200)
+  request        Json
+  responseStatus Int
+  response       Json
+  createdAt      DateTime @default(now())
+  actor          User     @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@unique([actorId, key])
 }

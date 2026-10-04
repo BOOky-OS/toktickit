@@ -3,7 +3,8 @@ import { signIn } from "./helpers";
 
 test("real attachment bytes persist across reload, remain private, and become unavailable after removal", async ({ page, browser }) => {
   await signIn(page, "requester");
-  await expect(page).toHaveURL(/\/my-tickets$/);
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
   await page.getByRole("navigation").getByRole("button", { name: "Create Ticket", exact: true }).click();
   await page.getByLabel("Category *", { exact: true }).selectOption({ label: "E2E Hardware" });
   await page.getByLabel("Related System *", { exact: true }).selectOption({ label: "E2E Laptop" });
@@ -44,7 +45,8 @@ test("real attachment bytes persist across reload, remain private, and become un
   const other = await otherContext.newPage();
   try {
     await signIn(other, "other");
-    await expect(other).toHaveURL(/\/my-tickets$/);
+    await expect(other).toHaveURL(/\/dashboard$/);
+  await other.getByRole('navigation').getByRole('button',{name:'My Tickets',exact:true}).click();
     expect((await other.request.get(`http://localhost:3006/api${ticketPath}`)).status()).toBe(404);
     expect((await other.request.get(url)).status()).toBe(404);
     await other.goto(ticketPath);

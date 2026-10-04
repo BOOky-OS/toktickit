@@ -1,3 +1,4 @@
+import { dashboardFilters } from "./tickets/dashboard-filters.js";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { authRouter } from "./auth/routes.js";
@@ -31,6 +32,8 @@ import { validateCreateTicket } from "./tickets/ticket-validation.js";
 import { listTickets, parseTicketList } from "./tickets/list-tickets.js";
 import { listAssignees, parseQueue, staffQueue } from "./tickets/staff-queue.js";
 import { staffOperations } from "./tickets/staff-operations.js";
+import { dashboardRouter } from "./tickets/staff-dashboard.js";
+import { actionsRouter } from "./tickets/actions.js";
 import { communication } from "./tickets/communication.js";
 import { userManagement } from "./auth/user-management.js";
 
@@ -42,6 +45,7 @@ app.set("case sensitive routing", true);
 app.use("/api", (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
 app.use(cors({ origin: (value, done) => done(null, value === origin()), credentials: true,
   methods: ["GET", "HEAD", "POST", "PATCH", "DELETE", "OPTIONS"],
+  exposedHeaders: ["Idempotency-Replayed"],
   allowedHeaders: ["Content-Type", "X-CSRF-Token", "Idempotency-Key"] }));
 app.use(express.json({ limit: "32kb" }));
 app.use("/api/auth", authRouter);
@@ -53,7 +57,8 @@ app.use("/api", (req, res, next) => {
     if (!["GET", "HEAD", "OPTIONS"].includes(req.method) && !req.is("multipart/form-data") && !req.is("application/json")) {
       return next(new ApiError(415, "UNSUPPORTED_TYPE", "Use application/json."));
     }
-    if (!/^\/(?:(?:staff\/)?tickets|admin\/users)\/?$/.test(req.path) || !["GET", "HEAD"].includes(req.method)) {
+    const paginatedActions = /^\/tickets\/[^/]+\/actions(?:\/[^/]+\/history)?\/?$/.test(req.path);
+    if ((!/^\/(?:(?:staff\/)?tickets|admin\/users)\/?$/.test(req.path) && !paginatedActions) || !["GET", "HEAD"].includes(req.method)) {
       if (Object.keys(req.query).length) return next(invalid());
     }
     next();
@@ -165,14 +170,14 @@ app.get("/api/staff/assignees", async (_req: Request, res: Response) => {
   }
 });
 app.get("/api/tickets", async (req: Request, res: Response) => {
-  if (Object.keys(req.query).some(k => !["search", "categoryId", "relatedSystemId", "requestedPriority", "currentStatus", "sortBy", "sortDir", "page", "pageSize"].includes(k))) { sendError(res, invalid()); return; }
+  if (Object.keys(req.query).some(k => !["search", "categoryId", "relatedSystemId", "requestedPriority", "currentStatus", "sortBy", "sortDir", "page", "pageSize", "statusGroup", "updatedSince", "updatedBefore", "resolvedSince", "resolvedBefore"].includes(k) || typeof req.query[k] !== "string")) { sendError(res, invalid()); return; }
   const parsed = parseTicketList({ ...req.query, requesterId: String(res.locals.actor.user.id) });
   if (!parsed.ok) {
     res.status(400).json({ error: "Validation failed", code: "VALIDATION_ERROR", fieldErrors: parsed.fieldErrors });
     return;
   }
   try {
-    const result = await listTickets(getPrisma(), parsed.value);
+    const result = await listTickets(getPrisma(), { ...parsed.value, dashboardWhere: dashboardFilters(req.query, res.locals.actor.user.id) });
     if (result.kind === "validation") {
       res.status(400).json({
         error: "Validation failed",
@@ -366,6 +371,8 @@ app.delete("/api/attachments/:attachmentId", async (req: Request, res: Response)
 
 app.use("/api", staffOperations);
 app.use("/api", communication);
+app.use("/api", actionsRouter);
+app.use("/api", dashboardRouter);
 app.use("/api", userManagement);
 app.use((_req, res) => { res.status(404).json({ error: "Resource is unavailable.", code: "NOT_FOUND" }); });
 
