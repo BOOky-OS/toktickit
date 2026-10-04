@@ -178,7 +178,7 @@ The following captures were refreshed by the passing real Lab 3 browser suite on
 
 ![Requester creation - main 6d2b37d](../../artifacts/lab-03/screenshots/real/requester-create-tablet.png)
 
-![Requester Ticket Detail and communication - main 6d2b37d](../../artifacts/lab-03/screenshots/real/requester-detail-region.png)
+![Requester Ticket description - main 6d2b37d](../../artifacts/lab-03/screenshots/real/requester-detail-region.png)
 
 ![Staff operations - main 6d2b37d](../../artifacts/lab-03/screenshots/real/staff-detail-region.png)
 
