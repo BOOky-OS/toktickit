@@ -39,7 +39,7 @@ Browser configs ran sequentially to avoid sharing their service ports. The Lab 4
 - [x] #63 Issue closed; Issue and PR Project items Done.
 - [x] #64 scope/AC read; branch created from updated staging; status Started.
 - [ ] Student supplies/confirms personal reflection.
-- [ ] Actual reciprocal Lab 4 review links/account/replies verified.
+- [x] Actual reciprocal Lab 4 review links/account/replies verified on 2026-10-04: Atip-Infa/toktickit PRs #61-#70, reviewer/merger zerotwobook; exact comments, responses and commits in reviewer.md.
 - [ ] Student inspects the documents/report/review records and confirms corrections are complete.
 - [ ] Documentation PR is then opened into staging with full sidebar metadata; Atip-Infa reviews and merges it.
 - [ ] Completed pre-release package is presented for the separate explicit pre-main question in skill.md.
@@ -55,5 +55,5 @@ No ready-for-peer-review or approval comment should be posted for #64 yet. Exist
 ```text
 PR #70 is merged into lab4-staging at e484d28. Issue #63 is closed and both Project items are Done.
 
-Issue #64 is in progress. The documentation and report draft are being prepared for student corrections before peer review. Personal reflection, reciprocal-review evidence and final-main release evidence are still pending.
+Issue #64 is in progress. The documentation and report draft are being prepared for student corrections before peer review. Reciprocal reviews for partner PRs #61-#70 are recorded. Personal reflection and final-main release evidence are still pending.
 ```

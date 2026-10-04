@@ -2,7 +2,7 @@
 
 Supapanya Yathip | 67070503443 | BOOky-OS
 
-Prepared 2026-09-30. Integration baseline: e484d28. This document is for student corrections before peer handoff. It is not ready for submission: reflection, reciprocal review, release/main test output and final Project evidence remain pending.
+Prepared 2026-09-30; reciprocal-review record updated 2026-10-04. Integration baseline: e484d28. This document is for student corrections before peer handoff. It is not ready for submission: reflection, release/main test output and final Project evidence remain pending.
 
 ## Answer Part 1
 
@@ -30,9 +30,13 @@ artifacts/lab-04/           ignored screenshots
 output/pdf/                ignored generated report
 ```
 
+{{excerpt:reviewer.md:## Reciprocal reviews:### Reciprocal review comments and partner responses}}
+
+The [complete reciprocal review record](reviewer.md#reciprocal-review-comments-and-partner-responses) contains all ten exact review comments, partner replies before/after merge, review/comment permalinks, approved SHAs and merge SHAs.
+
 ### Required final updates
 
-Add the verified release PR and main merge SHA, final all-Done board evidence and reciprocal-review record after the real events occur. Existing PR comments/replies are linked in reviewer.md and must not be replaced by example approvals.
+Add the verified release PR and main merge SHA, and final all-Done board evidence after the real release events occur. Reciprocal-review evidence is now recorded for all ten partner PRs. Existing PR comments/replies are linked in reviewer.md and must not be replaced by example approvals.
 
 ## Answer Part 2
 

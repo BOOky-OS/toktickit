@@ -40,3 +40,7 @@ UI-02 uses `client/tests/lab-04/TicketWorkflow.test.tsx` plus prior StaffTicketD
 The first combined Lab 4 browser run passed 10 and failed 2 login checks after repeated use of one Staff account reached its per-account login budget. The setup now creates separate Staff accounts for the three workflow viewport cases; application rate limiting is unchanged. The final combined result is recorded below.
 
 Final combined Lab 4 browser run: `npm run test:e2e:lab4` passed all 12 tests in 1.5m (`output/lab4-workflow-browser-final.txt`). Regenerated confirmation screenshots were visually inspected again at all three viewports. `git diff --check` passed before commit. Runtime code was unchanged after the passing full server/client/build checks; subsequent changes corrected browser fixtures and documentation.
+
+## Documentation follow-up, 2026-10-04
+
+The outstanding-work list above describes the Issue #60 checkpoint. Reciprocal Lab 4 review evidence has since been supplied and verified for all ten partner PRs #61-#70 in [reviewer.md](reviewer.md#reciprocal-reviews). Current release/document gates are tracked in [release.md](release.md); the partner staging merges do not constitute our final-main release.
