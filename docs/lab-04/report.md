@@ -8,7 +8,7 @@ Prepared 2026-09-30; review record updated 2026-10-04 after documentation PR #71
 
 ### Git use and engineering workflow
 
-The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged PR #57 and #65-#71. The contract was merged before the implementation PRs. #64 is the only active work package. Documentation PR #71 is approved and merged; release preparation remains active. the final all-Done Project and main release history cannot yet be supplied.
+The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged PR #57 and #65-#71. The contract was merged before the implementation PRs. #64 is the only active work package. Documentation PR #71 is approved and merged; release preparation remains active. The final all-Done Project and main release history cannot yet be supplied.
 
 [Repository](https://github.com/BOOky-OS/toktickit) | [Project](https://github.com/users/BOOky-OS/projects/2) | [Staging history](https://github.com/BOOky-OS/toktickit/commits/lab4-staging/) | [Full reviewer record](reviewer.md)
 
