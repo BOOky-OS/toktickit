@@ -30,9 +30,7 @@ Repository: [BOOky-OS/toktickit](https://github.com/BOOky-OS/toktickit). The fir
 | [#61](https://github.com/BOOky-OS/toktickit/issues/61) | [#68 - Staff Dashboard](https://github.com/BOOky-OS/toktickit/pull/68) | `feature/61-staff-dashboard` | Atip-Infa | Approved and merged |
 | [#62](https://github.com/BOOky-OS/toktickit/issues/62) | [#69 - Requester Dashboard](https://github.com/BOOky-OS/toktickit/pull/69) | `feature/62-requester-dashboard` | Atip-Infa | Approved and merged |
 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | [#70 - Regression and UI hardening](https://github.com/BOOky-OS/toktickit/pull/70) | `feature/63-final-hardening` | Atip-Infa | Approved and merged |
-
 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | [#71 - Documentation](https://github.com/BOOky-OS/toktickit/pull/71) | `docs/64-lab4-release` | Atip-Infa | Approved and merged; release issue remains open |
-
 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | [#72 - Main release](https://github.com/BOOky-OS/toktickit/pull/72) | `docs/64-lab4-final-release` | Atip-Infa | Approved and merged into main; evidence issue remains open |
 
 ## Review comments I received and how I responded
@@ -393,6 +391,7 @@ Some post-merge comments reported Issue/Project updates before those updates act
 - **Approved head:** [`530eead`](https://github.com/BOOky-OS/toktickit/commit/530eeadd7c7eff43b69320039768a53530dc337e); matches the final release head.
 - **Main merge:** [`6d2b37d`](https://github.com/BOOky-OS/toktickit/commit/6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3), merged by Atip-Infa on 2026-10-04 15:20:09 UTC.
 - **Review completeness:** Review/comment pagination complete; no inline threads. Actual approval and post-merge author replies exist.
+- **Review request:** [My ready-for-release-review comment](https://github.com/BOOky-OS/toktickit/pull/72#issuecomment-5981469591).
 - **Follow-up:** Main checks passed: client 116 (19 files), server 574 (40 files), default browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation passed. GitHub auto-closed #64 on release merge; the assistant reopened it for the remaining evidence. PR #72 is Done; #64 is Started until final documentation and submission evidence are complete.
 
 ---
@@ -751,4 +750,5 @@ The following comments preserve what was posted at review time. This documentati
 - **Completed reviews:** Eight staging PRs and release PR #72 were approved and merged by Atip-Infa. Ten partner PRs were reviewed and merged by zerotwobook. Approved heads match their final PR heads.
 - **Main verification:** Assistant-run checks passed on main `6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3` on 2026-10-04: client 116 (19 files), server 574 (40 files), default browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation passed. See [release.md](release.md).
 - **Current task:** Issue #64 remains open for the reviewed documentation follow-up, final PDF and final all-Done Project evidence.
-- **Next step:** Student inspects the updated post-release documents/PDF, answers the required documentation gate for the follow-up PR into main, and Atip-Infa reviews/merges that documentation update. Then verify main has no relevant code change and complete the submission evidence.
+- **Review-record update:** The student explicitly authorized adding the verified reviewer comments and links directly to main. This documentation correction does not constitute a new peer approval.
+- **Next step:** The remaining post-release report/evidence and preview shutdown correction are on docs/64-lab4-main-evidence. Complete the student gate and peer review for that follow-up, then verify the integrated main and complete final PDF/Project submission evidence.
