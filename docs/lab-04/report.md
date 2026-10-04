@@ -38,7 +38,7 @@ The [complete reciprocal review record](reviewer.md#reciprocal-review-comments-a
 
 ### Required final updates
 
-Release PR #72 and main merge SHA 6d2b37d are verified. Add the final all-Done board evidence after the documentation follow-up and Issue #64 completion. Reciprocal-review evidence is now recorded for all ten partner PRs. Existing PR comments/replies are linked in reviewer.md and must not be replaced by example approvals.
+Release PR #72 and main merge SHA 6d2b37d are verified. The student accepted the follow-up document gate; [PR #73](https://github.com/BOOky-OS/toktickit/pull/73) is open with Atip-Infa requested and both Project items PR Review. Add the final all-Done board evidence after that peer merge and Issue #64 completion. Reciprocal-review evidence is now recorded for all ten partner PRs. Existing PR comments/replies are linked in reviewer.md and must not be replaced by example approvals.
 
 ## Answer Part 2
 

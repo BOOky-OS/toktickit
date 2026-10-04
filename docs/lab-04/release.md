@@ -2,7 +2,7 @@
 
 ## Current state - 2026-10-04
 
-Atip-Infa approved release head `530eead` and merged PR #72 into main at `6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3` on 2026-10-04. All required runtime checks below passed on that actual main commit. PR #72 is Done. GitHub auto-closed #64 on merge; the assistant reopened it and set it Started to finish documentation/submission evidence. This follow-up uses `docs/64-lab4-main-evidence` from verified main. The student's original pre-main confirmation is recorded below; a documentation follow-up still requires its own reviewed PR and student gate.
+Atip-Infa approved release head `530eead` and merged PR #72 into main at `6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3` on 2026-10-04. All required runtime checks below passed on that actual main commit. PR #72 is Done. GitHub auto-closed #64 on merge; the assistant reopened it and set it Started to finish documentation/submission evidence. This follow-up uses `docs/64-lab4-main-evidence` from verified main. The student accepted the separate follow-up pre-main gate with "เรียบร้อยแล้วพร้อมแล้ว" on 2026-10-04. [PR #73](https://github.com/BOOky-OS/toktickit/pull/73) is open into main with Atip-Infa requested; #64 and #73 are PR Review. Peer approval/merge and final submission evidence remain pending.
 
 ## Reviewable package
 
@@ -65,7 +65,8 @@ These checks verify main application behavior; they do not claim physical-device
 - [x] Release [PR #72](https://github.com/BOOky-OS/toktickit/pull/72) opened into main with Atip-Infa requested, BOOky-OS assigned, enhancement/documentation labels, Lab 4 milestone, real Development link to #64, and both Project items in PR Review.
 - [x] Atip-Infa approved current head 530eead and merged release PR #72 into main at 6d2b37d; PR item Done verified.
 - [x] Required checks passed on actual main SHA 6d2b37d on 2026-10-04; complete logs, review and merge evidence recorded.
-- [ ] Post-release documentation follow-up is student-accepted and peer-reviewed/merged into main.
+- [x] Student accepted the follow-up pre-main gate on 2026-10-04; [PR #73](https://github.com/BOOky-OS/toktickit/pull/73) opened with complete sidebar metadata and both Project items PR Review.
+- [ ] Atip-Infa approves and merges the post-release evidence/preview correction into main.
 - [ ] Final PDF is regenerated, every page inspected, links checked and final Project evidence captured.
 - [ ] #64 is closed and Done only after its release/evidence AC are complete.
 
