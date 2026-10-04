@@ -1,14 +1,14 @@
 # Lab 4 release preparation
 
-## Current state - 2026-09-30
+## Current state - 2026-10-04
 
-Issue #64 is Started on `docs/64-lab4-release`, based on the peer-merged staging commit `e484d28285c7f97d8a54f07e221bdf425659df24`. PR #70 approved head `026b00e` and tested UI code `a36b6ac` have identical application/test files to this staging commit. This is a pre-release package for student corrections. No Lab 4 release to main is claimed.
+Issue #64 is Started on `docs/64-lab4-release`, based on the peer-merged staging commit `e484d28285c7f97d8a54f07e221bdf425659df24`. PR #70 approved head `026b00e` and tested UI code `a36b6ac` have identical application/test files to this staging commit. The student accepted the edited documents and reflection on 2026-10-04 and authorized peer handoff into staging. No Lab 4 release to main is claimed.
 
 ## Reviewable package
 
 - [Report source: Answer Part 1 through Answer Part 9](report.md).
 - [Actual peer reviews and replies](reviewer.md).
-- [AI use and reflection](ai-use.md): ten real paraphrased prompts; personal reflection awaits the student.
+- [AI use and reflection](ai-use.md): eight real paraphrased prompts; personal reflection accepted by the student on 2026-10-04.
 - [Contract](specification.md), [API](api-spec.md), [UI/checklist](ui-spec.md), [test traceability](tests.md).
 - [Migration, seed and recovery](migration.md), [UI audit](ui-audit.md), [preview instructions](ui-review.md), [README](../../README.md).
 - Generated report: `output/pdf/toktickit-lab4-review.pdf`. It is a review draft, not a final submission. Output, screenshots and temporary files remain ignored.
@@ -38,9 +38,9 @@ Browser configs ran sequentially to avoid sharing their service ports. The Lab 4
 - [x] #63 student UI approval, peer approval and merge verified.
 - [x] #63 Issue closed; Issue and PR Project items Done.
 - [x] #64 scope/AC read; branch created from updated staging; status Started.
-- [ ] Student supplies/confirms personal reflection.
+- [x] Student confirmed the edited reflection on 2026-10-04.
 - [x] Actual reciprocal Lab 4 review links/account/replies verified on 2026-10-04: Atip-Infa/toktickit PRs #61-#70, reviewer/merger zerotwobook; exact comments, responses and commits in reviewer.md.
-- [ ] Student inspects the documents/report/review records and confirms corrections are complete.
+- [x] Student accepted document/review-record corrections and authorized continuation on 2026-10-04.
 - [ ] Documentation PR is then opened into staging with full sidebar metadata; Atip-Infa reviews and merges it.
 - [ ] Completed pre-release package is presented for the separate explicit pre-main question in skill.md.
 - [ ] Atip-Infa reviews and merges the release PR into main.
@@ -48,12 +48,12 @@ Browser configs ran sequentially to avoid sharing their service ports. The Lab 4
 - [ ] Final PDF is regenerated, every page inspected, links checked and final Project evidence captured.
 - [ ] #64 is closed and Done only after its release/evidence AC are complete.
 
-No ready-for-peer-review or approval comment should be posted for #64 yet. Existing #70 author replies already exist, so duplicate post-merge comments are unnecessary.
+The student document gate is satisfied; the documentation increment can now be handed to Atip-Infa for review into staging. Existing #70 author replies already exist, so duplicate post-merge comments are unnecessary.
 
 ## Student-review handoff comment
 
 ```text
 PR #70 is merged into lab4-staging at e484d28. Issue #63 is closed and both Project items are Done.
 
-Issue #64 is in progress. The documentation and report draft are being prepared for student corrections before peer review. Reciprocal reviews for partner PRs #61-#70 are recorded. Personal reflection and final-main release evidence are still pending.
+Issue #64 is in progress. The student accepted the documentation edits; the staging documentation increment is ready for peer review. Reciprocal reviews for partner PRs #61-#70 are recorded. Final-main release evidence is still pending.
 ```

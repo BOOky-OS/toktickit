@@ -2,19 +2,21 @@
 
 Supapanya Yathip | 67070503443 | BOOky-OS
 
-Prepared 2026-09-30; reciprocal-review record updated 2026-10-04. Integration baseline: e484d28. This document is for student corrections before peer handoff. It is not ready for submission: reflection, release/main test output and final Project evidence remain pending.
+Prepared 2026-09-30; reciprocal-review record updated 2026-10-04. Integration baseline: e484d28. The student accepted the edited documents and reflection on 2026-10-04. This pre-release report is for peer review; release/main test output and final Project evidence remain pending.
 
 ## Answer Part 1
 
 ### Git use and engineering workflow
 
-The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged PR #57 and #65-#70. The contract was merged before the implementation PRs. #64 is the only active work package and remains Started; the final all-Done Project and main release history cannot yet be supplied.
+The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged PR #57 and #65-#70. The contract was merged before the implementation PRs. #64 is the only active work package and is proceeding to documentation peer review; the final all-Done Project and main release history cannot yet be supplied.
 
 [Repository](https://github.com/BOOky-OS/toktickit) | [Project](https://github.com/users/BOOky-OS/projects/2) | [Staging history](https://github.com/BOOky-OS/toktickit/commits/lab4-staging/) | [Full reviewer record](reviewer.md)
 
-{{excerpt:reviewer.md:Author:## PR #57 evidence}}
+{{excerpt:reviewer.md:**Author:## Contents}}
 
-{{excerpt:reviewer.md:## PR #70 verified review and merge:END}}
+{{excerpt:reviewer.md:## Pull Requests I authored:## Review comments I received and how I responded}}
+
+{{excerpt:reviewer.md:### PR #70 - Regression and UI hardening:## Reciprocal reviews}}
 
 README includes application/test setup, the disposable preview, migration/recovery and release links. `.gitignore` excludes dependencies, environment secrets, build files, screenshots, output and test artifacts. The PDF remains local for submission rather than being committed.
 
@@ -74,7 +76,7 @@ Final-main output is pending release. The final submission must embed the comple
 
 [Complete AI-use record](ai-use.md). The following prompt table is rendered from the source. Critical-thinking examples include detecting incomplete Project metadata, rejecting an unnecessary validator, fixing keyboard focus and filter preservation, and requiring student UI/document review gates.
 
-{{excerpt:ai-use.md:LLM/agent used:## Critical-thinking}}
+{{excerpt:ai-use.md:LLM/agent used:## My Reflection}}
 
 {{excerpt:ai-use.md:## My Reflection:END}}
 
