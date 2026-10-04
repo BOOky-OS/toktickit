@@ -1,44 +1,36 @@
 # Lab 4 - AI Use and Reflection
 
-LLM/agent used: OpenAI Codex (GPT-6). Status: contract, foundation, Actions UI and Issue #60 workflow record, 2026-09-26. The foundation and UI were peer-approved/merged in PR #65/#66; workflow was peer-approved/merged in PR #67; #61 Staff/Admin dashboard peer review remains pending.
+LLM/agent used: **OpenAI Codex (GPT-6)**
 
-AI read the assignment and existing project, explained the workflow, drafted the four contracts, inspected GitHub metadata and prepared the Issues/PR. The student selected eight work packages, confirmed Atip-Infa and requested corrections when comments and Project visibility were incomplete. The assistant then implemented the Actions Taken database/API foundation, isolated tests, demo seed and recovery checks. The assistant continued with Actions Taken forms, draft/retry handling, Admin controls and component/real-browser tests. Actual check results are recorded in tests.md; they are assistant-run, not student-run.
+I used AI to summarize the Lab 4 instructions, explain the required steps, troubleshoot technical problems, and help write and fix code. The lab continued the application from earlier labs, so I asked AI to read the existing project and the workflow instructions before starting new work.
 
-## Representative prompts
+For document work, AI helped summarize the requirements for Actions Taken, Ticket status rules and role-based dashboards. It also helped prepare the specification, API documentation, UI documentation and test plan. I asked for explanations of the steps and requested corrections when information was missing or unclear.
 
-These are English paraphrases of actual Thai requests, not verbatim English quotations.
+For technical work, AI helped inspect code, explain errors and investigate problems with Docker, the test database and GitHub metadata. It helped write backend and frontend code, add tests and fix issues found during verification. AI also helped improve the appearance of the application on desktop and mobile, including the dashboards, buttons, status labels, navigation and account pages.
 
-| # | Prompt I used | How AI helped | My decision or use of the answer |
-| --- | --- | --- | --- |
-| 1 | Read the Lab 4 PDF and skill.md before helping me later. | Summarized the assignment and workflow. | Requested reading before implementation. |
-| 2 | Explain the first step in detail. | Explained the engineering contract and repository checks. | Asked for practical steps. |
-| 3 | How many Issues and branches should this lab have? | Proposed eight work packages and staging flow. | Accepted the eight-Issue plan. |
-| 4 | Please do the steps you described. | Drafted specification, API, UI and test-plan files and PR #57. | Authorized the contract work. |
-| 5 | Keep Atip-Infa as reviewer. | Requested the confirmed peer on the PR. | Chose the reviewer. |
-| 6 | Give me complete review comments as required by skill.md. | Supplied stage-specific copy/paste text. | Corrected an incomplete handoff; templates are not actual reviews. |
-| 7 | Why is the PR missing from the Project? | Checked individual membership and collection listings. | Challenged a completion claim based only on PR metadata. |
-| 8 | Check anything else missing and fix it; continue after the usage interruption. | Audited contracts/evidence and completed the eight-Issue backlog. | Requested verification rather than assuming successful API writes prove visible results. |
-| 9 | I deleted the Python validator; do not upload output files. | Removed the optional validator and excluded generated output from Git. | Chose the repository cleanup and corrected unnecessary tooling. |
-| 10 | Continue and read the lab and skill again. | Verified peer merges, completed prerequisite metadata and continued #58/#59/#60/#61/#62 on their own branches with database and UI/browser tests. | Authorized the next implementation step under the existing workflow. |
+My role was to ask for checks, point out problems and request changes before continuing. I reviewed the UI and revised the documents and wording that I wanted to change. The automated test results in [tests.md](tests.md) were produced by the assistant unless stated otherwise. The actual peer reviews and responses are recorded separately in [reviewer.md](reviewer.md).
 
-## Critical-thinking
+## Selected key prompts
 
-The student identified that the PR was not visible in the Project despite the assistant reporting complete metadata. Readback showed individual Project membership but no corresponding entry in the Project-wide collection. Re-adding/repositioning through GraphQL and REST did not prove visibility repaired. A later continuation query returned all #57-#65 cards in the Project collection. The assistant records this API evidence and does not claim a browser visual check or a known cause for the earlier omission.
+These are English paraphrases of my Thai requests, with wording revised for this record.
 
-The branch initially used example number 42, while the real contract Issue was #56. The assistant created docs/56-lab4-contract without deleting the old branch. The handout also leaves action lifecycle and resolution details open; the contract labels those choices as design proposals. Atip-Infa later explicitly approved the contract in PR #57; this is peer approval, not a new instructor requirement.
-
-During #58, a real paginated action-list test failed because the old global query guard rejected page=2. The assistant corrected the guard while retaining unknown/repeated-query rejection and reran the suite. Tests also exercise simultaneous requests and a forced database failure; mocks alone would not prove persistence or atomic rollback. The initial implementation preceded the first new test run, so this record does not claim a strict test-first sequence.
-
-During #59, component tests were drafted before the UI; the first run failed because the component did not yet exist. Real browser keyboard checks then exposed Tab escaping the cancellation dialog. The assistant added focus containment and reran the checks. The student also requested shorter review comments and asked why tests used a separate Docker container; the explanation distinguished the working database from disposable test fixtures.
-
-During #60, new API tests first demonstrated that missing work and old-cycle work were incorrectly accepted for resolution. UI tests first exposed missing gate-specific feedback and dialog focus containment. The assistant then added the guards and reran the checks. Existing regression fixtures were updated to include qualifying completed work while retaining their assertions.
-
-During #61, the assistant compared dashboard metrics with independent database queries, measured real request timings and bounded query count, and tested URL/back navigation in the browser. The student added two explicit review gates for #63 UI and #64 documents/review records before peer handoff; both were saved in skill.md and workflow.md.
-
-During #62, new API tests failed before the endpoint existed, then passed after implementation. Existing regression tests assumed the old role landing pages; their fixtures/navigation were updated to the approved Dashboard destinations while preserving their feature assertions. A browser test initially navigated away before Logout completed; the test now waits for the real Login screen before switching identity. Broader regression also exposed a real Staff Queue bug: changing page size discarded unapplied filters. The assistant fixed the component and reran the unchanged behavioral assertions. Generated evidence stays ignored, and the existing isolated test container was reused.
-
-During #63 preparation, the assistant repaired historical browser setup/fixtures without removing their behavioral assertions, separated suite trace directories after a concurrent-run artifact collision, and added a failing accessibility test showing metric values were missing from Staff link names. The link names were corrected and the test passed. A disposable preview was prepared for the student's requested UI correction gate; no peer handoff or student approval is inferred.
+| # | Prompt I used | How I used the answer |
+| --- | --- | --- |
+| 1 | Read the Lab 4 PDF and skill.md before helping me later. | I used the summary to see the main requirements, including Actions Taken, Ticket workflow, dashboards and regression testing. I asked for explanations before starting so the work would follow the lab instructions and the project workflow. |
+| 2 | Explain the first step in detail. | I used the explanation to follow the first step and asked for practical details. AI helped explain why the specification and test plan needed to be prepared before continuing with implementation. |
+| 3 | Could you review the code before we continue? | I requested a code check before moving to the next task. I used the reported findings to decide what needed correction and asked AI to continue with the fixes before proceeding. |
+| 4 | Could you check the code and see whether there are any problems right now? | I used the findings to request fixes for problems in the current implementation. AI explained the affected behavior and reported the results after changing the code and rerunning the relevant checks. |
+| 5 | Why is the PR missing from the Project? | I asked AI to check the Project again because the PR was not visible. The follow-up found a difference between the individual PR metadata and the Project listing. A later check confirmed that the cards appeared. |
+| 6 | Check anything else missing and fix it; continue after the usage interruption. | I used the findings to request corrections to missing work, documentation and GitHub metadata. After an interruption, I asked AI to read the lab and workflow instructions again and check the existing progress before continuing. |
+| 7 | Could you help check the Docker code that is causing problems? | I asked about the Docker setup and why tests needed a separate container. AI explained how the test database is kept separate from the working database. Later, it found that the existing test container was stopped, restarted it and reran the tests. |
+| 8 | Check and improve the UI on desktop/mobile; let me correct the UI and final documents before peer review. | I inspected the UI and requested changes to status labels, buttons, navigation, dashboards and account pages. I also asked for checks at desktop and mobile sizes. I approved the UI before peer review and asked to review the final documents separately. |
 
 ## My Reflection
 
-Pending student confirmation. The conversation establishes use of AI for assignment explanations, work planning, specification drafting and workflow corrections. The student has not yet supplied a personal reflection on what they learned. The coding agent has now implemented and tested #58 through #62; the student's personal coding-stage reflection is still pending; do not reuse a prior lab's experience or describe planned tests as executed.
+For specification work, AI helped turn the long lab instructions into a summary and smaller steps to follow. It helped organize the required behavior into the specification, API, UI and test documents. I could ask for more explanation when a step was unclear and request changes before moving on to implementation.
+
+For coding work, AI helped write and fix both backend and frontend code. It also helped investigate technical problems, explain the Docker and database setup, and prepare tests for the new features and earlier functionality. When a problem was found, AI helped explain the cause, make a correction and report the results of the next check.
+
+AI was also useful when improving the UI. I could point to a page or control that I wanted to change, such as a status label, button or dashboard, and ask for a clearer layout. I requested several rounds of changes for desktop and mobile before accepting the UI.
+
+Overall, I used AI as support for understanding documents, solving technical problems and developing the application. I still asked for checks, questioned incomplete results and requested corrections when the work did not match what I wanted. The GitHub Project issue and the UI revisions are examples of why my own review remained necessary alongside AI assistance and peer review.
