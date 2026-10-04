@@ -2,7 +2,7 @@
 
 ## Current state - 2026-10-04
 
-Issue #64 is open and Started for release preparation on `docs/64-lab4-final-release`, based on staging `e2f997942f8d3dc55a11ecede0c036021f78b8fd`. Atip-Infa approved documentation head `b860122` and merged PR #71 on 2026-10-04. The PR Project item is Done. Application/test code is unchanged from `e484d28`; staging suites were last run on 2026-09-30. The student accepted the edited documents and reflection before the documentation peer handoff. No Lab 4 release to main is claimed.
+Issue #64 is open and in PR Review for release on `docs/64-lab4-final-release`, based on staging `e2f997942f8d3dc55a11ecede0c036021f78b8fd`. Atip-Infa approved documentation head `b860122` and merged PR #71 on 2026-10-04. The PR Project item is Done. Application/test code is unchanged from `e484d28`; staging suites were last run on 2026-09-30. The student accepted the edited documents and reflection before the documentation peer handoff. No Lab 4 release to main is claimed.
 
 ## Reviewable package
 
@@ -45,7 +45,8 @@ Browser configs ran sequentially to avoid sharing their service ports. The Lab 4
 - [x] Atip-Infa approved current documentation head b860122 and merged PR #71 at e2f9979 on 2026-10-04; PR item Done verified.
 - [x] Updated pre-release documents and report prepared for student inspection after documentation merge.
 - [x] Student answered the exact pre-main question on 2026-10-04: "ไม่มีแล้วไปต่อได้เลย" (no further document changes; proceed).
-- [ ] Atip-Infa reviews and merges the release PR into main.
+- [x] Release [PR #72](https://github.com/BOOky-OS/toktickit/pull/72) opened into main with Atip-Infa requested, BOOky-OS assigned, enhancement/documentation labels, Lab 4 milestone, real Development link to #64, and both Project items in PR Review.
+- [ ] Atip-Infa reviews and merges release PR #72 into main.
 - [ ] Required checks execute on the actual final-main SHA; final logs and review/merge evidence replace draft status.
 - [ ] Final PDF is regenerated, every page inspected, links checked and final Project evidence captured.
 - [ ] #64 is closed and Done only after its release/evidence AC are complete.
@@ -61,3 +62,7 @@ PR #71 is merged into lab4-staging at e2f9979, with approval covering b860122. I
 The assistant asked: "เอกสารเสร็จครบแล้วหรือยัง มีอะไรต้องการแก้ก่อนขึ้น main ไหม?" The student answered: "ไม่มีแล้วไปต่อได้เลย" on 2026-10-04. This satisfies the separate release gate and authorizes opening the release PR into main. Peer approval/merge, actual final-main checks and final submission evidence remain pending.
 
 GitHub Development links are closing references. Before merging the release PR, turn off Settings > General > Issues > Auto-close issues with merged linked pull requests so #64 remains open for final-main verification. The browser automation runtime failed while checking this setting; no setting change is claimed. The reviewer should verify the setting before merging. Close #64 manually only after the remaining acceptance criteria pass.
+
+## Release peer handoff
+
+[PR #72](https://github.com/BOOky-OS/toktickit/pull/72) is open from `docs/64-lab4-final-release` into `main`. It includes all peer-merged Lab 4 staging increments and the verified documentation follow-up. The separate student gate is accepted. Approval and merge are pending; no final-main results are claimed. Review the actual current head and verify the auto-close setting before merging, then run final-main checks and complete the report/Project evidence.

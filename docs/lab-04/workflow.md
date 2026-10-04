@@ -80,3 +80,7 @@ The report is refreshed with documentation merge evidence. Application code is u
 ## Pre-main student confirmation accepted, 2026-10-04
 
 After being shown the updated reviewable documents and PDF, the student answered the exact required question, "เอกสารเสร็จครบแล้วหรือยัง มีอะไรต้องการแก้ก่อนขึ้น main ไหม?", with "ไม่มีแล้วไปต่อได้เลย". The release gate is satisfied. The release branch contains the verified staging history and documentation follow-up; opening its PR into main is authorized. Atip-Infa must review and merge. Issue #64 remains open until actual final-main verification and submission evidence are complete. See release.md for the repository auto-close setting that must be checked before merge.
+
+## Release PR opened, 2026-10-04
+
+Opened [PR #72](https://github.com/BOOky-OS/toktickit/pull/72) from `docs/64-lab4-final-release` into main after the student answered the exact pre-main question. The branch contains the peer-integrated staging history plus documentation evidence follow-up. Reviewer Atip-Infa, author assignment, enhancement/documentation labels, Lab 4 milestone, Project membership and actual Development link to #64 were verified. Issue #64 and PR #72 are in PR Review. Approval/merge and final-main checks are pending. The user must check the repository auto-close setting before merging because browser automation failed to start; no change to that setting is claimed.
