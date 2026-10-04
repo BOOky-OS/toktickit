@@ -41,7 +41,8 @@ Browser configs ran sequentially to avoid sharing their service ports. The Lab 4
 - [x] Student confirmed the edited reflection on 2026-10-04.
 - [x] Actual reciprocal Lab 4 review links/account/replies verified on 2026-10-04: Atip-Infa/toktickit PRs #61-#70, reviewer/merger zerotwobook; exact comments, responses and commits in reviewer.md.
 - [x] Student accepted document/review-record corrections and authorized continuation on 2026-10-04.
-- [ ] Documentation PR is then opened into staging with full sidebar metadata; Atip-Infa reviews and merges it.
+- [x] Documentation [PR #71](https://github.com/BOOky-OS/toktickit/pull/71) opened into lab4-staging with Atip-Infa requested, author assigned, documentation label, Lab 4 milestone, Project PR Review status and real Development link to #64.
+- [ ] Atip-Infa reviews and merges documentation PR #71.
 - [ ] Completed pre-release package is presented for the separate explicit pre-main question in skill.md.
 - [ ] Atip-Infa reviews and merges the release PR into main.
 - [ ] Required checks execute on the actual final-main SHA; final logs and review/merge evidence replace draft status.
