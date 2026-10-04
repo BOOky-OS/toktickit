@@ -1,22 +1,22 @@
-# TokTickIT - Lab 4 review draft
+# TokTickIT - Lab 4 post-release evidence review
 
 Supapanya Yathip | 67070503443 | BOOky-OS
 
-Prepared 2026-09-30; review record updated 2026-10-04 after documentation PR #71. Documentation integration baseline: e2f9979; application/test baseline: e484d28. The student accepted the edited documents and reflection on 2026-10-04. The student also approved proceeding to main on 2026-10-04 with no further document changes. This remains a pre-release report; release/main test output and final Project evidence remain pending.
+Updated 2026-10-04 after release PR #72. Main verification commit: `6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3`. Atip-Infa approved and merged the release; fresh assistant-run main checks passed. The student-confirmed AI reflection and pre-main decision are recorded. This document is the post-release evidence review draft; the documentation follow-up and final all-Done Project evidence remain pending.
 
 ## Answer Part 1
 
 ### Git use and engineering workflow
 
-The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged PR #57 and #65-#71. The contract was merged before the implementation PRs. #64 is the only active work package. Documentation PR #71 is approved and merged; [release PR #72](https://github.com/BOOky-OS/toktickit/pull/72) is open into main for Atip-Infa review. The final all-Done Project and main release history cannot yet be supplied.
+The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged eight staging PRs, then approved release PR #72 into main. The contract was merged before implementation. Issue #64 remains open for the reviewed evidence follow-up and final submission audit. Main commit history is linked below; the final all-Done Project is pending those completion gates.
 
-[Repository](https://github.com/BOOky-OS/toktickit) | [Project](https://github.com/users/BOOky-OS/projects/2) | [Staging history](https://github.com/BOOky-OS/toktickit/commits/lab4-staging/) | [Full reviewer record](reviewer.md)
+[Repository](https://github.com/BOOky-OS/toktickit) | [Project](https://github.com/users/BOOky-OS/projects/2) | [Staging history](https://github.com/BOOky-OS/toktickit/commits/lab4-staging/) | [Main history](https://github.com/BOOky-OS/toktickit/commits/main/) | [Full reviewer record](reviewer.md)
 
 {{excerpt:reviewer.md:**Author:## Contents}}
 
 {{excerpt:reviewer.md:## Pull Requests I authored:## Review comments I received and how I responded}}
 
-{{excerpt:reviewer.md:### PR #71 - Documentation:## Reciprocal reviews}}
+{{excerpt:reviewer.md:### PR #72 - Main release:## Reciprocal reviews}}
 
 README includes application/test setup, the disposable preview, migration/recovery and release links. `.gitignore` excludes dependencies, environment secrets, build files, screenshots, output and test artifacts. The PDF remains local for submission rather than being committed.
 
@@ -38,7 +38,7 @@ The [complete reciprocal review record](reviewer.md#reciprocal-review-comments-a
 
 ### Required final updates
 
-Add the verified release PR and main merge SHA, and final all-Done board evidence after the real release events occur. Reciprocal-review evidence is now recorded for all ten partner PRs. Existing PR comments/replies are linked in reviewer.md and must not be replaced by example approvals.
+Release PR #72 and main merge SHA 6d2b37d are verified. Add the final all-Done board evidence after the documentation follow-up and Issue #64 completion. Reciprocal-review evidence is now recorded for all ten partner PRs. Existing PR comments/replies are linked in reviewer.md and must not be replaced by example approvals.
 
 ## Answer Part 2
 
@@ -50,7 +50,9 @@ Rendered excerpts below show numbered requirements, workflow and completion crit
 
 {{excerpt:specification.md:## 4. Functional Requirements:## 5. Business Rules}}
 
-{{excerpt:specification.md:### Ticket workflow:### Concurrency, migration and safe failure}}
+{{excerpt:specification.md:## 5. Business Rules:## 6. UI Specification Summary}}
+
+{{excerpt:specification.md:## 7. Data Changes:## 8. API Contract}}
 
 {{excerpt:specification.md:## 9. Acceptance Criteria:## 11. Assumptions and Decisions}}
 
@@ -60,7 +62,7 @@ Rendered excerpts below show numbered requirements, workflow and completion crit
 
 [Full test plan](tests.md) | [Hardening evidence](hardening-evidence.md) | [Current release evidence](release.md). All counts are assistant-run unless explicitly attributed otherwise. Peer approval reviewed the reported results; the peer did not independently rerun the suites.
 
-{{excerpt:tests.md:## 3.:## 4. Existing regression}}
+{{excerpt:tests.md:## 2. Planned automated tests:## 4. Existing regression}}
 
 Representative real paths include `server/tests/lab-04/actions-taken.api.test.ts`, `ticket-workflow.api.test.ts`, `requester-dashboard.api.test.ts` and `staff-dashboard.api.test.ts`; `client/tests/lab-04/ActionsTaken.test.tsx`, `TicketWorkflow.test.tsx`, `StaffDashboard.test.tsx` and `RequesterDashboard.test.tsx`; and `e2e/lab-04/actions-taken-flow.spec.ts`, `ticket-resolution.spec.ts`, `dashboards.spec.ts` and `requester-dashboard.spec.ts`.
 
@@ -68,7 +70,31 @@ The linked plan lists each Test ID, expected outcome, file and AC. Real database
 
 {{excerpt:release.md:## Evidence register:## Completion gates}}
 
-Final-main output is pending release. The final submission must embed the complete passing main test output, actual SHA/environment and final AC statuses here; staging evidence cannot substitute for it.
+The main runtime suites passed on 6d2b37d. A separate preview shutdown smoke check then exposed a URL-restoration bug; its correction and passing real cleanup check are on the evidence branch awaiting review (see release.md). The complete passing main output is rendered below. Every log records the actual tested SHA, exact command, UTC time and exit code. Staging results remain separately labelled historical.
+
+### npm test
+
+{{log:release-main-unit-api.txt}}
+
+### npm run test:e2e
+
+{{log:release-main-browser.txt}}
+
+### npm run test:e2e:lab3
+
+{{log:release-main-browser3.txt}}
+
+### npm run test:e2e:lab4
+
+{{log:release-main-browser4.txt}}
+
+### npm run build
+
+{{log:release-main-build.txt}}
+
+### npm run prisma:validate
+
+{{log:release-main-prisma.txt}}
 
 ## Answer Part 4
 
@@ -88,11 +114,11 @@ Final-main output is pending release. The final submission must embed the comple
 
 Independent database queries exercise counts, mixed ownership, zero cases and date boundaries. Browser scenarios exercise loading, safe failure/retry, forbidden access, refresh/back navigation and responsive cards. My pending actions counts actions; its drill-down lists distinct Tickets, so these counts intentionally differ.
 
-![Staff dashboard - desktop, reviewed UI code a36b6ac](../../artifacts/lab-04/screenshots/ui-review/staff-dashboard-desktop.png)
+![Staff dashboard - desktop, main 6d2b37d](../../artifacts/lab-04/screenshots/staff-dashboard/desktop/populated.png)
 
-![Staff dashboard - tablet, Chromium viewport](../../artifacts/lab-04/screenshots/ui-review/staff-dashboard-tablet.png)
+![Staff dashboard - tablet, main 6d2b37d](../../artifacts/lab-04/screenshots/staff-dashboard/tablet/populated.png)
 
-![Staff dashboard - mobile, Chromium viewport](../../artifacts/lab-04/screenshots/ui-review/staff-dashboard-mobile.png)
+![Staff dashboard - mobile, main 6d2b37d](../../artifacts/lab-04/screenshots/staff-dashboard/mobile/populated.png)
 
 ## Answer Part 6
 
@@ -102,13 +128,17 @@ Independent database queries exercise counts, mixed ownership, zero cases and da
 
 Staff/Admin can create, edit, start, complete and cancel eligible work. Completion requires its result and required follow-up note. Terminal action revisions are retained. Requesters see permitted data read-only; inactive or invalid assignees are rejected by the backend. Validation, stale updates, retry safety and cancellation keyboard focus are covered by component/API/real-browser tests.
 
-The following screenshots were refreshed by the passing real Lab 4 browser suite on 2026-09-30 at staging code e484d28. The list crop shows one action; multiple-action scenarios are covered by the linked tests. Final-main screenshots must be refreshed after release.
+The following screenshots were refreshed by the passing real Lab 4 browser suite on 2026-10-04 at main 6d2b37d. The list crop shows one action; the additional main-preview capture below shows multiple actions, statuses and performers on the same Ticket. These captures use isolated browser fixtures on the verified main commit.
 
 ![Actions list - desktop, current action on its parent Ticket](../../artifacts/lab-04/screenshots/actions-taken/desktop/list.png)
 
 ![Create action - tablet](../../artifacts/lab-04/screenshots/actions-taken/tablet/create.png)
 
 ![Cancel action - mobile](../../artifacts/lab-04/screenshots/actions-taken/mobile/cancel.png)
+
+![Action 5 on TKT-2026-000003 - main application code 6d2b37d, isolated preview](../../artifacts/lab-04/screenshots/main-evidence/action-one.png)
+
+![Action 6 on the same TKT-2026-000003 - different performer and status](../../artifacts/lab-04/screenshots/main-evidence/action-two.png)
 
 ## Answer Part 7
 
@@ -130,13 +160,29 @@ Direct API and concurrency scenarios verify that bypassing the UI cannot bypass 
 
 [Requester evidence](requester-dashboard-evidence.md) | [Regression plan](tests.md). Requester dashboard metrics and recent rows are scoped to the signed-in requester. Independent SQL checks verify mixed ownership and date boundaries; API/browser scenarios reject another requester's data and unauthorized operational actions.
 
-Regression covers sign in/session/password change, My Tickets, creation/detail, attachments, public comments, Staff operations, private notes and Admin users. Historical mocked suites are retained alongside real Lab 3/Lab 4 browser suites. Final-main verification remains pending.
+Regression covers sign in/session/password change, My Tickets, creation/detail, attachments, public comments, Staff operations, private notes and Admin users. Historical mocked suites are retained alongside real Lab 3/Lab 4 browser suites. Fresh final-main checks passed on 6d2b37d on 2026-10-04.
 
-![Requester dashboard - desktop](../../artifacts/lab-04/screenshots/ui-review/requester-dashboard-desktop.png)
+![Requester dashboard - desktop, main 6d2b37d](../../artifacts/lab-04/screenshots/requester-dashboard/desktop/populated.png)
 
-![Requester dashboard - tablet](../../artifacts/lab-04/screenshots/ui-review/requester-dashboard-tablet.png)
+![Requester dashboard - tablet, main 6d2b37d](../../artifacts/lab-04/screenshots/requester-dashboard/tablet/populated.png)
 
-![Requester dashboard - mobile](../../artifacts/lab-04/screenshots/ui-review/requester-dashboard-mobile.png)
+![Requester dashboard - mobile, main 6d2b37d](../../artifacts/lab-04/screenshots/requester-dashboard/mobile/populated.png)
+
+### Regression screens captured from main
+
+The following captures were refreshed by the passing real Lab 3 browser suite on main 6d2b37d. API/browser output above also verifies attachment bytes, public/private communication and role restrictions. The full-page mobile captures retain more content than the report crops.
+
+![Sign in - main 6d2b37d](../../artifacts/lab-03/screenshots/real/login-region.png)
+
+![Mandatory password change - main 6d2b37d](../../artifacts/lab-03/screenshots/real/mandatory-password-region.png)
+
+![Requester creation - main 6d2b37d](../../artifacts/lab-03/screenshots/real/requester-create-tablet.png)
+
+![Requester Ticket Detail and communication - main 6d2b37d](../../artifacts/lab-03/screenshots/real/requester-detail-region.png)
+
+![Staff operations - main 6d2b37d](../../artifacts/lab-03/screenshots/real/staff-detail-region.png)
+
+![Admin user editing - main 6d2b37d](../../artifacts/lab-03/screenshots/real/admin-edit-reset-region.png)
 
 ## Answer Part 9
 
@@ -154,4 +200,4 @@ The audit includes 144 captures across desktop, tablet and narrow/mobile Chromiu
 
 ![Admin Users - mobile](../../artifacts/lab-04/screenshots/ui-review/admin-users-mobile.png)
 
-Additional account, creation, list, detail and administration captures are available in the local output/ui-review-gallery.html. Report crops are labelled; the gallery retains their complete source images. Generated screenshots remain outside Git. Regenerate the final report after release so captions, checklist, commit and main test results remain consistent.
+Additional account, creation, list, detail and administration captures are available in the local output/ui-review-gallery.html. Report crops are labelled; the gallery retains their complete source images. Generated screenshots remain outside Git. Main tests and refreshed Lab 3/Lab 4 captures are recorded above. After the documentation follow-up, recheck latest main and capture the final all-Done Project before producing the submission copy.

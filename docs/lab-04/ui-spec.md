@@ -1,5 +1,7 @@
 # Lab 4 UI Specification
 
+Current evidence update, 2026-10-04: student UI acceptance and PR #70 peer integration are complete; release PR #72 is merged into main. Fresh real Lab 3/Lab 4 browser captures are from verified main 6d2b37d. The dated correction notes below preserve their original inspection-stage wording. Current release/documentation completion is in release.md.
+
 ## Current handoff status (2026-09-30)
 
 Atip-Infa approved PR #70 at head 026b00e and merged it into lab4-staging as e484d28285c7f97d8a54f07e221bdf425659df24. Issue #63 is closed and both Project items are Done, verified during continuation. Student UI approval was given on 2026-09-29. Issue #64 is Started on docs/64-lab4-release. Document/report corrections by the student, peer documentation review, the separate pre-main gate and final-main verification remain pending. Earlier preparation entries below are historical, not the current handoff state.

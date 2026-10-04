@@ -46,6 +46,9 @@ function markdown(text) {
     if(code!==null) { code.push(line);continue; }
     if(line.startsWith('|')) {flushParagraph();closeList();table.push(line);continue;} flushTable();
     if(!line.trim()) {flushParagraph();closeList();continue;}
+    const log=line.match(/^\{\{log:(release-main-(?:unit-api|browser|browser3|browser4|build|prisma)\.txt)\}\}$/);
+    if(log){flushParagraph();closeList();const file=path.join(root,'output',log[1]);result+=`<pre class="test-output">${escape(read(file).replace(/\x1b\[[0-?]*[ -/]*[@-~]/g,'').replace(/\r/g,''))}</pre>`;continue;}
+    if(line==='---'){flushParagraph();closeList();result+='<hr>';continue;}
     const heading=line.match(/^(#{1,4}) (.*)/); if(heading) {flushParagraph();closeList(); const part=/^Answer Part \d$/.test(heading[2]); result+=`<h${heading[1].length} class="${part?'part':''}">${inline(heading[2])}</h${heading[1].length}>`;continue;}
     const pic=line.match(/^!\[(.*)\]\((.*)\)$/);if(pic){flushParagraph();closeList();result+=image(pic[2],pic[1]);continue;}
     if(/^[-*] /.test(line)) {flushParagraph();if(!list){result+='<ul>';list=true;}result+=`<li>${inline(line.slice(2))}</li>`;continue;}
@@ -58,8 +61,8 @@ function markdown(text) {
   fs.mkdirSync(out,{recursive:true});
   let text = read(source).replace(/\{\{excerpt:([^:}]+):(.+?):(.+?)\}\}/g,excerpt);
   let body = markdown(text);
-  const html=`<!doctype html><html lang="en"><meta charset="utf-8"><title>TokTickIT Lab 4 - review draft</title><style>
-  @page{size:A4;margin:16mm 15mm 17mm}*{box-sizing:border-box}body{font:10pt/1.45 Arial,sans-serif;color:#203b32}h1{font-size:24pt;color:#075438}h2{font-size:17pt;color:#075438;border-bottom:2px solid #b8d8c8;padding-bottom:6pt}h3{font-size:12pt}h1,h2,h3,h4{break-after:avoid}h2.part,.gallery-heading{break-before:page}h2.part:first-of-type{break-before:auto}a{color:#087449;text-decoration:underline;overflow-wrap:anywhere}p,li{orphans:3;widows:3}table{width:100%;border-collapse:collapse;font-size:8.5pt;margin:10pt 0}th{background:#e9f4ef;text-align:left}td:first-child,th:first-child{min-width:28pt}td,th{border:1px solid #bed3c8;padding:5pt;vertical-align:top;overflow-wrap:anywhere}tr{break-inside:avoid}code{font:8.3pt Consolas,monospace;overflow-wrap:anywhere}pre{font:8.5pt/1.4 Consolas,monospace;white-space:pre-wrap;background:#eef5f1;padding:10pt}blockquote{border-left:3px solid #8bb59f;padding-left:10pt;margin:5pt 0;color:#385b4c}figure{margin:14pt 0;break-inside:avoid}img{display:block;max-width:100%;max-height:165mm;width:auto;height:auto;margin:auto;border:1px solid #d0ddd6}figcaption{font-size:9pt;color:#486052;margin-top:6pt}ul{padding-left:16pt}
+  const html=`<!doctype html><html lang="en"><meta charset="utf-8"><title>TokTickIT Lab 4 - post-release evidence review</title><style>
+  @page{size:A4;margin:16mm 15mm 17mm}*{box-sizing:border-box}body{font:10pt/1.45 Arial,sans-serif;color:#203b32}h1{font-size:24pt;color:#075438}h2{font-size:17pt;color:#075438;border-bottom:2px solid #b8d8c8;padding-bottom:6pt}h3{font-size:12pt}h1,h2,h3,h4{break-after:avoid}h2.part,.gallery-heading{break-before:page}h2.part:first-of-type{break-before:auto}a{color:#087449;text-decoration:underline;overflow-wrap:anywhere}p,li{orphans:3;widows:3}table{width:100%;border-collapse:collapse;font-size:8.5pt;margin:10pt 0}th{background:#e9f4ef;text-align:left}td:first-child,th:first-child{min-width:28pt}td,th{border:1px solid #bed3c8;padding:5pt;vertical-align:top;overflow-wrap:anywhere}tr{break-inside:avoid}code{font:8.3pt Consolas,monospace;overflow-wrap:anywhere}pre{font:8.5pt/1.4 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:#eef5f1;padding:10pt}.test-output{font-size:8pt;line-height:1.35}blockquote{border-left:3px solid #8bb59f;padding-left:10pt;margin:5pt 0;color:#385b4c}figure{margin:14pt 0;break-inside:avoid}img{display:block;max-width:100%;max-height:165mm;width:auto;height:auto;margin:auto;border:1px solid #d0ddd6}figcaption{font-size:9pt;color:#486052;margin-top:6pt}ul{padding-left:16pt}
   </style><body>${body}</body></html>`;
   fs.writeFileSync(path.join(out,'toktickit-lab4-review.html'),html);
   const browser=await chromium.launch({channel:'chrome',headless:true});
@@ -82,6 +85,6 @@ function markdown(text) {
     }
   });
   await page.waitForFunction(() => Array.from(document.images).every(i=>i.complete));
-  await page.pdf({path:path.join(out,'toktickit-lab4-review.pdf'),format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',footerTemplate:'<div style="width:100%;text-align:center;font:8px Arial;color:#547062">Lab 4 | STUDENT REVIEW DRAFT | <span class="pageNumber"></span> / <span class="totalPages"></span></div>',preferCSSPageSize:true}); } finally {await browser.close();}
+  await page.pdf({path:path.join(out,'toktickit-lab4-review.pdf'),format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',footerTemplate:'<div style="width:100%;text-align:center;font:8px Arial;color:#547062">Lab 4 | POST-RELEASE EVIDENCE REVIEW | <span class="pageNumber"></span> / <span class="totalPages"></span></div>',preferCSSPageSize:true}); } finally {await browser.close();}
   console.log('Created output/pdf/toktickit-lab4-review.pdf');
 })().catch(error=>{console.error(error);process.exitCode=1;});
