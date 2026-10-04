@@ -70,3 +70,9 @@ After editing AI-use prompts/reflection and the review-record format, the studen
 Opened [PR #71](https://github.com/BOOky-OS/toktickit/pull/71) from `docs/64-lab4-release` into `lab4-staging` after the student accepted the document corrections. Atip-Infa is the requested reviewer; BOOky-OS is assigned. The documentation label, Lab 4 milestone, actual Development link to #64 and Project membership were verified. Both #64 and #71 are in PR Review. The PR is open and awaits peer review/merge. Issue #64 remains open for the final release and evidence. The separate pre-main student confirmation is still required.
 
 Documentation checks: whitespace check passed; the pre-release PDF was generated as 27 pages, rendered and visually inspected in full. No application code changed and runtime suites were not rerun for this handoff; the recorded staging results are dated 2026-09-30. Generated PDF/images/logs remain ignored.
+
+## Documentation merge verified, 2026-10-04
+
+Atip-Infa approved documentation PR #71 at b860122 and merged it into lab4-staging at e2f9979. The approval matches the final head. Review/comment pagination is complete, no inline threads were found, and both author replies already exist. PR #71 is Done; #64 is open and Started for release preparation. The local staging branch was fast-forwarded safely; `docs/64-lab4-final-release` was created from the updated staging for release evidence. Exact review and response links are recorded in reviewer.md.
+
+The report is refreshed with documentation merge evidence. Application code is unchanged and the 2026-09-30 staging results remain historical. The separate pre-main confirmation has not yet been answered; no main PR is created at this point.

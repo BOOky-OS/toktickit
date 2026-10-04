@@ -19,7 +19,7 @@ This record has two parts: PRs my partner reviewed for me, and PRs I reviewed fo
 
 ## Pull Requests I authored (reviewed by my partner)
 
-Repository: [BOOky-OS/toktickit](https://github.com/BOOky-OS/toktickit). All seven PRs below were approved and merged into `lab4-staging` by Atip-Infa.
+Repository: [BOOky-OS/toktickit](https://github.com/BOOky-OS/toktickit). All eight PRs below were approved and merged into `lab4-staging` by Atip-Infa.
 
 | Issue | Pull Request | Branch | Reviewer | Verdict |
 | --- | --- | --- | --- | --- |
@@ -30,6 +30,8 @@ Repository: [BOOky-OS/toktickit](https://github.com/BOOky-OS/toktickit). All sev
 | [#61](https://github.com/BOOky-OS/toktickit/issues/61) | [#68 - Staff Dashboard](https://github.com/BOOky-OS/toktickit/pull/68) | `feature/61-staff-dashboard` | Atip-Infa | Approved and merged |
 | [#62](https://github.com/BOOky-OS/toktickit/issues/62) | [#69 - Requester Dashboard](https://github.com/BOOky-OS/toktickit/pull/69) | `feature/62-requester-dashboard` | Atip-Infa | Approved and merged |
 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | [#70 - Regression and UI hardening](https://github.com/BOOky-OS/toktickit/pull/70) | `feature/63-final-hardening` | Atip-Infa | Approved and merged |
+
+| [#64](https://github.com/BOOky-OS/toktickit/issues/64) | [#71 - Documentation](https://github.com/BOOky-OS/toktickit/pull/71) | `docs/64-lab4-release` | Atip-Infa | Approved and merged; release issue remains open |
 
 ## Review comments I received and how I responded
 
@@ -315,6 +317,41 @@ Some post-merge comments reported Issue/Project updates before those updates act
 - **Issue:** #63 is closed. No inline review threads were found in the recorded GitHub check.
 - **Supporting evidence:** [Implementation and test record](hardening-evidence.md).
 - **Review request:** [My ready-for-review comment](https://github.com/BOOky-OS/toktickit/pull/70#issuecomment-5894338881).
+
+---
+
+### PR #71 - Documentation
+
+**Related work:** [Issue #64](https://github.com/BOOky-OS/toktickit/issues/64) | [Open PR #71](https://github.com/BOOky-OS/toktickit/pull/71)
+
+**Branch:** `docs/64-lab4-release` -> `lab4-staging`
+
+**1. Reviewer comment** - [Read the approval on GitHub](https://github.com/BOOky-OS/toktickit/pull/71#pullrequestreview-5406716331)
+
+> Reviewed the documentation changes at b860122, including rubric coverage, reviewer evidence, AI-use/reflection, and release instructions.
+>
+> The documentation clearly separates completed staging checks from pending final-main verification. No blocking documentation issues found.
+>
+> Approved for merge into lab4-staging. Issue #64 should remain open for the final release.
+
+**2. My response after approval** - [Read the response on GitHub](https://github.com/BOOky-OS/toktickit/pull/71#issuecomment-5981222576)
+
+> Thanks for the review and approval.
+>
+> The approval covers the current head, and no unresolved review threads remain. Please merge this PR into lab4-staging. Keep #64 open for the remaining release and final-main evidence.
+
+**3. My response after merge** - [Read the post-merge response on GitHub](https://github.com/BOOky-OS/toktickit/pull/71#issuecomment-5981225886)
+
+> Thanks for reviewing and merging the PR.
+>
+> I will sync the latest lab4-staging and check the integrated documentation before the separate pre-main confirmation. Final-main verification and submission evidence are still pending.
+
+**4. Review and merge result**
+
+- **Verdict:** Approved by Atip-Infa on 2026-10-04 14:46:35 UTC.
+- **Approved documentation:** [`b860122`](https://github.com/BOOky-OS/toktickit/commit/b860122743f280a2c8c9fcaf7c88fec0c1c3801f); this matches the final PR head.
+- **Merge:** [`e2f9979`](https://github.com/BOOky-OS/toktickit/commit/e2f997942f8d3dc55a11ecede0c036021f78b8fd), merged by Atip-Infa on 2026-10-04 14:46:57 UTC.
+- **Issue/Project:** PR #71 is Done. Issue #64 remains open and Started for release preparation. No inline review threads were found; review/comment pagination was complete.
 
 ---
 
@@ -669,8 +706,8 @@ The following comments preserve what was posted at review time. This documentati
 
 ## Remaining work
 
-- **Completed reviews:** My seven PRs and my partner's ten PRs above are approved and merged into staging. Each approval matches its final PR head. Review/comment pagination was complete; the recorded inline-thread queries were empty.
-- **Current task:** Issue #64, Documentation and Release, on `docs/64-lab4-release`. The student accepted document corrections on 2026-10-04; the documentation increment is proceeding to peer review.
+- **Completed reviews:** My eight PRs and my partner's ten PRs above are approved and merged into staging. Each approval matches its final PR head. Review/comment pagination was complete; the recorded inline-thread queries were empty.
+- **Current task:** Issue #64, Documentation and Release. Documentation PR #71 is peer-reviewed and merged. Release preparation continues on `docs/64-lab4-final-release`, based on updated staging `e2f9979`.
 - **Student review:** The student accepted the AI-use reflection and document corrections on 2026-10-04.
 - **Release:** The separate pre-main documentation question, peer release review/merge and actual final-main checks are still required. Staging merges do not mean the lab is fully released.
-- **Next step:** Obtain peer review and merge of the documentation increment into staging. The release checklist is in [release.md](release.md).
+- **Next step:** Present the updated package and obtain the separate student pre-main confirmation. The release checklist is in [release.md](release.md).

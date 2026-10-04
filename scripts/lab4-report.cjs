@@ -3,8 +3,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('@playwright/test');
+const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const docs = path.join(root, 'docs/lab-04');
+const reportRef = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
 const out = path.join(root, 'output/pdf');
 const source = path.join(docs, 'report.md');
 const escape = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -14,7 +16,7 @@ function href(value) {
   const [file, anchor] = value.split('#');
   const target = path.resolve(docs, file);
   if (!fs.existsSync(target)) throw Error(`Missing link target: ${value}`);
-  return 'https://github.com/BOOky-OS/toktickit/blob/docs/64-lab4-release/' + path.relative(root, target).split(path.sep).join('/') + (anchor ? '#' + anchor : '');
+  return 'https://github.com/BOOky-OS/toktickit/blob/' + reportRef + '/' + path.relative(root, target).split(path.sep).join('/') + (anchor ? '#' + anchor : '');
 }
 function inline(value) {
   return escape(value)

@@ -2,7 +2,7 @@
 
 ## Current state - 2026-10-04
 
-Issue #64 is Started on `docs/64-lab4-release`, based on the peer-merged staging commit `e484d28285c7f97d8a54f07e221bdf425659df24`. PR #70 approved head `026b00e` and tested UI code `a36b6ac` have identical application/test files to this staging commit. The student accepted the edited documents and reflection on 2026-10-04 and authorized peer handoff into staging. No Lab 4 release to main is claimed.
+Issue #64 is open and Started for release preparation on `docs/64-lab4-final-release`, based on staging `e2f997942f8d3dc55a11ecede0c036021f78b8fd`. Atip-Infa approved documentation head `b860122` and merged PR #71 on 2026-10-04. The PR Project item is Done. Application/test code is unchanged from `e484d28`; staging suites were last run on 2026-09-30. The student accepted the edited documents and reflection before the documentation peer handoff. No Lab 4 release to main is claimed.
 
 ## Reviewable package
 
@@ -42,19 +42,16 @@ Browser configs ran sequentially to avoid sharing their service ports. The Lab 4
 - [x] Actual reciprocal Lab 4 review links/account/replies verified on 2026-10-04: Atip-Infa/toktickit PRs #61-#70, reviewer/merger zerotwobook; exact comments, responses and commits in reviewer.md.
 - [x] Student accepted document/review-record corrections and authorized continuation on 2026-10-04.
 - [x] Documentation [PR #71](https://github.com/BOOky-OS/toktickit/pull/71) opened into lab4-staging with Atip-Infa requested, author assigned, documentation label, Lab 4 milestone, Project PR Review status and real Development link to #64.
-- [ ] Atip-Infa reviews and merges documentation PR #71.
-- [ ] Completed pre-release package is presented for the separate explicit pre-main question in skill.md.
+- [x] Atip-Infa approved current documentation head b860122 and merged PR #71 at e2f9979 on 2026-10-04; PR item Done verified.
+- [x] Updated pre-release documents and report prepared for student inspection after documentation merge.
+- [ ] Student answers the separate explicit pre-main question in skill.md.
 - [ ] Atip-Infa reviews and merges the release PR into main.
 - [ ] Required checks execute on the actual final-main SHA; final logs and review/merge evidence replace draft status.
 - [ ] Final PDF is regenerated, every page inspected, links checked and final Project evidence captured.
 - [ ] #64 is closed and Done only after its release/evidence AC are complete.
 
-The student document gate is satisfied; the documentation increment can now be handed to Atip-Infa for review into staging. Existing #70 author replies already exist, so duplicate post-merge comments are unnecessary.
+The documentation peer review and merge are complete. Actual #71 author approval and post-merge replies already exist; duplicate comments are unnecessary. The separate pre-main student confirmation remains pending.
 
-## Student-review handoff comment
+## Documentation merge handoff
 
-```text
-PR #70 is merged into lab4-staging at e484d28. Issue #63 is closed and both Project items are Done.
-
-Issue #64 is in progress. The student accepted the documentation edits; the staging documentation increment is ready for peer review. Reciprocal reviews for partner PRs #61-#70 are recorded. Final-main release evidence is still pending.
-```
+PR #71 is merged into lab4-staging at e2f9979, with approval covering b860122. Its Project item is Done; #64 remains open and Started for release preparation. Review/comment links and exact replies are in reviewer.md. The updated report is still a pre-release draft: final-main tests, release review/merge and final all-Done board evidence can only be recorded after those events.

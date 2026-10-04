@@ -2,13 +2,13 @@
 
 Supapanya Yathip | 67070503443 | BOOky-OS
 
-Prepared 2026-09-30; reciprocal-review record updated 2026-10-04. Integration baseline: e484d28. The student accepted the edited documents and reflection on 2026-10-04. This pre-release report is for peer review; release/main test output and final Project evidence remain pending.
+Prepared 2026-09-30; review record updated 2026-10-04 after documentation PR #71. Documentation integration baseline: e2f9979; application/test baseline: e484d28. The student accepted the edited documents and reflection on 2026-10-04. This pre-release report is ready for the separate student pre-main confirmation; release/main test output and final Project evidence remain pending.
 
 ## Answer Part 1
 
 ### Git use and engineering workflow
 
-The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged PR #57 and #65-#70. The contract was merged before the implementation PRs. #64 is the only active work package and is proceeding to documentation peer review; the final all-Done Project and main release history cannot yet be supplied.
+The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged PR #57 and #65-#71. The contract was merged before the implementation PRs. #64 is the only active work package. Documentation PR #71 is approved and merged; release preparation remains active. the final all-Done Project and main release history cannot yet be supplied.
 
 [Repository](https://github.com/BOOky-OS/toktickit) | [Project](https://github.com/users/BOOky-OS/projects/2) | [Staging history](https://github.com/BOOky-OS/toktickit/commits/lab4-staging/) | [Full reviewer record](reviewer.md)
 
@@ -16,7 +16,7 @@ The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed an
 
 {{excerpt:reviewer.md:## Pull Requests I authored:## Review comments I received and how I responded}}
 
-{{excerpt:reviewer.md:### PR #70 - Regression and UI hardening:## Reciprocal reviews}}
+{{excerpt:reviewer.md:### PR #71 - Documentation:## Reciprocal reviews}}
 
 README includes application/test setup, the disposable preview, migration/recovery and release links. `.gitignore` excludes dependencies, environment secrets, build files, screenshots, output and test artifacts. The PDF remains local for submission rather than being committed.
 
