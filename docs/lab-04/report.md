@@ -8,7 +8,7 @@ Updated 2026-10-05 after Atip-Infa approved and merged PR #73. All six checks pa
 
 ### Git use and engineering workflow
 
-The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged eight staging PRs, then approved and merged release PR #72 and evidence/preview PR #73 into main. The contract was merged before implementation. Issue #64 remains open for the reviewed evidence follow-up and final submission audit. Main commit history is linked below; the final all-Done Project is pending those completion gates.
+The work uses individual Issue branches into lab4-staging. Atip-Infa reviewed and merged eight staging PRs, then approved and merged release PR #72 and evidence/preview PR #73 into main. The contract was merged before implementation. Issue #64 remains open for integration of this completion record and the final submission audit. Main commit history is linked below; the final all-Done Project is pending those completion gates.
 
 [Repository](https://github.com/BOOky-OS/toktickit) | [Project](https://github.com/users/BOOky-OS/projects/2) | [Staging history](https://github.com/BOOky-OS/toktickit/commits/lab4-staging/) | [Main history](https://github.com/BOOky-OS/toktickit/commits/main/) | [Full reviewer record](reviewer.md)
 

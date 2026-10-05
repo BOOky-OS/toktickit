@@ -88,7 +88,7 @@ Verify desktop 1440x900, tablet 834x1112, mobile 390x844 and narrow 320px layout
 
 ## 8. Planned visual evidence checklist
 
-Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`, `actions-taken/` and `ticket-workflow/`, with desktop/tablet/mobile subfolders. Use demo data without secrets. Actions Taken captures now exist locally in those folders (plus narrow/); workflow gate/confirmation captures also exist locally for desktop/tablet/mobile; Staff and Requester dashboard captures also exist locally; the final product checklist and student inspection remain pending. Retain readable original captures and document the tested commit/environment.
+Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`, `actions-taken/` and `ticket-workflow/`, with desktop/tablet/mobile subfolders. Use demo data without secrets. Actions Taken, workflow gate/confirmation, Staff and Requester dashboard captures exist locally at desktop/tablet/mobile sizes, with additional narrow captures. The product checklist and student UI acceptance are complete; final document integration and Project/PDF submission evidence remain separate gates. Retain readable original captures and document the tested commit/environment.
 
 - [x] Initial, loading, zero/empty, populated and safe-failure dashboards; exact DB count comparison.
 - [x] Requester ownership, Staff/Admin navigation, current-user actions and drill-down filters.
