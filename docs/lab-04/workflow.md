@@ -1,12 +1,10 @@
 # Lab 4 Workflow and Audit
 
-## Current handoff status (2026-09-30)
+## Current handoff status (2026-10-04)
 
-Atip-Infa approved PR #70 at head 026b00e and merged it into lab4-staging as e484d28285c7f97d8a54f07e221bdf425659df24. Issue #63 is closed and both Project items are Done, verified during continuation. Student UI approval was given on 2026-09-29. Issue #64 is Started on docs/64-lab4-release. Document/report corrections by the student, peer documentation review, the separate pre-main gate and final-main verification remain pending. Earlier preparation entries below are historical, not the current handoff state.
+Atip-Infa approved and merged documentation PR #71 into lab4-staging, then release PR #72 into main at 6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3. The student accepted the document corrections and answered the exact pre-main question before #72 was created. All required assistant-run main checks passed: client 116, server 574, browser 18, real Lab 3 browser 14 and real Lab 4 browser 20; build and Prisma validation also passed.
 
-Current work: Issue #64, docs/64-lab4-release -> lab4-staging, based on peer merge e484d28. No documentation PR or peer request has been created before the student document gate.
-Prerequisite #58 / PR #65 is approved and peer-merged at `3c303e6`; Issue #58 and PR #65 items are Done. Author replies already exist; no duplicates are needed.
-Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Main remains the eventual submission branch.
+Current work: Issue #64, docs/64-lab4-main-evidence -> main. The student accepted the follow-up documentation gate on 2026-10-04. [PR #73](https://github.com/BOOky-OS/toktickit/pull/73) is open for Atip-Infa to review the refreshed evidence/report and preview shutdown correction. GitHub auto-closed #64 on release merge; it was reopened. #64 and #73 are now PR Review. PR #72 is Done. Final all-Done Project/submission evidence remains pending. Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Earlier dated entries below are historical; the current results are detailed in [release.md](release.md).
 
 ## Eight accepted work packages
 
@@ -84,3 +82,15 @@ After being shown the updated reviewable documents and PDF, the student answered
 ## Release PR opened, 2026-10-04
 
 Opened [PR #72](https://github.com/BOOky-OS/toktickit/pull/72) from `docs/64-lab4-final-release` into main after the student answered the exact pre-main question. The branch contains the peer-integrated staging history plus documentation evidence follow-up. Reviewer Atip-Infa, author assignment, enhancement/documentation labels, Lab 4 milestone, Project membership and actual Development link to #64 were verified. Issue #64 and PR #72 are in PR Review. Approval/merge and final-main checks are pending. The user must check the repository auto-close setting before merging because browser automation failed to start; no change to that setting is claimed.
+
+## Actual main release and verification, 2026-10-04
+
+Atip-Infa approved PR #72 at 530eead and merged it into main at 6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3. Approval matches the release head, author approval/post-merge replies exist, and review/comment pagination is complete with no inline threads. The assistant fast-forwarded local main and ran all six required commands there: client 116 (19 files), server 574 (40 files), default browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation passed. Full outputs and UTC timestamps are retained under output/release-main-*.txt. Docker Desktop and the existing test container were started before database checks; no new container or working-database reset was used.
+
+GitHub auto-closed #64 on main merge. It was reopened and returned to Started for remaining evidence. PR #72 is Done. Post-release documentation uses docs/64-lab4-main-evidence from verified main. Its student pre-main gate and peer review/merge, final latest-main check and final all-Done submission evidence remain pending. Existing PR #72 replies already exist and need no duplicate post-merge message.
+
+## Preview shutdown correction found during evidence capture, 2026-10-04
+
+The main runtime suites passed before this additional preview check. Starting the isolated preview succeeded, but stopping it failed because the script left DATABASE_URL pointing at its disposable fixture before calling fixture.dispose(). The safety guard correctly rejected treating that database as the working database. The preview script now retains the initial DATABASE_URL and restores/deletes it before cleanup, matching the existing E2E cleanup pattern.
+
+A real start, login/capture and Ctrl+C stop was repeated after the fix. The new owned schema was removed, all pre-existing schemas were preserved, and ports 3008/5178 were released. The Windows terminal returned an interruption exit status of 1; there was no application cleanup exception. The first failed preview fixture was identified using the exact captured seed timestamp and 16-Ticket/6-user fingerprint, then only that owned test schema was removed. Local evidence: output/preview-cleanup-evidence.json and output/preview-cleanup-evidence.txt. This correction is on docs/64-lab4-main-evidence, awaiting student acceptance and peer review; it is not claimed as already merged into main. Client/server/E2E application files are unchanged from verified main 6d2b37d.

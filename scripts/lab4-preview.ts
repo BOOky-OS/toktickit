@@ -8,6 +8,7 @@ import { seedLab4Demo, LAB4_DEMO_PASSWORD } from "../server/prisma/lab4-seed";
 // Disposable student preview: never loads or migrates the working database.
 async function main() {
   const root = resolve(import.meta.dirname, ".."), initialCwd = process.cwd();
+  const initialDatabaseUrl = process.env.DATABASE_URL;
   const fixture = await databaseFixture("99999999999999");
   const storage = await mkdtemp(join(tmpdir(), "toktickit-lab4-preview-"));
   let stopServer: (() => Promise<void>) | undefined;
@@ -16,6 +17,9 @@ async function main() {
   async function stop() {
     if (closing) return; closing = true;
     frontend?.kill(); await stopServer?.(); process.chdir(initialCwd);
+    // The fixture guard compares against the working URL; restore it before cleanup.
+    if (initialDatabaseUrl === undefined) delete process.env.DATABASE_URL;
+    else process.env.DATABASE_URL = initialDatabaseUrl;
     await fixture.dispose();
     const target = resolve(storage);
     if (!target.startsWith(resolve(tmpdir()) + sep + "toktickit-lab4-preview-")) throw new Error("Unsafe preview storage path");
