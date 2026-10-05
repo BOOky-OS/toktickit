@@ -46,7 +46,7 @@ function markdown(text) {
     if(code!==null) { code.push(line);continue; }
     if(line.startsWith('|')) {flushParagraph();closeList();table.push(line);continue;} flushTable();
     if(!line.trim()) {flushParagraph();closeList();continue;}
-    const log=line.match(/^\{\{log:(release-main-(?:unit-api|browser|browser3|browser4|build|prisma)\.txt)\}\}$/);
+    const log=line.match(/^\{\{log:(release-(?:final-)?main-(?:unit-api|browser|browser3|browser4|build|prisma)\.txt)\}\}$/);
     if(log){flushParagraph();closeList();const file=path.join(root,'output',log[1]);result+=`<pre class="test-output">${escape(read(file).replace(/\x1b\[[0-?]*[ -/]*[@-~]/g,'').replace(/\r/g,''))}</pre>`;continue;}
     if(line==='---'){flushParagraph();closeList();result+='<hr>';continue;}
     const heading=line.match(/^(#{1,4}) (.*)/); if(heading) {flushParagraph();closeList(); const part=/^Answer Part \d$/.test(heading[2]); result+=`<h${heading[1].length} class="${part?'part':''}">${inline(heading[2])}</h${heading[1].length}>`;continue;}

@@ -1,10 +1,10 @@
 # Lab 4 Workflow and Audit
 
-## Current handoff status (2026-10-04)
+## Current handoff status (2026-10-05)
 
-Atip-Infa approved and merged documentation PR #71 into lab4-staging, then release PR #72 into main at 6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3. The student accepted the document corrections and answered the exact pre-main question before #72 was created. All required assistant-run main checks passed: client 116, server 574, browser 18, real Lab 3 browser 14 and real Lab 4 browser 20; build and Prisma validation also passed.
+Atip-Infa approved PR #73 head 2d13733 and merged it into main at `50b84924de3c265a9ae587257afea92d52b22a1c`. All six commands were freshly rerun there and passed: client 116, server 574, browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation. Actual #73 review and author replies are in reviewer.md. PR #73 is Done.
 
-Current work: Issue #64, docs/64-lab4-main-evidence -> main. The student accepted the follow-up documentation gate on 2026-10-04. [PR #73](https://github.com/BOOky-OS/toktickit/pull/73) is open for Atip-Infa to review the refreshed evidence/report and preview shutdown correction. GitHub auto-closed #64 on release merge; it was reopened. #64 and #73 are now PR Review. PR #72 is Done. Final all-Done Project/submission evidence remains pending. Author: BOOky-OS. Student-confirmed peer: Atip-Infa. Earlier dated entries below are historical; the current results are detailed in [release.md](release.md).
+GitHub auto-closed #64 again; it was reopened and set Started for final evidence completion. Current work: docs/64-lab4-submission-record, containing the post-merge review, latest main output, refreshed screenshots and observed product checklist. No application changes are introduced. Final tracked-document integration and final all-Done Project/PDF evidence remain pending. Earlier dated entries below are historical.
 
 ## Eight accepted work packages
 

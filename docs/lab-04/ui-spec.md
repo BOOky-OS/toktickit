@@ -1,6 +1,7 @@
+<!-- Current capture refresh: the real Lab 3/Lab 4 suites passed on integrated main 50b8492 on 2026-10-05. Earlier dated audit records are historical. -->
 # Lab 4 UI Specification
 
-Current evidence update, 2026-10-04: student UI acceptance and PR #70 peer integration are complete; release PR #72 is merged into main. Fresh real Lab 3/Lab 4 browser captures are from verified main 6d2b37d. The dated correction notes below preserve their original inspection-stage wording. Current release/documentation completion is in release.md.
+Current evidence update, 2026-10-05: student UI acceptance and PR #70 peer integration are complete; PRs #72 and #73 are merged into main. Fresh real Lab 3/Lab 4 browser captures are from verified main 50b8492. The dated correction notes below preserve their original inspection-stage wording. Current release/documentation completion is in release.md.
 
 ## Current handoff status (2026-09-30)
 

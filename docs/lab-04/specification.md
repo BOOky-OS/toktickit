@@ -177,15 +177,17 @@ Every criterion maps to planned tests in [tests.md](tests.md). No Lab 4 acceptan
 
 ## 10. Definition of Done
 
-- [ ] Contract reviewed before feature implementation; meaningful decisions are recorded without claiming student approval prematurely.
-- [ ] All ACs have actual test files, commands, environment, tested commit and observed results; no required failures/skips hidden.
-- [ ] Migration, repeatable seed and isolated recovery proven; all earlier data/features preserved except approved changes.
-- [ ] Actions Taken, workflow and dashboards meet API/UI/authorization/concurrency contracts.
-- [ ] Unit, API/integration, component, style, responsive, accessibility, performance smoke and real E2E checks pass.
-- [ ] All major screens visually inspected at desktop/tablet/mobile; no broken controls, placeholders, console errors, clipping or overflow.
-- [ ] README/setup/migration/seed/demo instructions current; repository hygiene and `.gitignore` checked.
-- [ ] `reviewer.md` records real identities, PRs, comments, responses and approvals; `ai-use.md` includes the actual LLM, 6-10 real representative prompts and student reflection on specification/coding agents.
-- [ ] Screenshots and completed visual checklist recorded; metric examples verified against database queries.
+Product checks below were verified through peer-merged increments and fresh integrated-main suites on 50b8492 (2026-10-05). Final PDF/Project/submission completion stays unchecked until the final evidence audit. See release.md for exact evidence and visual-testing limitations.
+
+- [x] Contract reviewed before feature implementation; meaningful decisions are recorded without claiming student approval prematurely.
+- [x] Product ACs have actual test files, commands, environment, tested commit and observed results; no required failures/skips hidden. DOC-01 / AC-16 still awaits final submission evidence below.
+- [x] Migration, repeatable seed and isolated recovery proven; all earlier data/features preserved except approved changes.
+- [x] Actions Taken, workflow and dashboards meet API/UI/authorization/concurrency contracts.
+- [x] Unit, API/integration, component, style, responsive, accessibility, performance smoke and real E2E checks pass.
+- [x] All major screens visually inspected at desktop/tablet/mobile; no broken controls, placeholders, console errors, clipping or overflow.
+- [x] README/setup/migration/seed/demo instructions current; repository hygiene and `.gitignore` checked.
+- [x] `reviewer.md` records real identities, PRs, comments, responses and approvals; `ai-use.md` includes the actual LLM, 6-10 real representative prompts and student reflection on specification/coding agents.
+- [x] Screenshots and completed visual checklist recorded; metric examples verified against database queries.
 - [ ] Exactly one concise PDF has Answer Part 1 through Answer Part 9, in order, working links and legible evidence. Weights: workflow 10, Spec DD 5, Test DD 10, AI use 5, Staff dashboard 5, Actions Taken 10, Ticket workflow 5, Requester/regression 5, visual/accessibility 5 (60 total).
 - [ ] Work branches peer-merged to `lab4-staging`; completed pre-release package shown to student; explicit pre-main documentation gate answered; peer release merge and final-main checks recorded; only then all Issues Done.
 

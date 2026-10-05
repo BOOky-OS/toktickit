@@ -1,10 +1,10 @@
 # Lab 4 Test Plan and Traceability
 
-## Current main verification status (2026-10-04)
+## Current main verification status (2026-10-05)
 
-Atip-Infa approved release PR #72 at 530eead and merged it into main as `6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3`. Fresh assistant-run main checks passed: client 116 (19 files), server 574 (40 files), default browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation passed. Actual commands, UTC times, environment and complete local logs are in [release.md](release.md). PR #72 is Done. Issue #64 was auto-closed, then reopened for the documentation follow-up and final submission evidence; it is Started. Earlier preparation entries below are historical. No all-Done or final documentation merge is claimed yet.
+Atip-Infa approved evidence/preview PR #73 at 2d13733 and merged it into main as `50b84924de3c265a9ae587257afea92d52b22a1c`. Fresh assistant-run checks passed on that integrated main: client 116 (19 files), server 574 (40 files), default browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation passed. Exact commands, UTC times, environment and complete logs are in [release.md](release.md). PR #73 is Done; #64 was auto-closed and reopened for final evidence. DOC-01 / AC-16 remains pending final tracked-document integration and final Project/PDF completion. Earlier execution entries below are historical.
 
-Status: reviewed plan from #56, updated through #62 on 2026-09-27. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates and both dashboards now have feature-branch evidence. Product hardening is complete and peer-merged in PR #70; final-main runtime verification passed on 6d2b37d; final documentation/submission audit remains pending. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
+Status: reviewed plan from #56, updated through #62 on 2026-09-27. The Actions foundation now has real backend tests and assistant-run feature-branch evidence in [foundation-evidence.md](foundation-evidence.md). Actions UI component/browser evidence is now in [actions-ui-evidence.md](actions-ui-evidence.md). Final workflow gates and both dashboards now have feature-branch evidence. Product hardening is complete and peer-merged in PR #70; final-main runtime verification passed again on 50b8492; final documentation/submission audit remains pending. Baseline inspected: `754a81d`; implementation base: `b45c4f0`. Contract: [specification.md](specification.md), [api-spec.md](api-spec.md), [ui-spec.md](ui-spec.md).
 
 ## 1. Execution environments and safety
 
@@ -160,4 +160,19 @@ The runtime Test IDs passed in the main suites recorded in release.md. All 32 ex
 
 ## Preview cleanup smoke check
 
-Actual start/login/capture/stop exposed a URL restoration error in scripts/lab4-preview.ts. After the correction, the owned schema disappeared, the baseline schemas stayed intact, and both preview ports closed. The Windows Ctrl+C shell status is recorded separately from application cleanup success. See release.md for the observed failure and local evidence. This utility correction awaits peer integration; main application test results above remain dated and scoped to 6d2b37d.
+Actual start/login/capture/stop exposed a URL restoration error in scripts/lab4-preview.ts. After the correction, the owned schema disappeared, the baseline schemas stayed intact, and both preview ports closed. The Windows Ctrl+C shell status is recorded separately from application cleanup success. See release.md for the observed failure and local evidence. The utility correction was peer-merged through PR #73. The earlier smoke check retains its actual date; all runtime suites were freshly rerun on integrated main 50b8492 on 2026-10-05.
+
+## Integrated-main verification, 2026-10-05
+
+Assistant-run integrated-main verification on 2026-10-05 used `50b84924de3c265a9ae587257afea92d52b22a1c`, the actual peer-merged PR #73 commit. Client/server/E2E application files are identical to the earlier tested main 6d2b37d; the reviewed preview cleanup correction and reporting evidence are now integrated. All six commands below were nevertheless run freshly on this main commit and exited 0. Environment: Windows, Node v24.19.0, PostgreSQL 16.13 in the existing toktickit-lab4-test container, Chrome through the repository Playwright configurations. Docker Desktop and that existing container were started; no replacement container or working-database reset was used.
+
+| Command | Observed result | Start UTC | Finish UTC | Local ignored full output |
+| --- | --- | --- | --- | --- |
+| npm test | 19 client files / 116 passed; 40 server files / 574 passed | 2026-10-05T04:06:28.628Z | 2026-10-05T04:12:42.888Z | output/release-final-main-unit-api.txt |
+| npm run test:e2e | 18 passed; includes historical mocked cases | 2026-10-05T04:12:42.890Z | 2026-10-05T04:14:01.031Z | output/release-final-main-browser.txt |
+| npm run test:e2e:lab3 | 14 real-browser tests passed | 2026-10-05T04:14:01.034Z | 2026-10-05T04:15:40.977Z | output/release-final-main-browser3.txt |
+| npm run test:e2e:lab4 | 20 real-browser tests passed | 2026-10-05T04:15:40.979Z | 2026-10-05T04:18:30.575Z | output/release-final-main-browser4.txt |
+| npm run build | Client and server passed | 2026-10-05T04:18:30.576Z | 2026-10-05T04:18:40.053Z | output/release-final-main-build.txt |
+| npm run prisma:validate | Passed | 2026-10-05T04:18:40.055Z | 2026-10-05T04:18:42.116Z | output/release-final-main-prisma.txt |
+
+Browser configurations ran sequentially and refreshed the real Lab 3/Lab 4 screenshots. Dedicated real suites use actual authentication/API/database fixtures; the default browser suite includes historical mocked cases. The earlier 144-capture cross-page audit remains historical, with physical-device, Safari/iOS, real browser zoom and complete screen-reader limitations stated explicitly.
