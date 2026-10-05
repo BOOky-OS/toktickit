@@ -232,4 +232,4 @@ staging branch.
 
 ### Lab 4 main verification
 
-Atip-Infa approved release PR #72 and merged it into main at `6d2b37d` on 2026-10-04. The required unit/API, browser, build and Prisma checks passed on that actual main commit. See [release results](docs/lab-04/release.md), [test traceability](docs/lab-04/tests.md), [actual reviews/replies](docs/lab-04/reviewer.md), and the [report source](docs/lab-04/report.md). The post-release documentation review and final all-Done Project evidence remain pending. Generated PDF/logs/screenshots are intentionally ignored.
+Atip-Infa approved release PR #72 and then evidence/preview PR #73, merged into main at `50b8492` on 2026-10-05. The required unit/API, browser, build and Prisma checks passed on that actual main commit. See [release results](docs/lab-04/release.md), [test traceability](docs/lab-04/tests.md), [actual reviews/replies](docs/lab-04/reviewer.md), and the [report source](docs/lab-04/report.md). The latest post-merge completion record and final all-Done Project/PDF evidence remain the final submission gates. Generated PDF/logs/screenshots are intentionally ignored.

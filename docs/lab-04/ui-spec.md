@@ -1,6 +1,7 @@
+<!-- Current capture refresh: the real Lab 3/Lab 4 suites passed on integrated main 50b8492 on 2026-10-05. Earlier dated audit records are historical. -->
 # Lab 4 UI Specification
 
-Current evidence update, 2026-10-04: student UI acceptance and PR #70 peer integration are complete; release PR #72 is merged into main. Fresh real Lab 3/Lab 4 browser captures are from verified main 6d2b37d. The dated correction notes below preserve their original inspection-stage wording. Current release/documentation completion is in release.md.
+Current evidence update, 2026-10-05: student UI acceptance and PR #70 peer integration are complete; PRs #72 and #73 are merged into main. Fresh real Lab 3/Lab 4 browser captures are from verified main 50b8492. The dated correction notes below preserve their original inspection-stage wording. Current release/documentation completion is in release.md.
 
 ## Current handoff status (2026-09-30)
 
@@ -87,7 +88,7 @@ Verify desktop 1440x900, tablet 834x1112, mobile 390x844 and narrow 320px layout
 
 ## 8. Planned visual evidence checklist
 
-Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`, `actions-taken/` and `ticket-workflow/`, with desktop/tablet/mobile subfolders. Use demo data without secrets. Actions Taken captures now exist locally in those folders (plus narrow/); workflow gate/confirmation captures also exist locally for desktop/tablet/mobile; Staff and Requester dashboard captures also exist locally; the final product checklist and student inspection remain pending. Retain readable original captures and document the tested commit/environment.
+Capture `artifacts/lab-04/screenshots/staff-dashboard/`, `requester-dashboard/`, `actions-taken/` and `ticket-workflow/`, with desktop/tablet/mobile subfolders. Use demo data without secrets. Actions Taken, workflow gate/confirmation, Staff and Requester dashboard captures exist locally at desktop/tablet/mobile sizes, with additional narrow captures. The product checklist and student UI acceptance are complete; final document integration and Project/PDF submission evidence remain separate gates. Retain readable original captures and document the tested commit/environment.
 
 - [x] Initial, loading, zero/empty, populated and safe-failure dashboards; exact DB count comparison.
 - [x] Requester ownership, Staff/Admin navigation, current-user actions and drill-down filters.

@@ -7,7 +7,7 @@
 
 **Peer reviewer:** Atip Infa-Udom - 67070503446 - [@Atip-Infa](https://github.com/Atip-Infa).
 
-This record has two parts: PRs my partner reviewed for me, and PRs I reviewed for my partner. Each PR shows the review comment, the response after approval, the response after merge, and the final result. Quoted comments are copied from GitHub; links open the original messages. Review evidence was checked on 2026-10-04. All times below are UTC.
+This record has two parts: PRs my partner reviewed for me, and PRs I reviewed for my partner. Each PR shows the review comment, the response after approval, the response after merge, and the final result. Quoted comments are copied from GitHub; links open the original messages. Review evidence was checked on 2026-10-04 and refreshed for PR #73 on 2026-10-05. All times below are UTC.
 
 ## Contents
 
@@ -15,11 +15,11 @@ This record has two parts: PRs my partner reviewed for me, and PRs I reviewed fo
 - [Review comments I received and how I responded](#review-comments-i-received-and-how-i-responded)
 - [Pull Requests I reviewed for my partner](#reciprocal-reviews)
 - [My reviews and my partner's responses](#reciprocal-review-comments-and-partner-responses)
-- [Current status and remaining work](#remaining-work)
+- [Submission record status](#submission-record-status---2026-10-05)
 
 ## Pull Requests I authored (reviewed by my partner)
 
-Repository: [BOOky-OS/toktickit](https://github.com/BOOky-OS/toktickit). The first eight PRs were approved and merged into `lab4-staging`; release PR #72 was approved and merged into `main`. Atip-Infa reviewed and merged all nine PRs.
+Repository: [BOOky-OS/toktickit](https://github.com/BOOky-OS/toktickit). The first eight PRs were approved and merged into `lab4-staging`; release PR #72 and evidence/preview PR #73 were approved and merged into `main`. Atip-Infa reviewed and merged all ten PRs.
 
 | Issue | Pull Request | Branch | Reviewer | Verdict |
 | --- | --- | --- | --- | --- |
@@ -32,6 +32,7 @@ Repository: [BOOky-OS/toktickit](https://github.com/BOOky-OS/toktickit). The fir
 | [#63](https://github.com/BOOky-OS/toktickit/issues/63) | [#70 - Regression and UI hardening](https://github.com/BOOky-OS/toktickit/pull/70) | `feature/63-final-hardening` | Atip-Infa | Approved and merged |
 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | [#71 - Documentation](https://github.com/BOOky-OS/toktickit/pull/71) | `docs/64-lab4-release` | Atip-Infa | Approved and merged; release issue remains open |
 | [#64](https://github.com/BOOky-OS/toktickit/issues/64) | [#72 - Main release](https://github.com/BOOky-OS/toktickit/pull/72) | `docs/64-lab4-final-release` | Atip-Infa | Approved and merged into main; evidence issue remains open |
+| [#64](https://github.com/BOOky-OS/toktickit/issues/64) | [#73 - Main evidence and preview cleanup](https://github.com/BOOky-OS/toktickit/pull/73) | `docs/64-lab4-main-evidence` | Atip-Infa | Approved and merged into main |
 
 ## Review comments I received and how I responded
 
@@ -396,6 +397,49 @@ Some post-merge comments reported Issue/Project updates before those updates act
 
 ---
 
+### PR #73 - Main evidence and preview cleanup
+
+**Related work:** [Issue #64](https://github.com/BOOky-OS/toktickit/issues/64) | [Open PR #73](https://github.com/BOOky-OS/toktickit/pull/73)
+
+**Branch:** `docs/64-lab4-main-evidence` -> `main`
+
+**1. Reviewer comment** - [Read the approval on GitHub](https://github.com/BOOky-OS/toktickit/pull/73#pullrequestreview-5408788900)
+
+> Reviewed PR #73 at 2d13733, including the preview cleanup fix, documentation, review records and reported test evidence.
+>
+> The fix restores DATABASE_URL before fixture disposal. The recorded cleanup check preserves existing schemas and releases the preview ports.
+>
+> Main and staging results are clearly separated, and final submission tasks remain documented. I reviewed the reported checks; I did not independently rerun the tests.
+>
+> No blocking issues found. Approved for merge into main. Keep #64 open until final verification and submission evidence are complete.
+
+**2. My response after approval** - [Read the response on GitHub](https://github.com/BOOky-OS/toktickit/pull/73#issuecomment-5987823563)
+
+> Thanks for the review and approval.
+>
+> The approval covers the current head, and no unresolved review feedback remains. Please merge PR #73 into main.
+>
+> Verify repository auto-closing is disabled so #64 remains open for final verification and submission evidence.
+
+**3. My response after merge** - [Read the post-merge response on GitHub](https://github.com/BOOky-OS/toktickit/pull/73#issuecomment-5987833054)
+
+> Thanks for reviewing and merging PR #73.
+>
+> I will sync main, verify the integrated changes, and complete the final PDF and Project evidence.
+>
+> Issue #64 will be closed and marked Done only after its remaining acceptance criteria are complete.
+
+**4. Review and merge result**
+
+- **Verdict:** Approved by Atip-Infa at 2026-10-04T23:40:49Z (UTC).
+- **Approved head:** [`2d13733`](https://github.com/BOOky-OS/toktickit/commit/2d1373301b2e5ccb71881af8c31bf3131c26be88); matches the final PR head.
+- **Main merge:** [`50b8492`](https://github.com/BOOky-OS/toktickit/commit/50b84924de3c265a9ae587257afea92d52b22a1c), merged by Atip-Infa at 2026-10-05T03:57:26Z (UTC).
+- **Review request:** [My ready-for-review comment](https://github.com/BOOky-OS/toktickit/pull/73#issuecomment-5982323430).
+- **Review completeness:** All review/comments and inline-thread pages checked; no inline threads. Author approval and post-merge replies already exist. The peer reviewed reported results and explicitly did not independently rerun tests.
+- **Follow-up:** All six main commands were rerun successfully on 50b8492 on 2026-10-05. PR #73 is Done. GitHub auto-closed #64 again; it was reopened and set Started for final evidence completion.
+
+---
+
 ## Reciprocal reviews
 
 ### Pull Requests I reviewed for my partner
@@ -745,11 +789,9 @@ The following comments preserve what was posted at review time. This documentati
 
 ---
 
-## Remaining work
+## Submission record status - 2026-10-05
 
-- **Completed reviews:** Eight staging PRs and release PR #72 were approved and merged by Atip-Infa. Ten partner PRs were reviewed and merged by zerotwobook. Approved heads match their final PR heads.
-- **Main verification:** Assistant-run checks passed on main `6d2b37d2a96d42e30f88d40f3e8699fd9eb926a3` on 2026-10-04: client 116 (19 files), server 574 (40 files), default browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation passed. See [release.md](release.md).
-- **Current task:** Issue #64 remains open for the reviewed documentation follow-up, final PDF and final all-Done Project evidence.
-- **Review-record update:** The student explicitly authorized adding the verified reviewer comments and links directly to main. This documentation correction does not constitute a new peer approval.
-- **Follow-up handoff:** The student accepted the separate pre-main gate with "เรียบร้อยแล้วพร้อมแล้ว" on 2026-10-04. [PR #73](https://github.com/BOOky-OS/toktickit/pull/73), docs/64-lab4-main-evidence -> main, is open with Atip-Infa requested. #64 and #73 are PR Review. No approval, reviewer comment or merge is recorded for this PR yet.
-- **Next step:** Atip-Infa reviews and merges PR #73 after approval. Then verify the integrated main and complete final PDF/Project submission evidence.
+- **Completed reviews:** Eight staging PRs and two main PRs were approved and merged by Atip-Infa. Ten partner PRs were reviewed and merged by zerotwobook.
+- **Main verification:** Fresh assistant-run checks passed on main `50b84924de3c265a9ae587257afea92d52b22a1c`: client 116, server 574, default browser 18, real Lab 3 browser 14, real Lab 4 browser 20; build and Prisma validation passed.
+- **Current evidence:** This dated post-merge record includes the actual #73 review and responses. The report and completion checklist are prepared on docs/64-lab4-submission-record.
+- **Completion:** Final tracked-document integration and final all-Done Project/PDF evidence remain separate gates. Keep #64 open until those pass. The live Issue/Project carry current workflow state; existing #73 replies need no duplicate comments.
